@@ -6,21 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Publico.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("publico/[controller]")]
+    public class ConsultaController : Controller
     {
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "Consulta de Processos" };
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(string id)
         {
-            return "value";
+            return id.Trim();
         }
 
         // POST api/values
