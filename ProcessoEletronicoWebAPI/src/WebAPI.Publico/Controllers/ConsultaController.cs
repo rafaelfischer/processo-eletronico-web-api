@@ -9,7 +9,7 @@ namespace WebAPI.Publico.Controllers
     [Route("publico/[controller]")]
     public class ConsultaController : Controller
     {
-        // GET api/values
+        // GET publico/consulta
         [HttpGet]
         public IEnumerable<string> Get()
         {
