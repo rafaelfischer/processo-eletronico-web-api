@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ProcessoEletronicoService.Apresentacao.Base;
+using ProcessoEletronicoService.Apresentacao.Processo;
 
 namespace WebAPI.Restrito
 {
@@ -29,6 +31,15 @@ namespace WebAPI.Restrito
         {
             // Add framework services.
             services.AddMvc();
+
+            //services.AddTransient<IProcessoWorkService, ProcessoWorkService>();
+
+            Dictionary<Type, Type> dependencias = ProcessoEletronicoService.Apresentacao.Configuration.ObterDependencias();
+
+            foreach (var dep in dependencias)
+            {
+                services.AddTransient(dep.Key, dep.Value);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ProcessoEletronicoService.Apresentacao.Base;
 
 namespace WebAPI.Restrito.Controllers
 {
     [Route("restrito/[controller]")]
     public class RestritoController : Controller
     {
+        IProcessoWorkService service;
+
+        public RestritoController(IProcessoWorkService service)
+        {
+            this.service = service;
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "Restrito" };
+            return new string[] { service.Autuar() };
         }
 
         // GET api/values/5
