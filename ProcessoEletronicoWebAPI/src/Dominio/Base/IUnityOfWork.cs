@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProcessoEletronicoService.Negocio.Base
+namespace ProcessoEletronicoService.Dominio.Base
 {
-    public interface IAutuacao
+    public interface IUnityOfWork : IDisposable
     {
-        string Autuar(int numeroProcesso);
+
     }
 }

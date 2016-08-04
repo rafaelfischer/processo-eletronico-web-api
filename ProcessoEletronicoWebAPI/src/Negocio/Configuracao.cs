@@ -1,6 +1,8 @@
-﻿using ProcessoEletronicoService.Negocio.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ProcessoEletronicoService.Dominio.Base;
+using ProcessoEletronicoService.Infraestrutura.Repositorios;
+
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -11,7 +13,7 @@ namespace ProcessoEletronicoService.Negocio
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
             //Incluir dependência do repositorio
-            
+                                    
             return dependencias;
         }
     }

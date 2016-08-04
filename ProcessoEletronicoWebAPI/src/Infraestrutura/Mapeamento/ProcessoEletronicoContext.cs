@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using ProcessoEletronicoService.Dominio.Modelos;
 
-namespace ProcessoEletronicoService.Infraestrutura.Mapping
+namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 {
     public partial class ProcessoEletronicoContext : DbContext
     {

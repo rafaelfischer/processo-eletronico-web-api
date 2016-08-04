@@ -7,6 +7,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
 {
     public interface IAutuacaoWorkService
     {
-        string Autuar();
+        string Autuar(int numeroProcesso);
     }
 }

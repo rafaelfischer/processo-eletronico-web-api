@@ -7,7 +7,7 @@ using ProcessoEletronicoService.Apresentacao.Base;
 
 namespace WebAPI.Restrito.Controllers
 {
-    [Route("restrito/[controller]")]
+    [Route("[controller]")]
     public class RestritoController : Controller
     {
         IAutuacaoWorkService service;
@@ -21,7 +21,7 @@ namespace WebAPI.Restrito.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { service.Autuar() };
+            return new string[] { "já era" };
         }
 
         // GET api/values/5
@@ -31,6 +31,12 @@ namespace WebAPI.Restrito.Controllers
             return "value";
         }
 
+        [HttpGet("autuar/{numero}")]
+        public string Autuar (int numero)
+        {
+            return service.Autuar(numero);
+        }
+        
         // POST api/values
         [HttpPost]
         public void Post([FromBody]string value)

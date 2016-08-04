@@ -16,9 +16,9 @@ namespace ProcessoEletronicoService.Apresentacao.Processo
             this.autuacao = autuacao;
         }
 
-        public string Autuar()
+        public string Autuar(int numeroProcesso)
         {
-            return autuacao.Autuar();
+            return autuacao.Autuar(numeroProcesso);
         }
     }
 }
