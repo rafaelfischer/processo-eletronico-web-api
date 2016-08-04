@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Apresentacao.Processo
 {
-    public class ProcessoWorkService : IProcessoWorkService
+    public class AutuacaoWorkService : IAutuacaoWorkService
     {
         private IAutuacao autuacao;
 
-        public ProcessoWorkService(IAutuacao autuacao)
+        public AutuacaoWorkService(IAutuacao autuacao)
         {
             this.autuacao = autuacao;
         }

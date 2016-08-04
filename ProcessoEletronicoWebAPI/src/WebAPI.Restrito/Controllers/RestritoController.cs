@@ -10,9 +10,9 @@ namespace WebAPI.Restrito.Controllers
     [Route("restrito/[controller]")]
     public class RestritoController : Controller
     {
-        IProcessoWorkService service;
+        IAutuacaoWorkService service;
 
-        public RestritoController(IProcessoWorkService service)
+        public RestritoController(IAutuacaoWorkService service)
         {
             this.service = service;
         }

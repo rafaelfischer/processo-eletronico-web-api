@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Apresentacao.Base
 {
-    public interface IProcessoWorkService
+    public interface IAutuacaoWorkService
     {
         string Autuar();
     }
