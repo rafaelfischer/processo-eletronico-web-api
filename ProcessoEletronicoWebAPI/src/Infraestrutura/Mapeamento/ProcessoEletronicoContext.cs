@@ -7,9 +7,10 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 {
     public partial class ProcessoEletronicoContext : DbContext
     {
-        public ProcessoEletronicoContext(DbContextOptions<ProcessoEletronicoContext> options)
-            : base(options)
-        { }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=10.32.254.137;Database=ProcessoEletronico;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
