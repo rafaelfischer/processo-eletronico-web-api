@@ -1,4 +1,4 @@
-﻿using ProcessoEletronicoService.Negocio.Base;
+﻿using ProcessoEletronicoService.Negocio.Restrito.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using ProcessoEletronicoService.Infraestrutura.Mapeamento;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 
-namespace ProcessoEletronicoService.Negocio
+namespace ProcessoEletronicoService.Negocio.Restrito
 {
     public class Autuacao : IAutuacao
     {

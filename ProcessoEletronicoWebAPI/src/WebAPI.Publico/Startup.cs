@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ProcessoEletronicoService.WebAPI.Publico;
 
 namespace WebAPI.Publico
 {
@@ -29,6 +30,7 @@ namespace WebAPI.Publico
         {
             // Add framework services.
             services.AddMvc();
+            Configuracao.InjetarDependencias(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

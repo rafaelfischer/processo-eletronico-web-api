@@ -1,5 +1,5 @@
 ﻿using ProcessoEletronicoService.Apresentacao.Base;
-using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Restrito.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

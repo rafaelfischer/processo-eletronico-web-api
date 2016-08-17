@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ProcessoEletronicoService.Apresentacao.Publico.Base;
 
 namespace WebAPI.Publico.Controllers
 {
     [Route("publico/[controller]")]
     public class ConsultaController : Controller
     {
-        // GET publico/consulta
-        [HttpGet]
-        public IEnumerable<string> Get()
+        IConsultaProcessoWorkService service;
+
+        public ConsultaController(IConsultaProcessoWorkService service)
         {
-            return new string[] { "Consulta de Processos" };
+            this.service = service;
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(string id)
+        [HttpGet("{numero}")]
+        public string ConsultarProcessoPorNumero(string numero)
         {
-            return id.Trim();
+            return service.ConsultarPorNumero(numero);
         }
 
         // POST api/values

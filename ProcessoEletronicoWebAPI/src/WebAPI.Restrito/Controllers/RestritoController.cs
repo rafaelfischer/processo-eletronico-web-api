@@ -38,7 +38,7 @@ namespace WebAPI.Restrito.Controllers
         }
         
         // POST api/values
-        [HttpPost]
+        [HttpPost ("autuar")]
         public void Post([FromBody]string value)
         {
         }

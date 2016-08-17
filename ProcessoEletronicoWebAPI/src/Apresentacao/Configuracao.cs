@@ -1,5 +1,7 @@
-﻿using ProcessoEletronicoService.Negocio;
-using ProcessoEletronicoService.Negocio.Base;
+﻿using ProcessoEletronicoService.Negocio.Restrito;
+using ProcessoEletronicoService.Negocio.Restrito.Base;
+using ProcessoEletronicoService.Negocio.Publico;
+using ProcessoEletronicoService.Negocio.Publico.Base;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +15,7 @@ namespace ProcessoEletronicoService.Apresentacao
 
             dependencias = Negocio.Configuracao.ObterDependencias();
             dependencias.Add(typeof(IAutuacao), typeof(Autuacao));
+            dependencias.Add(typeof(IConsultaProcesso), typeof(ConsultaProcesso));
 
             return dependencias;
         }
