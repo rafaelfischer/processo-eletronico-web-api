@@ -4,9 +4,9 @@ using ProcessoEletronicoService.Apresentacao.Processo;
 using ProcessoEletronicoService.Apresentacao.Base;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ProcessoEletronicoService.WebAPI.Restrito
+namespace ProcessoEletronicoService.WebAPI.Restrito.Configuracao
 {
-    public static class Configuracao
+    public static class InjecaoDependencias
     {
         public static Dictionary<Type, Type> ObterDependencias()
         {

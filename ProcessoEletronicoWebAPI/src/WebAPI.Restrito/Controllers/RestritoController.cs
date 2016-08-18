@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
+using System.Collections.Generic;
 
-namespace WebAPI.Restrito.Controllers
+namespace ProcessoEletronicoService.WebAPI.Restrito.Controllers
 {
     [Route("[controller]")]
     public class RestritoController : Controller
@@ -19,6 +17,7 @@ namespace WebAPI.Restrito.Controllers
 
         // GET api/values
         [HttpGet]
+        [Authorize]
         public IEnumerable<string> Get()
         {
             return new string[] { "já era" };

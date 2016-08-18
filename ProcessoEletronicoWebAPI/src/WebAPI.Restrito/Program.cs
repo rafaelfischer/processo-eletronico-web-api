@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 
-namespace WebAPI.Restrito
+namespace ProcessoEletronicoService.WebAPI.Restrito
 {
     public class Program
     {
@@ -14,6 +14,7 @@ namespace WebAPI.Restrito
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseUrls("http://localhost:3308")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
