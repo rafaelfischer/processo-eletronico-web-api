@@ -22,6 +22,7 @@ namespace WebAPI.Publico.Controllers
         [HttpGet("{numero}")]
         public string ConsultarProcessoPorNumero(string numero)
         {
+
             return service.ConsultarPorNumero(numero);
         }
 

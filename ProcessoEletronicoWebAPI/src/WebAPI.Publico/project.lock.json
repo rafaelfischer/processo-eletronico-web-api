@@ -3,6 +3,24 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
+      "Elasticsearch.Net/5.0.0-alpha3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1",
+          "NETStandard.Library": "1.6.0",
+          "System.Collections.Specialized": "4.0.1",
+          "System.ComponentModel.TypeConverter": "4.1.0",
+          "System.Dynamic.Runtime": "4.0.11",
+          "System.Reflection.TypeExtensions": "4.1.0",
+          "System.Runtime.Serialization.Primitives": "4.1.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/Elasticsearch.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Elasticsearch.Net.dll": {}
+        }
+      },
       "Libuv/1.9.0": {
         "type": "package",
         "dependencies": {
@@ -1479,6 +1497,23 @@
           }
         }
       },
+      "NEST/5.0.0-alpha3": {
+        "type": "package",
+        "dependencies": {
+          "Elasticsearch.Net": "5.0.0-alpha3",
+          "NETStandard.Library": "1.6.0",
+          "Newtonsoft.Json": "[9.0.0, 10.0.0)",
+          "System.Collections.Specialized": "4.0.1",
+          "System.Linq.Queryable": "4.0.1",
+          "System.Reflection.TypeExtensions": "4.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Nest.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Nest.dll": {}
+        }
+      },
       "NETStandard.Library/1.6.0": {
         "type": "package",
         "dependencies": {
@@ -1784,7 +1819,7 @@
           "System.Threading": "4.0.11"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Collections.Specialized.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Collections.Specialized.dll": {}
@@ -3698,6 +3733,7 @@
         "dependencies": {
           "Dominio": "1.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
+          "NEST": "5.0.0-alpha3",
           "NETStandard.Library": "1.6.0"
         },
         "compile": {
@@ -3725,6 +3761,26 @@
     }
   },
   "libraries": {
+    "Elasticsearch.Net/5.0.0-alpha3": {
+      "sha512": "aRtHwFx6TDZ/ABxj01suLWcKzBb27vX2i5pDHeXwLk55nPR2qXWnVEBibYA0Z2wcDZkSRvUt3FMPfCau3Ro+kA==",
+      "type": "package",
+      "path": "Elasticsearch.Net/5.0.0-alpha3",
+      "files": [
+        "Elasticsearch.Net.5.0.0-alpha3.nupkg.sha512",
+        "Elasticsearch.Net.nuspec",
+        "lib/net45/Elasticsearch.Net.XML",
+        "lib/net45/Elasticsearch.Net.dll",
+        "lib/net45/Elasticsearch.Net.pdb",
+        "lib/net45/Elasticsearch.Net.pdb.srcsrv",
+        "lib/net46/Elasticsearch.Net.XML",
+        "lib/net46/Elasticsearch.Net.dll",
+        "lib/net46/Elasticsearch.Net.pdb",
+        "lib/net46/Elasticsearch.Net.pdb.srcsrv",
+        "lib/netstandard1.3/Elasticsearch.Net.dll",
+        "lib/netstandard1.3/Elasticsearch.Net.pdb",
+        "lib/netstandard1.3/Elasticsearch.Net.pdb.srcsrv"
+      ]
+    },
     "Libuv/1.9.0": {
       "sha512": "9Q7AaqtQhS8JDSIvRBt6ODSLWDBI4c8YxNxyCQemWebBFUtBbc6M5Vi5Gz1ZyIUlTW3rZK9bIr5gnVyv0z7a2Q==",
       "type": "package",
@@ -4945,6 +5001,26 @@
         "runtimes/win/lib/net46/Microsoft.Win32.Registry.dll",
         "runtimes/win/lib/netcore50/_._",
         "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll"
+      ]
+    },
+    "NEST/5.0.0-alpha3": {
+      "sha512": "W4vDRGAwpXZWwvxRfviwrUaPpUSDKEdwjFVbERqUvoYoaMiX7Ca35uU6b/5MgdQCixxgIt8kL5ttuJ0or9TVtw==",
+      "type": "package",
+      "path": "NEST/5.0.0-alpha3",
+      "files": [
+        "NEST.5.0.0-alpha3.nupkg.sha512",
+        "NEST.nuspec",
+        "lib/net45/Nest.XML",
+        "lib/net45/Nest.dll",
+        "lib/net45/Nest.pdb",
+        "lib/net45/Nest.pdb.srcsrv",
+        "lib/net46/Nest.XML",
+        "lib/net46/Nest.dll",
+        "lib/net46/Nest.pdb",
+        "lib/net46/Nest.pdb.srcsrv",
+        "lib/netstandard1.3/Nest.dll",
+        "lib/netstandard1.3/Nest.pdb",
+        "lib/netstandard1.3/Nest.pdb.srcsrv"
       ]
     },
     "NETStandard.Library/1.6.0": {

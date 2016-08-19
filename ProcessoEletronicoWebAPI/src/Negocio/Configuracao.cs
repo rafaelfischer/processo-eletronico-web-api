@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Infraestrutura.Repositorios;
+using ProcessoEletronicoService.Infraestrutura.Repositorios.Base;
+using ProcessoEletronicoService.Infraestrutura.Repositorios.Consulta;
+
 
 
 namespace ProcessoEletronicoService.Negocio
@@ -14,7 +17,8 @@ namespace ProcessoEletronicoService.Negocio
 
             //Incluir dependência do repositorio
             dependencias.Add(typeof(IProcessoEletronicoRepositorios), typeof(ProcessoEletronicoRepositorios));
-                                    
+            dependencias.Add(typeof(IConsultaProcessoRepositorio), typeof(ConsultaProcessoRepositorio));
+
             return dependencias;
         }
     }
