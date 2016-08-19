@@ -14,7 +14,7 @@ namespace ProcessoEletronicoService.Negocio
 
             //Incluir dependência do repositorio
             dependencias.Add(typeof(IProcessoEletronicoRepositorios), typeof(ProcessoEletronicoRepositorios));
-                                    
+
             return dependencias;
         }
     }

@@ -15,10 +15,13 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             UnitOfWork = new EFUnitOfWork(new ProcessoEletronicoContext());
 
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
+            TiposDocumentais = UnitOfWork.MakeGenericRepository<TipoDocumental>();
         }
 
         public IUnitOfWork UnitOfWork { get; private set; }
+
         public IRepositorioGenerico<Processo> Processos { get; private set; }
+        public IRepositorioGenerico<TipoDocumental> TiposDocumentais { get; private set; }
 
         public void Dispose()
         {

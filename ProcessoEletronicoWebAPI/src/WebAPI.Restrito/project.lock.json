@@ -3,6 +3,23 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
+      "AutoMapper/5.1.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1",
+          "NETStandard.Library": "1.6.0",
+          "System.Collections.Specialized": "4.0.1",
+          "System.ComponentModel.TypeConverter": "4.1.0",
+          "System.Dynamic.Runtime": "4.0.11",
+          "System.Linq.Queryable": "4.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/AutoMapper.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/AutoMapper.dll": {}
+        }
+      },
       "IdentityModel/2.0.0-beta4": {
         "type": "package",
         "dependencies": {
@@ -3867,6 +3884,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
+          "AutoMapper": "5.1.1",
           "Dominio": "1.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
           "NETStandard.Library": "1.6.0"
@@ -3896,6 +3914,23 @@
     }
   },
   "libraries": {
+    "AutoMapper/5.1.1": {
+      "sha512": "Q3uFSWccBUE1Q9BW88C6RO2Y/iFkPztTKK1ciyx1jhWPdOi5+pvzZ2EwcJKPiV0cr2EXZUWqQOsSpA5jVjfQBg==",
+      "type": "package",
+      "path": "AutoMapper/5.1.1",
+      "files": [
+        "AutoMapper.5.1.1.nupkg.sha512",
+        "AutoMapper.nuspec",
+        "lib/net45/AutoMapper.dll",
+        "lib/net45/AutoMapper.xml",
+        "lib/netstandard1.1/AutoMapper.dll",
+        "lib/netstandard1.1/AutoMapper.xml",
+        "lib/netstandard1.3/AutoMapper.dll",
+        "lib/netstandard1.3/AutoMapper.xml",
+        "lib/portable-net45+win8+wpa81/AutoMapper.dll",
+        "lib/portable-net45+win8+wpa81/AutoMapper.xml"
+      ]
+    },
     "IdentityModel/2.0.0-beta4": {
       "sha512": "ow5+EDJKg5S3F6ClizOkc5ql4ouZOWDn4gse+2+51M/eZEwraLCRxdVAtPBFqV8y4+gCNmElCM9Il6wkKVpvfg==",
       "type": "package",
