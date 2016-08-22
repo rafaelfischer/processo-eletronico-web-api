@@ -9,8 +9,9 @@ namespace ProcessoEletronicoService.Dominio.Base
     public interface IProcessoEletronicoRepositorios : IDisposable
     {
         IUnitOfWork UnitOfWork { get; }
-        IRepositorioGenerico<Processo> Processos { get; }
 
+        IRepositorioGenerico<Processo> Processos { get; }
         IRepositorioGenerico<TipoDocumental> TiposDocumentais { get; }
+        IRepositorioGenerico<Sinalizacao> Sinalizacoes { get; }
     }
 }

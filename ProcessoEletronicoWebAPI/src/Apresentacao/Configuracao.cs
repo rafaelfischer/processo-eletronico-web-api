@@ -17,6 +17,7 @@ namespace ProcessoEletronicoService.Apresentacao
             dependencias.Add(typeof(IAutuacao), typeof(Autuacao));
             dependencias.Add(typeof(IConsultaProcesso), typeof(ConsultaProcesso));
             dependencias.Add(typeof(ITipoDocumentalNegocio), typeof(TipoDocumentalNegocio));
+            dependencias.Add(typeof(ISinalizacaoNegocio), typeof(SinalizacaoNegocio));
 
             return dependencias;
         }
