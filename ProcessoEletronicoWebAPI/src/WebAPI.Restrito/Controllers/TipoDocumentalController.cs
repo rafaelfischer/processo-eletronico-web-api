@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace ProcessoEletronicoService.WebAPI.Restrito.Controllers
 {
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class TipoDocumentalController : Controller
     {
         ITipoDocumentalWorkService service;
