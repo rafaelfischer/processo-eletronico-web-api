@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using ProcessoEletronicoService.Apresentacao.Processo;
 using ProcessoEletronicoService.Apresentacao.Base;
 using Microsoft.Extensions.DependencyInjection;
+using ProcessoEletronicoService.Apresentacao.Restrito.Base;
+using ProcessoEletronicoService.Apresentacao.Restrito;
 
 namespace ProcessoEletronicoService.WebAPI.Restrito.Configuracao
 {
@@ -14,6 +16,7 @@ namespace ProcessoEletronicoService.WebAPI.Restrito.Configuracao
 
             dependencias = Apresentacao.Configuracao.ObterDependencias();
             dependencias.Add(typeof(IAutuacaoWorkService), typeof(AutuacaoWorkService));
+            dependencias.Add(typeof(ITipoDocumentalWorkService), typeof(TipoDocumentalWorkService));
 
             return dependencias;
         }
