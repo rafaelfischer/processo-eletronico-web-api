@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ProcessoEletronicoService.Negocio.Modelos;
 
 namespace ProcessoEletronicoService.Negocio.Publico.Base
 {
     public interface IConsultaProcesso
     {
-        string ConsultarPorNumero(string numeroProcesso);
+        ProcessoNegocio ConsultarPorNumero(string numeroProcesso);
     }
 }

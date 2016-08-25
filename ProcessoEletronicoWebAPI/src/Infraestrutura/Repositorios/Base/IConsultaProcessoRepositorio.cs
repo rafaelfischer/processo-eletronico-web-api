@@ -1,15 +1,11 @@
-﻿using System;
+﻿using Nest;
+using ProcessoEletronicoService.Infraestrutura.Repositorios.Modelos;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ProcessoEletronicoService.Infraestrutura.Repositorios.Base
 {
     public interface IConsultaProcessoRepositorio
     {
-        string ConsultarProcessoPorNumero(string numeroProcesso);
-
-
+        List<IHit<ProcessoRepositorio>> ConsultarProcessoPorNumero(string numeroProcesso);
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProcessoEletronicoService.Apresentacao.Publico.Base;
+using ProcessoEletronicoService.Apresentacao.Publico.Modelos;
 
 namespace WebAPI.Publico.Controllers
 {
@@ -22,8 +23,9 @@ namespace WebAPI.Publico.Controllers
         [HttpGet("{numero}")]
         public string ConsultarProcessoPorNumero(string numero)
         {
-
+           
             return service.ConsultarPorNumero(numero);
+            
         }
 
         // POST api/values

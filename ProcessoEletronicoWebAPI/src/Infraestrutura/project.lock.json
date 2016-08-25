@@ -3,7 +3,24 @@
   "version": 2,
   "targets": {
     ".NETStandard,Version=v1.6": {
-      "Elasticsearch.Net/5.0.0-alpha3": {
+      "AutoMapper/5.1.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1",
+          "NETStandard.Library": "1.6.0",
+          "System.Collections.Specialized": "4.0.1",
+          "System.ComponentModel.TypeConverter": "4.1.0",
+          "System.Dynamic.Runtime": "4.0.11",
+          "System.Linq.Queryable": "4.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/AutoMapper.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/AutoMapper.dll": {}
+        }
+      },
+      "Elasticsearch.Net/2.4.3": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
@@ -265,10 +282,10 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "NEST/5.0.0-alpha3": {
+      "NEST/2.4.3": {
         "type": "package",
         "dependencies": {
-          "Elasticsearch.Net": "5.0.0-alpha3",
+          "Elasticsearch.Net": "2.4.3",
           "NETStandard.Library": "1.6.0",
           "Newtonsoft.Json": "[9.0.0, 10.0.0)",
           "System.Collections.Specialized": "4.0.1",
@@ -1959,12 +1976,29 @@
     }
   },
   "libraries": {
-    "Elasticsearch.Net/5.0.0-alpha3": {
-      "sha512": "aRtHwFx6TDZ/ABxj01suLWcKzBb27vX2i5pDHeXwLk55nPR2qXWnVEBibYA0Z2wcDZkSRvUt3FMPfCau3Ro+kA==",
+    "AutoMapper/5.1.1": {
+      "sha512": "Q3uFSWccBUE1Q9BW88C6RO2Y/iFkPztTKK1ciyx1jhWPdOi5+pvzZ2EwcJKPiV0cr2EXZUWqQOsSpA5jVjfQBg==",
       "type": "package",
-      "path": "Elasticsearch.Net/5.0.0-alpha3",
+      "path": "AutoMapper/5.1.1",
       "files": [
-        "Elasticsearch.Net.5.0.0-alpha3.nupkg.sha512",
+        "AutoMapper.5.1.1.nupkg.sha512",
+        "AutoMapper.nuspec",
+        "lib/net45/AutoMapper.dll",
+        "lib/net45/AutoMapper.xml",
+        "lib/netstandard1.1/AutoMapper.dll",
+        "lib/netstandard1.1/AutoMapper.xml",
+        "lib/netstandard1.3/AutoMapper.dll",
+        "lib/netstandard1.3/AutoMapper.xml",
+        "lib/portable-net45+win8+wpa81/AutoMapper.dll",
+        "lib/portable-net45+win8+wpa81/AutoMapper.xml"
+      ]
+    },
+    "Elasticsearch.Net/2.4.3": {
+      "sha512": "i04HzmU6uIoMWa26G+KtHLaM64YQuq862K2ih5cUWiZobZC2Hm6gQ+NHkWVEhwBQytpgNxZBREYruqvdHBj9aw==",
+      "type": "package",
+      "path": "Elasticsearch.Net/2.4.3",
+      "files": [
+        "Elasticsearch.Net.2.4.3.nupkg.sha512",
         "Elasticsearch.Net.nuspec",
         "lib/net45/Elasticsearch.Net.XML",
         "lib/net45/Elasticsearch.Net.dll",
@@ -2227,12 +2261,12 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "NEST/5.0.0-alpha3": {
-      "sha512": "W4vDRGAwpXZWwvxRfviwrUaPpUSDKEdwjFVbERqUvoYoaMiX7Ca35uU6b/5MgdQCixxgIt8kL5ttuJ0or9TVtw==",
+    "NEST/2.4.3": {
+      "sha512": "BTYm/drFSqN7CDdboMKPsWJ6pyU2crg/jzjLtsS53YfdZBduIMEoQUvw3gsP1qGnrJ9LY86UKsiD3Zndb5FCNA==",
       "type": "package",
-      "path": "NEST/5.0.0-alpha3",
+      "path": "NEST/2.4.3",
       "files": [
-        "NEST.5.0.0-alpha3.nupkg.sha512",
+        "NEST.2.4.3.nupkg.sha512",
         "NEST.nuspec",
         "lib/net45/Nest.XML",
         "lib/net45/Nest.dll",
@@ -6219,9 +6253,10 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "AutoMapper >= 5.1.1",
       "Dominio >= 1.0.0-*",
       "Microsoft.EntityFrameworkCore.SqlServer >= 1.0.0",
-      "NEST >= 5.0.0-alpha3",
+      "NEST >= 2.4.3",
       "NETStandard.Library >= 1.6.0"
     ],
     ".NETStandard,Version=v1.6": []

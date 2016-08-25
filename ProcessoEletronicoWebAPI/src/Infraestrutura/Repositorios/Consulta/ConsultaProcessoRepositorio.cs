@@ -1,19 +1,23 @@
-﻿using System;
-using Nest;
-using Elasticsearch.Net;
+﻿using Nest;
 using ProcessoEletronicoService.Infraestrutura.Repositorios.Base;
-using ProcessoEletronicoService.Infraestrutura.Repositorios;
-using Newtonsoft.Json;
-
+using ProcessoEletronicoService.Infraestrutura.Repositorios.Modelos;
+using System;
+using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Infraestrutura.Repositorios.Consulta
 {
     public class ConsultaProcessoRepositorio : IConsultaProcessoRepositorio
     {
-        public string ConsultarProcessoPorNumero(string numeroProcesso)
+        public List<IHit<ProcessoRepositorio>> ConsultarProcessoPorNumero(string numeroProcesso)
         {
-            return "Consultar Processo Por Numero - Elastic Search";
+            ProcessoRepositorio processo = new ProcessoRepositorio();
+            ElasticClient client = new ElasticClient();
+            client = ConfiguracaoElasticSearch.abrirConexao(ConfiguracaoElasticSearch.urlElastic);
+
+            var resultado = client.Search<ProcessoRepositorio>(s => s.Query(q => q.Term(p => p.numero, numeroProcesso)));
             
+            return resultado.HitsMetaData.Hits;
+
         }
     }
 }
