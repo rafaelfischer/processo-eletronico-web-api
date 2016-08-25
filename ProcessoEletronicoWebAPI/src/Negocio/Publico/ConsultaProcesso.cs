@@ -5,7 +5,6 @@ using Nest;
 using ProcessoEletronicoService.Infraestrutura.Repositorios.Modelos;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using AutoMapper;
 
 namespace ProcessoEletronicoService.Negocio.Publico
 {
