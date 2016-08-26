@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProcessoEletronicoService.Apresentacao.Publico.Base;
 using ProcessoEletronicoService.Apresentacao.Publico.Modelos;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using System;
 
 namespace WebAPI.Publico.Controllers
 {
@@ -21,11 +19,28 @@ namespace WebAPI.Publico.Controllers
 
         // GET api/values/5
         [HttpGet("{numero}")]
-        public string ConsultarProcessoPorNumero(string numero)
+        public IActionResult ConsultarProcessoPorNumero(string numero)
         {
-           
-            return service.ConsultarPorNumero(numero);
-            
+
+            try
+            {
+                ProcessoApresentacao processo = service.ConsultarPorNumero(numero);
+                return new ObjectResult(processo);
+            }
+            catch (ProcessoNaoEncontradoException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (NumeroProcessoInvalidoException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+
         }
 
         // POST api/values

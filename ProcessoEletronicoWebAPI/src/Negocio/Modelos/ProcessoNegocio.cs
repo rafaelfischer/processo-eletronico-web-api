@@ -11,16 +11,8 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         {
             assunto = new Assunto();
             orgaoAutuacao = new Orgao();
-            vazio = false;
         }
-
-        public ProcessoNegocio(bool vazio)
-        {
-            assunto = new Assunto();
-            orgaoAutuacao = new Orgao();
-            this.vazio = true;
-        }
-
+        
         public ProcessoNegocio(string numero, string digito, string resumo, int assuntoId, string assuntoDescricao, DateTime dataAutuacao, int orgaoID, string orgaoSigla)
         {
             this.assunto = new Assunto();
@@ -35,8 +27,6 @@ namespace ProcessoEletronicoService.Negocio.Modelos
             orgaoAutuacao.id = orgaoID;
             orgaoAutuacao.sigla = orgaoSigla;
 
-
-            this.vazio = false;
         }
 
         public string numero { get; set; }
@@ -45,7 +35,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public Assunto assunto { get; set; }
         public DateTime dataAutuacao { get; set; }
         public Orgao orgaoAutuacao { get; set; }
-        public bool vazio { get; set; }
+
     }
 
     public class Assunto

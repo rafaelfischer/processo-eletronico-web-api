@@ -1,16 +1,16 @@
 ﻿using ProcessoEletronicoService.Negocio.Publico.Base;
 using ProcessoEletronicoService.Infraestrutura.Repositorios.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
-using Nest;
 using ProcessoEletronicoService.Infraestrutura.Repositorios.Modelos;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Publico.Validacao;
 
 namespace ProcessoEletronicoService.Negocio.Publico
 {
     public class ConsultaProcesso : IConsultaProcesso
     {
         private IConsultaProcessoRepositorio repositorioProcesso;
+        private const string msgErroProcessoNaoEncontrado = "Não há processo cadastrado com esse número.";
 
         public ConsultaProcesso(IConsultaProcessoRepositorio repositorioProcesso)
         {
@@ -19,46 +19,22 @@ namespace ProcessoEletronicoService.Negocio.Publico
 
         public ProcessoNegocio ConsultarPorNumero(string numeroProcesso)
         {
-            if (ProcessoValidacoes.ValidarNumeroProcesso(numeroProcesso))
+
+            ProcessoValidacoes.ValidarNumeroProcesso(numeroProcesso);
+
+            ProcessoRepositorio processo = new ProcessoRepositorio();
+            processo = repositorioProcesso.ConsultarProcessoPorNumero(numeroProcesso);
+
+            if (processo == null)
             {
-                ProcessoRepositorio processoRepositorio = new ProcessoRepositorio();
-
-                List<IHit<ProcessoRepositorio>> hitsProcessoRepositorio = new List<IHit<ProcessoRepositorio>>();
-                hitsProcessoRepositorio = repositorioProcesso.ConsultarProcessoPorNumero(numeroProcesso);
-
-                if (hitsProcessoRepositorio.Count == 0)
-                {
-                    //Retorna um processo vazio caso a lista de resultados seja vazia
-                    return new ProcessoNegocio(true);
-
-                }
-                else if (hitsProcessoRepositorio.Count > 1)
-                {
-                    //Caso retorne mais de um processo, retorna nulo
-                    return null;
-                }
-                else
-                {
-                    processoRepositorio = hitsProcessoRepositorio[0].Source;
-                    return new ProcessoNegocio(processoRepositorio.numero,
-                                                processoRepositorio.digito,
-                                                processoRepositorio.resumo, 
-                                                processoRepositorio.assunto.id, 
-                                                processoRepositorio.assunto.descricao, 
-                                                processoRepositorio.dataAutuacao, 
-                                                processoRepositorio.orgaoAutuacao.id, 
-                                                processoRepositorio.orgaoAutuacao.sigla);
-                }
+                throw new ProcessoNaoEncontradoException(msgErroProcessoNaoEncontrado);
 
             }
             else
             {
-               
-                //Requisição é inválida
-                return null;
+                return new ProcessoNegocio(processo.numero, processo.digito, processo.resumo, processo.assunto.id, processo.assunto.descricao, 
+                                            processo.dataAutuacao, processo.orgaoAutuacao.id, processo.orgaoAutuacao.sigla);
             }
-
-          
         }
     }
 }

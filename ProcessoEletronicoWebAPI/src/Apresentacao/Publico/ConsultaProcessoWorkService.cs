@@ -1,6 +1,7 @@
 ﻿using ProcessoEletronicoService.Apresentacao.Publico.Base;
 using ProcessoEletronicoService.Negocio.Publico.Base;
-using Newtonsoft.Json;
+using ProcessoEletronicoService.Apresentacao.Publico.Modelos;
+using ProcessoEletronicoService.Negocio.Modelos;
 
 namespace ProcessoEletronicoService.Apresentacao.Publico
 {
@@ -14,9 +15,12 @@ namespace ProcessoEletronicoService.Apresentacao.Publico
             this.consultaProcesso = consultaProcesso;
         }
 
-        public string ConsultarPorNumero(string numeroProcesso)
+        public ProcessoApresentacao ConsultarPorNumero(string numeroProcesso)
         {
-            return  JsonConvert.SerializeObject(consultaProcesso.ConsultarPorNumero(numeroProcesso));
+            ProcessoNegocio processo = new ProcessoNegocio();
+            processo = consultaProcesso.ConsultarPorNumero(numeroProcesso);
+
+            return new ProcessoApresentacao(processo.numero, processo.digito, processo.resumo, processo.assunto.descricao, processo.dataAutuacao, processo.orgaoAutuacao.sigla);
         
         }
     }

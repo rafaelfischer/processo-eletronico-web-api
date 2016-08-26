@@ -6,6 +6,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios.Base
 {
     public interface IConsultaProcessoRepositorio
     {
-        List<IHit<ProcessoRepositorio>> ConsultarProcessoPorNumero(string numeroProcesso);
+        ProcessoRepositorio ConsultarProcessoPorNumero(string numeroProcesso);
     }
 }
