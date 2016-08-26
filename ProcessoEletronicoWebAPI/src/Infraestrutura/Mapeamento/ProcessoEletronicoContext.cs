@@ -77,6 +77,30 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("fk_processo_orgao");
             });
+
+            modelBuilder.Entity<TipoDocumental>(entity =>
+            {
+                entity.ToTable("TipoDocumental");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasColumnName("descricao")
+                    .HasColumnType("varchar(100)");
+            });
+
+            modelBuilder.Entity<Sinalizacao>(entity =>
+            {
+                entity.ToTable("Sinalizacao");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasColumnName("descricao")
+                    .HasColumnType("varchar(100)");
+            });
         }
 
         public virtual DbSet<Assunto> Assunto { get; set; }

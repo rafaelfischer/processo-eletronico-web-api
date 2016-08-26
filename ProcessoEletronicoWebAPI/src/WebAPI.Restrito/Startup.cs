@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ProcessoEletronicoService.WebAPI.Restrito;
+using Microsoft.Extensions.Options;
+using ProcessoEletronicoService.WebAPI.Restrito.Configuracao;
+using System.IdentityModel.Tokens.Jwt;
 
-namespace WebAPI.Restrito
+namespace ProcessoEletronicoService.WebAPI.Restrito
 {
     public class Startup
     {
@@ -26,17 +26,34 @@ namespace WebAPI.Restrito
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AutenticacaoIdentityServer>(Configuration.GetSection("AutenticacaoIdentityServer"));
+
             // Add framework services.
-            services.AddMvc();
-            Configuracao.InjetarDependencias(services);
-            
+            services.AddMvcCore()
+                    .AddJsonFormatters()
+                    .AddAuthorization();
+
+            InjecaoDependencias.InjetarDependencias(services);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<AutenticacaoIdentityServer> autenticacaoIdentityServerConfig)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            AutenticacaoIdentityServer autenticacaoIdentityServer = autenticacaoIdentityServerConfig.Value;
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = autenticacaoIdentityServer.Authority,
+                RequireHttpsMetadata = autenticacaoIdentityServer.RequireHttpsMetadata,
+
+                ScopeName = autenticacaoIdentityServer.ScopeName,
+                AutomaticAuthenticate = autenticacaoIdentityServer.AutomaticAuthenticate
+            });
 
             app.UseMvc();
         }
