@@ -1,6 +1,6 @@
 #!/bin/bash
  
-docker rename $DOCKER_IMAGE "$DOCKER_IMAGE-dev"
+docker build -t "$DOCKER_IMAGE-dev" .
 
 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 docker push "$DOCKER_IMAGE-dev"
