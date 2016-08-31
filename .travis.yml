@@ -3,7 +3,7 @@ language: node_js
 services:
   - docker
 env:
-  - DOCKER_IMAGE=prodest/pe-api SERVICE_NAME=processoeletronico-api RANCHER_URL=http://cloud.datacenter.es.gov.br.local/v1/projects/1a10541 RANCHER_STACK=dev RANCHER_COMPOSE_URL=http://cloud.datacenter.es.gov.br.local/v1/projects/1a10541/environments/1e100/composeconfig
+  - DOCKER_IMAGE=prodest/processoeletronico-api
 script: 
   /bin/sh .travis.sh
 deploy:
