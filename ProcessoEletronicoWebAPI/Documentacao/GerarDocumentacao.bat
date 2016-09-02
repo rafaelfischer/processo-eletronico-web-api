@@ -1,0 +1,1 @@
+..\packages\Pickles.CommandLine.2.8.2\tools\pickles.exe --feature-directory=.\Funcionalidades^ --output-directory=..\src\WebAPI.Restrito\Documentacao^ --link-results-file=.\bin\Debug\TestResult.xml --language=pt --include-experimental-features --documentation-format=dhtml 

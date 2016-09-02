@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ProcessoEletronicoService.WebAPI.Restrito.Configuracao;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 
 namespace ProcessoEletronicoService.WebAPI.Restrito
 {
@@ -56,6 +59,12 @@ namespace ProcessoEletronicoService.WebAPI.Restrito
             });
 
             app.UseMvc();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Documentacao")),
+                RequestPath = new PathString("/Documentacao")
+            });
         }
     }
 }
