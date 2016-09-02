@@ -14,6 +14,7 @@ namespace WebAPI.Publico
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseUrls("http://*:3309")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()

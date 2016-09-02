@@ -10,7 +10,7 @@ namespace ProcessoEletronicoService.WebAPI.Restrito
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://localhost:3308")
+                .UseUrls("http://*:3308")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
