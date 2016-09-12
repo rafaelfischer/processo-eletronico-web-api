@@ -4,6 +4,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Repositorios.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Publico.Validacao;
+using AutoMapper;
 
 namespace ProcessoEletronicoService.Negocio.Publico
 {
@@ -32,8 +33,12 @@ namespace ProcessoEletronicoService.Negocio.Publico
             }
             else
             {
-                return new ProcessoNegocio(processo.numero, processo.digito, processo.resumo, processo.assunto.id, processo.assunto.descricao, 
-                                            processo.dataAutuacao, processo.orgaoAutuacao.id, processo.orgaoAutuacao.sigla);
+                ProcessoNegocio processoNegocio = new ProcessoNegocio();
+                
+                processoNegocio = Mapper.Map<ProcessoRepositorio, ProcessoNegocio>(processo);
+
+                return processoNegocio;
+
             }
         }
     }

@@ -1,13 +1,12 @@
 {
   "version": "1.0.0-*",
-
   "dependencies": {
     "Dominio": "1.0.0-*",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
     "NEST": "2.4.3",
-    "NETStandard.Library": "1.6.0"
+    "NETStandard.Library": "1.6.0",
+    "AutoMapper": "5.1.1"
   },
-
   "frameworks": {
     "netstandard1.6": {
       "imports": "dnxcore50"

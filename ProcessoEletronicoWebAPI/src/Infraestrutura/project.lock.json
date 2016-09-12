@@ -3,6 +3,23 @@
   "version": 2,
   "targets": {
     ".NETStandard,Version=v1.6": {
+      "AutoMapper/5.1.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1",
+          "NETStandard.Library": "1.6.0",
+          "System.Collections.Specialized": "4.0.1",
+          "System.ComponentModel.TypeConverter": "4.1.0",
+          "System.Dynamic.Runtime": "4.0.11",
+          "System.Linq.Queryable": "4.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/AutoMapper.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/AutoMapper.dll": {}
+        }
+      },
       "Elasticsearch.Net/2.4.3": {
         "type": "package",
         "dependencies": {
@@ -1959,6 +1976,23 @@
     }
   },
   "libraries": {
+    "AutoMapper/5.1.1": {
+      "sha512": "Q3uFSWccBUE1Q9BW88C6RO2Y/iFkPztTKK1ciyx1jhWPdOi5+pvzZ2EwcJKPiV0cr2EXZUWqQOsSpA5jVjfQBg==",
+      "type": "package",
+      "path": "AutoMapper/5.1.1",
+      "files": [
+        "AutoMapper.5.1.1.nupkg.sha512",
+        "AutoMapper.nuspec",
+        "lib/net45/AutoMapper.dll",
+        "lib/net45/AutoMapper.xml",
+        "lib/netstandard1.1/AutoMapper.dll",
+        "lib/netstandard1.1/AutoMapper.xml",
+        "lib/netstandard1.3/AutoMapper.dll",
+        "lib/netstandard1.3/AutoMapper.xml",
+        "lib/portable-net45+win8+wpa81/AutoMapper.dll",
+        "lib/portable-net45+win8+wpa81/AutoMapper.xml"
+      ]
+    },
     "Elasticsearch.Net/2.4.3": {
       "sha512": "i04HzmU6uIoMWa26G+KtHLaM64YQuq862K2ih5cUWiZobZC2Hm6gQ+NHkWVEhwBQytpgNxZBREYruqvdHBj9aw==",
       "type": "package",
@@ -6219,6 +6253,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "AutoMapper >= 5.1.1",
       "Dominio >= 1.0.0-*",
       "Microsoft.EntityFrameworkCore.SqlServer >= 1.0.0",
       "NEST >= 2.4.3",

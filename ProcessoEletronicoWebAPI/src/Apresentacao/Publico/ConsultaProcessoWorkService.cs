@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Apresentacao.Publico.Base;
+﻿using AutoMapper;
+using ProcessoEletronicoService.Apresentacao.Publico.Base;
 using ProcessoEletronicoService.Negocio.Publico.Base;
 using ProcessoEletronicoService.Apresentacao.Publico.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
@@ -18,10 +19,14 @@ namespace ProcessoEletronicoService.Apresentacao.Publico
         public ProcessoApresentacao ConsultarPorNumero(string numeroProcesso)
         {
             ProcessoNegocio processo = new ProcessoNegocio();
-            processo = consultaProcesso.ConsultarPorNumero(numeroProcesso);
+            ProcessoApresentacao processoApresentacao = new ProcessoApresentacao();
 
-            return new ProcessoApresentacao(processo.numero, processo.digito, processo.resumo, processo.assunto.descricao, processo.dataAutuacao, processo.orgaoAutuacao.sigla);
-        
+            processo = consultaProcesso.ConsultarPorNumero(numeroProcesso);
+            processoApresentacao = Mapper.Map<ProcessoNegocio, ProcessoApresentacao>(processo);
+
+            return processoApresentacao;
+
+
         }
     }
 }
