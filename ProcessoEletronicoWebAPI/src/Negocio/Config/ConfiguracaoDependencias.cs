@@ -7,9 +7,9 @@ using ProcessoEletronicoService.Infraestrutura.Repositorios.Consulta;
 
 
 
-namespace ProcessoEletronicoService.Negocio
+namespace ProcessoEletronicoService.Negocio.Config
 {
-    public static class Configuracao
+    public static class ConfiguracaoDependencias
     {
         public static Dictionary<Type, Type> ObterDependencias()
         {

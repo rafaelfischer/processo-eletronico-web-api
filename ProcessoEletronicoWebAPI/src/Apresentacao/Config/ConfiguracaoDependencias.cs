@@ -5,15 +5,15 @@ using ProcessoEletronicoService.Negocio.Publico.Base;
 using System;
 using System.Collections.Generic;
 
-namespace ProcessoEletronicoService.Apresentacao
+namespace ProcessoEletronicoService.Apresentacao.Config
 {
-    public static class Configuracao
+    public static class ConfiguracaoDepedencias
     {
         public static Dictionary<Type, Type> ObterDependencias()
         {
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
-            dependencias = Negocio.Configuracao.ObterDependencias();
+            dependencias = Negocio.Config.ConfiguracaoDependencias.ObterDependencias();
             dependencias.Add(typeof(IAutuacao), typeof(Autuacao));
             dependencias.Add(typeof(IConsultaProcesso), typeof(ConsultaProcesso));
             dependencias.Add(typeof(ITipoDocumentalNegocio), typeof(TipoDocumentalNegocio));

@@ -3,17 +3,19 @@ using System;
 using System.Collections.Generic;
 using ProcessoEletronicoService.Apresentacao.Publico.Base;
 using ProcessoEletronicoService.Apresentacao.Publico;
+using ProcessoEletronicoService.Apresentacao.Config;
 
 
-namespace ProcessoEletronicoService.WebAPI.Publico
+namespace ProcessoEletronicoService.WebAPI.Publico.Config
 {
-    public static class Configuracao
+    public static class ConfiguracaoDependencias
     {
         public static Dictionary<Type, Type> ObterDependencias()
         {
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
-            dependencias = Apresentacao.Configuracao.ObterDependencias();
+            //Dependecias de Apresentacao
+            dependencias = ConfiguracaoDepedencias.ObterDependencias();
             dependencias.Add(typeof(IConsultaProcessoWorkService), typeof(ConsultaProcessoWorkService));
 
             return dependencias;
