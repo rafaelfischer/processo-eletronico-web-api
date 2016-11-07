@@ -5,8 +5,6 @@ using ProcessoEletronicoService.Infraestrutura.Repositorios;
 using ProcessoEletronicoService.Infraestrutura.Repositorios.Base;
 using ProcessoEletronicoService.Infraestrutura.Repositorios.Consulta;
 
-
-
 namespace ProcessoEletronicoService.Negocio.Config
 {
     public static class ConfiguracaoDependencias

@@ -13,22 +13,6 @@ namespace ProcessoEletronicoService.Negocio.Modelos
             orgaoAutuacao = new Orgao();
         }
         
-        public ProcessoNegocio(string numero, string digito, string resumo, int assuntoId, string assuntoDescricao, DateTime dataAutuacao, int orgaoID, string orgaoSigla)
-        {
-            this.assunto = new Assunto();
-            this.orgaoAutuacao = new Orgao();
-
-            this.numero = numero;
-            this.digito = digito;
-            this.resumo = resumo;
-            assunto.id = assuntoId;
-            assunto.descricao = assuntoDescricao;
-            this.dataAutuacao = dataAutuacao;
-            orgaoAutuacao.id = orgaoID;
-            orgaoAutuacao.sigla = orgaoSigla;
-
-        }
-
         public string numero { get; set; }
         public string digito { get; set; }
         public string resumo { get; set; }
