@@ -13,7 +13,6 @@ namespace ProcessoEletronicoService.Negocio.Config
         {
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
-            //Incluir dependência do repositorio
             dependencias.Add(typeof(IProcessoEletronicoRepositorios), typeof(ProcessoEletronicoRepositorios));
             dependencias.Add(typeof(IConsultaProcessoRepositorio), typeof(ConsultaProcessoRepositorio));
 
