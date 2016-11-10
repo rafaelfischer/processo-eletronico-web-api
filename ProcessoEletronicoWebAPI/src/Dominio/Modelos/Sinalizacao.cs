@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Dominio.Modelos
 {
-    public class Sinalizacao
+    public partial class Sinalizacao
     {
+        public Sinalizacao()
+        {
+            SinalizacaoProcesso = new HashSet<SinalizacaoProcesso>();
+        }
+
         public int Id { get; set; }
         public string Descricao { get; set; }
+        public string Cor { get; set; }
+        public byte[] Imagem { get; set; }
+
+        public virtual ICollection<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
     }
 }

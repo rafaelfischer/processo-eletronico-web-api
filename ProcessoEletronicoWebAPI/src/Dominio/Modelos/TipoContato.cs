@@ -3,16 +3,17 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Dominio.Modelos
 {
-    public partial class Assunto
+    public partial class TipoContato
     {
-        public Assunto()
+        public TipoContato()
         {
-            Processo = new HashSet<Processo>();
+            Contato = new HashSet<Contato>();
         }
 
         public int Id { get; set; }
         public string Descricao { get; set; }
+        public byte QuantidadeDigitos { get; set; }
 
-        public virtual ICollection<Processo> Processo { get; set; }
+        public virtual ICollection<Contato> Contato { get; set; }
     }
 }
