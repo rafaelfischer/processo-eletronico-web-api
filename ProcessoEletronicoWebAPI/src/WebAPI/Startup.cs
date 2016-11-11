@@ -33,7 +33,14 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            //Configurar o objeto AutenticacaoIdentityServer para ser usado na autenticação
+            services.Configure<AutenticacaoIdentityServer>(Configuration.GetSection("AutenticacaoIdentityServer"));
+
+            services.AddMvc()
+                    .AddJsonOptions(opt =>
+                    {
+                        opt.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                    });
 
             InjecaoDependencias.InjetarDependencias(services);
             ConfiguracaoAutoMapper.CriarMapeamento();
@@ -45,7 +52,7 @@ namespace WebAPI
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            /*
+            #region Configurações de autenticação
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             AutenticacaoIdentityServer autenticacaoIdentityServer = autenticacaoIdentityServerConfig.Value;
@@ -57,7 +64,7 @@ namespace WebAPI
                 ScopeName = autenticacaoIdentityServer.ScopeName,
                 AutomaticAuthenticate = autenticacaoIdentityServer.AutomaticAuthenticate
             });
-            */
+            #endregion
 
             app.UseMvc();
 
