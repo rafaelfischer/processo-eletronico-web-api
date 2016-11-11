@@ -28,14 +28,24 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
         public ApresentacaoMapeamentoProfile()
         {
+            #region Mapeamento de Assunto
             CreateMap<AssuntoRepositorio, Assunto>()
                   .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id))
                    .ForMember(dest => dest.descricao, opt => opt.MapFrom(src => src.descricao));
+            #endregion
 
+            #region Mapeamento de Orgao
             CreateMap<OrgaoRepositorio, Orgao>()
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id))
                     .ForMember(dest => dest.sigla, opt => opt.MapFrom(src => src.sigla));
+            #endregion
 
+            #region Mapeamento de plano de classificação
+            CreateMap<PlanoClassificacaoModeloNegocio, PlanoClassificacaoModelo>()
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao));
+            #endregion
+
+            #region Mapeamento de Processo
             CreateMap<ProcessoRepositorio, ProcessoNegocio>()
                     .ForMember(dest => dest.numero, opt => opt.MapFrom(src => src.numero))
                     .ForMember(dest => dest.digito, opt => opt.MapFrom(src => src.digito))
@@ -43,6 +53,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                     .ForMember(dest => dest.dataAutuacao, opt => opt.MapFrom(src => src.dataAutuacao))
                     .ForMember(dest => dest.assunto, opt => opt.MapFrom(s => Mapper.Map<AssuntoRepositorio, Assunto>(s.assunto)))
                     .ForMember(dest => dest.orgaoAutuacao, opt => opt.MapFrom(s => Mapper.Map<OrgaoRepositorio, Orgao>(s.orgaoAutuacao)));
+            #endregion
         }
 
     }

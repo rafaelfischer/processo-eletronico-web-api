@@ -473,7 +473,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("observacao")
                     .HasColumnType("varchar(500)");
 
-                entity.HasOne(d => d.IdOrganizacaoProcessoNavigation)
+                entity.HasOne(d => d.OrganizacaoProcesso)
                     .WithMany(p => p.PlanoClassificacao)
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)

@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProcessoEletronicoService.Dominio.Modelos
+namespace ProcessoEletronicoService.Apresentacao.Modelos
 {
-    public partial class PlanoClassificacao
+    public partial class PlanoClassificacaoModelo
     {
-        public PlanoClassificacao()
-        {
-            Funcao = new HashSet<Funcao>();
-        }
-
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Descricao { get; set; }
@@ -17,8 +12,5 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public bool AreaFim { get; set; }
         public string Observacao { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
-
-        public virtual ICollection<Funcao> Funcao { get; set; }
-        public virtual OrganizacaoProcesso OrganizacaoProcesso { get; set; }
     }
 }

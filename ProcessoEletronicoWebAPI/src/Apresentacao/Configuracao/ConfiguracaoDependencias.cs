@@ -13,6 +13,7 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
             dependencias = Negocio.Config.ConfiguracaoDependencias.ObterDependencias();
+            dependencias.Add(typeof(IPlanoClassificacaoNegocio), typeof(PlanoClassificacaoNegocio));
             dependencias.Add(typeof(IProcessoNegocio), typeof(ProcessoNegocio));
             dependencias.Add(typeof(ITipoDocumentalNegocio), typeof(TipoDocumentalNegocio));
             dependencias.Add(typeof(ISinalizacaoNegocio), typeof(SinalizacaoNegocio));
