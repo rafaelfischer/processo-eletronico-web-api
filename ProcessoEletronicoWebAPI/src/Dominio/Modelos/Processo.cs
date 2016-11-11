@@ -32,6 +32,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string IdUsuarioAutuador { get; set; }
         public string NomeUsuarioAutuador { get; set; }
         public DateTime DataAutuacao { get; set; }
+        public int IdOrganizacaoProcesso { get; set; }
 
         public virtual ICollection<Anexo> Anexo { get; set; }
         public virtual ICollection<InteressadoPessoaFisica> InteressadoPessoaFisica { get; set; }
@@ -39,5 +40,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public virtual ICollection<MunicipioProcesso> MunicipioProcesso { get; set; }
         public virtual ICollection<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
         public virtual Atividade IdAtividadeNavigation { get; set; }
+        public virtual OrganizacaoProcesso IdOrganizacaoProcessoNavigation { get; set; }
     }
 }

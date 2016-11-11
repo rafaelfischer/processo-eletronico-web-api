@@ -7,6 +7,26 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 {
     public partial class ProcessoEletronicoContext : DbContext
     {
+        public virtual DbSet<Anexo> Anexo { get; set; }
+        public virtual DbSet<Atividade> Atividade { get; set; }
+        public virtual DbSet<Contato> Contato { get; set; }
+        public virtual DbSet<DestinacaoFinal> DestinacaoFinal { get; set; }
+        public virtual DbSet<DigitoEsfera> DigitoEsfera { get; set; }
+        public virtual DbSet<DigitoPoder> DigitoPoder { get; set; }
+        public virtual DbSet<Email> Email { get; set; }
+        public virtual DbSet<Funcao> Funcao { get; set; }
+        public virtual DbSet<InteressadoPessoaFisica> InteressadoPessoaFisica { get; set; }
+        public virtual DbSet<InteressadoPessoaJuridica> InteressadoPessoaJuridica { get; set; }
+        public virtual DbSet<MunicipioProcesso> MunicipioProcesso { get; set; }
+        public virtual DbSet<OrganizacaoProcesso> OrganizacaoProcesso { get; set; }
+        public virtual DbSet<PlanoClassificacao> PlanoClassificacao { get; set; }
+        public virtual DbSet<PrazoGuardaSubjetivo> PrazoGuardaSubjetivo { get; set; }
+        public virtual DbSet<Processo> Processo { get; set; }
+        public virtual DbSet<Sinalizacao> Sinalizacao { get; set; }
+        public virtual DbSet<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
+        public virtual DbSet<TipoContato> TipoContato { get; set; }
+        public virtual DbSet<TipoDocumental> TipoDocumental { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=10.32.254.137;Database=ProcessoEletronico;Trusted_Connection=True;");
@@ -137,6 +157,46 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .IsRequired()
                     .HasColumnName("descricao")
                     .HasColumnType("varchar(200)");
+            });
+
+            modelBuilder.Entity<DigitoEsfera>(entity =>
+            {
+                entity.HasIndex(e => e.Descricao)
+                    .HasName("UK_DigitoEsferaDescricao")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Digito)
+                    .HasName("UK_DigitoEsferaDigito")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasColumnName("descricao")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Digito).HasColumnName("digito");
+            });
+
+            modelBuilder.Entity<DigitoPoder>(entity =>
+            {
+                entity.HasIndex(e => e.Descricao)
+                    .HasName("UK_DigitoPoderDescricao")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Digito)
+                    .HasName("UK_DigitoPoderDigito")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasColumnName("descricao")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Digito).HasColumnName("digito");
             });
 
             modelBuilder.Entity<Email>(entity =>
@@ -328,6 +388,63 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasConstraintName("FK_MunicipioProcesso_Processo");
             });
 
+            modelBuilder.Entity<OrganizacaoProcesso>(entity =>
+            {
+                entity.HasIndex(e => e.Cnpj)
+                    .HasName("UK_OrganizacaoProcessoCnpj")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.IdOrganizacao)
+                    .HasName("UK_OrganizacaoProcessoOrganograma")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.RazaoSocial)
+                    .HasName("UK_OrganizacaoProcessoRazaoSocial")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Cnpj)
+                    .IsRequired()
+                    .HasColumnName("cnpj")
+                    .HasColumnType("varchar(14)");
+
+                entity.Property(e => e.IdDigitoEsfera).HasColumnName("idDigitoEsfera");
+
+                entity.Property(e => e.IdDigitoPoder).HasColumnName("idDigitoPoder");
+
+                entity.Property(e => e.IdOrganizacao).HasColumnName("idOrganizacao");
+
+                entity.Property(e => e.NomeFantasia)
+                    .IsRequired()
+                    .HasColumnName("nomeFantasia")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NumeroOrganiacao).HasColumnName("numeroOrganiacao");
+
+                entity.Property(e => e.RazaoSocial)
+                    .IsRequired()
+                    .HasColumnName("razaoSocial")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Sigla)
+                    .IsRequired()
+                    .HasColumnName("sigla")
+                    .HasColumnType("varchar(10)");
+
+                entity.HasOne(d => d.IdDigitoEsferaNavigation)
+                    .WithMany(p => p.OrganizacaoProcesso)
+                    .HasForeignKey(d => d.IdDigitoEsfera)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_OrganizacaoProcesso_DigitoEsfera");
+
+                entity.HasOne(d => d.IdDigitoPoderNavigation)
+                    .WithMany(p => p.OrganizacaoProcesso)
+                    .HasForeignKey(d => d.IdDigitoPoder)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_OrganizacaoProcesso_DigitoPoder");
+            });
+
             modelBuilder.Entity<PlanoClassificacao>(entity =>
             {
                 entity.HasIndex(e => new { e.Codigo, e.IdOrganizacao })
@@ -350,9 +467,17 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdOrganizacao).HasColumnName("idOrganizacao");
 
+                entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
+
                 entity.Property(e => e.Observacao)
                     .HasColumnName("observacao")
                     .HasColumnType("varchar(500)");
+
+                entity.HasOne(d => d.IdOrganizacaoProcessoNavigation)
+                    .WithMany(p => p.PlanoClassificacao)
+                    .HasForeignKey(d => d.IdOrganizacaoProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_PlanoClassificacao_OrganizacaoProcesso");
             });
 
             modelBuilder.Entity<PrazoGuardaSubjetivo>(entity =>
@@ -392,6 +517,8 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                 entity.Property(e => e.DigitoVerificador).HasColumnName("digitoVerificador");
 
                 entity.Property(e => e.IdAtividade).HasColumnName("idAtividade");
+
+                entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
 
                 entity.Property(e => e.IdOrgaoAutuador).HasColumnName("idOrgaoAutuador");
 
@@ -439,6 +566,12 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdAtividade)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Processo_Atividade");
+
+                entity.HasOne(d => d.IdOrganizacaoProcessoNavigation)
+                    .WithMany(p => p.Processo)
+                    .HasForeignKey(d => d.IdOrganizacaoProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Processo_OrganizacaoProcesso");
             });
 
             modelBuilder.Entity<Sinalizacao>(entity =>
@@ -458,9 +591,17 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("descricao")
                     .HasColumnType("varchar(100)");
 
+                entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
+
                 entity.Property(e => e.Imagem)
                     .HasColumnName("imagem")
                     .HasColumnType("image");
+
+                entity.HasOne(d => d.IdOrganizacaoProcessoNavigation)
+                    .WithMany(p => p.Sinalizacao)
+                    .HasForeignKey(d => d.IdOrganizacaoProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Sinalizacao_OrganizacaoProcesso");
             });
 
             modelBuilder.Entity<SinalizacaoProcesso>(entity =>
@@ -559,22 +700,5 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasConstraintName("FK_TipoDocumental_PrazoGuardaSubjetivoIntermediaria");
             });
         }
-
-        public virtual DbSet<Anexo> Anexo { get; set; }
-        public virtual DbSet<Atividade> Atividade { get; set; }
-        public virtual DbSet<Contato> Contato { get; set; }
-        public virtual DbSet<DestinacaoFinal> DestinacaoFinal { get; set; }
-        public virtual DbSet<Email> Email { get; set; }
-        public virtual DbSet<Funcao> Funcao { get; set; }
-        public virtual DbSet<InteressadoPessoaFisica> InteressadoPessoaFisica { get; set; }
-        public virtual DbSet<InteressadoPessoaJuridica> InteressadoPessoaJuridica { get; set; }
-        public virtual DbSet<MunicipioProcesso> MunicipioProcesso { get; set; }
-        public virtual DbSet<PlanoClassificacao> PlanoClassificacao { get; set; }
-        public virtual DbSet<PrazoGuardaSubjetivo> PrazoGuardaSubjetivo { get; set; }
-        public virtual DbSet<Processo> Processo { get; set; }
-        public virtual DbSet<Sinalizacao> Sinalizacao { get; set; }
-        public virtual DbSet<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
-        public virtual DbSet<TipoContato> TipoContato { get; set; }
-        public virtual DbSet<TipoDocumental> TipoDocumental { get; set; }
     }
 }

@@ -14,7 +14,9 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string Descricao { get; set; }
         public string Cor { get; set; }
         public byte[] Imagem { get; set; }
+        public int IdOrganizacaoProcesso { get; set; }
 
         public virtual ICollection<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
+        public virtual OrganizacaoProcesso IdOrganizacaoProcessoNavigation { get; set; }
     }
 }

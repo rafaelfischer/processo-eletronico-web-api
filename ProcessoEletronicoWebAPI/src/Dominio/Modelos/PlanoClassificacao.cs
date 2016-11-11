@@ -16,7 +16,9 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int IdOrganizacao { get; set; }
         public bool AreaFim { get; set; }
         public string Observacao { get; set; }
+        public int IdOrganizacaoProcesso { get; set; }
 
         public virtual ICollection<Funcao> Funcao { get; set; }
+        public virtual OrganizacaoProcesso IdOrganizacaoProcessoNavigation { get; set; }
     }
 }
