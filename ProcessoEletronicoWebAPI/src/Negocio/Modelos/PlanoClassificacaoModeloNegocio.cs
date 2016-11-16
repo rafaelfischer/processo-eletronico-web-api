@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public bool AreaFim { get; set; }
         public string Observacao { get; set; }
 
-        //public virtual List<Funcao> Funcao { get; set; }
-        public virtual OrganizacaoProcessoModeloNegocio OrganizacaoProcesso { get; set; }
+        public List<FuncaoModeloNegocio> Funcao { get; set; }
+        public OrganizacaoProcessoModeloNegocio OrganizacaoProcesso { get; set; }
     }
 }

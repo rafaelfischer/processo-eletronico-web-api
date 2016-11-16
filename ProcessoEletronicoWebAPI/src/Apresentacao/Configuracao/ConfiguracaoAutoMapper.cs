@@ -34,6 +34,12 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                    .ForMember(dest => dest.descricao, opt => opt.MapFrom(src => src.descricao));
             #endregion
 
+            #region Mapeamento de função
+            CreateMap<FuncaoModeloNegocio, FuncaoModelo>()
+                .ForMember(dest => dest.IdPlanoClassificacao, opt => opt.MapFrom(src => src.PlanoClassificacao.Id))
+                .ForMember(dest => dest.IdFuncaoPai, opt => opt.MapFrom(src => src.FuncaoPai != null ? src.FuncaoPai.Id : (int?)null));
+            #endregion
+
             #region Mapeamento de Orgao
             CreateMap<OrgaoRepositorio, Orgao>()
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id))

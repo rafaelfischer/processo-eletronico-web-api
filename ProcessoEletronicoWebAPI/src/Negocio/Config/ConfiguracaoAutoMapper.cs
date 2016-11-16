@@ -24,6 +24,15 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.descricao, opt => opt.MapFrom(src => src.assunto.descricao));
             #endregion
 
+            #region Mapeamento de função
+            CreateMap<Funcao, FuncaoModeloNegocio>()
+                .ForMember(dest => dest.PlanoClassificacao, opt => opt.MapFrom(s => s.PlanoClassificacao))
+                .ForMember(dest => dest.FuncaoPai, opt => opt.MapFrom(s => s.FuncaoPai != null ? Mapper.Map<Funcao, FuncaoModeloNegocio>(s.FuncaoPai) : null))
+                .MaxDepth(1)
+                ;
+
+            #endregion
+
             #region Mapeamento de órgão
             CreateMap<ProcessoRepositorio, Orgao>()
                 .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.orgaoAutuacao.id))

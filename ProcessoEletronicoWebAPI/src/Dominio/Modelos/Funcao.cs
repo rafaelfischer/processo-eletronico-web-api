@@ -18,8 +18,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int? IdFuncaoPai { get; set; }
 
         public virtual ICollection<Atividade> Atividade { get; set; }
-        public virtual Funcao IdFuncaoPaiNavigation { get; set; }
-        public virtual ICollection<Funcao> InverseIdFuncaoPaiNavigation { get; set; }
-        public virtual PlanoClassificacao IdPlanoClassificacaoNavigation { get; set; }
+        public virtual Funcao FuncaoPai { get; set; }
+        public virtual ICollection<Funcao> FuncoesFilhas { get; set; }
+        public virtual PlanoClassificacao PlanoClassificacao { get; set; }
     }
 }

@@ -255,12 +255,12 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("observacao")
                     .HasColumnType("varchar(500)");
 
-                entity.HasOne(d => d.IdFuncaoPaiNavigation)
-                    .WithMany(p => p.InverseIdFuncaoPaiNavigation)
+                entity.HasOne(d => d.FuncaoPai)
+                    .WithMany(p => p.FuncoesFilhas)
                     .HasForeignKey(d => d.IdFuncaoPai)
                     .HasConstraintName("FK_Funcao_FuncaoPai");
 
-                entity.HasOne(d => d.IdPlanoClassificacaoNavigation)
+                entity.HasOne(d => d.PlanoClassificacao)
                     .WithMany(p => p.Funcao)
                     .HasForeignKey(d => d.IdPlanoClassificacao)
                     .OnDelete(DeleteBehavior.Restrict)
