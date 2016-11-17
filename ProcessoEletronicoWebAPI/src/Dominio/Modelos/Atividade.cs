@@ -19,6 +19,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
 
         public virtual ICollection<Processo> Processo { get; set; }
         public virtual ICollection<TipoDocumental> TipoDocumental { get; set; }
-        public virtual Funcao IdFuncaoNavigation { get; set; }
+        public virtual Funcao Funcao { get; set; }
     }
 }

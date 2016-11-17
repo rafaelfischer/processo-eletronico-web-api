@@ -10,6 +10,7 @@ namespace ProcessoEletronicoService.Dominio.Base
     {
         IUnitOfWork UnitOfWork { get; }
 
+        IRepositorioGenerico<Atividade> Atividades { get; }
         IRepositorioGenerico<Funcao> Funcoes { get; }
         IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; }
         IRepositorioGenerico<Processo> Processos { get; }
