@@ -9,22 +9,22 @@ using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("api/organizacoes-processo/{id}/funcoes")]
-    public class FuncoesController : Controller
+    [Route("api/tipos-contato")]
+    public class TiposContatoController : Controller
     {
-        IFuncaoWorkService service;
+        ITipoContatoWorkService service;
 
-        public FuncoesController(IFuncaoWorkService service)
+        public TiposContatoController(ITipoContatoWorkService service)
         {
             this.service = service;
         }
 
         [HttpGet]
-        public IActionResult Get(int id, int idPlanoClassificacao)
+        public IActionResult Listar()
         {
             try
             {
-                return new ObjectResult(service.Pesquisar(id, idPlanoClassificacao));
+                return new ObjectResult(service.Listar());
             }
             catch (Exception e)
             {

@@ -9,7 +9,7 @@ using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("organizacoes-processo/{id}/planos-classificacao")]
+    [Route("api/organizacoes-processo/{id}/planos-classificacao")]
     public class PlanosClassificacaoController : Controller
     {
         IPlanoClassificacaoWorkService service;

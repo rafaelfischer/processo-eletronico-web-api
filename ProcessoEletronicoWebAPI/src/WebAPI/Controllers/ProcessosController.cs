@@ -8,7 +8,7 @@ using ProcessoEletronicoService.Apresentacao.Base;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("api/v1/processos")]
+    [Route("api/processos")]
     public class ProcessosController : Controller
     {
         IProcessoWorkService service;

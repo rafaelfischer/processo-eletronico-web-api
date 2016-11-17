@@ -17,6 +17,7 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias.Add(typeof(IPlanoClassificacaoNegocio), typeof(PlanoClassificacaoNegocio));
             dependencias.Add(typeof(IProcessoNegocio), typeof(ProcessoNegocio));
             dependencias.Add(typeof(ITipoDocumentalNegocio), typeof(TipoDocumentalNegocio));
+            dependencias.Add(typeof(ITipoContatoNegocio), typeof(TipoContatoNegocio));
             dependencias.Add(typeof(ISinalizacaoNegocio), typeof(SinalizacaoNegocio));
 
             return dependencias;

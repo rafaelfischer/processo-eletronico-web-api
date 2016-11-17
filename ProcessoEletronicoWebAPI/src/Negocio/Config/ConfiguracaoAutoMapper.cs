@@ -53,6 +53,12 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.assunto, opt => opt.MapFrom(s => Mapper.Map<ProcessoRepositorio, Assunto>(s)))
                 .ForMember(dest => dest.orgaoAutuacao, opt => opt.MapFrom(s => Mapper.Map<ProcessoRepositorio, Orgao>(s)));
             #endregion
+
+            #region Mapeamento de tipo de contato
+
+            CreateMap<TipoContato, TipoContatoModeloNegocio>();
+
+            #endregion
         }
 
     }

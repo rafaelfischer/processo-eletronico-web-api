@@ -8,25 +8,25 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 {
     public static class ConfiguracaoAutoMapper
     {
-        public static ApresentacaoMapeamentoProfile GetApresentacaoProfile()
+        public static ApresentacaoProfile GetApresentacaoProfile()
         {
-            return new ApresentacaoMapeamentoProfile();
+            return new ApresentacaoProfile();
         }
 
         public static void ExecutaMapeamento()
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.AddProfile<ApresentacaoMapeamentoProfile>();
+                cfg.AddProfile<ApresentacaoProfile>();
                 cfg.AddProfile<NegocioProfile>();
             });
         }
 
     }
-    public class ApresentacaoMapeamentoProfile : Profile
+    public class ApresentacaoProfile : Profile
     {
 
-        public ApresentacaoMapeamentoProfile()
+        public ApresentacaoProfile()
         {
             #region Mapeamento de Assunto
             CreateMap<AssuntoRepositorio, Assunto>()
@@ -59,6 +59,12 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                     .ForMember(dest => dest.dataAutuacao, opt => opt.MapFrom(src => src.dataAutuacao))
                     .ForMember(dest => dest.assunto, opt => opt.MapFrom(s => Mapper.Map<AssuntoRepositorio, Assunto>(s.assunto)))
                     .ForMember(dest => dest.orgaoAutuacao, opt => opt.MapFrom(s => Mapper.Map<OrgaoRepositorio, Orgao>(s.orgaoAutuacao)));
+            #endregion
+
+            #region Mapeamento de Tipo de Contato
+
+            CreateMap<TipoContatoModeloNegocio, TipoContatoModelo>();
+
             #endregion
         }
 

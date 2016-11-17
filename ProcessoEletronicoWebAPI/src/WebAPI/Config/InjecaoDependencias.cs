@@ -17,6 +17,7 @@ namespace ProcessoEletronicoService.WebAPI.Config
             dependencias.Add(typeof(IPlanoClassificacaoWorkService), typeof(PlanoClassificacaoWorkService));
             dependencias.Add(typeof(IProcessoWorkService), typeof(ProcessoWorkService));
             dependencias.Add(typeof(ITipoDocumentalWorkService), typeof(TipoDocumentalWorkService));
+            dependencias.Add(typeof(ITipoContatoWorkService), typeof(TipoContatoWorkService));
             dependencias.Add(typeof(ISinalizacaoWorkService), typeof(SinalizacaoWorkService));
 
             return dependencias;
