@@ -5,90 +5,29 @@ using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Restrito.Validacao;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProcessoEletronicoService.Negocio.Restrito
 {
     public class SinalizacaoNegocio : ISinalizacaoNegocio
     {
         private IUnitOfWork unitOfWork;
-        private IRepositorioGenerico<Sinalizacao> repositorio;
-        private SinalizacaoValidacao validacao;
+        private IRepositorioGenerico<Sinalizacao> repositorioSinalizacoes;
 
         public SinalizacaoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             unitOfWork = repositorios.UnitOfWork;
-            repositorio = repositorios.Sinalizacoes;
-            validacao = new SinalizacaoValidacao(repositorio);
+            repositorioSinalizacoes = repositorios.Sinalizacoes;
         }
 
-        public void Excluir(int id)
+        public List<SinalizacaoModeloNegocio> Pesquisar(int idOrganizacaoPatriarca)
         {
-            validacao.IdExistente(id);
+            var sinalizacoes = repositorioSinalizacoes.Where(s => s.OrganizacaoProcesso.IdOrganizacao == idOrganizacaoPatriarca)
+                                                      .Include(pc => pc.OrganizacaoProcesso)
+                                                      .ToList();
 
-            var sinalizacao = repositorio.Single(td => td.Id == id);
-
-            repositorio.Remove(sinalizacao);
-
-            unitOfWork.Save();
-        }
-
-        public List<SinalizacaoModeloNegocio> Obter()
-        {
-            var sinalizacoes = repositorio.Select(td => new SinalizacaoModeloNegocio { Id = td.Id, Descricao = td.Descricao })
-                                                              .ToList();
-
-            return sinalizacoes;
-        }
-
-        public SinalizacaoModeloNegocio Obter(int id)
-        {
-            var sinalizacao = repositorio.Select(td => new SinalizacaoModeloNegocio { Id = td.Id, Descricao = td.Descricao })
-                                                            .SingleOrDefault(td => td.Id == id);
-
-            return sinalizacao;
-        }
-
-        public SinalizacaoModeloNegocio Incluir(SinalizacaoModeloNegocio sinalizacao)
-        {
-            validacao.SinalizacaoValida(sinalizacao);
-
-            validacao.DescricaoValida(sinalizacao.Descricao);
-
-            validacao.DescricaoExistente(sinalizacao.Descricao);
-
-            Sinalizacao sn = new Sinalizacao();
-
-            sn.Descricao = sinalizacao.Descricao;
-
-            repositorio.Add(sn);
-
-            unitOfWork.Save();
-
-            sinalizacao.Id = sn.Id;
-
-            return sinalizacao;
-        }
-
-        public void Alterar(int id, SinalizacaoModeloNegocio sinalizacao)
-        {
-            validacao.SinalizacaoValida(sinalizacao);
-
-            validacao.IdValido(id);
-            validacao.IdValido(sinalizacao.Id);
-
-            validacao.IdAlteracaoValido(id, sinalizacao);
-
-            validacao.IdExistente(id);
-
-            validacao.DescricaoValida(sinalizacao.Descricao);
-
-            validacao.DescricaoExistente(sinalizacao.Descricao);
-
-            Sinalizacao sn = repositorio.Where(t => t.Id == sinalizacao.Id).Single();
-
-            sn.Descricao = sinalizacao.Descricao;
-
-            unitOfWork.Save();
+            return Mapper.Map<List<Sinalizacao>, List<SinalizacaoModeloNegocio>>(sinalizacoes);
         }
     }
 }

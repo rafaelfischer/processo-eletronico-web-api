@@ -85,6 +85,13 @@ namespace ProcessoEletronicoService.Negocio.Config
             
             #endregion
 
+            #region Mapeamento de sinalização
+            CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()
+                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { IdOrganizacao = src.IdOrganizacaoProcesso }))
+                .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem == null ? null : src.Imagem))
+                ;
+            #endregion
+
         }
 
     }

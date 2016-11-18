@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
+using AutoMapper;
 
 namespace ProcessoEletronicoService.Apresentacao
 {
@@ -18,60 +19,12 @@ namespace ProcessoEletronicoService.Apresentacao
             this.sinalizacaoNegocio = sinalizacaoNegocio;
         }
 
-        public void Excluir(int id)
+        public List<SinalizacaoModelo> Pesquisar(int idOrganizacaoPatriarca)
         {
-            sinalizacaoNegocio.Excluir(id);
-        }
+            List<SinalizacaoModeloNegocio> sinalizacoes = sinalizacaoNegocio.Pesquisar(idOrganizacaoPatriarca);
 
-        public List<SinalizacaoModelo> Obter()
-        {
-            var sinalizacoes = sinalizacaoNegocio.Obter().Select(td => new SinalizacaoModelo { Id = td.Id, Descricao = td.Descricao })
-                                                                                .ToList();
-
-            return sinalizacoes;
-        }
-
-        public SinalizacaoModelo Obter(int id)
-        {
-            var td = sinalizacaoNegocio.Obter(id);
-
-            SinalizacaoModelo sinalizacao = null;
-            if (td != null)
-            {
-                sinalizacao = new SinalizacaoModelo();
-                sinalizacao.Id = td.Id;
-                sinalizacao.Descricao = td.Descricao;
-            }
-
-            return sinalizacao;
-        }
-
-        public SinalizacaoModelo Incluir(SinalizacaoModelo sinalizacao)
-        {
-            //TODO: Colocar AutoMapper
-            SinalizacaoModeloNegocio smn = new SinalizacaoModeloNegocio();
-
-            smn = new SinalizacaoModeloNegocio();
-            smn.Id = sinalizacao.Id;
-            smn.Descricao = sinalizacao.Descricao;
-
-            var td = sinalizacaoNegocio.Incluir(smn);
-
-            sinalizacao.Id = td.Id;
-
-            return sinalizacao;
-        }
-
-        public void Alterar(int id, SinalizacaoModelo sinalizacao)
-        {
-            //TODO: Colocar AutoMapper
-            SinalizacaoModeloNegocio smn = new SinalizacaoModeloNegocio();
-
-            smn = new SinalizacaoModeloNegocio();
-            smn.Id = sinalizacao.Id;
-            smn.Descricao = sinalizacao.Descricao;
-
-            sinalizacaoNegocio.Alterar(id, smn);
+            var s = Mapper.Map<List<SinalizacaoModeloNegocio>, List<SinalizacaoModelo>>(sinalizacoes);
+            return s;
         }
     }
 }
