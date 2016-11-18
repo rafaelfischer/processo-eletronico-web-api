@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("organizacoes-processo/{id}/sinalizacoes")]
+    [Route("api/organizacoes-processo/{id}/sinalizacoes")]
     public class SinalizacaoController : Controller
     {
         ISinalizacaoWorkService service;
