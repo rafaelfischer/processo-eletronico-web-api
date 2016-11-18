@@ -29,6 +29,12 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.Funcao, opt => opt.MapFrom(s => s.Funcao));
             #endregion
 
+            #region Mapeamento de Destinação
+
+            CreateMap<DestinacaoFinal, DestinacaoFinalModeloNegocio>();
+
+            #endregion
+
             #region Mapeamento de função
             CreateMap<Funcao, FuncaoModeloNegocio>()
                 .ForMember(dest => dest.PlanoClassificacao, opt => opt.MapFrom(s => s.PlanoClassificacao))
@@ -62,6 +68,23 @@ namespace ProcessoEletronicoService.Negocio.Config
             CreateMap<TipoContato, TipoContatoModeloNegocio>();
 
             #endregion
+
+            #region Mapeamento de Tipo de Documento
+
+            CreateMap<TipoDocumental, TipoDocumentalModeloNegocio>()
+                .ForMember(dest => dest.PrazoGuardaSubjetivoCorrente, opt => opt.MapFrom(src => src.PrazoGuardaSubjetivoCorrente))
+                .ForMember(dest => dest.PrazoGuardaSubjetivoIntermediaria, opt => opt.MapFrom(src => src.PrazoGuardaSubjetivoIntermediaria))
+                .ForMember(dest => dest.DestinacaoFinal, opt => opt.MapFrom(src => src.DestinacaoFinal))
+                .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade));
+
+            #endregion
+
+            #region Mapeamento de Prazo de Guarda
+
+            CreateMap<PrazoGuardaSubjetivo, PrazoGuardaSubjetivoModeloNegocio>();
+            
+            #endregion
+
         }
 
     }

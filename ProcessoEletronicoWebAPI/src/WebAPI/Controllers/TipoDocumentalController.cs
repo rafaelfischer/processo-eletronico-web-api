@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
+using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("[controller]")]
-    [Authorize]
+    [Route("api/organizacoes-processo/{id}/tipos-documento")]
     public class TipoDocumentalController : Controller
     {
         ITipoDocumentalWorkService service;
@@ -17,39 +18,18 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             this.service = service;
         }
 
-        // GET tipodocumental
         [HttpGet]
-        public IEnumerable<TipoDocumentalModelo> Get()
+        public IActionResult Listar(int id, [FromQuery] int idAtividade)
         {
-            return service.ObterTiposDocumentais();
+            try
+            {
+                return new ObjectResult(service.Listar(id, idAtividade));
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
         }
-
-        // GET tipodocumental/5
-        [HttpGet("{id}")]
-        public TipoDocumentalModelo Get(int id)
-        {
-            return service.ObterTiposDocumentais(id);
-        }
-
-        // POST tipodocumental
-        [HttpPost]
-        public TipoDocumentalModelo Post([FromBody]TipoDocumentalModelo tipoDocumental)
-        {
-            return service.Incluir(tipoDocumental);
-        }
-
-        // PUT tipodocumental/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]TipoDocumentalModelo tipoDocumental)
-        {
-            service.Alterar(id, tipoDocumental);
-        }
-
-        // DELETE tipodocumental/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            service.Excluir(id);
-        }
+                
     }
 }

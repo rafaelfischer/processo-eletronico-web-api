@@ -7,14 +7,14 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public PrazoGuardaSubjetivo()
         {
-            TipoDocumentalIdPrazoGuardaSubjetivoCorrenteNavigation = new HashSet<TipoDocumental>();
-            TipoDocumentalIdPrazoGuardaSubjetivoIntermediariaNavigation = new HashSet<TipoDocumental>();
+            TipoDocumentalIdPrazoGuardaSubjetivoCorrente = new HashSet<TipoDocumental>();
+            TipoDocumentalIdPrazoGuardaSubjetivoIntermediaria = new HashSet<TipoDocumental>();
         }
 
         public int Id { get; set; }
         public string Descricao { get; set; }
 
-        public virtual ICollection<TipoDocumental> TipoDocumentalIdPrazoGuardaSubjetivoCorrenteNavigation { get; set; }
-        public virtual ICollection<TipoDocumental> TipoDocumentalIdPrazoGuardaSubjetivoIntermediariaNavigation { get; set; }
+        public virtual ICollection<TipoDocumental> TipoDocumentalIdPrazoGuardaSubjetivoCorrente { get; set; }
+        public virtual ICollection<TipoDocumental> TipoDocumentalIdPrazoGuardaSubjetivoIntermediaria { get; set; }
     }
 }

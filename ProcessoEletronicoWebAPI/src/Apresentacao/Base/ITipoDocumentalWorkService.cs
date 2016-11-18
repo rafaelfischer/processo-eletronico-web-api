@@ -8,14 +8,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
 {
     public interface ITipoDocumentalWorkService
     {
-        List<TipoDocumentalModelo> ObterTiposDocumentais();
-
-        TipoDocumentalModelo ObterTiposDocumentais(int id);
-
-        TipoDocumentalModelo Incluir(TipoDocumentalModelo tipoDocumental);
-
-        void Alterar(int id, TipoDocumentalModelo tipoDocumental);
-
-        void Excluir(int id);
+        List<TipoDocumentalModelo> Listar(int idOrganizacaoPatriarca, int idAtividade);
     }
 }

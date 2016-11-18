@@ -8,14 +8,7 @@ namespace ProcessoEletronicoService.Negocio.Base
 {
     public interface ITipoDocumentalNegocio
     {
-        List<TipoDocumentalModeloNegocio> ObterTiposDocumentais();
+        List<TipoDocumentalModeloNegocio> Listar(int idOrganizacaoPatriarca, int idAtividade);
 
-        TipoDocumentalModeloNegocio ObterTiposDocumentais(int id);
-
-        TipoDocumentalModeloNegocio Incluir(TipoDocumentalModeloNegocio tipoDocumental);
-
-        void Alterar(int id, TipoDocumentalModeloNegocio tipoDocumental);
-
-        void Excluir(int id);
     }
 }

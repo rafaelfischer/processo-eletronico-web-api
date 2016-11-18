@@ -71,6 +71,15 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<TipoContatoModeloNegocio, TipoContatoModelo>();
 
             #endregion
+
+            #region Mapeamento de Tipo Documental
+
+            CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalModelo>().
+                ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id));
+
+            #endregion
+
+
         }
 
     }

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProcessoEletronicoService.Apresentacao.Modelos
+namespace ProcessoEletronicoService.Negocio.Modelos
 {
-    public class TipoDocumentalModelo
+    public class DestinacaoFinalModeloNegocio
     {
         public int Id { get; set; }
-        public string Codigo { get; set; }
         public string Descricao { get; set; }
-        public int IdAtividade { get; set; }
     }
 }

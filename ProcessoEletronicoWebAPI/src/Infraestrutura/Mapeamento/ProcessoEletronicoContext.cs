@@ -677,25 +677,25 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.PrazoGuardaAnosIntermediaria).HasColumnName("prazoGuardaAnosIntermediaria");
 
-                entity.HasOne(d => d.IdAtividadeNavigation)
+                entity.HasOne(d => d.Atividade)
                     .WithMany(p => p.TipoDocumental)
                     .HasForeignKey(d => d.IdAtividade)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_TipoDocumental_Atividade");
 
-                entity.HasOne(d => d.IdDestinacaoFinalNavigation)
+                entity.HasOne(d => d.DestinacaoFinal)
                     .WithMany(p => p.TipoDocumental)
                     .HasForeignKey(d => d.IdDestinacaoFinal)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_TipoDocumental_DestinacaoFinal");
 
-                entity.HasOne(d => d.IdPrazoGuardaSubjetivoCorrenteNavigation)
-                    .WithMany(p => p.TipoDocumentalIdPrazoGuardaSubjetivoCorrenteNavigation)
+                entity.HasOne(d => d.PrazoGuardaSubjetivoCorrente)
+                    .WithMany(p => p.TipoDocumentalIdPrazoGuardaSubjetivoCorrente)
                     .HasForeignKey(d => d.IdPrazoGuardaSubjetivoCorrente)
                     .HasConstraintName("FK_TipoDocumental_PrazoGuardaSubjetivoCorrente");
 
-                entity.HasOne(d => d.IdPrazoGuardaSubjetivoIntermediariaNavigation)
-                    .WithMany(p => p.TipoDocumentalIdPrazoGuardaSubjetivoIntermediariaNavigation)
+                entity.HasOne(d => d.PrazoGuardaSubjetivoIntermediaria)
+                    .WithMany(p => p.TipoDocumentalIdPrazoGuardaSubjetivoIntermediaria)
                     .HasForeignKey(d => d.IdPrazoGuardaSubjetivoIntermediaria)
                     .HasConstraintName("FK_TipoDocumental_PrazoGuardaSubjetivoIntermediaria");
             });

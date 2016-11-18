@@ -23,9 +23,9 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public bool Obrigatorio { get; set; }
 
         public virtual ICollection<Anexo> Anexo { get; set; }
-        public virtual Atividade IdAtividadeNavigation { get; set; }
-        public virtual DestinacaoFinal IdDestinacaoFinalNavigation { get; set; }
-        public virtual PrazoGuardaSubjetivo IdPrazoGuardaSubjetivoCorrenteNavigation { get; set; }
-        public virtual PrazoGuardaSubjetivo IdPrazoGuardaSubjetivoIntermediariaNavigation { get; set; }
+        public virtual Atividade Atividade { get; set; }
+        public virtual DestinacaoFinal DestinacaoFinal { get; set; }
+        public virtual PrazoGuardaSubjetivo PrazoGuardaSubjetivoCorrente { get; set; }
+        public virtual PrazoGuardaSubjetivo PrazoGuardaSubjetivoIntermediaria { get; set; }
     }
 }

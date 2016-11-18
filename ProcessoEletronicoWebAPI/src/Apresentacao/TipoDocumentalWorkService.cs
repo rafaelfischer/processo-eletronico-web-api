@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Apresentacao.Base;
+﻿using AutoMapper;
+using ProcessoEletronicoService.Apresentacao.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,61 +18,14 @@ namespace ProcessoEletronicoService.Apresentacao
         {
             this.tipoDocumentalNegocio = tipoDocumentalNegocio;
         }
-
-        public void Excluir(int id)
+        public List<TipoDocumentalModelo> Listar(int idOrganizacaoPatriarca, int idAtividade)
         {
-            tipoDocumentalNegocio.Excluir(id);
-        }
 
-        public List<TipoDocumentalModelo> ObterTiposDocumentais()
-        {
-            var tiposDocumentais = tipoDocumentalNegocio.ObterTiposDocumentais().Select(td => new TipoDocumentalModelo { Id = td.Id, Descricao = td.Descricao })
-                                                                                .ToList();
+            List<TipoDocumentalModeloNegocio> tiposDocumentais = tipoDocumentalNegocio.Listar(idOrganizacaoPatriarca, idAtividade);
 
-            return tiposDocumentais;
-        }
+            return Mapper.Map<List<TipoDocumentalModelo>>(tiposDocumentais);
 
-        public TipoDocumentalModelo ObterTiposDocumentais(int id)
-        {
-            var td = tipoDocumentalNegocio.ObterTiposDocumentais(id);
 
-            TipoDocumentalModelo tipoDocumental = null;
-            if (td != null)
-            {
-                tipoDocumental = new TipoDocumentalModelo();
-                tipoDocumental.Id = td.Id;
-                tipoDocumental.Descricao = td.Descricao;
-            }
-
-            return tipoDocumental;
-        }
-
-        public TipoDocumentalModelo Incluir(TipoDocumentalModelo tipoDocumental)
-        {
-            //TODO: Colocar AutoMapper
-            TipoDocumentalModeloNegocio tdm = new TipoDocumentalModeloNegocio();
-
-            tdm = new TipoDocumentalModeloNegocio();
-            tdm.Id = tipoDocumental.Id;
-            tdm.Descricao = tipoDocumental.Descricao;
-
-            var td = tipoDocumentalNegocio.Incluir(tdm);
-
-            tipoDocumental.Id = td.Id;
-
-            return tipoDocumental;
-        }
-
-        public void Alterar(int id, TipoDocumentalModelo tipoDocumental)
-        {
-            //TODO: Colocar AutoMapper
-            TipoDocumentalModeloNegocio tdm = new TipoDocumentalModeloNegocio();
-
-            tdm = new TipoDocumentalModeloNegocio();
-            tdm.Id = tipoDocumental.Id;
-            tdm.Descricao = tipoDocumental.Descricao;
-
-            tipoDocumentalNegocio.Alterar(id, tdm);
         }
     }
 }
