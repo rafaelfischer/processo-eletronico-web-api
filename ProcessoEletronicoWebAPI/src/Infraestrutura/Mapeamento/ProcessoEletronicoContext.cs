@@ -584,7 +584,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.Cor)
                     .HasColumnName("cor")
-                    .HasColumnType("varchar(7)");
+                    .HasColumnType("varchar(6)");
 
                 entity.Property(e => e.Descricao)
                     .IsRequired()
@@ -597,7 +597,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("imagem")
                     .HasColumnType("image");
 
-                entity.HasOne(d => d.IdOrganizacaoProcessoNavigation)
+                entity.HasOne(d => d.OrganizacaoProcesso)
                     .WithMany(p => p.Sinalizacao)
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)

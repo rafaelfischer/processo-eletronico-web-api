@@ -17,6 +17,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.AllowNullCollections = true;
                 cfg.AddProfile<ApresentacaoMapeamentoProfile>();
                 cfg.AddProfile<NegocioProfile>();
             });
@@ -65,6 +66,12 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                     .ForMember(dest => dest.assunto, opt => opt.MapFrom(s => Mapper.Map<AssuntoRepositorio, Assunto>(s.assunto)))
                     .ForMember(dest => dest.orgaoAutuacao, opt => opt.MapFrom(s => Mapper.Map<OrgaoRepositorio, Orgao>(s.orgaoAutuacao)));
             #endregion
+
+            #region Mapeamento de sinalização
+            CreateMap<SinalizacaoModeloNegocio, SinalizacaoModelo>()
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao));
+            #endregion
+
         }
 
     }

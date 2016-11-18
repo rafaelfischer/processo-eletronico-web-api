@@ -56,6 +56,14 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.assunto, opt => opt.MapFrom(s => Mapper.Map<ProcessoRepositorio, Assunto>(s)))
                 .ForMember(dest => dest.orgaoAutuacao, opt => opt.MapFrom(s => Mapper.Map<ProcessoRepositorio, Orgao>(s)));
             #endregion
+
+            #region Mapeamento de sinalização
+            CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()
+                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { IdOrganizacao = src.IdOrganizacaoProcesso }))
+                .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem == null ? null : src.Imagem))
+                ;
+            #endregion
+
         }
 
     }

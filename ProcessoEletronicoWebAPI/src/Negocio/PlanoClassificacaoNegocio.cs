@@ -16,13 +16,11 @@ namespace ProcessoEletronicoService.Negocio
     {
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<PlanoClassificacao> repositorioPlanosClassificacao;
-        private PlanoClassificacaoValidacao validacao;
 
         public PlanoClassificacaoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             unitOfWork = repositorios.UnitOfWork;
             repositorioPlanosClassificacao = repositorios.PlanosClassificacao;
-            //validacao = new TipoDocumentalValidacao(repositorioPlanosClassificacao);
         }
 
         public List<PlanoClassificacaoModeloNegocio> Pesquisar(int idOrganizacaoPatriarca, int idOrganizacao)
