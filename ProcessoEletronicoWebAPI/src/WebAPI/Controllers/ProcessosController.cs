@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using ProcessoEletronicoService.Apresentacao.Base;
+using ProcessoEletronicoService.Apresentacao.Modelos;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
@@ -12,14 +13,14 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     public class ProcessosController : Controller
     {
         IProcessoWorkService service;
-
+        
         public ProcessosController (IProcessoWorkService service)
         {
             this.service = service;
         }
 
         #region GET
-        //GET api/v1/processos
+        //GET api/processos
         [HttpGet]
         public IActionResult Listar()
         {
@@ -46,10 +47,17 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
 
         #region POST
 
-        // POST api/v1/processos
+        // POST api/processos
+
+        /// <summary>
+        /// Autuação de Processos
+        /// </summary>
+        /// <remarks>O Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica)</remarks>
+        /// <param name="processoPost"></param>
+        /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult Autuar([FromBody]string value)
+        public IActionResult Autuar([FromBody]ProcessoModeloPost processoPost)
         {
             return new ObjectResult("Autuar Processo");
         }

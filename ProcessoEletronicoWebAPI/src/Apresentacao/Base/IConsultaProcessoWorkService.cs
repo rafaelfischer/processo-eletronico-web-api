@@ -4,6 +4,6 @@ namespace ProcessoEletronicoService.Apresentacao.Publico.Base
 {
     public interface IConsultaProcessoWorkService
     {
-        ProcessoModelo ConsultarPorNumero(string numeroProcesso);
+        //ProcessoModelo ConsultarPorNumero(string numeroProcesso);
     }
 }
