@@ -9,7 +9,7 @@ using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("organizacoes-processo/{id}/atividades")]
+    [Route("api/organizacoes-processo/{id}/atividades")]
     public class AtividadesController : Controller
     {
         IAtividadeWorkService service;

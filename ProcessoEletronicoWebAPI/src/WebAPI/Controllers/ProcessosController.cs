@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using ProcessoEletronicoService.Apresentacao.Base;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("api/processos")]
+    [Route("api/organizacoes-processo/{id}/processos")]
     public class ProcessosController : Controller
     {
         IProcessoWorkService service;
@@ -28,8 +30,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         
 
         // GET api/v1/processos/{id}
-        [HttpGet("{id}")]
-        public IActionResult Pesquisar(int id)
+        [HttpGet("{idProcesso}")]
+        public IActionResult Pesquisar(int idProcesso)
         {
             return new ObjectResult("Pesquisar por ID");
             
@@ -42,6 +44,28 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             return new ObjectResult("Pesquisar por número");
         }
 
+        /// <summary>
+        /// Retorna a lista de processos que estão tramintando na unidade especificada.
+        /// </summary>
+        /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
+        /// <param name="idUnidade">Identificador da unidade onde os processos estão tramintando.</param>
+        /// <returns>Lista de processos que estão tramintando na unidade especificada.</returns>
+        /// <response code="201">Retorna a lista de processos que estão tramintando na unidade especificada.</response>
+        /// <response code="500">Se acontecer algum erro inesperado.</response>
+        [HttpGet("unidade/{idUnidade}")]
+        [ProducesResponseType(typeof(List<string>), 201)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult Pesquisar(int id, int idUnidade)
+        {
+            try
+            {
+                return new ObjectResult(service.Pesquisar(id, idUnidade));
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
         #endregion
 
         #region POST
@@ -53,7 +77,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         {
             return new ObjectResult("Autuar Processo");
         }
-        [HttpPost("{id}/despacho")]
+        [HttpPost("{idProcesso}/despacho")]
         public IActionResult Despachar(int id, [FromBody]string value)
         {
             return new ObjectResult("Despachar Processo " + id.ToString());
@@ -64,7 +88,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         #region PATCH
 
         // PATCH api/v1/processos/{id}
-        [HttpPatch("{id}")]
+        [HttpPatch("{idProcesso}")]
         //[Authorize]
         public IActionResult Alterar(int id, [FromBody]string value)
         {
@@ -76,7 +100,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         #region DELETE
 
         // DELETE api/v1/processos/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{idProcesso}")]
         //[Authorize]
         public IActionResult Excluir(int id)
         {

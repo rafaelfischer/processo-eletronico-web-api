@@ -13,6 +13,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         void Autuar();
         void Despachar();
         void Excluir();
-        
+        object Pesquisar(int id, int idUnidade);
     }
 }

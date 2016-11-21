@@ -37,5 +37,10 @@ namespace ProcessoEletronicoService.Apresentacao
         {
             throw new NotImplementedException();
         }
+
+        public object Pesquisar(int id, int idUnidade)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
