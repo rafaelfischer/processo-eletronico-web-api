@@ -52,9 +52,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <param name="idUnidade">Identificador da unidade onde os processos estão tramintando.</param>
         /// <returns>Lista de processos que estão tramintando na unidade especificada.</returns>
         /// <response code="201">Retorna a lista de processos que estão tramintando na unidade especificada.</response>
-        /// <response code="500">Se acontecer algum erro inesperado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("unidade/{idUnidade}")]
-        [ProducesResponseType(typeof(List<string>), 201)]
+        [ProducesResponseType(typeof(List<ProcessoModeloPost>), 201)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id, int idUnidade)
         {

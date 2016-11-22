@@ -432,13 +432,13 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("sigla")
                     .HasColumnType("varchar(10)");
 
-                entity.HasOne(d => d.IdDigitoEsferaNavigation)
+                entity.HasOne(d => d.DigitoEsfera)
                     .WithMany(p => p.OrganizacaoProcesso)
                     .HasForeignKey(d => d.IdDigitoEsfera)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_OrganizacaoProcesso_DigitoEsfera");
 
-                entity.HasOne(d => d.IdDigitoPoderNavigation)
+                entity.HasOne(d => d.DigitoPoder)
                     .WithMany(p => p.OrganizacaoProcesso)
                     .HasForeignKey(d => d.IdDigitoPoder)
                     .OnDelete(DeleteBehavior.Restrict)
@@ -561,13 +561,13 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("siglaUnidadeAutuadora")
                     .HasColumnType("varchar(10)");
 
-                entity.HasOne(d => d.IdAtividadeNavigation)
+                entity.HasOne(d => d.Atividade)
                     .WithMany(p => p.Processo)
                     .HasForeignKey(d => d.IdAtividade)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Processo_Atividade");
 
-                entity.HasOne(d => d.IdOrganizacaoProcessoNavigation)
+                entity.HasOne(d => d.OrganizacaoProcesso)
                     .WithMany(p => p.Processo)
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)

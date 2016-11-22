@@ -17,8 +17,8 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
-            this.unitOfWork = repositorios.UnitOfWork;
-            this.repositorioProcessos = repositorios.Processos;
+            unitOfWork = repositorios.UnitOfWork;
+            repositorioProcessos = repositorios.Processos;
         }
 
         public void Listar()
@@ -33,6 +33,15 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         public void Pesquisar(string numeroProcesso)
         {
+            throw new NotImplementedException();
+        }
+
+        public void Pesquisar(int idOrganizacaoProcesso, int idUnidade)
+        {
+            //var processos = repositorioProcessos.Where(p => p.OrganizacaoProcesso.IdOrganizacao == idOrganizacaoProcesso
+            //                                             && p.)
+
+
             throw new NotImplementedException();
         }
 

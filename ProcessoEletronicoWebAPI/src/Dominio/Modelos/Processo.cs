@@ -39,7 +39,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public virtual ICollection<InteressadoPessoaJuridica> InteressadoPessoaJuridica { get; set; }
         public virtual ICollection<MunicipioProcesso> MunicipioProcesso { get; set; }
         public virtual ICollection<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
-        public virtual Atividade IdAtividadeNavigation { get; set; }
-        public virtual OrganizacaoProcesso IdOrganizacaoProcessoNavigation { get; set; }
+        public virtual Atividade Atividade { get; set; }
+        public virtual OrganizacaoProcesso OrganizacaoProcesso { get; set; }
     }
 }
