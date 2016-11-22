@@ -7,6 +7,8 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 {
     public partial class ProcessoEletronicoContext : DbContext
     {
+        public static string ConnectionString { get; set; }
+
         public virtual DbSet<Anexo> Anexo { get; set; }
         public virtual DbSet<Atividade> Atividade { get; set; }
         public virtual DbSet<Contato> Contato { get; set; }
@@ -29,7 +31,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=10.32.254.137;Database=ProcessoEletronico;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
