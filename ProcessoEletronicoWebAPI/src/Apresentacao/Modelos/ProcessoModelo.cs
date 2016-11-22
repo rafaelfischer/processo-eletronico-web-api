@@ -16,7 +16,8 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<InteressadoPessoaJuridicaModelo> InteressadosPessoaJuridica { get; set; }
         [Required]
         public List<MunicipioProcessoModelo> Municipios { get; set; }
-        [Required]
+        public List<AnexoModelo> Anexos { get; set; }
+        public List<int> IdSinalizacoes { get; set; }
         public int IdOrgaoAutuador { get; set; }
         [Required]
         public string OrgaoAutuador { get; set; }

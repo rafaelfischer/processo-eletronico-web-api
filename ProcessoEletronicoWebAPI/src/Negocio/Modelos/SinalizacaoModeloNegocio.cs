@@ -11,8 +11,6 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string Descricao { get; set; }
         public string Cor { get; set; }
         public byte[] Imagem { get; set; }
-
-        //public ICollection<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
         public OrganizacaoProcessoModeloNegocio OrganizacaoProcesso { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int IdOrganizacaoProcesso { get; set; }
 
         public virtual ICollection<Anexo> Anexo { get; set; }
+        public virtual ICollection<Despacho> Despacho { get; set; }
         public virtual ICollection<InteressadoPessoaFisica> InteressadoPessoaFisica { get; set; }
         public virtual ICollection<InteressadoPessoaJuridica> InteressadoPessoaJuridica { get; set; }
         public virtual ICollection<MunicipioProcesso> MunicipioProcesso { get; set; }

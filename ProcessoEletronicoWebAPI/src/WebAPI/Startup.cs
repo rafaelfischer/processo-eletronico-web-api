@@ -15,6 +15,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Swashbuckle.Swagger.Model;
 using Microsoft.Extensions.PlatformAbstractions;
+using ProcessoEletronicoService.Infraestrutura.Mapeamento;
 
 namespace WebAPI
 {
@@ -28,6 +29,8 @@ namespace WebAPI
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            ProcessoEletronicoContext.ConnectionString = Environment.GetEnvironmentVariable("ProcessoEletronicoConnectionString");
         }
 
         public IConfigurationRoot Configuration { get; }

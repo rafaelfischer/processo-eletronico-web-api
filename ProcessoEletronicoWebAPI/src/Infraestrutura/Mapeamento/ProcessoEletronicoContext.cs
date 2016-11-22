@@ -7,9 +7,12 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 {
     public partial class ProcessoEletronicoContext : DbContext
     {
+        public static string ConnectionString { get; set; }
+
         public virtual DbSet<Anexo> Anexo { get; set; }
         public virtual DbSet<Atividade> Atividade { get; set; }
         public virtual DbSet<Contato> Contato { get; set; }
+        public virtual DbSet<Despacho> Despacho { get; set; }
         public virtual DbSet<DestinacaoFinal> DestinacaoFinal { get; set; }
         public virtual DbSet<DigitoEsfera> DigitoEsfera { get; set; }
         public virtual DbSet<DigitoPoder> DigitoPoder { get; set; }
@@ -29,7 +32,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=10.32.254.137;Database=ProcessoEletronico;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,6 +49,8 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .IsRequired()
                     .HasColumnName("conteudo");
 
+                entity.Property(e => e.IdDespacho).HasColumnName("idDespacho");
+
                 entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
 
                 entity.Property(e => e.IdTipoDocumental).HasColumnName("idTipoDocumental");
@@ -60,13 +65,18 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("tipo")
                     .HasColumnType("varchar(50)");
 
-                entity.HasOne(d => d.IdProcessoNavigation)
+                entity.HasOne(d => d.Despacho)
+                    .WithMany(p => p.Anexo)
+                    .HasForeignKey(d => d.IdDespacho)
+                    .HasConstraintName("FK_Anexo_Despacho");
+
+                entity.HasOne(d => d.Processo)
                     .WithMany(p => p.Anexo)
                     .HasForeignKey(d => d.IdProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Anexo_Processo");
 
-                entity.HasOne(d => d.IdTipoDocumentalNavigation)
+                entity.HasOne(d => d.TipoDocumental)
                     .WithMany(p => p.Anexo)
                     .HasForeignKey(d => d.IdTipoDocumental)
                     .HasConstraintName("FK_Anexo_TipoDocumental");
@@ -143,6 +153,62 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdTipoContato)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Contato_TipoContato");
+            });
+
+            modelBuilder.Entity<Despacho>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.DataHoraDespacho)
+                    .HasColumnName("dataHoraDespacho")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.IdOrgaoDestino).HasColumnName("idOrgaoDestino");
+
+                entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
+
+                entity.Property(e => e.IdUnidadeDestino).HasColumnName("idUnidadeDestino");
+
+                entity.Property(e => e.IdUsuarioDespachante)
+                    .IsRequired()
+                    .HasColumnName("idUsuarioDespachante")
+                    .HasColumnType("varchar(50)");
+
+                entity.Property(e => e.NomeOrgaoDestino)
+                    .IsRequired()
+                    .HasColumnName("nomeOrgaoDestino")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NomeUnidadeDestino)
+                    .IsRequired()
+                    .HasColumnName("nomeUnidadeDestino")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NomeUsuarioDespachante)
+                    .IsRequired()
+                    .HasColumnName("nomeUsuarioDespachante")
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.SiglaOrgaoDestino)
+                    .IsRequired()
+                    .HasColumnName("siglaOrgaoDestino")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.SiglaUnidadeDestino)
+                    .IsRequired()
+                    .HasColumnName("siglaUnidadeDestino")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.Texto)
+                    .IsRequired()
+                    .HasColumnName("texto")
+                    .HasColumnType("varchar(max)");
+
+                entity.HasOne(d => d.Processo)
+                    .WithMany(p => p.Despacho)
+                    .HasForeignKey(d => d.IdProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Despacho_Processo");
             });
 
             modelBuilder.Entity<DestinacaoFinal>(entity =>

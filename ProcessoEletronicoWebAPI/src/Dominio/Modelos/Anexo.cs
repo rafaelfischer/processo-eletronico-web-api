@@ -11,8 +11,10 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string Tipo { get; set; }
         public int IdProcesso { get; set; }
         public int? IdTipoDocumental { get; set; }
+        public int? IdDespacho { get; set; }
 
-        public virtual Processo IdProcessoNavigation { get; set; }
-        public virtual TipoDocumental IdTipoDocumentalNavigation { get; set; }
+        public virtual Despacho Despacho { get; set; }
+        public virtual Processo Processo { get; set; }
+        public virtual TipoDocumental TipoDocumental { get; set; }
     }
 }

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Apresentacao.Modelos
 {
-    public class MunicipioProcessoModelo
+    public class AnexoModelo
     {
         [Required]
-        public string Uf { get; set; }
-        [Required]
         public string Nome { get; set; }
-
+        [Required]
+        public byte[] Conteudo { get; set; }
+        [Required]
+        public string Tipo { get; set; }
     }
 }

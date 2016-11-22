@@ -76,14 +76,15 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <summary>
         /// Autuação de Processos
         /// </summary>
-        /// <remarks>O Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica)</remarks>
+        /// <remarks>Apesar das listas de interessados estarem sinalizadas como opcionais, o Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica)</remarks>
         /// <param name="processoPost"></param>
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult Autuar([FromBody]ProcessoModeloPost processoPost)
+        public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost)
         {
-            return new ObjectResult("Autuar Processo");
+            return Created("URL Processo","Objeto JSON");
+            
         }
         [HttpPost("{idProcesso}/despacho")]
         public IActionResult Despachar(int id, [FromBody]string value)
