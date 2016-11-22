@@ -30,7 +30,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         [Required]
         public string SiglaUnidadeAutuadora { get; set; }
         [Required]
-        public int IdUsuarioAutuador { get; set; }
+        public string IdUsuarioAutuador { get; set; }
         [Required]
         public string UsuarioAutuador { get; set; }
     }

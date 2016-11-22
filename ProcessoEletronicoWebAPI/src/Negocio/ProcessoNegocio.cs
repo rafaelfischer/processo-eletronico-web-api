@@ -7,6 +7,7 @@ using ProcessoEletronicoService.Infraestrutura.Repositorios;
 using ProcessoEletronicoService.Infraestrutura.Mapeamento;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Negocio.Modelos;
 
 namespace ProcessoEletronicoService.Negocio.Restrito
 {
@@ -14,6 +15,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
     {
         IUnitOfWork unitOfWork;
         IRepositorioGenerico<Processo> repositorioProcessos;
+        
 
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
@@ -36,9 +38,9 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             throw new NotImplementedException();
         }
 
-        public void Autuar()
+        public void Autuar(ProcessoModeloNegocio processoNegocio)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(processoNegocio.Resumo + " " + processoNegocio.InteressadosPessoaFisica[0].Cpf);
         }
 
         public void Despachar()

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ProcessoEletronicoService.Apresentacao.Modelos;
 
 namespace ProcessoEletronicoService.Apresentacao.Base
 {
@@ -10,7 +7,7 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         void Listar();
         void Pesquisar(int id);
         void Pesquisar(string numeroProcesso);
-        void Autuar();
+        void Autuar(ProcessoModeloPost processoPost);
         void Despachar();
         void Excluir();
         

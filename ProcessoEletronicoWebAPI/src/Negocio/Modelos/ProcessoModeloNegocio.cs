@@ -28,7 +28,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public int IdUnidadeAutuadora { get; set; }
         public string UnidadeAutuadora { get; set; }
         public string SiglaUnidadeAutuadora { get; set; }
-        public int IdUsuarioAutuador { get; set; }
+        public string IdUsuarioAutuador { get; set; }
         public string UsuarioAutuador { get; set; }
         public DateTime DataAutuacao { get; set; }
     }
