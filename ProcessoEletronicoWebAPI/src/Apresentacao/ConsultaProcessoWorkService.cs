@@ -17,10 +17,12 @@ namespace ProcessoEletronicoService.Apresentacao.Publico
             this.processoNegocio = processoNegocio;
         }
 
+        /*
         public ProcessoModelo ConsultarPorNumero(string numeroProcesso)
         {
             throw new NotImplementedException();
         }
+        */
 
         /*
         public ProcessoApresentacao ConsultarPorNumero(string numeroProcesso)
