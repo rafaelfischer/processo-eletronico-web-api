@@ -59,7 +59,18 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         //[Authorize]
         public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost)
         {
-            return Created("URL Processo","Objeto JSON");
+            try
+            {
+                service.Autuar(processoPost);
+                return Created("http://.../api/processos/1", processoPost);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+                
+            }
+
+            //return Created("URL Processo","Objeto JSON");
             
         }
         [HttpPost("{id}/despacho")]
