@@ -47,6 +47,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #endregion
 
             #region Mapeamento de Processo
+            CreateMap<ProcessoModeloNegocio, ProcessoModelo>()
+                .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
+                .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao));
             #endregion
 
             #region Mapeamento de Tipo de Contato

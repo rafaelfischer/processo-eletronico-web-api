@@ -54,7 +54,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="201">Retorna a lista de processos que estão tramintando na unidade especificada.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("unidade/{idUnidade}")]
-        [ProducesResponseType(typeof(List<ProcessoModeloPost>), 201)]
+        [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id, int idUnidade)
         {

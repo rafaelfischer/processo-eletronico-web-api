@@ -1,4 +1,8 @@
-﻿using ProcessoEletronicoService.Apresentacao.Base;
+﻿using AutoMapper;
+using ProcessoEletronicoService.Apresentacao.Base;
+using ProcessoEletronicoService.Apresentacao.Modelos;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +12,13 @@ namespace ProcessoEletronicoService.Apresentacao
 {
     public class ProcessoWorkService : IProcessoWorkService
     {
+        private IProcessoNegocio processoNegocio;
+
+        public ProcessoWorkService(IProcessoNegocio processoNegocio)
+        {
+            this.processoNegocio = processoNegocio;
+        }
+
         public void Autuar()
         {
             throw new NotImplementedException();
@@ -38,9 +49,13 @@ namespace ProcessoEletronicoService.Apresentacao
             throw new NotImplementedException();
         }
 
-        public object Pesquisar(int id, int idUnidade)
+        public List<ProcessoModelo> Pesquisar(int idOrganizacaoProcesso, int idUnidade)
         {
-            throw new NotImplementedException();
+            var processos = processoNegocio.Pesquisar(idOrganizacaoProcesso, idUnidade);
+
+            var p = Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
+
+            return p;
         }
     }
 }

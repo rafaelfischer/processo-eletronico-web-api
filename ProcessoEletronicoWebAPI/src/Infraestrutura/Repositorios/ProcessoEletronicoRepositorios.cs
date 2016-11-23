@@ -15,6 +15,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             UnitOfWork = new EFUnitOfWork(new ProcessoEletronicoContext());
 
             Atividades = UnitOfWork.MakeGenericRepository<Atividade>();
+            Despachos = UnitOfWork.MakeGenericRepository<Despacho>();
             Funcoes = UnitOfWork.MakeGenericRepository<Funcao>();
             PlanosClassificacao = UnitOfWork.MakeGenericRepository<PlanoClassificacao>();
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
@@ -26,6 +27,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         public IUnitOfWork UnitOfWork { get; private set; }
 
         public IRepositorioGenerico<Atividade> Atividades { get; private set; }
+        public IRepositorioGenerico<Despacho> Despachos { get; private set; }
         public IRepositorioGenerico<Funcao> Funcoes { get; private set; }
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }
         public IRepositorioGenerico<Processo> Processos { get; private set; }

@@ -36,13 +36,17 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .MaxDepth(1);
             #endregion
 
+            #region Mapeamento de organização processo
+            CreateMap<OrganizacaoProcesso, OrganizacaoProcessoModeloNegocio>();
+            #endregion
+
             #region Mapeamento de plano de classificação
             CreateMap<PlanoClassificacao, PlanoClassificacaoModeloNegocio>()
                 .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { IdOrganizacao = src.IdOrganizacaoProcesso}));
             #endregion
 
             #region Mapeamento de processo
-            
+            CreateMap<Processo, ProcessoModeloNegocio>();
             #endregion
 
             #region Mapeamento de tipo de contato

@@ -447,7 +447,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("uf")
                     .HasColumnType("varchar(2)");
 
-                entity.HasOne(d => d.IdProcessoNavigation)
+                entity.HasOne(d => d.Processo)
                     .WithMany(p => p.MunicipioProcesso)
                     .HasForeignKey(d => d.IdProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
