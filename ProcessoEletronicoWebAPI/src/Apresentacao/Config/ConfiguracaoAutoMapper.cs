@@ -80,6 +80,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(src => src.IdSinalizacoes))
                 .ForMember(dest => dest.Anexos , opt => opt.Ignore())
                 .ForMember(dest => dest.Municipios, opt => opt.MapFrom(src => src.Municipios));
+            CreateMap<ProcessoModeloNegocio, ProcessoModelo>()
+                .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
+                .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao));
             #endregion
 
             #region Mapeamento de Tipo de Contato

@@ -1,4 +1,8 @@
 ﻿using ProcessoEletronicoService.Negocio.Modelos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
@@ -7,6 +11,7 @@ namespace ProcessoEletronicoService.Negocio.Base
         void Listar();
         void Pesquisar(int id);
         void Pesquisar(string numeroProcesso);
+        List<ProcessoModeloNegocio> Pesquisar(int idOrganizacaoProcesso, int idUnidade);
         void Autuar(ProcessoModeloNegocio processoNegocio);
         void Despachar();
         void Excluir();

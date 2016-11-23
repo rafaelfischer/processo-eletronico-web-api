@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.Apresentacao
 {
     public class ProcessoWorkService : IProcessoWorkService
     {
-        IProcessoNegocio processoNegocio;
+        private IProcessoNegocio processoNegocio;
 
         public ProcessoWorkService(IProcessoNegocio processoNegocio)
         {
@@ -52,6 +52,15 @@ namespace ProcessoEletronicoService.Apresentacao
         public void Pesquisar(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<ProcessoModelo> Pesquisar(int idOrganizacaoProcesso, int idUnidade)
+        {
+            var processos = processoNegocio.Pesquisar(idOrganizacaoProcesso, idUnidade);
+
+            var p = Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
+
+            return p;
         }
     }
 }

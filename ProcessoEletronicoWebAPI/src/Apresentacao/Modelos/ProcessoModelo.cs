@@ -34,5 +34,24 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         [Required]
         public string UsuarioAutuador { get; set; }
     }
-    
+
+    public class ProcessoModelo
+    {
+        public int Id { get; set; }
+        public string Resumo { get; set; }
+        public int IdAtividade { get; set; }
+        public int IdOrgaoAutuador { get; set; }
+        public string NomeOrgaoAutuador { get; set; }
+        public string SiglaOrgaoAutuador { get; set; }
+        public int IdUnidadeAutuadora { get; set; }
+        public string NomeUnidadeAutuadora { get; set; }
+        public string SiglaUnidadeAutuadora { get; set; }
+        public string IdUsuarioAutuador { get; set; }
+        public string NomeUsuarioAutuador { get; set; }
+        public string DataAutuacao { get; set; }
+        public int IdOrganizacaoProcesso { get; set; }
+        public string Numero { get; set; }
+    }
+
+
 }

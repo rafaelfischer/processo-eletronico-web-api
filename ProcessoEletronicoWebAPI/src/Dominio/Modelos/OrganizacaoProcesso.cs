@@ -25,7 +25,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public virtual ICollection<PlanoClassificacao> PlanoClassificacao { get; set; }
         public virtual ICollection<Processo> Processo { get; set; }
         public virtual ICollection<Sinalizacao> Sinalizacao { get; set; }
-        public virtual DigitoEsfera IdDigitoEsferaNavigation { get; set; }
-        public virtual DigitoPoder IdDigitoPoderNavigation { get; set; }
+        public virtual DigitoEsfera DigitoEsfera { get; set; }
+        public virtual DigitoPoder DigitoPoder { get; set; }
     }
 }

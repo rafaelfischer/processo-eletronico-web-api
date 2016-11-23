@@ -10,6 +10,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string Uf { get; set; }
         public int IdProcesso { get; set; }
 
-        public virtual Processo IdProcessoNavigation { get; set; }
+        public virtual Processo Processo { get; set; }
     }
 }
