@@ -84,7 +84,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         public void Autuar(ProcessoModeloNegocio processoNegocio)
         {
-            throw new NotImplementedException(processoNegocio.Resumo + " " + processoNegocio.InteressadosPessoaFisica[0].Cpf);
+            throw new NotImplementedException(processoNegocio.Resumo + " " + processoNegocio.InteressadoPessoaFisica[0].Cpf);
         }
 
         public void Despachar()
