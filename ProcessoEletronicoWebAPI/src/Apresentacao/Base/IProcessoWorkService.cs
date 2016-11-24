@@ -9,11 +9,11 @@ namespace ProcessoEletronicoService.Apresentacao.Base
     public interface IProcessoWorkService
     {
         void Listar();
-        void Pesquisar(int id);
+        ProcessoCompletoModelo Pesquisar(int idOrganizacaoProcesso, int idProcesso);
         void Pesquisar(string numeroProcesso);
         void Autuar(ProcessoModeloPost processoPost);
         void Despachar();
         void Excluir();
-        List<ProcessoModelo> Pesquisar(int idOrganizacaoProcesso, int idUnidade);
+        List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade);
     }
 }

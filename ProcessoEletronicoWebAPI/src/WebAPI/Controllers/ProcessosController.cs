@@ -8,6 +8,8 @@ using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using ProcessoEletronicoService.Infraestrutura.Comum;
+using ProcessoEletronicoService.WebAPI.Config;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
@@ -28,14 +30,35 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         {
             return new ObjectResult("Listar");
         }
-        
 
-        // GET api/v1/processos/{id}
+
+        /// <summary>
+        /// Retorna a lista de processos que estão tramintando na unidade especificada.
+        /// </summary>
+        /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
+        /// <param name="idProcesso">Identificador do processo.</param>
+        /// <returns>Processo correspondente ao idProcesso.</returns>
+        /// <response code="201">Retorna o processo correspondente ao idProcesso.</response>
+        /// <response code="404">Proceso não foi encontrado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("{idProcesso}")]
-        public IActionResult Pesquisar(int idProcesso)
+        [ProducesResponseType(typeof(ProcessoCompletoModelo), 201)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult Pesquisar(int id, int idProcesso)
         {
-            return new ObjectResult("Pesquisar por ID");
-            
+            try
+            {
+                return new ObjectResult(service.Pesquisar(id, idProcesso));
+            }
+            catch (ProcessoEletronicoNaoEncontradoException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
         }
 
         // GET api/v1/processos/numero/{numeroProcesso}
@@ -56,11 +79,11 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [HttpGet("unidade/{idUnidade}")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Pesquisar(int id, int idUnidade)
+        public IActionResult PesquisarPorUnidade(int id, int idUnidade)
         {
             try
             {
-                return new ObjectResult(service.Pesquisar(id, idUnidade));
+                return new ObjectResult(service.PesquisarProcessosNaUnidade(id, idUnidade));
             }
             catch (Exception e)
             {

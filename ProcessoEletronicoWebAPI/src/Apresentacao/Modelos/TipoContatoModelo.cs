@@ -10,6 +10,10 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public int Id { get; set; }
         public string Descricao { get; set; }
         public byte QuantidadeDigitos { get; set; }
+    }
 
+    public class TipoContatoProcessoGetModelo
+    {
+        public string Descricao { get; set; }
     }
 }
