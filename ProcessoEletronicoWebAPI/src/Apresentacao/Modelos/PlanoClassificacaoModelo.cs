@@ -13,4 +13,13 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string Observacao { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
     }
+
+    public partial class PlanoClassificacaoProcessoGetModelo
+    {
+        public int Id { get; set; }
+        public string Codigo { get; set; }
+        public string Descricao { get; set; }
+        public bool AreaFim { get; set; }
+        public string Observacao { get; set; }
+    }
 }

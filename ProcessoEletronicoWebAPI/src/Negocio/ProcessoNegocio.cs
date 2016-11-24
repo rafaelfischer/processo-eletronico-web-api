@@ -21,7 +21,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         ProcessoValidacao processoValidacao;
         InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
-        
+
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             this.unitOfWork = repositorios.UnitOfWork;
@@ -36,9 +36,25 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             throw new NotImplementedException();
         }
 
-        public void Pesquisar(int id)
+        public ProcessoModeloNegocio Pesquisar(int idOrganizacaoProcesso, int idProcesso)
         {
-            throw new NotImplementedException();
+            var processo = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
+                                                        && p.Id == idProcesso)
+                                               .Include(p => p.Anexo)
+                                               .Include(p => p.Despacho)
+                                               .Include(p => p.InteressadoPessoaFisica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadoPessoaFisica).ThenInclude(ipf => ipf.Email)
+                                               .Include(p => p.InteressadoPessoaJuridica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadoPessoaJuridica).ThenInclude(ipf => ipf.Email)
+                                               .Include(p => p.MunicipioProcesso)
+                                               .Include(p => p.SinalizacaoProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                               .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
+                                               .Include(p => p.OrganizacaoProcesso)
+                                               .SingleOrDefault();
+
+            var p1 = Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
+
+            return p1;
         }
 
         public void Pesquisar(string numeroProcesso)
@@ -46,7 +62,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             throw new NotImplementedException();
         }
 
-        public List<ProcessoModeloNegocio> Pesquisar(int idOrganizacaoProcesso, int idUnidade)
+        public List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(int idOrganizacaoProcesso, int idUnidade)
         {
             var processosSemDespachoNaUnidade = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
                                                                              && p.IdUnidadeAutuadora == idUnidade

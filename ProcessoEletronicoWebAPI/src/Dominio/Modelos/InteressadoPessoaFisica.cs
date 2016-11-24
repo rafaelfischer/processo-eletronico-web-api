@@ -20,6 +20,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
 
         public virtual ICollection<Contato> Contato { get; set; }
         public virtual ICollection<Email> Email { get; set; }
-        public virtual Processo IdProcessoNavigation { get; set; }
+        public virtual Processo Processo { get; set; }
     }
 }

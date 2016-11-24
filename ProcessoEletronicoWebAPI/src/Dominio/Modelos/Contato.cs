@@ -11,8 +11,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int? IdInteressadoPessoaFisica { get; set; }
         public int? IdInteressadoPessoaJuridica { get; set; }
 
-        public virtual InteressadoPessoaFisica IdInteressadoPessoaFisicaNavigation { get; set; }
-        public virtual InteressadoPessoaJuridica IdInteressadoPessoaJuridicaNavigation { get; set; }
-        public virtual TipoContato IdTipoContatoNavigation { get; set; }
+        public virtual InteressadoPessoaFisica InteressadoPessoaFisica { get; set; }
+        public virtual InteressadoPessoaJuridica InteressadoPessoaJuridica { get; set; }
+        public virtual TipoContato TipoContato { get; set; }
     }
 }

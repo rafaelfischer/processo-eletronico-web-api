@@ -49,18 +49,20 @@ namespace ProcessoEletronicoService.Apresentacao
             throw new NotImplementedException();
         }
 
-        public void Pesquisar(int id)
+        public ProcessoCompletoModelo Pesquisar(int idOrganizacaoProcesso, int idProcesso)
         {
-            throw new NotImplementedException();
-        }
+            var processos = processoNegocio.Pesquisar(idOrganizacaoProcesso, idProcesso);
 
-        public List<ProcessoModelo> Pesquisar(int idOrganizacaoProcesso, int idUnidade)
-        {
-            var processos = processoNegocio.Pesquisar(idOrganizacaoProcesso, idUnidade);
-
-            var p = Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
+            var p = Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processos);
 
             return p;
+        }
+
+        public List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade)
+        {
+            var processos = processoNegocio.PesquisarProcessoNaUnidade(idOrganizacaoProcesso, idUnidade);
+
+            return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
         }
     }
 }

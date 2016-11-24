@@ -136,19 +136,19 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("telefone")
                     .HasColumnType("varchar(255)");
 
-                entity.HasOne(d => d.IdInteressadoPessoaFisicaNavigation)
+                entity.HasOne(d => d.InteressadoPessoaFisica)
                     .WithMany(p => p.Contato)
                     .HasForeignKey(d => d.IdInteressadoPessoaFisica)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Contato_InteressadoPessoaFisica");
 
-                entity.HasOne(d => d.IdInteressadoPessoaJuridicaNavigation)
+                entity.HasOne(d => d.InteressadoPessoaJuridica)
                     .WithMany(p => p.Contato)
                     .HasForeignKey(d => d.IdInteressadoPessoaJuridica)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Contato_InteressadoPessoaJuridica");
 
-                entity.HasOne(d => d.IdTipoContatoNavigation)
+                entity.HasOne(d => d.TipoContato)
                     .WithMany(p => p.Contato)
                     .HasForeignKey(d => d.IdTipoContato)
                     .OnDelete(DeleteBehavior.Restrict)
@@ -367,7 +367,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("ufMunicipio")
                     .HasColumnType("varchar(2)");
 
-                entity.HasOne(d => d.IdProcessoNavigation)
+                entity.HasOne(d => d.Processo)
                     .WithMany(p => p.InteressadoPessoaFisica)
                     .HasForeignKey(d => d.IdProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
@@ -420,7 +420,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("ufMunicipio")
                     .HasColumnType("varchar(2)");
 
-                entity.HasOne(d => d.IdProcessoNavigation)
+                entity.HasOne(d => d.Processo)
                     .WithMany(p => p.InteressadoPessoaJuridica)
                     .HasForeignKey(d => d.IdProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
@@ -688,7 +688,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_SinalizacaoProcesso_Processo");
 
-                entity.HasOne(d => d.IdSinalizacaoNavigation)
+                entity.HasOne(d => d.Sinalizacao)
                     .WithMany(p => p.SinalizacaoProcesso)
                     .HasForeignKey(d => d.IdSinalizacao)
                     .OnDelete(DeleteBehavior.Restrict)
