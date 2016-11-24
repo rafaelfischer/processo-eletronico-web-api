@@ -20,19 +20,19 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<int> IdSinalizacoes { get; set; }
         public int IdOrgaoAutuador { get; set; }
         [Required]
-        public string OrgaoAutuador { get; set; }
+        public string NomeOrgaoAutuador { get; set; }
         [Required]
         public string SiglaOrgaoAutuador { get; set; }
         [Required]
         public int IdUnidadeAutuadora { get; set; }
         [Required]
-        public string UnidadeAutuadora { get; set; }
+        public string NomeUnidadeAutuadora { get; set; }
         [Required]
         public string SiglaUnidadeAutuadora { get; set; }
         [Required]
         public string IdUsuarioAutuador { get; set; }
         [Required]
-        public string UsuarioAutuador { get; set; }
+        public string NomeUsuarioAutuador { get; set; }
     }
 
     public class ProcessoModelo

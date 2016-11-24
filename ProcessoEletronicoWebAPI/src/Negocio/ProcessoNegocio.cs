@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Negocio.Base;
+﻿using AutoMapper;
+using ProcessoEletronicoService.Negocio.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

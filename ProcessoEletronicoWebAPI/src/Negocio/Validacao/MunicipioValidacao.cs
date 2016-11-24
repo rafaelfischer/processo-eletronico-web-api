@@ -14,7 +14,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             foreach (MunicipioProcessoModeloNegocio municipio in municipios)
             {
-                Preenchido(municipios);
+                Preenchido(municipio);
             }
         }
 

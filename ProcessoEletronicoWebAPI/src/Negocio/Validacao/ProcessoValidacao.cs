@@ -48,7 +48,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             /*Preenchimento de objetos associados ao processo*/
             interessadoPessoaFisicaValidacao.Preenchido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Preenchido(processo.InteressadosPessoaJuridica);
-            municipioValidacao.Preenchido(processo.Municipios);
+            municipioValidacao.Preenchido(processo.MunicipiosProcesso);
             //Validar Anexo
         }
 
@@ -85,7 +85,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         /*Municípios*/
         internal void MunicipioPreenchido(ProcessoModeloNegocio processo)
         {
-            if (processo.Municipios.Count == 0)
+            if (processo.MunicipiosProcesso.Count == 0)
             {
                 throw new RequisicaoInvalidaException("Município não preenchido.");
             }
@@ -102,7 +102,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void OrgaoAutuadorPreenchido(ProcessoModeloNegocio processo)
         {
-            if (string.IsNullOrWhiteSpace(processo.OrgaoAutuador))
+            if (string.IsNullOrWhiteSpace(processo.NomeOrgaoAutuador))
             {
                 throw new RequisicaoInvalidaException("Órgão Autuador não preenchido.");
             }
@@ -127,7 +127,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void UnidadeAutuadoraPreenchida(ProcessoModeloNegocio processo)
         {
-            if (string.IsNullOrWhiteSpace(processo.UnidadeAutuadora))
+            if (string.IsNullOrWhiteSpace(processo.NomeUnidadeAutuadora))
             {
                 throw new RequisicaoInvalidaException("Unidade Autuadora não preenchida.");
             }
@@ -152,7 +152,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void UsuarioAutuadoroPreenchido(ProcessoModeloNegocio processo)
         {
-            if (string.IsNullOrWhiteSpace(processo.UsuarioAutuador))
+            if (string.IsNullOrWhiteSpace(processo.NomeUsuarioAutuador))
             {
                 throw new RequisicaoInvalidaException("Usuário Autuador não preenchido.");
             }

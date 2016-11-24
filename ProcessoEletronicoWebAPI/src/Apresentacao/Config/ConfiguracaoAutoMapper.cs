@@ -42,7 +42,8 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #endregion
 
             #region Mapeamento de Contato
-            CreateMap<ContatoModelo, ContatoModeloNegocio>();
+            CreateMap<ContatoModelo, ContatoModeloNegocio>()
+                .ForMember(dest => dest.TipoContato, opt => opt.MapFrom(src => src.IdTipoContato));
             #endregion
 
             #region Mapeamento de função
@@ -75,11 +76,11 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #region Mapeamento de Processo
             CreateMap<ProcessoModeloPost, ProcessoModeloNegocio>()
                 .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => new AtividadeModeloNegocio { Id = src.IdAtividade }))
-                .ForMember(dest => dest.InteressadoPessoaFisica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaFisicaModelo>, List<InteressadoPessoaFisicaModeloNegocio>>(src.InteressadosPessoaFisica)))
-                .ForMember(dest => dest.InteressadoPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModelo>, List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
-                .ForMember(dest => dest.Sinalizacao, opt => opt.MapFrom(src => src.IdSinalizacoes))
-                .ForMember(dest => dest.Anexo , opt => opt.Ignore())
-                .ForMember(dest => dest.MunicipioProcesso, opt => opt.MapFrom(src => src.Municipios));
+                .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaFisicaModelo>, List<InteressadoPessoaFisicaModeloNegocio>>(src.InteressadosPessoaFisica)))
+                .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModelo>, List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
+                .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(src => src.IdSinalizacoes))
+                .ForMember(dest => dest.Anexos , opt => opt.Ignore())
+                .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.Municipios));
             CreateMap<ProcessoModeloNegocio, ProcessoModelo>()
                 .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
@@ -88,6 +89,8 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             #region Mapeamento de Tipo de Contato
 
+            CreateMap<int, TipoContatoModeloNegocio>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src));
             CreateMap<TipoContatoModeloNegocio, TipoContatoModelo>();
 
             #endregion
