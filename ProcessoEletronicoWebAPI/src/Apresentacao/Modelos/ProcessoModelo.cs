@@ -69,12 +69,12 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string Numero { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
 
-        public List<AnexoProcessoGetModelo> Anexo { get; set; }
-        public List<DespachoProcessoGetModelo> Despacho { get; set; }
-        public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadoPessoaFisica { get; set; }
-        public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadoPessoaJuridica { get; set; }
-        public List<MunicipioProcessoModelo> MunicipioProcesso { get; set; }
-        public List<SinalizacaoProcessoGetModelo> Sinalizacao { get; set; }
+        public List<AnexoProcessoGetModelo> Anexos { get; set; }
+        public List<DespachoProcessoGetModelo> Despachos { get; set; }
+        public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadosPessoaFisica { get; set; }
+        public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }
+        public List<MunicipioProcessoModelo> MunicipiosProcesso { get; set; }
+        public List<SinalizacaoProcessoGetModelo> Sinalizacoes { get; set; }
         public AtividadeProcessoGetModelo Atividade { get; set; }
     }
 }

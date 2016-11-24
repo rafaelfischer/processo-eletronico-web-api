@@ -18,7 +18,5 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string IdUsuarioDespachante { get; set; }
         public string NomeUsuarioDespachante { get; set; }
         public string DataHoraDespacho { get; set; }
-
-        public ProcessoModelo Processo { get; set; }
     }
 }

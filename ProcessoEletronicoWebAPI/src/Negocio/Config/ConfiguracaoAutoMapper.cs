@@ -81,7 +81,7 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #region Mapeamento de processo
             CreateMap<Processo, ProcessoModeloNegocio>()
-                .ForMember(dest => dest.Sinalizacao, opt => opt.MapFrom(s => s.SinalizacaoProcesso != null ? Mapper.Map<List<SinalizacaoProcesso>, List<SinalizacaoModeloNegocio>>(s.SinalizacaoProcesso.ToList()) : null))
+                .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(s => s.SinalizacoesProcesso != null ? Mapper.Map<List<SinalizacaoProcesso>, List<SinalizacaoModeloNegocio>>(s.SinalizacoesProcesso.ToList()) : null))
                 .MaxDepth(1);
             #endregion
 

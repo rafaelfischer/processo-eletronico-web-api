@@ -40,14 +40,14 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         {
             var processo = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
                                                         && p.Id == idProcesso)
-                                               .Include(p => p.Anexo)
-                                               .Include(p => p.Despacho)
-                                               .Include(p => p.InteressadoPessoaFisica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
-                                               .Include(p => p.InteressadoPessoaFisica).ThenInclude(ipf => ipf.Email)
-                                               .Include(p => p.InteressadoPessoaJuridica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
-                                               .Include(p => p.InteressadoPessoaJuridica).ThenInclude(ipf => ipf.Email)
-                                               .Include(p => p.MunicipioProcesso)
-                                               .Include(p => p.SinalizacaoProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                               .Include(p => p.Anexos)
+                                               .Include(p => p.Despachos)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Email)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Email)
+                                               .Include(p => p.MunicipiosProcesso)
+                                               .Include(p => p.SinalizacoesProcesso).ThenInclude(sp => sp.Sinalizacao)
                                                .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
                                                .Include(p => p.OrganizacaoProcesso)
                                                .SingleOrDefault();
@@ -66,7 +66,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         {
             var processosSemDespachoNaUnidade = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
                                                                              && p.IdUnidadeAutuadora == idUnidade
-                                                                             && !p.Despacho.Any())
+                                                                             && !p.Despachos.Any())
                                                                     .Include(p => p.OrganizacaoProcesso)
                                                                     .Include(p => p.Atividade);
 
@@ -84,7 +84,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                                      .Select(d => d.Despacho.Id);
 
             var processosDespachadosParaUnidade = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                               && p.Despacho.Any(d => idsUltimosDespachosParaUnidade.Contains(d.Id)))
+                                                                               && p.Despachos.Any(d => idsUltimosDespachosParaUnidade.Contains(d.Id)))
                                                                       .Include(p => p.OrganizacaoProcesso)
                                                                       .Include(p => p.Atividade);
 

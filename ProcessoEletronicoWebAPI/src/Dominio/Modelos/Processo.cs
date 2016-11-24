@@ -7,11 +7,11 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public Processo()
         {
-            Anexo = new HashSet<Anexo>();
-            InteressadoPessoaFisica = new HashSet<InteressadoPessoaFisica>();
-            InteressadoPessoaJuridica = new HashSet<InteressadoPessoaJuridica>();
-            MunicipioProcesso = new HashSet<MunicipioProcesso>();
-            SinalizacaoProcesso = new HashSet<SinalizacaoProcesso>();
+            Anexos = new HashSet<Anexo>();
+            InteressadosPessoaFisica = new HashSet<InteressadoPessoaFisica>();
+            InteressadosPessoaJuridica = new HashSet<InteressadoPessoaJuridica>();
+            MunicipiosProcesso = new HashSet<MunicipioProcesso>();
+            SinalizacoesProcesso = new HashSet<SinalizacaoProcesso>();
         }
 
         public int Id { get; set; }
@@ -34,12 +34,12 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public DateTime DataAutuacao { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
 
-        public virtual ICollection<Anexo> Anexo { get; set; }
-        public virtual ICollection<Despacho> Despacho { get; set; }
-        public virtual ICollection<InteressadoPessoaFisica> InteressadoPessoaFisica { get; set; }
-        public virtual ICollection<InteressadoPessoaJuridica> InteressadoPessoaJuridica { get; set; }
-        public virtual ICollection<MunicipioProcesso> MunicipioProcesso { get; set; }
-        public virtual ICollection<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
+        public virtual ICollection<Anexo> Anexos { get; set; }
+        public virtual ICollection<Despacho> Despachos { get; set; }
+        public virtual ICollection<InteressadoPessoaFisica> InteressadosPessoaFisica { get; set; }
+        public virtual ICollection<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; set; }
+        public virtual ICollection<MunicipioProcesso> MunicipiosProcesso { get; set; }
+        public virtual ICollection<SinalizacaoProcesso> SinalizacoesProcesso { get; set; }
         public virtual Atividade Atividade { get; set; }
         public virtual OrganizacaoProcesso OrganizacaoProcesso { get; set; }
     }

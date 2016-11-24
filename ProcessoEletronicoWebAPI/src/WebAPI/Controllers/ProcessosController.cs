@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using ProcessoEletronicoService.Infraestrutura.Comum;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.WebAPI.Config;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
@@ -51,7 +47,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             {
                 return new ObjectResult(service.Pesquisar(id, idProcesso));
             }
-            catch (ProcessoEletronicoNaoEncontradoException e)
+            catch (RecursoNaoEncontradoException e)
             {
                 return NotFound(e.Message);
             }
