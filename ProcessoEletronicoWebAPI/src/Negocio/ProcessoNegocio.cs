@@ -9,7 +9,7 @@ using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Modelos;
-using AutoMapper;
+using ProcessoEletronicoService.Negocio.Validacao;
 
 namespace ProcessoEletronicoService.Negocio.Restrito
 {
@@ -17,13 +17,17 @@ namespace ProcessoEletronicoService.Negocio.Restrito
     {
         IUnitOfWork unitOfWork;
         IRepositorioGenerico<Processo> repositorioProcessos;
+        ProcessoValidacao processoValidacao;
+        InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
         
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
-            unitOfWork = repositorios.UnitOfWork;
-            repositorioProcessos = repositorios.Processos;
-            repositorioDespachos = repositorios.Despachos;
+            this.unitOfWork = repositorios.UnitOfWork;
+            this.repositorioProcessos = repositorios.Processos;
+            this.processoValidacao = new ProcessoValidacao(repositorios);
+            this.interessadoPessoaFisicaValidacao = new InteressadoPessoaFisicaValidacao(repositorios);
+            this.repositorioDespachos = repositorios.Despachos;
         }
 
         public void Listar()
@@ -84,7 +88,9 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         public void Autuar(ProcessoModeloNegocio processoNegocio)
         {
-            throw new NotImplementedException(processoNegocio.Resumo + " " + processoNegocio.InteressadoPessoaFisica[0].Cpf);
+            processoValidacao.Preenchido(processoNegocio);
+            processoValidacao.Valido(processoNegocio);
+            throw new NotImplementedException("Processo Válido");
         }
 
         public void Despachar()
