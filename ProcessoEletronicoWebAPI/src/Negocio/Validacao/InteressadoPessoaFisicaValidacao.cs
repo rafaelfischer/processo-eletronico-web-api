@@ -15,7 +15,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         EmailValidacao emailValidacao;
         CpfValidacao cpfValidacao;
 
-        public InteressadoPessoaFisicaValidacao (IProcessoEletronicoRepositorios repositorios)
+        public InteressadoPessoaFisicaValidacao(IProcessoEletronicoRepositorios repositorios)
         {
             this.contatoValidacao = new ContatoValidacao(repositorios);
             this.emailValidacao = new EmailValidacao();
@@ -51,7 +51,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(interessado.Nome))
             {
-                throw new RequisicaoInvalidaException("Nome do interessado não preenchido."); 
+                throw new RequisicaoInvalidaException("Nome do interessado não preenchido.");
             }
         }
 
@@ -84,18 +84,31 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         #region Validação dos campos
         public void Valido(List<InteressadoPessoaFisicaModeloNegocio> interessados)
         {
-            foreach(InteressadoPessoaFisicaModeloNegocio interessado in interessados)
+            foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessados)
             {
                 Valido(interessado);
             }
-            
+
+            DuplicidadeCPF(interessados);
+
         }
 
-        public void Valido (InteressadoPessoaFisicaModeloNegocio interessado)
+        public void Valido(InteressadoPessoaFisicaModeloNegocio interessado)
         {
             cpfValidacao.CpfValido(interessado.Cpf);
             emailValidacao.Valido(interessado.Emails);
             contatoValidacao.Valido(interessado.Contatos);
+        }
+
+        internal void DuplicidadeCPF(List<InteressadoPessoaFisicaModeloNegocio> interessados)
+        {
+            foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessados)
+            {
+                if (interessados.Where(i => i.Cpf == interessado.Cpf).ToList().Count() > 1)
+                {
+                    throw new RequisicaoInvalidaException("Cpf " + interessado.Cpf + " duplicado.");
+                }
+            }
         }
 
         #endregion

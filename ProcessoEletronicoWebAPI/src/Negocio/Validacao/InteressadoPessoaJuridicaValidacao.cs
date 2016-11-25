@@ -84,7 +84,9 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
             {
                 Valido(interessado);
-            }   
+            }
+
+            DuplicidadeCNPJ(interessados);   
         }
 
         internal void Valido(InteressadoPessoaJuridicaModeloNegocio interessado)
@@ -93,6 +95,17 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             emailValidacao.Valido(interessado.Emails);
             contatoValidacao.Valido(interessado.Contatos);
             
+        }
+
+        internal void DuplicidadeCNPJ(List<InteressadoPessoaJuridicaModeloNegocio> interessados)
+        {
+            foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
+            {
+                if (interessados.Where(i => i.Cnpj == interessado.Cnpj).ToList().Count() > 1)
+                {
+                    throw new RequisicaoInvalidaException("Cnpj " + interessado.Cnpj + " duplicado.");
+                }
+            }
         }
 
         #endregion

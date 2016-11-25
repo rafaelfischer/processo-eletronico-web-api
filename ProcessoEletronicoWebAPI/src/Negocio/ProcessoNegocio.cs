@@ -22,7 +22,6 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         IRepositorioGenerico<OrganizacaoProcesso> repositorioOrganizacoesProcesso;
 
         ProcessoValidacao processoValidacao;
-        InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
 
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
@@ -31,7 +30,6 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             this.repositorioProcessos = repositorios.Processos;
             this.repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             this.processoValidacao = new ProcessoValidacao(repositorios);
-            this.interessadoPessoaFisicaValidacao = new InteressadoPessoaFisicaValidacao(repositorios);
             this.repositorioDespachos = repositorios.Despachos;
         }
 
@@ -113,6 +111,8 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             processoValidacao.Preenchido(processoNegocio);
             processoValidacao.Valido(processoNegocio);
 
+            throw new NotImplementedException("Valido");
+
             /*Mapeamento para inserção*/
             Processo processo = new Processo();
             processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
@@ -122,8 +122,10 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             /*Gera número do processo*/
             NumeracaoProcesso(processo, IdOrganizacao);
             
-            repositorioProcessos.Add(processo);
-            unitOfWork.Save();
+            //repositorioProcessos.Add(processo);
+            //unitOfWork.Save();
+
+           
 
             return Pesquisar(IdOrganizacao, processo.Id);
             

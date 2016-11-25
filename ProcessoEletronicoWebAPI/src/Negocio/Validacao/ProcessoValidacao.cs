@@ -52,7 +52,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaJuridicaValidacao.Preenchido(processo.InteressadosPessoaJuridica);
             municipioValidacao.Preenchido(processo.MunicipiosProcesso);
             sinalizacaoValidacao.IdValido(processo.Sinalizacoes);
-            sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
+            
             //Validar Anexo
         }
 
@@ -171,7 +171,8 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             AtividadeExistente(processo);
             interessadoPessoaFisicaValidacao.Valido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Valido(processo.InteressadosPessoaJuridica);
-            
+            sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
+
         }
 
         internal void AtividadeExistente(ProcessoModeloNegocio processo)
