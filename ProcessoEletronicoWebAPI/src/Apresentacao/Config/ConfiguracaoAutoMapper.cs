@@ -66,7 +66,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<InteressadoPessoaFisicaModelo, InteressadoPessoaFisicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
                 .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.Municipio));
+                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.NomeMunicipio));
 
             CreateMap<InteressadoPessoaFisicaModeloNegocio, InteressadoPessoaFisicaProcessoGetModelo>();
             #endregion
@@ -75,7 +75,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<InteressadoPessoaJuridicaModelo, InteressadoPessoaJuridicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
                 .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.Municipio));
+                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.NomeMunicipio));
 
             CreateMap<InteressadoPessoaJuridicaModeloNegocio, InteressadoPessoaJuridicaProcessoGetModelo>();
             #endregion
@@ -131,6 +131,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             #region Mapeamento de Sinalização
             CreateMap<int, SinalizacaoModeloNegocio>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src));
+
+            CreateMap<SinalizacaoModeloNegocio, SinalizacaoModelo>()
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src));
 
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoProcessoGetModelo>();

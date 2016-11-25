@@ -18,9 +18,9 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<ContatoModelo> Contatos { get; set; }
         public List<EmailModelo> Emails { get; set; }
         [Required]
-        public string Uf { get; set; }
+        public string UfMunicipio { get; set; }
         [Required]
-        public string Municipio { get; set; }
+        public string NomeMunicipio { get; set; }
     }
 
     public class InteressadoPessoaJuridicaProcessoGetModelo

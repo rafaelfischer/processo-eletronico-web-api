@@ -137,13 +137,13 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnType("varchar(255)");
 
                 entity.HasOne(d => d.InteressadoPessoaFisica)
-                    .WithMany(p => p.Contato)
+                    .WithMany(p => p.Contatos)
                     .HasForeignKey(d => d.IdInteressadoPessoaFisica)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Contato_InteressadoPessoaFisica");
 
                 entity.HasOne(d => d.InteressadoPessoaJuridica)
-                    .WithMany(p => p.Contato)
+                    .WithMany(p => p.Contatos)
                     .HasForeignKey(d => d.IdInteressadoPessoaJuridica)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Contato_InteressadoPessoaJuridica");
@@ -286,14 +286,14 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .IsRequired()
                     .HasColumnName("idInteressadoPessoaJuridica");
 
-                entity.HasOne(d => d.IdInteressadoPessoaFisicaNavigation)
-                    .WithMany(p => p.Email)
+                entity.HasOne(d => d.InteressadoPessoaFisica)
+                    .WithMany(p => p.Emails)
                     .HasForeignKey(d => d.IdInteressadoPessoaFisica)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Email_InteressadoPessoaFisica");
 
-                entity.HasOne(d => d.IdInteressadoPessoaJuridicaNavigation)
-                    .WithMany(p => p.Email)
+                entity.HasOne(d => d.InteressadoPessoaJuridica)
+                    .WithMany(p => p.Emails)
                     .HasForeignKey(d => d.IdInteressadoPessoaJuridica)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Email_InteressadoPessoaJuridica");

@@ -23,8 +23,7 @@ namespace ProcessoEletronicoService.Apresentacao
         {
             List<SinalizacaoModeloNegocio> sinalizacoes = sinalizacaoNegocio.Pesquisar(idOrganizacaoPatriarca);
 
-            var s = Mapper.Map<List<SinalizacaoModeloNegocio>, List<SinalizacaoModelo>>(sinalizacoes);
-            return s;
+            return Mapper.Map<List<SinalizacaoModeloNegocio>, List<SinalizacaoModelo>>(sinalizacoes);
         }
     }
 }

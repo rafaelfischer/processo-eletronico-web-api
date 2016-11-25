@@ -19,6 +19,13 @@ namespace ProcessoEletronicoService.Infraestrutura.Comum.Exceptions
         public RequisicaoInvalidaException(string mensagem, Exception inner) : base(mensagem, inner) { }
     }
 
+    public class InsercaoProcessoException : Exception
+    {
+        public InsercaoProcessoException() : base() { }
+        public InsercaoProcessoException(string mensagem) : base(mensagem) { }
+        public InsercaoProcessoException(string mensagem, Exception inner) : base(mensagem, inner) { }
+    }
+
 
 
 }

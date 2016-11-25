@@ -7,8 +7,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public InteressadoPessoaJuridica()
         {
-            Contato = new HashSet<Contato>();
-            Email = new HashSet<Email>();
+            Contatos = new HashSet<Contato>();
+            Emails = new HashSet<Email>();
         }
 
         public int Id { get; set; }
@@ -21,8 +21,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string NomeMunicipio { get; set; }
         public string UfMunicipio { get; set; }
 
-        public virtual ICollection<Contato> Contato { get; set; }
-        public virtual ICollection<Email> Email { get; set; }
+        public virtual ICollection<Contato> Contatos { get; set; }
+        public virtual ICollection<Email> Emails { get; set; }
         public virtual Processo Processo { get; set; }
     }
 }

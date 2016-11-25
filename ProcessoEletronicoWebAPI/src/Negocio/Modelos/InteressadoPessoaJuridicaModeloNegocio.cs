@@ -18,6 +18,5 @@ namespace ProcessoEletronicoService.Negocio.Modelos
 
         public List<ContatoModeloNegocio> Contatos { get; set; }
         public List<EmailModeloNegocio> Emails { get; set; }
-        public ProcessoModeloNegocio Processo { get; set; }
     }
 }

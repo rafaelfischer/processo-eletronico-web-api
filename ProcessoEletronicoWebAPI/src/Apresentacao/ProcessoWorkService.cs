@@ -19,14 +19,14 @@ namespace ProcessoEletronicoService.Apresentacao
             this.processoNegocio = processoNegocio;
         }
 
-        public void Autuar(ProcessoModeloPost processo)
+        public ProcessoCompletoModelo Autuar(ProcessoModeloPost processo, int idOrganizacao)
         {
             ProcessoModeloNegocio processoNegocio = new ProcessoModeloNegocio();
             Mapper.Map(processo, processoNegocio);
 
-            this.processoNegocio.Autuar(processoNegocio);
-            
-            //throw new NotImplementedException();
+            processoNegocio = this.processoNegocio.Autuar(processoNegocio, idOrganizacao);
+
+            return Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processoNegocio);
         }
 
         public void Despachar()
