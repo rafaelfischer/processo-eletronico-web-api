@@ -61,32 +61,41 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return p1;
         }
 
-        public ProcessoModeloNegocio PesquisarPorNumero(int idOrganizacaoProcesso, string numero)
+        public ProcessoModeloNegocio Pesquisar(string numero)
         {
-            int sequencial = ObterSequencial(numero);
+            processoValidacao.NumeroValido(numero);
 
-            var processo = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                        && p.Id == idProcesso)
-                                               .Include(p => p.Anexos)
-                                               .Include(p => p.Despachos)
-                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
-                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Email)
-                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
-                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Email)
-                                               .Include(p => p.MunicipiosProcesso)
-                                               .Include(p => p.SinalizacoesProcesso).ThenInclude(sp => sp.Sinalizacao)
-                                               .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
-                                               .Include(p => p.OrganizacaoProcesso)
-                                               .SingleOrDefault();
+            int sequencial = ObterSequencial(numero);
+            byte digitoVerificadorRecebido = ObterDigitoVerificador(numero);
+            short ano = ObterAno(numero);
+            byte digitoPoder = ObterDigitoPoder(numero);
+            byte digitoEsfera = ObterDigitoEsfera(numero);
+            short digitoOrganizacao = ObterDigitoOrganizacao(numero);
+
+            byte digitoVerificadorGerado = (byte)DigitoVerificador(sequencial);
+            processoValidacao.DigitoVerificadorValido(digitoVerificadorRecebido, digitoVerificadorGerado);
+
+            var processo = repositorioProcessos.Where(p => p.Sequencial == sequencial
+                                                        && p.DigitoVerificador == digitoVerificadorRecebido
+                                                        && p.Ano == ano
+                                                        && p.DigitoPoder == digitoPoder
+                                                        && p.DigitoEsfera == digitoEsfera
+                                                        && p.DigitoOrganizacao == digitoOrganizacao)
+                                                   .Include(p => p.Anexos)
+                                                   .Include(p => p.Despachos)
+                                                   .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
+                                                   .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Emails)
+                                                   .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
+                                                   .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Emails)
+                                                   .Include(p => p.MunicipiosProcesso)
+                                                   .Include(p => p.SinalizacoesProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                                   .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
+                                                   .Include(p => p.OrganizacaoProcesso)
+                                                   .SingleOrDefault();
 
             var p1 = Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
 
             return p1;
-        }
-
-        public void Pesquisar(string numeroProcesso)
-        {
-            throw new NotImplementedException();
         }
 
         public List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(int idOrganizacaoProcesso, int idUnidade)
@@ -139,17 +148,17 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             /*Mapeamento para inserção*/
             Processo processo = new Processo();
             processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
-            
+
             InformacaoPadrao(processo, IdOrganizacao);
 
             /*Gera número do processo*/
             NumeracaoProcesso(processo, IdOrganizacao);
-            
+
             repositorioProcessos.Add(processo);
             unitOfWork.Save();
 
             return Pesquisar(IdOrganizacao, processo.Id);
-            
+
         }
 
         public void Despachar()
@@ -164,8 +173,74 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         private int ObterSequencial(string numero)
         {
+            //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO
+            //O número é dividido em duas partes pelo caracter "-" (hífen)
+            //O sequencial é a primeira parte da divisão
             string stringSequencial = numero.Split('-')[0];
-            throw new NotImplementedException();
+
+            processoValidacao.SequencialValido(stringSequencial);
+
+            return Convert.ToInt32(stringSequencial);
+        }
+
+        private byte ObterDigitoVerificador(string numero)
+        {
+            //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO
+            //O número é dividido em duas partes pelo caracter "-" (hífen) após isso dividido em cinco partes pelo caracter "." (ponto)
+            //O digito verificador é a primeira parte da divisão por pontos
+            string stringDigitoVerificador = numero.Split('-')[1].Split('.')[0];
+
+            processoValidacao.DigitoVerificadorValido(stringDigitoVerificador);
+
+            return Convert.ToByte(stringDigitoVerificador);
+        }
+
+        private short ObterAno(string numero)
+        {
+            //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO
+            //O número é dividido em duas partes pelo caracter "-" (hífen) após isso dividido em cinco partes pelo caracter "." (ponto)
+            //O ano é a segunda parte da divisão por pontos
+            string stringAno = numero.Split('-')[1].Split('.')[1];
+
+            processoValidacao.AnoValido(stringAno);
+
+            return Convert.ToInt16(stringAno);
+        }
+
+        private byte ObterDigitoPoder(string numero)
+        {
+            //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO
+            //O número é dividido em duas partes pelo caracter "-" (hífen) após isso dividido em cinco partes pelo caracter "." (ponto)
+            //O digito poder é a terceira parte da divisão por pontos
+            string stringDigitoPoder = numero.Split('-')[1].Split('.')[2];
+
+            processoValidacao.DigitoPoderValido(stringDigitoPoder);
+
+            return Convert.ToByte(stringDigitoPoder);
+        }
+
+        private byte ObterDigitoEsfera(string numero)
+        {
+            //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO
+            //O número é dividido em duas partes pelo caracter "-" (hífen) após isso dividido em cinco partes pelo caracter "." (ponto)
+            //O digito esfera é a quarta parte da divisão por pontos
+            string stringDigitoEsfera = numero.Split('-')[1].Split('.')[3];
+
+            processoValidacao.DigitoEsferaValido(stringDigitoEsfera);
+
+            return Convert.ToByte(stringDigitoEsfera);
+        }
+
+        private short ObterDigitoOrganizacao(string numero)
+        {
+            //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO
+            //O número é dividido em duas partes pelo caracter "-" (hífen) após isso dividido em cinco partes pelo caracter "." (ponto)
+            //O digito organização é a quinta parte da divisão por pontos
+            string stringDigitoOrganizacao = numero.Split('-')[1].Split('.')[4];
+
+            processoValidacao.DigitoOrganizacaoValido(stringDigitoOrganizacao);
+
+            return Convert.ToInt16(stringDigitoOrganizacao);
         }
 
         private void InformacaoPadrao(Processo processo, int idOrganizacao)
@@ -190,10 +265,10 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
 
             processo.DigitoVerificador = (byte)DigitoVerificador(processo.Sequencial);
-                    
+
         }
 
-        private int DigitoVerificador (int numero)
+        private int DigitoVerificador(int numero)
         {
             /*Digito Verificador base 11*/
 
@@ -212,6 +287,5 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return digitoVerificador;
 
         }
-
     }
 }

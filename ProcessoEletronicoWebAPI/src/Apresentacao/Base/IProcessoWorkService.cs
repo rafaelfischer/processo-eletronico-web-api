@@ -10,7 +10,7 @@ namespace ProcessoEletronicoService.Apresentacao.Base
     {
         void Listar();
         ProcessoCompletoModelo Pesquisar(int idOrganizacaoProcesso, int idProcesso);
-        void Pesquisar(string numeroProcesso);
+        ProcessoCompletoModelo Pesquisar(string numero);
         ProcessoCompletoModelo Autuar(ProcessoModeloPost processoPost, int idOrganizacao);
         void Despachar();
         void Excluir();
