@@ -183,7 +183,70 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
 
         }
-        
+
+        internal void NumeroValido(string numero)
+        {
+            if (numero == null)
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+
+            string[] primeiraDivisao = numero.Split('-');
+            if (primeiraDivisao == null || primeiraDivisao.Length != 2)
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+
+            string[] segundaDivisao = primeiraDivisao[1].Split('.');
+            if (segundaDivisao == null || segundaDivisao.Length != 5)
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void SequencialValido(string stringSequencial)
+        {
+            int sequencial;
+            if (!Int32.TryParse(stringSequencial, out sequencial))
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void DigitoVerificadorValido(string stringDigitoVerificador)
+        {
+            int digitoVerificador;
+            if (!Int32.TryParse(stringDigitoVerificador, out digitoVerificador))
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void DigitoVerificadorValido(byte digitoVerificadorRecebido, byte digitoVerificadorGerado)
+        {
+            if (digitoVerificadorRecebido != digitoVerificadorGerado)
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void AnoValido(string stringAno)
+        {
+            short ano;
+            if (!Int16.TryParse(stringAno, out ano))
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void DigitoPoderValido(string stringDigitoPoder)
+        {
+            byte digitoPoder;
+            if (!Byte.TryParse(stringDigitoPoder, out digitoPoder))
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void DigitoEsferaValido(string stringDigitoEsfera)
+        {
+            byte digitoEsfera;
+            if (!Byte.TryParse(stringDigitoEsfera, out digitoEsfera))
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void DigitoOrganizacaoValido(string stringDigitoOrganizacao)
+        {
+            short digitoOrganizacao;
+            if (!Int16.TryParse(stringDigitoOrganizacao, out digitoOrganizacao))
+                throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+
         #endregion
 
     }

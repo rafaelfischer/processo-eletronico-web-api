@@ -28,9 +28,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             return new ObjectResult("Listar");
         }
 
-
         /// <summary>
-        /// Retorna a lista de processos que estão tramintando na unidade especificada.
+        /// Retorna o processo correspondente ao idProcesso informado.
         /// </summary>
         /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
         /// <param name="idProcesso">Identificador do processo.</param>
@@ -58,11 +57,37 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
         }
 
-        // GET api/v1/processos/numero/{numeroProcesso}
-        [HttpGet("/numero/{numeroProcesso}")]
-        public IActionResult Pesquisar(string numeroProcesso)
+        /// <summary>
+        /// Retorna o processo correspondente ao número informado.
+        /// </summary>
+        /// <param name="numero">Número do processo.Formato: SEQUENCIAL-DD.AAAA.P.E.OOOO</param>
+        /// <returns>Processo correspondente ao número.</returns>
+        /// <response code="201">Retorna o processo correspondente ao número.</response>
+        /// <response code="404">Proceso não foi encontrado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet("/api/processos/numero/{numero}")]
+        [ProducesResponseType(typeof(ProcessoCompletoModelo), 201)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult Pesquisar(string numero)
         {
-            return new ObjectResult("Pesquisar por número");
+            try
+            {
+                return new ObjectResult(service.Pesquisar(numero));
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (RequisicaoInvalidaException e)
+            {
+                return BadRequest(MensagemErro.ObterMensagem(e));
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
         }
 
         /// <summary>

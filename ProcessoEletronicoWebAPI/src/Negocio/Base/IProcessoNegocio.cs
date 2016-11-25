@@ -10,7 +10,7 @@ namespace ProcessoEletronicoService.Negocio.Base
     {
         void Listar();
         ProcessoModeloNegocio Pesquisar(int idOrganizacaoProcesso, int idProcesso);
-        void Pesquisar(string numeroProcesso);
+        ProcessoModeloNegocio Pesquisar(string numero);
         List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(int idOrganizacaoProcesso, int idUnidade);
         ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int idOrganizacao);
         void Despachar();

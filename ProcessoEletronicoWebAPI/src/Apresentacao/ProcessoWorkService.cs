@@ -44,9 +44,13 @@ namespace ProcessoEletronicoService.Apresentacao
             throw new NotImplementedException();
         }
 
-        public void Pesquisar(string numeroProcesso)
+        public ProcessoCompletoModelo Pesquisar(string numero)
         {
-            throw new NotImplementedException();
+            var processos = processoNegocio.Pesquisar(numero);
+
+            var p = Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processos);
+
+            return p;
         }
 
         public ProcessoCompletoModelo Pesquisar(int idOrganizacaoProcesso, int idProcesso)
