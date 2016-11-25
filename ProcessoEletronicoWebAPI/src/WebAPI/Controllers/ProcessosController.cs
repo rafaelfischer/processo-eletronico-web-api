@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
@@ -97,6 +98,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// </summary>
         /// <remarks>Apesar das listas de interessados estarem sinalizadas como opcionais, o Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica)</remarks>
         /// <param name="processoPost"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
@@ -104,8 +106,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         {
             try
             {
-                service.Autuar(processoPost, id);
-                return Created("http://.../api/processos/1", processoPost);
+                HttpRequest request = HttpContext.Request;
+                ProcessoCompletoModelo processoCompleto = service.Autuar(processoPost, id);
+                return Created("http://"+ request.Host.Value + request.Path.Value + "/" + processoCompleto.Id , processoCompleto);
             }
             catch (Exception e)
             {

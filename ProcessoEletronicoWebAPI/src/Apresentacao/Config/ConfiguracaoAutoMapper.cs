@@ -66,7 +66,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<InteressadoPessoaFisicaModelo, InteressadoPessoaFisicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
                 .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.Municipio));
+                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.NomeMunicipio));
 
             CreateMap<InteressadoPessoaFisicaModeloNegocio, InteressadoPessoaFisicaProcessoGetModelo>();
             #endregion
@@ -75,7 +75,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<InteressadoPessoaJuridicaModelo, InteressadoPessoaJuridicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
                 .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.Municipio));
+                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.NomeMunicipio));
 
             CreateMap<InteressadoPessoaJuridicaModeloNegocio, InteressadoPessoaJuridicaProcessoGetModelo>();
             #endregion

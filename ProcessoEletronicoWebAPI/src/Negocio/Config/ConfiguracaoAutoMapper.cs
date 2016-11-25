@@ -78,14 +78,14 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #region Mapeamento de interessado pessoa física
             CreateMap<InteressadoPessoaFisica, InteressadoPessoaFisicaModeloNegocio>()
-                .ForMember(dest => dest.Contatos, opt => opt.MapFrom(s => s.Contato != null ? Mapper.Map<List<Contato>, List<ContatoModeloNegocio>>(s.Contato.ToList()) : null))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(s => s.Email != null ? Mapper.Map<List<Email>, List<EmailModeloNegocio>>(s.Email.ToList()) : null));
+                .ForMember(dest => dest.Contatos, opt => opt.MapFrom(s => s.Contatos != null ? Mapper.Map<List<Contato>, List<ContatoModeloNegocio>>(s.Contatos.ToList()) : null))
+                .ForMember(dest => dest.Emails, opt => opt.MapFrom(s => s.Emails != null ? Mapper.Map<List<Email>, List<EmailModeloNegocio>>(s.Emails.ToList()) : null));
             #endregion
 
             #region Mapeamento de interessado pessoa jurídica
             CreateMap<InteressadoPessoaJuridica, InteressadoPessoaJuridicaModeloNegocio>()
-                .ForMember(dest => dest.Contatos, opt => opt.MapFrom(s => s.Contato != null ? Mapper.Map<List<Contato>, List<ContatoModeloNegocio>>(s.Contato.ToList()) : null))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(s => s.Email != null ? Mapper.Map<List<Email>, List<EmailModeloNegocio>>(s.Email.ToList()) : null));
+                .ForMember(dest => dest.Contatos, opt => opt.MapFrom(s => s.Contatos != null ? Mapper.Map<List<Contato>, List<ContatoModeloNegocio>>(s.Contatos.ToList()) : null))
+                .ForMember(dest => dest.Emails, opt => opt.MapFrom(s => s.Emails != null ? Mapper.Map<List<Email>, List<EmailModeloNegocio>>(s.Emails.ToList()) : null));
             #endregion
 
 

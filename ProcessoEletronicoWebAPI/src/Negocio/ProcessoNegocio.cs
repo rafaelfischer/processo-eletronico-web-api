@@ -46,10 +46,10 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                         && p.Id == idProcesso)
                                                .Include(p => p.Anexos)
                                                .Include(p => p.Despachos)
-                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
-                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Email)
-                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
-                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Email)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Emails)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Emails)
                                                .Include(p => p.MunicipiosProcesso)
                                                .Include(p => p.SinalizacoesProcesso).ThenInclude(sp => sp.Sinalizacao)
                                                .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
@@ -107,7 +107,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return r;
         }
 
-        public void Autuar(ProcessoModeloNegocio processoNegocio, int IdOrganizacao)
+        public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int IdOrganizacao)
         {
             /*Validações*/
             processoValidacao.Preenchido(processoNegocio);
@@ -121,10 +121,12 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
             /*Gera número do processo*/
             NumeracaoProcesso(processo, IdOrganizacao);
+            
             repositorioProcessos.Add(processo);
             unitOfWork.Save();
+
+            return Pesquisar(IdOrganizacao, processo.Id);
             
-            throw new NotImplementedException("Processo de número " + processo.Sequencial + "-" + processo.DigitoVerificador + "/" + processo.Ano + " autuado com sucesso!");
         }
 
         public void Despachar()

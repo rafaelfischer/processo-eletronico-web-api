@@ -7,7 +7,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public Processo()
         {
-            Anexo = new HashSet<Anexo>();
+            Anexos = new HashSet<Anexo>();
             InteressadosPessoaFisica = new HashSet<InteressadoPessoaFisica>();
             InteressadosPessoaJuridica = new HashSet<InteressadoPessoaJuridica>();
             MunicipiosProcesso = new HashSet<MunicipioProcesso>();

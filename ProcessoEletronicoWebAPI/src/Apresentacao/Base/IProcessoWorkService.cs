@@ -11,7 +11,7 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         void Listar();
         ProcessoCompletoModelo Pesquisar(int idOrganizacaoProcesso, int idProcesso);
         void Pesquisar(string numeroProcesso);
-        void Autuar(ProcessoModeloPost processoPost, int idOrganizacao);
+        ProcessoCompletoModelo Autuar(ProcessoModeloPost processoPost, int idOrganizacao);
         void Despachar();
         void Excluir();
         List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade);
