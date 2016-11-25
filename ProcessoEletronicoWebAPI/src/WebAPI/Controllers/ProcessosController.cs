@@ -81,11 +81,11 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost)
+        public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost, int id)
         {
             try
             {
-                service.Autuar(processoPost);
+                service.Autuar(processoPost, id);
                 return Created("http://.../api/processos/1", processoPost);
             }
             catch (Exception e)

@@ -11,6 +11,7 @@ using ProcessoEletronicoService.Dominio.Modelos;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Validacao;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 
 namespace ProcessoEletronicoService.Negocio.Restrito
 {
@@ -18,6 +19,8 @@ namespace ProcessoEletronicoService.Negocio.Restrito
     {
         IUnitOfWork unitOfWork;
         IRepositorioGenerico<Processo> repositorioProcessos;
+        IRepositorioGenerico<OrganizacaoProcesso> repositorioOrganizacoesProcesso;
+
         ProcessoValidacao processoValidacao;
         InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
@@ -26,6 +29,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         {
             this.unitOfWork = repositorios.UnitOfWork;
             this.repositorioProcessos = repositorios.Processos;
+            this.repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             this.processoValidacao = new ProcessoValidacao(repositorios);
             this.interessadoPessoaFisicaValidacao = new InteressadoPessoaFisicaValidacao(repositorios);
             this.repositorioDespachos = repositorios.Despachos;
@@ -87,11 +91,24 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return r;
         }
 
-        public void Autuar(ProcessoModeloNegocio processoNegocio)
+        public void Autuar(ProcessoModeloNegocio processoNegocio, int IdOrganizacao)
         {
+            /*Validações*/
             processoValidacao.Preenchido(processoNegocio);
             processoValidacao.Valido(processoNegocio);
-            throw new NotImplementedException("Processo Válido");
+
+            /*Mapeamento para inserção*/
+            Processo processo = new Processo();
+            processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
+            
+            InformacaoPadrao(processo, IdOrganizacao);
+
+            /*Gera número do processo*/
+            NumeracaoProcesso(processo, IdOrganizacao);
+            repositorioProcessos.Add(processo);
+            unitOfWork.Save();
+            
+            throw new NotImplementedException("Processo de número " + processo.Sequencial + "-" + processo.DigitoVerificador + "/" + processo.Ano + " autuado com sucesso!");
         }
 
         public void Despachar()
@@ -103,5 +120,51 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         {
             throw new NotImplementedException();
         }
+
+        private void InformacaoPadrao(Processo processo, int idOrganizacao)
+        {
+            processo.IdOrganizacaoProcesso = idOrganizacao;
+            processo.DataAutuacao = DateTime.Now;
+        }
+
+        private void NumeracaoProcesso(Processo processo, int idOrganizacao)
+        {
+
+            processo.DigitoOrganizacao = repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(s => s.NumeroOrganiacao).SingleOrDefault();
+            processo.DigitoPoder = (byte)repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(o => o.DigitoPoder.Id).SingleOrDefault();
+            processo.DigitoEsfera = (byte)repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(o => o.DigitoEsfera.Id).SingleOrDefault();
+            processo.Ano = (short)DateTime.Now.Year;
+
+            processo.Sequencial = repositorioProcessos.Where(p => p.Ano == processo.Ano
+                                                 && p.DigitoEsfera == processo.DigitoEsfera
+                                                 && p.DigitoPoder == processo.DigitoPoder
+                                                 && p.DigitoOrganizacao == processo.DigitoOrganizacao)
+                                                 .GroupBy(g => new { g.Ano, g.DigitoEsfera, g.DigitoPoder, g.DigitoOrganizacao }).Select(p => p.Max(s => s.Sequencial)).FirstOrDefault() + 1;
+
+
+            processo.DigitoVerificador = (byte)DigitoVerificador(processo.Sequencial);
+                    
+        }
+
+        private int DigitoVerificador (int numero)
+        {
+            /*Digito Verificador base 11*/
+
+            int i = 0;
+            int soma = 0;
+            int digitoVerificador = 0;
+            string numeroString = numero.ToString();
+
+            for (i = 0; i < numeroString.Length; i++)
+            {
+                soma += (int)Char.GetNumericValue(numeroString[numeroString.Length - 1 - i]) * (i + 2);
+            }
+
+            digitoVerificador = 11 - (soma % 11);
+
+            return digitoVerificador;
+
+        }
+
     }
 }

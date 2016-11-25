@@ -55,13 +55,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #region Mapeamento de Interessados (Pessoa Física e Jurídica)
             CreateMap<InteressadoPessoaFisicaModelo, InteressadoPessoaFisicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.Municipio, opt => opt.MapFrom(src => src.Municipio))
-                ;
+                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails));
             CreateMap<InteressadoPessoaJuridicaModelo, InteressadoPessoaJuridicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.Municipio, opt => opt.MapFrom(src => src.Municipio));
+                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails));
             #endregion
 
             #region Mapeamento de Municipio
@@ -105,7 +102,12 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #region Mapeamento de Sinalização
             CreateMap<int, SinalizacaoModeloNegocio>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src));
+
+            CreateMap<SinalizacaoModeloNegocio, SinalizacaoModelo>().
+                ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id));
+            
             #endregion
+
             
 
         }

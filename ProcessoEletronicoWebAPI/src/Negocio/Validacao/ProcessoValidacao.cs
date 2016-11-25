@@ -16,6 +16,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao;
         InteressadoPessoaJuridicaValidacao interessadoPessoaJuridicaValidacao;
         MunicipioValidacao municipioValidacao;
+        SinalizacaoValidacao sinalizacaoValidacao;
 
 
         public ProcessoValidacao(IProcessoEletronicoRepositorios repositorios)
@@ -25,6 +26,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaFisicaValidacao = new InteressadoPessoaFisicaValidacao(repositorios);
             interessadoPessoaJuridicaValidacao = new InteressadoPessoaJuridicaValidacao(repositorios);
             municipioValidacao = new MunicipioValidacao();
+            sinalizacaoValidacao = new SinalizacaoValidacao(repositorios);
         }
 
         #region Preechimento dos campos obrigatórios
@@ -49,6 +51,8 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaFisicaValidacao.Preenchido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Preenchido(processo.InteressadosPessoaJuridica);
             municipioValidacao.Preenchido(processo.MunicipiosProcesso);
+            sinalizacaoValidacao.IdValido(processo.Sinalizacoes);
+            sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
             //Validar Anexo
         }
 

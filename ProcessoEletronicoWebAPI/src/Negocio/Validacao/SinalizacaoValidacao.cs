@@ -34,6 +34,14 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
+        public void SinalizacaoExistente(List<SinalizacaoModeloNegocio> sinalizacoes)
+        {
+            foreach (SinalizacaoModeloNegocio sinalizacao in sinalizacoes)
+            {
+                SinalizacaoExistente(sinalizacao);
+            }
+        }
+
         public void SinalizacaoExistente(SinalizacaoModeloNegocio sinalizacao)
         {
             if (repositorioSinalizacoes.Where(s => s.Id == sinalizacao.Id).SingleOrDefault() == null)

@@ -18,6 +18,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             Despachos = UnitOfWork.MakeGenericRepository<Despacho>();
             Funcoes = UnitOfWork.MakeGenericRepository<Funcao>();
             PlanosClassificacao = UnitOfWork.MakeGenericRepository<PlanoClassificacao>();
+            OrganizacoesProcesso = UnitOfWork.MakeGenericRepository<OrganizacaoProcesso>();
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
             TiposContato = UnitOfWork.MakeGenericRepository<TipoContato>();
             TiposDocumentais = UnitOfWork.MakeGenericRepository<TipoDocumental>();
@@ -29,6 +30,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         public IRepositorioGenerico<Atividade> Atividades { get; private set; }
         public IRepositorioGenerico<Despacho> Despachos { get; private set; }
         public IRepositorioGenerico<Funcao> Funcoes { get; private set; }
+        public IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; private set; }
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }
         public IRepositorioGenerico<Processo> Processos { get; private set; }
         public IRepositorioGenerico<TipoContato> TiposContato { get; private set; }

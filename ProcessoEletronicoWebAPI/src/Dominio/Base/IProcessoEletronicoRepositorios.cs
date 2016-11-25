@@ -14,6 +14,7 @@ namespace ProcessoEletronicoService.Dominio.Base
         IRepositorioGenerico<Despacho> Despachos { get; }
         IRepositorioGenerico<Funcao> Funcoes { get; }
         IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; }
+        IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; }
         IRepositorioGenerico<Processo> Processos { get; }
         IRepositorioGenerico<TipoContato> TiposContato { get; }
         IRepositorioGenerico<TipoDocumental> TiposDocumentais { get; }

@@ -61,7 +61,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void UfPreenchida(InteressadoPessoaJuridicaModeloNegocio interessado)
         {
-            if (string.IsNullOrWhiteSpace(interessado.Uf))
+            if (string.IsNullOrWhiteSpace(interessado.UfMunicipio))
             {
                 throw new RequisicaoInvalidaException("Uf do interessado não preenchido.");
             }
@@ -69,7 +69,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void MunicipioPreenchido(InteressadoPessoaJuridicaModeloNegocio interessado)
         {
-            if (string.IsNullOrWhiteSpace(interessado.Municipio))
+            if (string.IsNullOrWhiteSpace(interessado.NomeMunicipio))
             {
                 throw new RequisicaoInvalidaException("Municipio do interessado não preenchido.");
             }
