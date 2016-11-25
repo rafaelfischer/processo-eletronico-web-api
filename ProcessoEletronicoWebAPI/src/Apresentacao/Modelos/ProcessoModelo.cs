@@ -53,5 +53,28 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string Numero { get; set; }
     }
 
+    public class ProcessoCompletoModelo
+    {
+        public int Id { get; set; }
+        public string Resumo { get; set; }
+        public int IdOrgaoAutuador { get; set; }
+        public string NomeOrgaoAutuador { get; set; }
+        public string SiglaOrgaoAutuador { get; set; }
+        public int IdUnidadeAutuadora { get; set; }
+        public string NomeUnidadeAutuadora { get; set; }
+        public string SiglaUnidadeAutuadora { get; set; }
+        public string IdUsuarioAutuador { get; set; }
+        public string NomeUsuarioAutuador { get; set; }
+        public string DataAutuacao { get; set; }
+        public string Numero { get; set; }
+        public int IdOrganizacaoProcesso { get; set; }
 
+        public List<AnexoProcessoGetModelo> Anexos { get; set; }
+        public List<DespachoProcessoGetModelo> Despachos { get; set; }
+        public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadosPessoaFisica { get; set; }
+        public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }
+        public List<MunicipioProcessoModelo> MunicipiosProcesso { get; set; }
+        public List<SinalizacaoProcessoGetModelo> Sinalizacoes { get; set; }
+        public AtividadeProcessoGetModelo Atividade { get; set; }
+    }
 }

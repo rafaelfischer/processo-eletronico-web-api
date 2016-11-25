@@ -34,8 +34,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public DateTime DataAutuacao { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
 
-        public virtual ICollection<Anexo> Anexo { get; set; }
-        public virtual ICollection<Despacho> Despacho { get; set; }
+        public virtual ICollection<Anexo> Anexos { get; set; }
+        public virtual ICollection<Despacho> Despachos { get; set; }
         public virtual ICollection<InteressadoPessoaFisica> InteressadosPessoaFisica { get; set; }
         public virtual ICollection<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; set; }
         public virtual ICollection<MunicipioProcesso> MunicipiosProcesso { get; set; }

@@ -9,9 +9,9 @@ namespace ProcessoEletronicoService.Negocio.Base
     public interface IProcessoNegocio
     {
         void Listar();
-        void Pesquisar(int id);
+        ProcessoModeloNegocio Pesquisar(int idOrganizacaoProcesso, int idProcesso);
         void Pesquisar(string numeroProcesso);
-        List<ProcessoModeloNegocio> Pesquisar(int idOrganizacaoProcesso, int idUnidade);
+        List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(int idOrganizacaoProcesso, int idUnidade);
         void Autuar(ProcessoModeloNegocio processoNegocio, int idOrganizacao);
         void Despachar();
         void Excluir();

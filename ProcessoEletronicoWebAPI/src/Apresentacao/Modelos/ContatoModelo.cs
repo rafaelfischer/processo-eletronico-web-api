@@ -13,4 +13,12 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         [Required]
         public int IdTipoContato { get; set; }
     }
+
+    public class ContatoProcessoGetModelo
+    {
+        public int Id { get; set; }
+        public string Telefone { get; set; }
+
+        public TipoContatoProcessoGetModelo TipoContato { get; set; }
+    }
 }

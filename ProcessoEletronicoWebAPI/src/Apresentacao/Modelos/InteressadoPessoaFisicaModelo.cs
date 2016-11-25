@@ -19,6 +19,16 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         [Required]
         public string NomeMunicipio { get; set; }
     }
-     
 
+    public class InteressadoPessoaFisicaProcessoGetModelo
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Cpf { get; set; }
+        public string NomeMunicipio { get; set; }
+        public string UfMunicipio { get; set; }
+
+        public List<ContatoProcessoGetModelo> Contatos { get; set; }
+        public List<EmailModelo> Emails { get; set; }
+    }
 }

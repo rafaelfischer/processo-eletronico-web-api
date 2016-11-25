@@ -13,10 +13,10 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string Sigla { get; set; }
         public string NomeUnidade { get; set; }
         public string SiglaUnidade { get; set; }
+        public string NomeMunicipio { get; set; }
+        public string UfMunicipio { get; set; }
+
         public List<ContatoModeloNegocio> Contatos { get; set; }
         public List<EmailModeloNegocio> Emails { get; set; }
-        public string UfMunicipio { get; set; }
-        public string NomeMunicipio { get; set; }
-
     }
 }

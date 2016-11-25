@@ -10,6 +10,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int IdProcesso { get; set; }
 
         public virtual Processo IdProcessoNavigation { get; set; }
-        public virtual Sinalizacao IdSinalizacaoNavigation { get; set; }
+        public virtual Sinalizacao Sinalizacao { get; set; }
     }
 }
