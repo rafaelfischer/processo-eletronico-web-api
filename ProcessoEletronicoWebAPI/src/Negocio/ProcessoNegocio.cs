@@ -57,6 +57,29 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return p1;
         }
 
+        public ProcessoModeloNegocio PesquisarPorNumero(int idOrganizacaoProcesso, string numero)
+        {
+            int sequencial = ObterSequencial(numero);
+
+            var processo = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
+                                                        && p.Id == idProcesso)
+                                               .Include(p => p.Anexos)
+                                               .Include(p => p.Despachos)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Email)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Contato).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Email)
+                                               .Include(p => p.MunicipiosProcesso)
+                                               .Include(p => p.SinalizacoesProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                               .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
+                                               .Include(p => p.OrganizacaoProcesso)
+                                               .SingleOrDefault();
+
+            var p1 = Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
+
+            return p1;
+        }
+
         public void Pesquisar(string numeroProcesso)
         {
             throw new NotImplementedException();
@@ -119,5 +142,12 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         {
             throw new NotImplementedException();
         }
+
+        private int ObterSequencial(string numero)
+        {
+            string stringSequencial = numero.Split('-')[0];
+            throw new NotImplementedException();
+        }
+
     }
 }
