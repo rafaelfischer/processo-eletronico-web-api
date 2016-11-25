@@ -111,8 +111,6 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             processoValidacao.Preenchido(processoNegocio);
             processoValidacao.Valido(processoNegocio);
 
-            throw new NotImplementedException("Valido");
-
             /*Mapeamento para inserção*/
             Processo processo = new Processo();
             processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
@@ -122,10 +120,8 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             /*Gera número do processo*/
             NumeracaoProcesso(processo, IdOrganizacao);
             
-            //repositorioProcessos.Add(processo);
-            //unitOfWork.Save();
-
-           
+            repositorioProcessos.Add(processo);
+            unitOfWork.Save();
 
             return Pesquisar(IdOrganizacao, processo.Id);
             
