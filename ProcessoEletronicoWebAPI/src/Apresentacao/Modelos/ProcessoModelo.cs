@@ -16,7 +16,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<InteressadoPessoaJuridicaModelo> InteressadosPessoaJuridica { get; set; }
         [Required]
         public List<MunicipioProcessoModelo> Municipios { get; set; }
-        public List<AnexoModelo> Anexos { get; set; }
+        //public List<AnexoModelo> Anexos { get; set; }
         public List<int> IdSinalizacoes { get; set; }
         public int IdOrgaoAutuador { get; set; }
         [Required]
@@ -69,7 +69,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string Numero { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
 
-        public List<AnexoProcessoGetModelo> Anexos { get; set; }
+        //public List<AnexoProcessoGetModelo> Anexos { get; set; }
         public List<DespachoProcessoGetModelo> Despachos { get; set; }
         public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }

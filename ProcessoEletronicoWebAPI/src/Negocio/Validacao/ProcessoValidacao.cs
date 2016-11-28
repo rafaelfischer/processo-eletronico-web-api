@@ -60,6 +60,12 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         /*Atividade*/
         internal void AtividadePreenchida(ProcessoModeloNegocio processo)
         {
+
+            if (processo.Atividade == null)
+            {
+                throw new RequisicaoInvalidaException("Atividade não preenchida.");
+            }
+
             if (processo.Atividade.Id <= 0)
             {
                 throw new RequisicaoInvalidaException("Atividade não preenchida.");
