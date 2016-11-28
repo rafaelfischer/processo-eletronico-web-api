@@ -52,6 +52,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaJuridicaValidacao.Preenchido(processo.InteressadosPessoaJuridica);
             municipioValidacao.Preenchido(processo.MunicipiosProcesso);
             sinalizacaoValidacao.IdValido(processo.Sinalizacoes);
+
             
             //Validar Anexo
         }
@@ -178,6 +179,9 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaFisicaValidacao.Valido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Valido(processo.InteressadosPessoaJuridica);
             sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
+            UfMunicipioValida(processo);
+            SiglaOrgaoAutuadorValido(processo);
+            SiglaUnidadeAutuadoraValida(processo);
 
         }
 
@@ -188,6 +192,33 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RecursoNaoEncontradoException("Atividade não existente.");
             }
 
+        }
+
+        internal void UfMunicipioValida (ProcessoModeloNegocio processo)
+        {
+           foreach (MunicipioProcessoModeloNegocio municipio in processo.MunicipiosProcesso)
+            {
+                if (municipio.Uf.Length != 2)
+                {
+                    throw new RequisicaoInvalidaException("Uf do município deve conter 2 dígitos");
+                }
+            }
+        }
+
+        internal void SiglaOrgaoAutuadorValido(ProcessoModeloNegocio processo)
+        {
+            if (processo.SiglaOrgaoAutuador.Length > 10)
+            {
+                throw new RequisicaoInvalidaException("Sigla do órgão autuador deve conter no máximo 10 caracteres");
+            }
+        }
+
+        internal void SiglaUnidadeAutuadoraValida(ProcessoModeloNegocio processo)
+        {
+            if (processo.SiglaUnidadeAutuadora.Length > 10)
+            {
+                throw new RequisicaoInvalidaException("Sigla da unidade autuadora deve conter no máximo 10 caracteres");
+            }
         }
 
         internal void NumeroValido(string numero)

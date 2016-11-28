@@ -245,6 +245,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         {
             processo.IdOrganizacaoProcesso = idOrganizacao;
             processo.DataAutuacao = DateTime.Now;
+
         }
 
         private void NumeracaoProcesso(Processo processo, int idOrganizacao)

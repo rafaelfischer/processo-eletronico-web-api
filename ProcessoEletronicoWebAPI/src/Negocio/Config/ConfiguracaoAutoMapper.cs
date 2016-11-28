@@ -90,7 +90,8 @@ namespace ProcessoEletronicoService.Negocio.Config
 
 
             #region Mapeamento de Municipio do Processo
-            CreateMap<MunicipioProcessoModeloNegocio, MunicipioProcesso>();
+            CreateMap<MunicipioProcessoModeloNegocio, MunicipioProcesso>()
+                .ForMember(dest => dest.Uf, opt => opt.MapFrom(src => src.Uf.ToUpper()));
 
             CreateMap<MunicipioProcesso, MunicipioProcessoModeloNegocio>();
             #endregion
