@@ -135,7 +135,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoModelo>()
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoProcessoGetModelo>();
             #endregion
