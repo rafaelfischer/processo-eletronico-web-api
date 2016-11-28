@@ -98,6 +98,15 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             cpfValidacao.CpfValido(interessado.Cpf);
             emailValidacao.Valido(interessado.Emails);
             contatoValidacao.Valido(interessado.Contatos);
+            UfValida(interessado);
+        }
+
+        internal void UfValida(InteressadoPessoaFisicaModeloNegocio interessado)
+        {
+            if (interessado.UfMunicipio.Length > 2)
+            {
+                throw new RequisicaoInvalidaException("Uf do município do interessado deve conter apenas 2 dígitos.");
+            }
         }
 
         internal void DuplicidadeCPF(List<InteressadoPessoaFisicaModeloNegocio> interessados)

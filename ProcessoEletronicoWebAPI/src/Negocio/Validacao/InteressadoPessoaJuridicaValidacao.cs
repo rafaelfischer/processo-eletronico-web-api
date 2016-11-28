@@ -94,7 +94,15 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             cnpjValidacao.CnpjValido(interessado.Cnpj);
             emailValidacao.Valido(interessado.Emails);
             contatoValidacao.Valido(interessado.Contatos);
-            
+            UfValida(interessado);
+        }
+
+        internal void UfValida(InteressadoPessoaJuridicaModeloNegocio interessado)
+        {
+            if (interessado.UfMunicipio.Length > 2)
+            {
+                throw new RequisicaoInvalidaException("Uf do município do interessado deve conter apenas 2 dígitos.");
+            }
         }
 
         internal void DuplicidadeCNPJ(List<InteressadoPessoaJuridicaModeloNegocio> interessados)
