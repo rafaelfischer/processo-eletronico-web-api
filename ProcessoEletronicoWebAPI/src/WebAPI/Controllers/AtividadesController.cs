@@ -19,7 +19,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             this.service = service;
         }
 
-        [HttpGet]
+        [HttpGet("{idFuncao}")]
         public IActionResult Get(int id, int idFuncao)
         {
             try
