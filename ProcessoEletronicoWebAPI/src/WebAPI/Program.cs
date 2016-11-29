@@ -9,7 +9,9 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
-            var url = Environment.GetEnvironmentVariable("ProcessoEletronicoUrl") ?? "http://*:3308";
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "3308";
+            var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH");
+            var url = $"http://*:{port}{requestPath}";
 
             var host = new WebHostBuilder()
                 .UseKestrel()
