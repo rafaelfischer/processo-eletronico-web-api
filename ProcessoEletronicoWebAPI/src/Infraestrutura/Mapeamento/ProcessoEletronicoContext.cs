@@ -39,15 +39,19 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
         {
             modelBuilder.Entity<Anexo>(entity =>
             {
-                entity.HasIndex(e => new { e.Nome, e.IdProcesso })
-                    .HasName("UK_AnexoNomeProcesso")
-                    .IsUnique();
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Conteudo)
                     .IsRequired()
                     .HasColumnName("conteudo");
+
+                entity.Property(e => e.DataCriacao)
+                    .HasColumnName("dataCriacao")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .HasColumnName("descricao")
+                    .HasColumnType("varchar(500)");
 
                 entity.Property(e => e.IdDespacho).HasColumnName("idDespacho");
 
@@ -55,31 +59,31 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdTipoDocumental).HasColumnName("idTipoDocumental");
 
+                entity.Property(e => e.MimeType)
+                    .IsRequired()
+                    .HasColumnName("mimeType")
+                    .HasColumnType("varchar(20)");
+
                 entity.Property(e => e.Nome)
                     .IsRequired()
                     .HasColumnName("nome")
-                    .HasColumnType("varchar(255)");
-
-                entity.Property(e => e.Tipo)
-                    .IsRequired()
-                    .HasColumnName("tipo")
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("varchar(100)");
 
                 entity.HasOne(d => d.Despacho)
-                    .WithMany(p => p.Anexo)
+                    .WithMany(p => p.Anexos)
                     .HasForeignKey(d => d.IdDespacho)
-                    .HasConstraintName("FK_Anexo_Despacho");
+                    .HasConstraintName("FK_AnexoDespacho");
 
                 entity.HasOne(d => d.Processo)
                     .WithMany(p => p.Anexos)
                     .HasForeignKey(d => d.IdProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Anexo_Processo");
+                    .HasConstraintName("FK_AnexoProcesso");
 
                 entity.HasOne(d => d.TipoDocumental)
                     .WithMany(p => p.Anexo)
                     .HasForeignKey(d => d.IdTipoDocumental)
-                    .HasConstraintName("FK_Anexo_TipoDocumental");
+                    .HasConstraintName("FK_AnexoTipoDocumental");
             });
 
             modelBuilder.Entity<Atividade>(entity =>

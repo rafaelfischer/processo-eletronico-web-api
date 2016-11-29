@@ -16,7 +16,6 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (emails != null)
             {
-
                 foreach (EmailModeloNegocio email in emails)
                 {
                     Preenchido(email);

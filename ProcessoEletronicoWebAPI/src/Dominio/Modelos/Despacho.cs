@@ -7,7 +7,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public Despacho()
         {
-            Anexo = new HashSet<Anexo>();
+            Anexos = new HashSet<Anexo>();
         }
 
         public int Id { get; set; }
@@ -23,7 +23,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string NomeUsuarioDespachante { get; set; }
         public DateTime DataHoraDespacho { get; set; }
 
-        public virtual ICollection<Anexo> Anexo { get; set; }
+        public virtual ICollection<Anexo> Anexos { get; set; }
         public virtual Processo Processo { get; set; }
     }
 }
