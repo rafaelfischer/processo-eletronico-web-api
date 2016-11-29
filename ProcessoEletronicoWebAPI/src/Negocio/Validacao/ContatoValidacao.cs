@@ -14,16 +14,19 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         IRepositorioGenerico<TipoContato> repositorioTiposContato;
 
-        public ContatoValidacao (IProcessoEletronicoRepositorios repositorios)
+        public ContatoValidacao(IProcessoEletronicoRepositorios repositorios)
         {
             this.repositorioTiposContato = repositorios.TiposContato;
         }
 
         public void Preenchido(List<ContatoModeloNegocio> contatos)
         {
-            foreach (ContatoModeloNegocio contato in contatos)
+            if (contatos != null)
             {
-                Preenchido(contato);
+                foreach (ContatoModeloNegocio contato in contatos)
+                {
+                    Preenchido(contato);
+                }
             }
         }
 
@@ -42,7 +45,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(contato.Telefone))
             {
-                throw new RequisicaoInvalidaException("Telefone do interessado não preenchido."); 
+                throw new RequisicaoInvalidaException("Telefone do interessado não preenchido.");
             }
         }
 
@@ -59,9 +62,12 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         #region Validação dos campos
         public void Valido(List<ContatoModeloNegocio> contatos)
         {
-            foreach (ContatoModeloNegocio contato in contatos)
+            if (contatos != null)
             {
-                Valido(contato);
+                foreach (ContatoModeloNegocio contato in contatos)
+                {
+                    Valido(contato);
+                }
             }
         }
 

@@ -151,7 +151,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
             /*Gera número do processo*/
             NumeracaoProcesso(processo, IdOrganizacao);
-
+            
             repositorioProcessos.Add(processo);
             unitOfWork.Save();
 

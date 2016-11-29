@@ -14,9 +14,14 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         public void Preenchido(List<EmailModeloNegocio> emails)
         {
-            foreach (EmailModeloNegocio email in emails)
+            if (emails != null)
             {
-                Preenchido(email);
+
+                foreach (EmailModeloNegocio email in emails)
+                {
+                    Preenchido(email);
+                }
+
             }
         }
 
@@ -40,12 +45,16 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void Valido(List<EmailModeloNegocio> emails)
         {
-            foreach (EmailModeloNegocio email in emails)
+            if (emails != null)
             {
-                Valido(email);
-            }
 
-            Repetido(emails);
+                foreach (EmailModeloNegocio email in emails)
+                {
+                    Valido(email);
+                }
+
+                Repetido(emails);
+            }
         }
 
         internal void Valido(EmailModeloNegocio email)
