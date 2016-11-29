@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
+using System;
+using System.IO;
 
 namespace WebAPI
 {
@@ -12,11 +9,13 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
+            var url = Environment.GetEnvironmentVariable("ProcessoEletronicoUrl") ?? "http://*:3308";
+
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://*:3308")
+                .UseUrls(url)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                //.UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 
