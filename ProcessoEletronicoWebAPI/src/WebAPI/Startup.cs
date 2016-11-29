@@ -109,6 +109,7 @@ namespace WebAPI
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
+            app.UseSwaggerUi("prodest/processoeletronico/api/documentation");
             app.UseSwaggerUi("api/documentation");
         }
     }

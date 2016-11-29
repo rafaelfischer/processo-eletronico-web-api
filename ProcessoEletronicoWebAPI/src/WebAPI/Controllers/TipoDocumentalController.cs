@@ -18,7 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             this.service = service;
         }
 
-        [HttpGet]
+        [HttpGet("{idAtividade}")]
         public IActionResult Listar(int id, [FromQuery] int idAtividade)
         {
             try
