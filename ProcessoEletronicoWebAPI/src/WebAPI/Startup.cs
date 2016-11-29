@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -108,9 +108,9 @@ namespace WebAPI
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
 
+            var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH") ?? string.Empty;
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
-            app.UseSwaggerUi("prodest/processoeletronico/api/documentation");
-            app.UseSwaggerUi("api/documentation");
+            app.UseSwaggerUi("api/documentation", requestPath + "/swagger/v1/swagger.json");
         }
     }
 }
