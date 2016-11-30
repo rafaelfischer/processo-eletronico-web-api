@@ -20,9 +20,13 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         public void IdValido(List<SinalizacaoModeloNegocio> sinalizacoes)
         {
-            foreach (SinalizacaoModeloNegocio sinalizacao in sinalizacoes)
+            if (sinalizacoes != null)
             {
-                IdValido(sinalizacao);
+                foreach (SinalizacaoModeloNegocio sinalizacao in sinalizacoes)
+                {
+                    IdValido(sinalizacao);
+                }
+
             }
         }
 
@@ -36,9 +40,12 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         public void SinalizacaoExistente(List<SinalizacaoModeloNegocio> sinalizacoes)
         {
-            foreach (SinalizacaoModeloNegocio sinalizacao in sinalizacoes)
+            if (sinalizacoes != null)
             {
-                SinalizacaoExistente(sinalizacao);
+                foreach (SinalizacaoModeloNegocio sinalizacao in sinalizacoes)
+                {
+                    SinalizacaoExistente(sinalizacao);
+                }
             }
         }
 

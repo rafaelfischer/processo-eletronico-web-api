@@ -87,7 +87,20 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void InteressadoPreenchido(ProcessoModeloNegocio processo)
         {
-            if (processo.InteressadosPessoaFisica.Count + processo.InteressadosPessoaJuridica.Count == 0)
+            int countInteressadoPessoaFisica = 0;
+            int countInteressadoPessoaJuridica = 0;
+
+            if (processo.InteressadosPessoaFisica != null)
+            {
+                countInteressadoPessoaFisica = processo.InteressadosPessoaFisica.Count;
+            }
+
+            if (processo.InteressadosPessoaJuridica != null)
+            {
+                countInteressadoPessoaJuridica = processo.InteressadosPessoaJuridica.Count;
+            }
+
+            if (countInteressadoPessoaFisica + countInteressadoPessoaJuridica == 0)
             {
                 throw new RequisicaoInvalidaException("O processo deve possuir ao menos um interessado.");
             }
