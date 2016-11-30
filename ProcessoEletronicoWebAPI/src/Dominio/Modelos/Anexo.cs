@@ -10,7 +10,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string Descricao { get; set; }
         public byte[] Conteudo { get; set; }
         public string MimeType { get; set; }
-        public DateTime DataCriacao { get; set; }
         public int IdProcesso { get; set; }
         public int? IdTipoDocumental { get; set; }
         public int? IdDespacho { get; set; }

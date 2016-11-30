@@ -79,7 +79,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                         && p.DigitoPoder == digitoPoder
                                                         && p.DigitoEsfera == digitoEsfera
                                                         && p.DigitoOrganizacao == digitoOrganizacao)
-                                                   .Include(p => p.Anexos)
+                                                   .Include(p => p.Anexos).ThenInclude(a => a.TipoDocumental)
                                                    .Include(p => p.Despachos)
                                                    .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
                                                    .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Emails)

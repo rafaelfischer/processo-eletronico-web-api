@@ -11,6 +11,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public byte[] Conteudo { get; set; }
+        public string ConteudoString { get; set; }
         public string MimeType { get; set; }
         public TipoDocumentalModeloNegocio TipoDocumental { get; set; }
 
