@@ -121,7 +121,10 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <summary>
         /// Autuação de Processos
         /// </summary>
-        /// <remarks>Apesar das listas de interessados estarem sinalizadas como opcionais, o Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica)</remarks>
+        /// <remarks>
+        /// Apesar das listas de interessados estarem sinalizadas como opcionais, o Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica).
+        /// O campo "conteudo" dos anexos do processo é uma string. O arquivo deve ser codificado para uma string base64 antes de ser enviado para a API.
+        /// </remarks>
         /// <param name="processoPost"></param>
         /// <param name="id"></param>
         /// <returns></returns>

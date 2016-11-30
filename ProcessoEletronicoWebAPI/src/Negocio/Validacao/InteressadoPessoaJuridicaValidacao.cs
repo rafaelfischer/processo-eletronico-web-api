@@ -24,9 +24,13 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         public void Preenchido(List<InteressadoPessoaJuridicaModeloNegocio> interessados)
         {
-            foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
+            if (interessados != null)
             {
-                Preenchido(interessado);
+                foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
+                {
+                    Preenchido(interessado);
+                }
+
             }
         }
 
@@ -47,7 +51,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(interessado.RazaoSocial))
             {
-                throw new RequisicaoInvalidaException("Razão Social do interessado não preenchida."); 
+                throw new RequisicaoInvalidaException("Razão Social do interessado não preenchida.");
             }
         }
 
@@ -75,18 +79,22 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        
+
         #endregion
-        
+
         #region Validação dos campos
         internal void Valido(List<InteressadoPessoaJuridicaModeloNegocio> interessados)
         {
-            foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
+            if (interessados != null)
             {
-                Valido(interessado);
-            }
+                foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
+                {
+                    Valido(interessado);
+                }
 
-            DuplicidadeCNPJ(interessados);   
+                DuplicidadeCNPJ(interessados);
+
+            }
         }
 
         internal void Valido(InteressadoPessoaJuridicaModeloNegocio interessado)

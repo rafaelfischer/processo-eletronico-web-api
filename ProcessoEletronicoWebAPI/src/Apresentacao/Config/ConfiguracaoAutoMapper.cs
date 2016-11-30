@@ -4,6 +4,7 @@ using ProcessoEletronicoService.Infraestrutura.Repositorios.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Config;
 using System.Collections.Generic;
+using System;
 
 namespace ProcessoEletronicoService.Apresentacao.Config
 {
@@ -36,6 +37,12 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<AtividadeModeloNegocio, AtividadeProcessoGetModelo>();
 
             CreateMap<AtividadeModelo, AtividadeModeloNegocio>();
+            #endregion
+
+            #region Mapeamento de Anexos
+            CreateMap<AnexoModelo, AnexoModeloNegocio>()
+                .ForMember(dest => dest.Conteudo, opt => opt.MapFrom(src => Convert.FromBase64String(src.Conteudo)))
+                .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.IdTipoDocumental.HasValue ? new TipoDocumentalModeloNegocio { Id = src.IdTipoDocumental.Value } : null));
             #endregion
 
             #region Mapeamento de Email
@@ -99,7 +106,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaFisicaModelo>, List<InteressadoPessoaFisicaModeloNegocio>>(src.InteressadosPessoaFisica)))
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModelo>, List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(src => src.IdSinalizacoes))
-                .ForMember(dest => dest.Anexos , opt => opt.Ignore())
+                .ForMember(dest => dest.Anexos , opt => opt.MapFrom(src => src.Anexos))
                 .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.Municipios));
             CreateMap<ProcessoModeloNegocio, ProcessoModelo>()
                 .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))

@@ -9,14 +9,10 @@ namespace ProcessoEletronicoService.Negocio.Modelos
     {
         public int Id { get; set; }
         public string Nome { get; set; }
+        public string Descricao { get; set; }
         public byte[] Conteudo { get; set; }
-        public string Tipo { get; set; }
-        public int IdProcesso { get; set; }
-        public int? IdTipoDocumental { get; set; }
-        public int? IdDespacho { get; set; }
+        public string MimeType { get; set; }
+        public TipoDocumentalModeloNegocio TipoDocumental { get; set; }
 
-        public virtual DespachoModeloNegocio Despacho { get; set; }
-        public virtual ProcessoModeloNegocio Processo { get; set; }
-        public virtual TipoDocumentalModeloNegocio TipoDocumental { get; set; }
     }
 }

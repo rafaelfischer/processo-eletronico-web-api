@@ -17,6 +17,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         InteressadoPessoaJuridicaValidacao interessadoPessoaJuridicaValidacao;
         MunicipioValidacao municipioValidacao;
         SinalizacaoValidacao sinalizacaoValidacao;
+        AnexoValidacao anexoValidacao;
 
 
         public ProcessoValidacao(IProcessoEletronicoRepositorios repositorios)
@@ -27,6 +28,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaJuridicaValidacao = new InteressadoPessoaJuridicaValidacao(repositorios);
             municipioValidacao = new MunicipioValidacao();
             sinalizacaoValidacao = new SinalizacaoValidacao(repositorios);
+            anexoValidacao = new AnexoValidacao();
         }
 
         #region Preechimento dos campos obrigatórios
@@ -38,6 +40,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             ResumoPreechido(processo);
             InteressadoPreenchido(processo);
             MunicipioPreenchido(processo);
+            anexoValidacao.Preenchido(processo.Anexos);
             IdOrgaoAutuadorPreenchido(processo);
             OrgaoAutuadorPreenchido(processo);
             SiglaOrgaoAutuadorPreenchido(processo);
@@ -53,10 +56,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             municipioValidacao.Preenchido(processo.MunicipiosProcesso);
             sinalizacaoValidacao.IdValido(processo.Sinalizacoes);
 
-            
-            //Validar Anexo
         }
-
 
         /*Atividade*/
         internal void AtividadePreenchida(ProcessoModeloNegocio processo)
@@ -179,6 +179,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaFisicaValidacao.Valido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Valido(processo.InteressadosPessoaJuridica);
             sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
+            anexoValidacao.Valido(processo.Anexos);
             UfMunicipioValida(processo);
             SiglaOrgaoAutuadorValido(processo);
             SiglaUnidadeAutuadoraValida(processo);

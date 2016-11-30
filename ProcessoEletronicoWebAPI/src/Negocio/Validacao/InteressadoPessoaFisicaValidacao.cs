@@ -24,9 +24,12 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         public void Preenchido(List<InteressadoPessoaFisicaModeloNegocio> interessados)
         {
-            foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessados)
+            if (interessados != null)
             {
-                Preenchido(interessado);
+                foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessados)
+                {
+                    Preenchido(interessado);
+                }
             }
         }
 
@@ -84,12 +87,16 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         #region Validação dos campos
         public void Valido(List<InteressadoPessoaFisicaModeloNegocio> interessados)
         {
-            foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessados)
+            if (interessados != null)
             {
-                Valido(interessado);
-            }
 
-            DuplicidadeCPF(interessados);
+                foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessados)
+                {
+                    Valido(interessado);
+                }
+
+                DuplicidadeCPF(interessados);
+            }
 
         }
 

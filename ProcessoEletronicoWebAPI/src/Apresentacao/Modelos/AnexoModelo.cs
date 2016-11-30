@@ -10,10 +10,13 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
     {
         [Required]
         public string Nome { get; set; }
+        public string Descricao { get; set; }
         [Required]
-        public byte[] Conteudo { get; set; }
+        public string Conteudo { get; set; }
         [Required]
-        public string Tipo { get; set; }
+        public string MimeType { get; set; }
+        public int? IdTipoDocumental { get; set; }
+        
     }
 
     public class AnexoProcessoGetModelo
