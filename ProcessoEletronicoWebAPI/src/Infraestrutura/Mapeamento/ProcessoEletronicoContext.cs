@@ -45,10 +45,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .IsRequired()
                     .HasColumnName("conteudo");
 
-                entity.Property(e => e.DataCriacao)
-                    .HasColumnName("dataCriacao")
-                    .HasColumnType("datetime");
-
                 entity.Property(e => e.Descricao)
                     .HasColumnName("descricao")
                     .HasColumnType("varchar(500)");

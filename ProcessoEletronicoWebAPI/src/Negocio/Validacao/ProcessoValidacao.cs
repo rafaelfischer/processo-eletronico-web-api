@@ -28,7 +28,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaJuridicaValidacao = new InteressadoPessoaJuridicaValidacao(repositorios);
             municipioValidacao = new MunicipioValidacao();
             sinalizacaoValidacao = new SinalizacaoValidacao(repositorios);
-            anexoValidacao = new AnexoValidacao();
+            anexoValidacao = new AnexoValidacao(repositorios);
         }
 
         #region Preechimento dos campos obrigatórios
@@ -192,7 +192,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaFisicaValidacao.Valido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Valido(processo.InteressadosPessoaJuridica);
             sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
-            anexoValidacao.Valido(processo.Anexos);
+            anexoValidacao.Valido(processo.Anexos, processo.Atividade.Id);
             UfMunicipioValida(processo);
             SiglaOrgaoAutuadorValido(processo);
             SiglaUnidadeAutuadoraValida(processo);

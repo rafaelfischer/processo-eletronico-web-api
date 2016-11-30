@@ -41,7 +41,8 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             #region Mapeamento de Anexos
             CreateMap<AnexoModelo, AnexoModeloNegocio>()
-                .ForMember(dest => dest.Conteudo, opt => opt.MapFrom(src => Convert.FromBase64String(src.Conteudo)))
+                .ForMember(dest => dest.Conteudo, opt => opt.Ignore())
+                .ForMember(dest => dest.ConteudoString, opt => opt.MapFrom(src => src.Conteudo))
                 .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.IdTipoDocumental.HasValue ? new TipoDocumentalModeloNegocio { Id = src.IdTipoDocumental.Value } : null));
             #endregion
 
