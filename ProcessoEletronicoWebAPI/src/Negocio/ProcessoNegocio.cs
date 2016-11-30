@@ -143,8 +143,6 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             processoValidacao.Preenchido(processoNegocio);
             processoValidacao.Valido(processoNegocio);
 
-            throw new NotImplementedException("Válido");
-            
             /*Mapeamento para inserção*/
             Processo processo = new Processo();
             processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
