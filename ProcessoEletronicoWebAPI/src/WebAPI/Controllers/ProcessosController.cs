@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
@@ -138,19 +139,50 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
                 ProcessoCompletoModelo processoCompleto = service.Autuar(processoPost, id);
                 return Created("http://"+ request.Host.Value + request.Path.Value + "/" + processoCompleto.Id , processoCompleto);
             }
+            catch (RequisicaoInvalidaException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                return NotFound(e.Message);
+            }
             catch (Exception e)
             {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-                
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
             }
-
-            //return Created("URL Processo","Objeto JSON");
-            
+                                 
         }
+
+        /// <summary>
+        /// Despacho de processos
+        /// </summary>
+        /// <param name="idProcesso">Identificação do processo</param>
+        /// <param name="despachoPost">Informações do despacho do processo</param>
+        /// <returns></returns>
         [HttpPost("{idProcesso}/despacho")]
-        public IActionResult Despachar(int id, [FromBody]string value)
+        //[Authorize]
+        public IActionResult Despachar(int idProcesso, [FromBody]DespachoProcessoModeloPost despachoPost)
         {
-            return new ObjectResult("Despachar Processo " + id.ToString());
+            try
+            {
+                return NotFound("Despacho de processos em desenvolvimento");
+
+                //service.Despachar(idProcesso, despachoPost);
+                //return Created("url", "objeto");
+            }
+            catch (RequisicaoInvalidaException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
         }
 
         #endregion

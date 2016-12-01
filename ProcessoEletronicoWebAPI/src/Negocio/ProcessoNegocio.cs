@@ -159,8 +159,18 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         }
 
-        public void Despachar()
+        public DespachoModeloNegocio Despachar(int idProcesso, DespachoModeloNegocio despachoNegocio)
         {
+
+            /*
+            TODO: VERIFICAR SE O USUÁRIO TEM PERMISSÃO PARA EFETUAR O DESPACHO
+            (cruzar informações do usuário com o local (organição/unidade) em que o processo se encontra.
+            **Informações do usuário são do acesso cidadão** 
+            */
+            //despachoValidacao.Permissao(despachoNegocio)
+            
+
+
             throw new NotImplementedException();
         }
 

@@ -59,6 +59,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #endregion
 
             #region Mapeamento de despacho
+
+            CreateMap<DespachoProcessoModeloPost, DespachoModeloNegocio>()
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
+
             CreateMap<DespachoModeloNegocio, DespachoProcessoGetModelo>();
             #endregion
 

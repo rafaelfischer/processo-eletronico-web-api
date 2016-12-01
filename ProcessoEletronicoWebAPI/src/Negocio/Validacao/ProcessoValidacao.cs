@@ -40,7 +40,6 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             ResumoPreechido(processo);
             InteressadoPreenchido(processo);
             MunicipioPreenchido(processo);
-            anexoValidacao.Preenchido(processo.Anexos);
             IdOrgaoAutuadorPreenchido(processo);
             OrgaoAutuadorPreenchido(processo);
             SiglaOrgaoAutuadorPreenchido(processo);
@@ -53,6 +52,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             /*Preenchimento de objetos associados ao processo*/
             interessadoPessoaFisicaValidacao.Preenchido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Preenchido(processo.InteressadosPessoaJuridica);
+            anexoValidacao.Preenchido(processo.Anexos);
             municipioValidacao.Preenchido(processo.MunicipiosProcesso);
             sinalizacaoValidacao.IdValido(processo.Sinalizacoes);
 

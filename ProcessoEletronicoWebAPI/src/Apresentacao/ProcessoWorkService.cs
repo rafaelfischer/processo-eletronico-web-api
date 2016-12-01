@@ -29,9 +29,16 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processoNegocio);
         }
 
-        public void Despachar()
+        public void Despachar(int idProcesso, DespachoProcessoModeloPost despachoPost)
         {
-            throw new NotImplementedException();
+
+            DespachoModeloNegocio despachoNegocio = new DespachoModeloNegocio();
+            Mapper.Map(despachoPost, despachoNegocio);
+
+            despachoNegocio = this.processoNegocio.Despachar(idProcesso, despachoNegocio);
+
+
+
         }
 
         public void Excluir()
