@@ -22,15 +22,18 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         IRepositorioGenerico<OrganizacaoProcesso> repositorioOrganizacoesProcesso;
 
         ProcessoValidacao processoValidacao;
+        DespachoValidacao despachoValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
 
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             this.unitOfWork = repositorios.UnitOfWork;
+            this.repositorioDespachos = repositorios.Despachos;
             this.repositorioProcessos = repositorios.Processos;
             this.repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             this.processoValidacao = new ProcessoValidacao(repositorios);
-            this.repositorioDespachos = repositorios.Despachos;
+            this.despachoValidacao = new DespachoValidacao(repositorios);
+            
         }
 
         public void Listar()
@@ -137,6 +140,19 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return r;
         }
 
+        public DespachoModeloNegocio PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso)
+        {
+            Despacho despacho = repositorioDespachos.Where(d => d.Id == idDespacho
+                                                             && d.Processo.Id == idProcesso
+                                                             && d.Processo.OrganizacaoProcesso.Id == idOrganizacaoProcesso)
+                                                    .Include(p => p.Processo)
+                                                    .SingleOrDefault();
+
+            despachoValidacao.Existe(despacho);
+
+            return Mapper.Map<Despacho, DespachoModeloNegocio>(despacho);
+        }
+
         public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int IdOrganizacao)
         {
             /*Validações*/
@@ -159,7 +175,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         }
 
-        public DespachoModeloNegocio Despachar(int idProcesso, DespachoModeloNegocio despachoNegocio)
+        public DespachoModeloNegocio Despachar(int idOrganizacaoProcesso, int idProcesso, DespachoModeloNegocio despachoNegocio)
         {
 
             /*
@@ -168,10 +184,29 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             **Informações do usuário são do acesso cidadão** 
             */
             //despachoValidacao.Permissao(despachoNegocio)
-            
 
+            //Obter id da atividade do processo para validação dos anexos do despacho
+            int idAtividadeProcesso;
+            try
+            {
+                idAtividadeProcesso = repositorioProcessos.Where(p => p.Id == idProcesso).Select(s => s.IdAtividade).SingleOrDefault();
+            }
+            catch (Exception)
+            {
+                idAtividadeProcesso = 0;
+            }
 
-            throw new NotImplementedException();
+            despachoValidacao.Preenchido(despachoNegocio);
+            despachoValidacao.Valido(idOrganizacaoProcesso, idProcesso, idAtividadeProcesso, despachoNegocio);
+
+            Despacho despacho = new Despacho();
+            PreparaInsercaoDespacho(despachoNegocio, idProcesso);
+            Mapper.Map(despachoNegocio, despacho);
+
+            repositorioDespachos.Add(despacho);
+            unitOfWork.Save();
+
+            return PesquisarDespacho(despacho.Id, idProcesso, idOrganizacaoProcesso);
         }
 
         public void Excluir()
@@ -295,6 +330,24 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
             return digitoVerificador;
 
+        }
+
+        private void PreparaInsercaoDespacho (DespachoModeloNegocio despacho, int idProcesso)
+        {
+            //Processo do despacho
+            despacho.IdProcesso = idProcesso;
+            
+            //Preenche processo dos anexos
+            if (despacho.Anexos != null)
+            {
+                foreach (AnexoModeloNegocio anexo in despacho.Anexos)
+                {
+                    anexo.IdProcesso = idProcesso;
+                }
+            }
+
+            //Data/hora atual do despacho
+            despacho.DataHoraDespacho = DateTime.Now;
         }
     }
 }

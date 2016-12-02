@@ -10,6 +10,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
 
         public int Id { get; set; }
         public string Texto { get; set; }
+        public int IdProcesso { get; set; }
         public int IdOrgaoDestino { get; set; }
         public string NomeOrgaoDestino { get; set; }
         public string SiglaOrgaoDestino { get; set; }
@@ -19,6 +20,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string IdUsuarioDespachante { get; set; }
         public string NomeUsuarioDespachante { get; set; }
         public DateTime DataHoraDespacho { get; set; }
+        
 
         public List<AnexoModeloNegocio> Anexos { get; set; }
         public ProcessoModeloNegocio Processo { get; set; }

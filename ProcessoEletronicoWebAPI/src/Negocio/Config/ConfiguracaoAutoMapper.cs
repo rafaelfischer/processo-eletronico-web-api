@@ -48,6 +48,10 @@ namespace ProcessoEletronicoService.Negocio.Config
             #endregion
 
             #region Mapeamento de Despacho
+            CreateMap<DespachoModeloNegocio, Despacho>()
+                .ForMember(dest => dest.Processo, opt => opt.Ignore());
+
+
             CreateMap<Despacho, DespachoModeloNegocio>();
             #endregion
 

@@ -92,6 +92,41 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         }
 
         /// <summary>
+        /// Retorna o despacho correspondente ao identificador.
+        /// </summary>
+        /// <param name="idDespacho">Identificador do Despacho</param>
+        /// <param name="idProcesso">Identificador do Processo</param>
+        /// <param name="id">Identificador da Organização do Processo</param>
+        /// <returns>Despacho correspondente ao identificador.</returns>
+        /// <response code="201">Retorna o despacho correspondente ao identificador.</response>
+        /// <response code="404">Despacho não foi encontrado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet("{idProcesso}/despachos/{idDespacho}")]
+        [ProducesResponseType(typeof(DespachoProcessoGetModelo), 201)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult PesquisarDespacho(int idDespacho, int idProcesso, int id)
+        {
+            try
+            {
+                return new ObjectResult(service.PesquisarDespacho(idDespacho, idProcesso, id));
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (RequisicaoInvalidaException e)
+            {
+                return BadRequest(MensagemErro.ObterMensagem(e));
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
+        }
+
+        /// <summary>
         /// Retorna a lista de processos que estão tramintando na unidade especificada.
         /// </summary>
         /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
@@ -157,19 +192,24 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <summary>
         /// Despacho de processos
         /// </summary>
-        /// <param name="idProcesso">Identificação do processo</param>
+        /// <param name="id">Identificador da organização patriarca</param>
+        /// <param name="idProcesso">Identificador do processo</param>
         /// <param name="despachoPost">Informações do despacho do processo</param>
         /// <returns></returns>
-        [HttpPost("{idProcesso}/despacho")]
+        [HttpPost("{idProcesso}/despachos")]
+        [ProducesResponseType(typeof(DespachoProcessoGetModelo), 201)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 500)]
         //[Authorize]
-        public IActionResult Despachar(int idProcesso, [FromBody]DespachoProcessoModeloPost despachoPost)
+        public IActionResult Despachar(int id, int idProcesso, [FromBody]DespachoProcessoModeloPost despachoPost)
         {
             try
             {
-                return NotFound("Despacho de processos em desenvolvimento");
+                HttpRequest request = HttpContext.Request;
+                DespachoProcessoGetModelo despachoCompleto = service.Despachar(id, idProcesso, despachoPost);
+                return Created("http://" + request.Host.Value + request.Path.Value + "/" + despachoCompleto.Id, despachoCompleto);
 
-                //service.Despachar(idProcesso, despachoPost);
-                //return Created("url", "objeto");
             }
             catch (RequisicaoInvalidaException e)
             {

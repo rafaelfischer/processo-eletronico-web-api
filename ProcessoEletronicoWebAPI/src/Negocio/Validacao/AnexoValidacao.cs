@@ -42,14 +42,14 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             MimeTypePreenchido(anexo);
         }
 
-        internal void NomePreenchido(AnexoModeloNegocio anexo)
+        private void NomePreenchido(AnexoModeloNegocio anexo)
         {
             if (string.IsNullOrWhiteSpace(anexo.Nome))
             {
                 throw new RequisicaoInvalidaException("Nome do anexo não preenchido.");
             }
         }
-        internal void ConteudoPreenchido(AnexoModeloNegocio anexo)
+        private void ConteudoPreenchido(AnexoModeloNegocio anexo)
         {
             if (string.IsNullOrWhiteSpace(anexo.ConteudoString))
             {
@@ -57,7 +57,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        internal void MimeTypePreenchido(AnexoModeloNegocio anexo)
+        private void MimeTypePreenchido(AnexoModeloNegocio anexo)
         {
             if (string.IsNullOrWhiteSpace(anexo.MimeType))
             {
@@ -137,7 +137,20 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        private void TipoDocumentalExistente(AnexoModeloNegocio anexo, int idAtividadeProcesso)
+        public void TipoDocumentalExistente(List<AnexoModeloNegocio> anexos, int idAtividadeProcesso)
+        {
+            if (anexos != null)
+            {
+                foreach (AnexoModeloNegocio anexo in anexos)
+                {
+                    TipoDocumentalExistente(anexo, idAtividadeProcesso);
+                }
+            }
+
+           
+        }
+
+        public void TipoDocumentalExistente(AnexoModeloNegocio anexo, int idAtividadeProcesso)
         {
             if (anexo.TipoDocumental != null)
             {

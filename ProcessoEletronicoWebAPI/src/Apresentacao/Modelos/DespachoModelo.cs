@@ -23,7 +23,11 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string NomeUnidadeDestino { get; set; }
         [Required]
         public string SiglaUnidadeDestino { get; set; }
-
+        [Required]
+        public string IdUsuarioDespachante { get; set; }
+        [Required]
+        public string NomeUsuarioDespachante { get; set; }
+        
     }
 
     public class DespachoProcessoGetModelo
@@ -39,5 +43,6 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string IdUsuarioDespachante { get; set; }
         public string NomeUsuarioDespachante { get; set; }
         public string DataHoraDespacho { get; set; }
+                
     }
 }

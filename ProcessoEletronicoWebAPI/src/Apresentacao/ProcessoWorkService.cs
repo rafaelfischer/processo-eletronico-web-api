@@ -29,15 +29,16 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processoNegocio);
         }
 
-        public void Despachar(int idProcesso, DespachoProcessoModeloPost despachoPost)
+        public DespachoProcessoGetModelo Despachar(int idOrganizacao, int idProcesso, DespachoProcessoModeloPost despachoPost)
         {
 
             DespachoModeloNegocio despachoNegocio = new DespachoModeloNegocio();
             Mapper.Map(despachoPost, despachoNegocio);
 
-            despachoNegocio = this.processoNegocio.Despachar(idProcesso, despachoNegocio);
+            despachoNegocio = this.processoNegocio.Despachar(idOrganizacao, idProcesso, despachoNegocio);
 
-
+            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoGetModelo>(despachoNegocio);
+            
 
         }
 
@@ -67,6 +68,13 @@ namespace ProcessoEletronicoService.Apresentacao
             var p = Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processos);
 
             return p;
+        }
+
+        public DespachoProcessoGetModelo PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso)
+        {
+            DespachoModeloNegocio despachoNegocio = processoNegocio.PesquisarDespacho(idDespacho, idProcesso, idOrganizacaoProcesso);
+
+            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoGetModelo>(despachoNegocio);
         }
 
         public List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade)
