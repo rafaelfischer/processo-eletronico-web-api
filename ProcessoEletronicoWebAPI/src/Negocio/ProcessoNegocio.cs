@@ -57,9 +57,10 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                .Include(p => p.OrganizacaoProcesso)
                                                .SingleOrDefault();
 
-            var p1 = Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
+            processoValidacao.NaoEncontrado(processo);
 
-            return p1;
+            return Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
+
         }
 
         public ProcessoModeloNegocio Pesquisar(string numero)
@@ -94,9 +95,10 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                    .Include(p => p.OrganizacaoProcesso)
                                                    .SingleOrDefault();
 
-            var p1 = Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
+            processoValidacao.NaoEncontrado(processo);
 
-            return p1;
+            return Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
+
         }
 
         public List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(int idOrganizacaoProcesso, int idUnidade)
@@ -296,7 +298,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         private void NumeracaoProcesso(Processo processo, int idOrganizacao)
         {
 
-            processo.DigitoOrganizacao = repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(s => s.NumeroOrganiacao).SingleOrDefault();
+            processo.DigitoOrganizacao = repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(s => s.DigitoOrganizacao).SingleOrDefault();
             processo.DigitoPoder = (byte)repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(o => o.DigitoPoder.Id).SingleOrDefault();
             processo.DigitoEsfera = (byte)repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(o => o.DigitoEsfera.Id).SingleOrDefault();
             processo.Ano = (short)DateTime.Now.Year;

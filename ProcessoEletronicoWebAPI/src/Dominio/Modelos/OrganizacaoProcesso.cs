@@ -20,7 +20,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string Sigla { get; set; }
         public int IdDigitoPoder { get; set; }
         public int IdDigitoEsfera { get; set; }
-        public short NumeroOrganiacao { get; set; }
+        public short DigitoOrganizacao { get; set; }
 
         public virtual ICollection<PlanoClassificacao> PlanoClassificacao { get; set; }
         public virtual ICollection<Processo> Processo { get; set; }

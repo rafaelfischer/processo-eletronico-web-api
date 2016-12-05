@@ -31,6 +31,14 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             anexoValidacao = new AnexoValidacao(repositorios);
         }
 
+        public void NaoEncontrado (Processo processo)
+        {
+            if (processo == null)
+            {
+                throw new RecursoNaoEncontradoException("Processo não encontrado.");
+            }
+        }
+
         #region Preechimento dos campos obrigatórios
 
         public void Preenchido(ProcessoModeloNegocio processo)

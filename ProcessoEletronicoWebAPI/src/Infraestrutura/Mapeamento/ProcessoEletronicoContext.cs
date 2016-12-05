@@ -486,7 +486,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("nomeFantasia")
                     .HasColumnType("varchar(100)");
 
-                entity.Property(e => e.NumeroOrganiacao).HasColumnName("numeroOrganiacao");
+                entity.Property(e => e.DigitoOrganizacao).HasColumnName("digitoOrganizacao");
 
                 entity.Property(e => e.RazaoSocial)
                     .IsRequired()
