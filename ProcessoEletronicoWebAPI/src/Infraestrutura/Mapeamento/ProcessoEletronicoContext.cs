@@ -586,7 +586,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
 
-                entity.Property(e => e.IdOrgaoAutuador).HasColumnName("idOrgaoAutuador");
+                entity.Property(e => e.IdOrganizacaoAutuadora).HasColumnName("idOrganizacaoAutuadora");
 
                 entity.Property(e => e.IdUnidadeAutuadora).HasColumnName("idUnidadeAutuadora");
 
@@ -595,9 +595,9 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("idUsuarioAutuador")
                     .HasColumnType("varchar(50)");
 
-                entity.Property(e => e.NomeOrgaoAutuador)
+                entity.Property(e => e.NomeOrganizacaoAutuadora)
                     .IsRequired()
-                    .HasColumnName("nomeOrgaoAutuador")
+                    .HasColumnName("nomeOrganizacaoAutuadora")
                     .HasColumnType("varchar(100)");
 
                 entity.Property(e => e.NomeUnidadeAutuadora)
@@ -617,9 +617,9 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.Sequencial).HasColumnName("sequencial");
 
-                entity.Property(e => e.SiglaOrgaoAutuador)
+                entity.Property(e => e.SiglaOrganizacaoAutuadora)
                     .IsRequired()
-                    .HasColumnName("siglaOrgaoAutuador")
+                    .HasColumnName("siglaOrganizacaoAutuadora")
                     .HasColumnType("varchar(10)");
 
                 entity.Property(e => e.SiglaUnidadeAutuadora)

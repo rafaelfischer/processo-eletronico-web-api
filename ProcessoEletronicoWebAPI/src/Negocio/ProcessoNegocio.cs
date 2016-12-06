@@ -242,7 +242,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         public List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao)
         {
             var processosSemDespachoNaOrganizacao = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                                 && p.IdOrgaoAutuador == idOrganizacao
+                                                                                 && p.IdOrganizacaoAutuadora == idOrganizacao
                                                                                 && !p.Despachos.Any())
                                                                         .Include(p => p.OrganizacaoProcesso)
                                                                         .Include(p => p.Atividade)

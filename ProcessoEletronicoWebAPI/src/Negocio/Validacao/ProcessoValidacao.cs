@@ -126,7 +126,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         /*Órgao Autuador*/
         internal void IdOrgaoAutuadorPreenchido(ProcessoModeloNegocio processo)
         {
-            if (processo.IdOrgaoAutuador <= 0)
+            if (processo.IdOrganizacaoAutuadora <= 0)
             {
                 throw new RequisicaoInvalidaException("Identificador do Órgão Autuador não preenchido.");
             }
@@ -134,7 +134,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void OrgaoAutuadorPreenchido(ProcessoModeloNegocio processo)
         {
-            if (string.IsNullOrWhiteSpace(processo.NomeOrgaoAutuador))
+            if (string.IsNullOrWhiteSpace(processo.NomeOrganizacaoAutuadora))
             {
                 throw new RequisicaoInvalidaException("Órgão Autuador não preenchido.");
             }
@@ -142,7 +142,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void SiglaOrgaoAutuadorPreenchido(ProcessoModeloNegocio processo)
         {
-            if (string.IsNullOrWhiteSpace(processo.SiglaOrgaoAutuador))
+            if (string.IsNullOrWhiteSpace(processo.SiglaOrganizacaoAutuadora))
             {
                 throw new RequisicaoInvalidaException("Sigla do Órgão Autuador não preenchida.");
             }
@@ -229,7 +229,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void SiglaOrgaoAutuadorValido(ProcessoModeloNegocio processo)
         {
-            if (processo.SiglaOrgaoAutuador.Length > 10)
+            if (processo.SiglaOrganizacaoAutuadora.Length > 10)
             {
                 throw new RequisicaoInvalidaException("Sigla do órgão autuador deve conter no máximo 10 caracteres");
             }
