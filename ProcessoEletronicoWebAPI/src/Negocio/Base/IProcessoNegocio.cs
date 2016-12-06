@@ -16,5 +16,6 @@ namespace ProcessoEletronicoService.Negocio.Base
         ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int idOrganizacao);
         DespachoModeloNegocio Despachar(int idOrganizacaoProcesso, int idProcesso, DespachoModeloNegocio despachoNegocio);
         void Excluir();
+        List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao);
     }
 }

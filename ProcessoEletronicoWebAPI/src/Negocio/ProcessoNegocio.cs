@@ -216,6 +216,46 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             throw new NotImplementedException();
         }
 
+        public List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao)
+        {
+            var processosSemDespachoNaOrganizacao = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
+                                                                                 && p.IdOrgaoAutuador == idOrganizacao
+                                                                                && !p.Despachos.Any())
+                                                                        .Include(p => p.OrganizacaoProcesso)
+                                                                        .Include(p => p.Atividade);
+
+            var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso)
+                                                                   .GroupBy(d => d.IdProcesso)
+                                                                   .Select(d => new { IdProcesso = d.Key, DataHoraDespacho = d.Max(gbd => gbd.DataHoraDespacho) });
+
+            var idsUltimosDespachosParaOrganizacao = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso
+                                                                                  && d.IdOrgaoDestino == idOrganizacao)
+                                                                         .Join(ultimosDespachosDosProcessos,
+                                                                                d => d.IdProcesso,
+                                                                                ud => ud.IdProcesso,
+                                                                                (d, ud) => new { Despacho = d, DespachoProcesso = ud })
+                                                                         .Where(d => d.Despacho.DataHoraDespacho == d.DespachoProcesso.DataHoraDespacho)
+                                                                         .Select(d => d.Despacho.Id);
+
+            var processosDespachadosParaOrganizacao = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
+                                                                                   && p.Despachos.Any(d => idsUltimosDespachosParaOrganizacao.Contains(d.Id)))
+                                                                          .Include(p => p.OrganizacaoProcesso)
+                                                                          .Include(p => p.Atividade);
+
+            var processosNaOrganizacao = processosDespachadosParaOrganizacao.Union(processosSemDespachoNaOrganizacao.Include(p => p.OrganizacaoProcesso)
+                                                                                                                    .Include(p => p.Atividade))
+                                                                            .OrderBy(p => p.Sequencial)
+                                                                            .ThenBy(p => p.Ano)
+                                                                            .ThenBy(p => p.DigitoPoder)
+                                                                            .ThenBy(p => p.DigitoEsfera)
+                                                                            .ThenBy(p => p.DigitoOrganizacao)
+                                                                            .Include(p => p.OrganizacaoProcesso)
+                                                                            .Include(p => p.Atividade)
+                                                                            .ToList();
+
+            return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(processosNaOrganizacao);
+        }
+
         private int ObterSequencial(string numero)
         {
             //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO

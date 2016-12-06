@@ -83,5 +83,12 @@ namespace ProcessoEletronicoService.Apresentacao
 
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
         }
+
+        public List<ProcessoModelo> PesquisarProcessosNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao)
+        {
+            var processos = processoNegocio.PesquisarProcessoNaOrganizacao(idOrganizacaoProcesso, idOrganizacao);
+
+            return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
+        }
     }
 }

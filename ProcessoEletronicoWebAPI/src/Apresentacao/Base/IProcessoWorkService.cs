@@ -16,5 +16,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         DespachoProcessoGetModelo Despachar(int idOrganizacao, int idProcesso, DespachoProcessoModeloPost despachoPost);
         void Excluir();
         List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade);
+        List<ProcessoModelo> PesquisarProcessosNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao);
     }
 }

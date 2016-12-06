@@ -148,6 +148,31 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
+
+
+        /// <summary>
+        /// Retorna a lista de processos que estão tramintando na organização especificada.
+        /// </summary>
+        /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
+        /// <param name="idOrganizacao">Identificador da organização onde os processos estão tramintando.</param>
+        /// <returns>Lista de processos que estão tramintando na organização especificada.</returns>
+        /// <response code="201">Retorna a lista de processos que estão tramintando na organização especificada.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet("organizacao/{idOrganizacao}")]
+        [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
+        [ProducesResponseType(typeof(string), 500)]
+        //[Authorize]
+        public IActionResult PesquisarPorOganizacao(int id, int idOrganizacao)
+        {
+            try
+            {
+                return new ObjectResult(service.PesquisarProcessosNaOrganizacao(id, idOrganizacao));
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
         #endregion
 
         #region POST
