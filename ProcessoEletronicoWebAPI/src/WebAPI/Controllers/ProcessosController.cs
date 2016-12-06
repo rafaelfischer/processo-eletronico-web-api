@@ -161,7 +161,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [HttpGet("organizacao/{idOrganizacao}")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
         [ProducesResponseType(typeof(string), 500)]
-        //[Authorize]
+        [Authorize]
         public IActionResult PesquisarPorOganizacao(int id, int idOrganizacao)
         {
             try
