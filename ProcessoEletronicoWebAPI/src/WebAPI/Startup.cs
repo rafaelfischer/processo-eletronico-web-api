@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Swashbuckle.Swagger.Model;
 using Microsoft.Extensions.PlatformAbstractions;
 using ProcessoEletronicoService.Infraestrutura.Mapeamento;
+using ProcessoEletronicoService.WebAPI.Middleware;
 
 namespace WebAPI
 {
@@ -50,6 +51,15 @@ namespace WebAPI
             InjecaoDependencias.InjetarDependencias(services);
             ConfiguracaoAutoMapper.CriarMapeamento();
 
+            #region Políticas que serão concedidas
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Processo.Autuar", policy => policy.RequireClaim("Acao$Processo", "Autuar"));
+            }
+            );
+            #endregion
+
+            #region Configuração do Swagger
             services.AddSwaggerGen();
 
             services.ConfigureSwaggerGen(options =>
@@ -75,6 +85,7 @@ namespace WebAPI
                 var xmlPath = Path.Combine(basePath, "WebAPI.xml");
                 options.IncludeXmlComments(xmlPath);
             });
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +108,13 @@ namespace WebAPI
             });
             #endregion
 
+            #region Configuração para buscar as permissões do usuário
+            app.UseRequestUserInfo(new RequestUserInfoOptions
+            {
+                UserInfoEndpoint = "https://sistemas.es.gov.br/prodest/acessocidadao/is/connect/userinfo"
+            });
+            #endregion
+
             app.UseMvc();
 
             app.UseStaticFiles(new StaticFileOptions()
@@ -105,12 +123,14 @@ namespace WebAPI
                 RequestPath = new PathString("/Documentacao")
             });
 
+            #region Configuração do Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
             app.UseSwaggerUi("prodest/processoeletronico/api/documentation");
             app.UseSwaggerUi("api/documentation");
+            #endregion
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
@@ -126,7 +127,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize(Policy = "Processo.Autuar")]
         public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost, int id)
         {
             try
