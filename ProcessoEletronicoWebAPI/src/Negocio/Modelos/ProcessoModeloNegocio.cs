@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +26,26 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string IdUsuarioAutuador { get; set; }
         public string NomeUsuarioAutuador { get; set; }
         public DateTime DataAutuacao { get; set; }
+        public DateTime DataUltimoTramite
+        {
+            get
+            {
+                DateTime dataUltimoTramite = DataAutuacao;
+
+                if (Despachos != null)
+                {
+                    var dataUltimoDespacho = Despachos.GroupBy(d => d.IdProcesso)
+                                                 .Select(d => d.Max(gd => gd.DataHoraDespacho))
+                                                 .SingleOrDefault();
+                    if (dataUltimoDespacho != null)
+                        dataUltimoTramite = dataUltimoDespacho;
+                }
+                else
+                    throw new ProcessoEletronicoException("Para obter a data do último tramite é necessário informar os despachos.");
+
+                return dataUltimoTramite;
+            }
+        }
         public string Numero
         {
             get

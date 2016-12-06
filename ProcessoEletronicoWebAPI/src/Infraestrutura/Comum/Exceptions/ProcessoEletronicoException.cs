@@ -5,6 +5,13 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Infraestrutura.Comum.Exceptions
 {
+    public class ProcessoEletronicoException : Exception
+    {
+        public ProcessoEletronicoException() : base() { }
+        public ProcessoEletronicoException(string mensagem) : base(mensagem) { }
+        public ProcessoEletronicoException(string mensagem, Exception inner) : base(mensagem, inner) { }
+    }
+
     public class RecursoNaoEncontradoException : Exception
     {
         public RecursoNaoEncontradoException() : base() { }

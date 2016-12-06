@@ -49,6 +49,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string IdUsuarioAutuador { get; set; }
         public string NomeUsuarioAutuador { get; set; }
         public string DataAutuacao { get; set; }
+        public string DataUltimoTramite { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
         public string Numero { get; set; }
     }
@@ -66,6 +67,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string IdUsuarioAutuador { get; set; }
         public string NomeUsuarioAutuador { get; set; }
         public string DataAutuacao { get; set; }
+        public string DataUltimoTramite { get; set; }
         public string Numero { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
 

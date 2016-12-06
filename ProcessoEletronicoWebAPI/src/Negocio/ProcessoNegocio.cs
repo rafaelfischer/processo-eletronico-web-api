@@ -107,7 +107,8 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                                              && p.IdUnidadeAutuadora == idUnidade
                                                                              && !p.Despachos.Any())
                                                                     .Include(p => p.OrganizacaoProcesso)
-                                                                    .Include(p => p.Atividade);
+                                                                    .Include(p => p.Atividade)
+                                                                    .Include(p => p.Despachos);
 
             var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso)
                                                                    .GroupBy(d => d.IdProcesso)
@@ -125,10 +126,12 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             var processosDespachadosParaUnidade = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
                                                                                && p.Despachos.Any(d => idsUltimosDespachosParaUnidade.Contains(d.Id)))
                                                                       .Include(p => p.OrganizacaoProcesso)
-                                                                      .Include(p => p.Atividade);
+                                                                      .Include(p => p.Atividade)
+                                                                      .Include(p => p.Despachos);
 
             var processosNaUnidade = processosDespachadosParaUnidade.Union(processosSemDespachoNaUnidade.Include(p => p.OrganizacaoProcesso)
-                                                                                                        .Include(p => p.Atividade))
+                                                                                                        .Include(p => p.Atividade)
+                                                                                                        .Include(p => p.Despachos))
                                                                   .OrderBy(p => p.Sequencial)
                                                                   .ThenBy(p => p.Ano)
                                                                   .ThenBy(p => p.DigitoPoder)
@@ -222,7 +225,8 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                                                  && p.IdOrgaoAutuador == idOrganizacao
                                                                                 && !p.Despachos.Any())
                                                                         .Include(p => p.OrganizacaoProcesso)
-                                                                        .Include(p => p.Atividade);
+                                                                        .Include(p => p.Atividade)
+                                                                    .Include(p => p.Despachos);
 
             var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso)
                                                                    .GroupBy(d => d.IdProcesso)
@@ -240,10 +244,12 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             var processosDespachadosParaOrganizacao = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
                                                                                    && p.Despachos.Any(d => idsUltimosDespachosParaOrganizacao.Contains(d.Id)))
                                                                           .Include(p => p.OrganizacaoProcesso)
-                                                                          .Include(p => p.Atividade);
+                                                                          .Include(p => p.Atividade)
+                                                                    .Include(p => p.Despachos);
 
             var processosNaOrganizacao = processosDespachadosParaOrganizacao.Union(processosSemDespachoNaOrganizacao.Include(p => p.OrganizacaoProcesso)
-                                                                                                                    .Include(p => p.Atividade))
+                                                                                                                    .Include(p => p.Atividade)
+                                                                                                                    .Include(p => p.Despachos))
                                                                             .OrderBy(p => p.Sequencial)
                                                                             .ThenBy(p => p.Ano)
                                                                             .ThenBy(p => p.DigitoPoder)
