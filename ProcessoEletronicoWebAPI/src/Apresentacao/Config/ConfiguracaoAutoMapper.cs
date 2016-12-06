@@ -44,6 +44,11 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.Conteudo, opt => opt.Ignore())
                 .ForMember(dest => dest.ConteudoString, opt => opt.MapFrom(src => src.Conteudo))
                 .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.IdTipoDocumental.HasValue ? new TipoDocumentalModeloNegocio { Id = src.IdTipoDocumental.Value } : null));
+
+            CreateMap<AnexoModeloNegocio, AnexoModeloGet>()
+                .ForMember(dest => dest.Conteudo, opt => opt.MapFrom(src => src.Conteudo != null ? Convert.ToBase64String(src.Conteudo) : null))
+                .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental));
+
             #endregion
 
             #region Mapeamento de Email
@@ -58,12 +63,13 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.TipoContato, opt => opt.MapFrom(src => src.IdTipoContato));
             #endregion
 
-            #region Mapeamento de despacho
+            #region Mapeamento de Despacho
 
             CreateMap<DespachoProcessoModeloPost, DespachoModeloNegocio>()
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
 
-            CreateMap<DespachoModeloNegocio, DespachoProcessoGetModelo>();
+            CreateMap<DespachoModeloNegocio, DespachoProcessoGetModelo>()
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
             #endregion
 
             #region Mapeamento de função
@@ -121,7 +127,8 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<ProcessoModeloNegocio, ProcessoCompletoModelo>()
                 .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
                 //.ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
-                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao));
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao))
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
             #endregion
 
             #region Mapeamento de Tipo de Contato
@@ -138,6 +145,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalModelo>().
                 ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id));
+
+            CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalAnexoModelo>();
+
+
 
             #endregion
 
