@@ -282,6 +282,17 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(processosNaOrganizacao);
         }
 
+        private void LimparConteudoAnexos(ICollection<Anexo> anexos)
+        {
+            if (anexos != null)
+            {
+                foreach (Anexo anexo in anexos)
+                {
+                    anexo.Conteudo = null;
+                }
+            }
+        }
+
         private int ObterSequencial(string numero)
         {
             //O formato do número é SEQUENCIAL-DD.AAAA.P.E.OOOO
