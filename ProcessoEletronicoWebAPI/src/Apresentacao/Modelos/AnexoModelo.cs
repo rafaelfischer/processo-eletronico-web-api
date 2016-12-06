@@ -19,13 +19,14 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         
     }
 
-    public class AnexoProcessoGetModelo
+    public class AnexoModeloGet
     {
         public int Id { get; set; }
         public string Nome { get; set; }
-        public string Tipo { get; set; }
-        public int? IdDespacho { get; set; }
+        public string Descricao { get; set; }
+        public string MimeType { get; set; }
+        public string Conteudo { get; set; }
 
-        public TipoDocumentalModelo TipoDocumental { get; set; }
+        public TipoDocumentalAnexoModelo TipoDocumental { get; set; }
     }
 }

@@ -12,4 +12,10 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string Descricao { get; set; }
         public int IdAtividade { get; set; }
     }
+
+    public class TipoDocumentalAnexoModelo
+    {
+        public string Codigo { get; set; }
+        public string Descricao { get; set; }
+    }
 }

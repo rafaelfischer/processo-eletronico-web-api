@@ -33,7 +33,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             this.repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             this.processoValidacao = new ProcessoValidacao(repositorios);
             this.despachoValidacao = new DespachoValidacao(repositorios);
-            
+
         }
 
         public void Listar()
@@ -45,7 +45,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         {
             var processo = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
                                                         && p.Id == idProcesso)
-                                               .Include(p => p.Anexos)
+                                               .Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
                                                .Include(p => p.Despachos)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Emails)
@@ -58,6 +58,12 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                .SingleOrDefault();
 
             processoValidacao.NaoEncontrado(processo);
+
+            //Limpando contedo dos anexos para não enviar na resposta da consulta de processos
+            if (processo.Anexos != null)
+            {
+                LimparConteudoAnexos(processo.Anexos);
+            }
 
             return Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
 
@@ -96,6 +102,12 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                    .SingleOrDefault();
 
             processoValidacao.NaoEncontrado(processo);
+
+            //Limpando contedo dos anexos para não enviar na resposta da consulta de processos
+            if (processo.Anexos != null)
+            {
+                LimparConteudoAnexos(processo.Anexos);
+            }
 
             return Mapper.Map<Processo, ProcessoModeloNegocio>(processo);
 
@@ -151,9 +163,17 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                              && d.Processo.Id == idProcesso
                                                              && d.Processo.OrganizacaoProcesso.Id == idOrganizacaoProcesso)
                                                     .Include(p => p.Processo)
+                                                    .Include(a => a.Anexos).ThenInclude(td => td.TipoDocumental)
                                                     .SingleOrDefault();
 
             despachoValidacao.Existe(despacho);
+
+            //Limpando contedo dos anexos para não enviar na resposta da consulta de processos
+            if (despacho.Anexos != null)
+            {
+                LimparConteudoAnexos(despacho.Anexos);
+            }
+
 
             return Mapper.Map<Despacho, DespachoModeloNegocio>(despacho);
         }
@@ -172,7 +192,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
             /*Gera número do processo*/
             NumeracaoProcesso(processo, IdOrganizacao);
-            
+
             repositorioProcessos.Add(processo);
             unitOfWork.Save();
 
@@ -380,11 +400,11 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         }
 
-        private void PreparaInsercaoDespacho (DespachoModeloNegocio despacho, int idProcesso)
+        private void PreparaInsercaoDespacho(DespachoModeloNegocio despacho, int idProcesso)
         {
             //Processo do despacho
             despacho.IdProcesso = idProcesso;
-            
+
             //Preenche processo dos anexos
             if (despacho.Anexos != null)
             {
