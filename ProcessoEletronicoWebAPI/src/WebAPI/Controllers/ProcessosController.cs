@@ -276,29 +276,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         }
 
         #endregion
-
-        #region PATCH
-
-        // PATCH api/v1/processos/{id}
-        [HttpPatch("{idProcesso}")]
-        //[Authorize]
-        public IActionResult Alterar(int id, [FromBody]string value)
-        {
-            return new ObjectResult("Alterar Processo");
-        }
-
-        #endregion
-
-        #region DELETE
-
-        // DELETE api/v1/processos/{id}
-        [HttpDelete("{idProcesso}")]
-        //[Authorize]
-        public IActionResult Excluir(int id)
-        {
-            return new ObjectResult("Excluir Processo");
-        }
-
-        #endregion
+                
     }
 }
