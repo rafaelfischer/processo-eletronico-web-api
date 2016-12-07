@@ -31,7 +31,6 @@ namespace ProcessoEletronicoService.Apresentacao
 
         public DespachoProcessoGetModelo Despachar(int idOrganizacao, int idProcesso, DespachoProcessoModeloPost despachoPost)
         {
-
             DespachoModeloNegocio despachoNegocio = new DespachoModeloNegocio();
             Mapper.Map(despachoPost, despachoNegocio);
 
@@ -39,7 +38,6 @@ namespace ProcessoEletronicoService.Apresentacao
 
             return Mapper.Map<DespachoModeloNegocio, DespachoProcessoGetModelo>(despachoNegocio);
             
-
         }
 
         public void Excluir()
@@ -76,6 +74,15 @@ namespace ProcessoEletronicoService.Apresentacao
 
             return Mapper.Map<DespachoModeloNegocio, DespachoProcessoGetModelo>(despachoNegocio);
         }
+
+        public AnexoModeloGet PesquisarAnexo (int idOrganizacao, int idProcesso, int idDespacho, int idAnexo)
+        {
+            AnexoModeloNegocio anexoModeloNegocio = new AnexoModeloNegocio();
+            anexoModeloNegocio = processoNegocio.PesquisarAnexo(idOrganizacao, idProcesso, idDespacho, idAnexo);
+
+            return Mapper.Map<AnexoModeloNegocio, AnexoModeloGet>(anexoModeloNegocio);
+        }
+
 
         public List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade)
         {

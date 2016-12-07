@@ -29,9 +29,9 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             /*Preenchimentos dos campos do processo*/
             TextoPreenchido(despacho);
-            IdOrgaoDestinoPreenchido(despacho);
-            NomeOrgaoDestinoPreenchido(despacho);
-            SiglaOrgaoDestinoPreenchida(despacho);
+            IdOrganizacaoDestinoPreenchido(despacho);
+            NomeOrganizacaoDestinoPreenchido(despacho);
+            SiglaOrganizacaoDestinoPreenchida(despacho);
             IdUnidadeDestinoPreenchido(despacho);
             NomeUnidadeDestinoPreenchido(despacho);
             SiglaUnidadeDestinoPreenchida(despacho);
@@ -50,27 +50,27 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        private void IdOrgaoDestinoPreenchido(DespachoModeloNegocio despacho)
+        private void IdOrganizacaoDestinoPreenchido(DespachoModeloNegocio despacho)
         {
-            if (despacho.IdOrgaoDestino == 0)
+            if (despacho.IdOrganizacaoDestino == 0)
             {
-                throw new RequisicaoInvalidaException("Identificador do órgao de destino não preenchido.");
+                throw new RequisicaoInvalidaException("Identificador da organização de destino não preenchido.");
             }
         }
 
-        private void NomeOrgaoDestinoPreenchido(DespachoModeloNegocio despacho)
+        private void NomeOrganizacaoDestinoPreenchido(DespachoModeloNegocio despacho)
         {
-            if (string.IsNullOrWhiteSpace(despacho.NomeOrgaoDestino))
+            if (string.IsNullOrWhiteSpace(despacho.NomeOrganizacaoDestino))
             {
-                throw new RequisicaoInvalidaException("Nome do órgao de destino não preenchido.");
+                throw new RequisicaoInvalidaException("Nome da organização de destino não preenchido.");
             }
         }
 
-        private void SiglaOrgaoDestinoPreenchida(DespachoModeloNegocio despacho)
+        private void SiglaOrganizacaoDestinoPreenchida(DespachoModeloNegocio despacho)
         {
-            if (string.IsNullOrWhiteSpace(despacho.SiglaOrgaoDestino))
+            if (string.IsNullOrWhiteSpace(despacho.SiglaOrganizacaoDestino))
             {
-                throw new RequisicaoInvalidaException("Sigla do órgao de destino não preenchida.");
+                throw new RequisicaoInvalidaException("Sigla da organização de destino não preenchida.");
             }
         }
 

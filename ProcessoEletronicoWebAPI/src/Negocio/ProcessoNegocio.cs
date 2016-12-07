@@ -20,20 +20,23 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         IUnitOfWork unitOfWork;
         IRepositorioGenerico<Processo> repositorioProcessos;
         IRepositorioGenerico<OrganizacaoProcesso> repositorioOrganizacoesProcesso;
+        IRepositorioGenerico<Anexo> repositorioAnexos;
 
         ProcessoValidacao processoValidacao;
         DespachoValidacao despachoValidacao;
+        AnexoValidacao anexoValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
 
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
-            this.unitOfWork = repositorios.UnitOfWork;
-            this.repositorioDespachos = repositorios.Despachos;
-            this.repositorioProcessos = repositorios.Processos;
-            this.repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
-            this.processoValidacao = new ProcessoValidacao(repositorios);
-            this.despachoValidacao = new DespachoValidacao(repositorios);
-
+            unitOfWork = repositorios.UnitOfWork;
+            repositorioDespachos = repositorios.Despachos;
+            repositorioProcessos = repositorios.Processos;
+            repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
+            repositorioAnexos = repositorios.Anexos;
+            processoValidacao = new ProcessoValidacao(repositorios);
+            despachoValidacao = new DespachoValidacao(repositorios);
+            anexoValidacao = new AnexoValidacao(repositorios);
         }
 
         public void Listar()
@@ -178,6 +181,25 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return Mapper.Map<Despacho, DespachoModeloNegocio>(despacho);
         }
 
+        public AnexoModeloNegocio PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo)
+        {
+            IQueryable<Anexo> query;
+
+            query = repositorioAnexos;
+            query = query.Where(a => a.Id == idAnexo && a.Processo.Id == idProcesso && a.Processo.IdOrganizacaoProcesso == idOrganizacao);
+
+            if (idDespacho > 0 )
+            {
+                query = query.Where(a => a.IdDespacho == idDespacho);
+            }
+
+            Anexo anexo = query.SingleOrDefault();
+
+            anexoValidacao.NaoEncontrado(anexo);
+
+            return Mapper.Map<Anexo, AnexoModeloNegocio>(anexo);
+        }
+
         public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int IdOrganizacao)
         {
             /*Validações*/
@@ -253,7 +275,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                                    .Select(d => new { IdProcesso = d.Key, DataHoraDespacho = d.Max(gbd => gbd.DataHoraDespacho) });
 
             var idsUltimosDespachosParaOrganizacao = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                                  && d.IdOrgaoDestino == idOrganizacao)
+                                                                                  && d.IdOrganizacaoDestino == idOrganizacao)
                                                                          .Join(ultimosDespachosDosProcessos,
                                                                                 d => d.IdProcesso,
                                                                                 ud => ud.IdProcesso,

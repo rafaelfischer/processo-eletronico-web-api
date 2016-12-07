@@ -127,6 +127,31 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Identificador da organização patriarca</param>
+        /// <param name="idProcesso">Identificador do Processo</param>
+        /// <param name="idDespacho">Identificador do Despacho</param>
+        /// <param name="idAnexo">Identificador do Anexo</param>
+        /// <returns></returns>
+        [HttpGet("{idProcesso}/anexos/{idAnexo}")]
+        public IActionResult PesquisarAnexo(int id, int idProcesso, [FromQuery] int idDespacho,  int idAnexo)
+        {
+            try
+            {
+                return new ObjectResult(service.PesquisarAnexo(id, idProcesso, idDespacho , idAnexo));
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
+        }
+
+        /// <summary>
         /// Retorna a lista de processos que estão tramintando na unidade especificada.
         /// </summary>
         /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
