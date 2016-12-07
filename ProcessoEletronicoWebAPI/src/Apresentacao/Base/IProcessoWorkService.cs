@@ -17,5 +17,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         void Excluir();
         List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade);
         List<ProcessoModelo> PesquisarProcessosNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao);
+        AnexoModeloGet PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo);
     }
 }

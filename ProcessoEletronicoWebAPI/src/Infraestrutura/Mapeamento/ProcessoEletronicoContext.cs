@@ -163,7 +163,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("dataHoraDespacho")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.IdOrgaoDestino).HasColumnName("idOrgaoDestino");
+                entity.Property(e => e.IdOrganizacaoDestino).HasColumnName("idOrganizacaoDestino");
 
                 entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
 
@@ -174,9 +174,9 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("idUsuarioDespachante")
                     .HasColumnType("varchar(50)");
 
-                entity.Property(e => e.NomeOrgaoDestino)
+                entity.Property(e => e.NomeOrganizacaoDestino)
                     .IsRequired()
-                    .HasColumnName("nomeOrgaoDestino")
+                    .HasColumnName("nomeOrganizacaoDestino")
                     .HasColumnType("varchar(100)");
 
                 entity.Property(e => e.NomeUnidadeDestino)
@@ -189,9 +189,9 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("nomeUsuarioDespachante")
                     .HasColumnType("varchar(200)");
 
-                entity.Property(e => e.SiglaOrgaoDestino)
+                entity.Property(e => e.SiglaOrganizacaoDestino)
                     .IsRequired()
-                    .HasColumnName("siglaOrgaoDestino")
+                    .HasColumnName("siglaOrganizacaoDestino")
                     .HasColumnType("varchar(10)");
 
                 entity.Property(e => e.SiglaUnidadeDestino)

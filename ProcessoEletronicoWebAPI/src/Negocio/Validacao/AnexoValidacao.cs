@@ -22,6 +22,14 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             this.repositorioTiposDocumentais = repositorios.TiposDocumentais;
         }
 
+        public void NaoEncontrado(Anexo anexo)
+        {
+            if (anexo == null)
+            {
+                throw new RecursoNaoEncontradoException("Anexo não encontrado");
+            }
+        }
+
         public void Preenchido(List<AnexoModeloNegocio> anexos)
         {
             if (anexos != null)
@@ -181,7 +189,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        #endregion
+       #endregion
 
 
     }
