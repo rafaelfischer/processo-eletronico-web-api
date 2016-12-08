@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
-      "AutoMapper/5.1.1": {
+      "AutoMapper/5.2.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
@@ -38,7 +38,7 @@
           "lib/netstandard1.3/Elasticsearch.Net.dll": {}
         }
       },
-      "IdentityModel/2.0.0": {
+      "IdentityModel/2.1.1": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
@@ -54,10 +54,10 @@
           "lib/netstandard1.3/IdentityModel.dll": {}
         }
       },
-      "IdentityModel.AspNetCore.OAuth2Introspection/1.0.1": {
+      "IdentityModel.AspNetCore.OAuth2Introspection/2.0.0": {
         "type": "package",
         "dependencies": {
-          "IdentityModel": "2.0.0",
+          "IdentityModel": "2.1.1",
           "Microsoft.AspNetCore.Authentication": "1.0.0",
           "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
           "Microsoft.Extensions.Caching.Memory": "1.0.0"
@@ -82,10 +82,10 @@
           "lib/netstandard1.3/IdentityModel.AspNetCore.ScopeValidation.dll": {}
         }
       },
-      "IdentityServer4.AccessTokenValidation/1.0.1-rc3": {
+      "IdentityServer4.AccessTokenValidation/1.0.1-rc4-update1": {
         "type": "package",
         "dependencies": {
-          "IdentityModel.AspNetCore.OAuth2Introspection": "1.0.1",
+          "IdentityModel.AspNetCore.OAuth2Introspection": "2.0.0",
           "IdentityModel.AspNetCore.ScopeValidation": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0"
         },
@@ -4245,7 +4245,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
-          "AutoMapper": "5.1.1",
+          "AutoMapper": "5.2.0",
           "Dominio": "1.0.0",
           "Microsoft.AspNetCore.StaticFiles": "1.1.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
@@ -4277,7 +4277,7 @@
       }
     },
     ".NETCoreApp,Version=v1.0/debian.8-x64": {
-      "AutoMapper/5.1.1": {
+      "AutoMapper/5.2.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
@@ -4312,7 +4312,7 @@
           "lib/netstandard1.3/Elasticsearch.Net.dll": {}
         }
       },
-      "IdentityModel/2.0.0": {
+      "IdentityModel/2.1.1": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
@@ -4328,10 +4328,10 @@
           "lib/netstandard1.3/IdentityModel.dll": {}
         }
       },
-      "IdentityModel.AspNetCore.OAuth2Introspection/1.0.1": {
+      "IdentityModel.AspNetCore.OAuth2Introspection/2.0.0": {
         "type": "package",
         "dependencies": {
-          "IdentityModel": "2.0.0",
+          "IdentityModel": "2.1.1",
           "Microsoft.AspNetCore.Authentication": "1.0.0",
           "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
           "Microsoft.Extensions.Caching.Memory": "1.0.0"
@@ -4356,10 +4356,10 @@
           "lib/netstandard1.3/IdentityModel.AspNetCore.ScopeValidation.dll": {}
         }
       },
-      "IdentityServer4.AccessTokenValidation/1.0.1-rc3": {
+      "IdentityServer4.AccessTokenValidation/1.0.1-rc4-update1": {
         "type": "package",
         "dependencies": {
-          "IdentityModel.AspNetCore.OAuth2Introspection": "1.0.1",
+          "IdentityModel.AspNetCore.OAuth2Introspection": "2.0.0",
           "IdentityModel.AspNetCore.ScopeValidation": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0"
         },
@@ -8666,7 +8666,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
-          "AutoMapper": "5.1.1",
+          "AutoMapper": "5.2.0",
           "Dominio": "1.0.0",
           "Microsoft.AspNetCore.StaticFiles": "1.1.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
@@ -8698,7 +8698,7 @@
       }
     },
     ".NETCoreApp,Version=v1.0/win10-x64": {
-      "AutoMapper/5.1.1": {
+      "AutoMapper/5.2.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
@@ -8733,7 +8733,7 @@
           "lib/netstandard1.3/Elasticsearch.Net.dll": {}
         }
       },
-      "IdentityModel/2.0.0": {
+      "IdentityModel/2.1.1": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
@@ -8749,10 +8749,10 @@
           "lib/netstandard1.3/IdentityModel.dll": {}
         }
       },
-      "IdentityModel.AspNetCore.OAuth2Introspection/1.0.1": {
+      "IdentityModel.AspNetCore.OAuth2Introspection/2.0.0": {
         "type": "package",
         "dependencies": {
-          "IdentityModel": "2.0.0",
+          "IdentityModel": "2.1.1",
           "Microsoft.AspNetCore.Authentication": "1.0.0",
           "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
           "Microsoft.Extensions.Caching.Memory": "1.0.0"
@@ -8777,10 +8777,10 @@
           "lib/netstandard1.3/IdentityModel.AspNetCore.ScopeValidation.dll": {}
         }
       },
-      "IdentityServer4.AccessTokenValidation/1.0.1-rc3": {
+      "IdentityServer4.AccessTokenValidation/1.0.1-rc4-update1": {
         "type": "package",
         "dependencies": {
-          "IdentityModel.AspNetCore.OAuth2Introspection": "1.0.1",
+          "IdentityModel.AspNetCore.OAuth2Introspection": "2.0.0",
           "IdentityModel.AspNetCore.ScopeValidation": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0"
         },
@@ -13051,7 +13051,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
-          "AutoMapper": "5.1.1",
+          "AutoMapper": "5.2.0",
           "Dominio": "1.0.0",
           "Microsoft.AspNetCore.StaticFiles": "1.1.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
@@ -13084,21 +13084,19 @@
     }
   },
   "libraries": {
-    "AutoMapper/5.1.1": {
-      "sha512": "Q3uFSWccBUE1Q9BW88C6RO2Y/iFkPztTKK1ciyx1jhWPdOi5+pvzZ2EwcJKPiV0cr2EXZUWqQOsSpA5jVjfQBg==",
+    "AutoMapper/5.2.0": {
+      "sha512": "ulUMmzFg1vAFMpTyJsplgnC7pOIFlb25dbldHd7J4eroQWjSV4iAoOQ33h1oMjf6mLo3uZ8aRNUN2rgpOeSE1w==",
       "type": "package",
-      "path": "AutoMapper/5.1.1",
+      "path": "AutoMapper/5.2.0",
       "files": [
-        "AutoMapper.5.1.1.nupkg.sha512",
+        "AutoMapper.5.2.0.nupkg.sha512",
         "AutoMapper.nuspec",
         "lib/net45/AutoMapper.dll",
         "lib/net45/AutoMapper.xml",
         "lib/netstandard1.1/AutoMapper.dll",
         "lib/netstandard1.1/AutoMapper.xml",
         "lib/netstandard1.3/AutoMapper.dll",
-        "lib/netstandard1.3/AutoMapper.xml",
-        "lib/portable-net45+win8+wpa81/AutoMapper.dll",
-        "lib/portable-net45+win8+wpa81/AutoMapper.xml"
+        "lib/netstandard1.3/AutoMapper.xml"
       ]
     },
     "Elasticsearch.Net/2.4.3": {
@@ -13121,23 +13119,23 @@
         "lib/netstandard1.3/Elasticsearch.Net.pdb.srcsrv"
       ]
     },
-    "IdentityModel/2.0.0": {
-      "sha512": "c5+zB+ADJ7QB2LC4tE5p4ESMHfR8HCBOD/LOjkNUiEh4AtbBgcZHYMKbBw/+rS5QyXNmMT0c+IMF1xb49XcYlQ==",
+    "IdentityModel/2.1.1": {
+      "sha512": "PnwsQt1oA6gLWcXlYff6idVFnzmw0I3nlg1VlsPgje7WPQfOPSZ5zrvc/W5NsJPoZFlOw8DI0OEbn20TnDkTOw==",
       "type": "package",
-      "path": "IdentityModel/2.0.0",
+      "path": "IdentityModel/2.1.1",
       "files": [
-        "IdentityModel.2.0.0.nupkg.sha512",
+        "IdentityModel.2.1.1.nupkg.sha512",
         "IdentityModel.nuspec",
         "lib/net45/IdentityModel.dll",
         "lib/netstandard1.3/IdentityModel.dll"
       ]
     },
-    "IdentityModel.AspNetCore.OAuth2Introspection/1.0.1": {
-      "sha512": "QxmDpffncXXl/MWEAFoQDCM/3vCvwz+cy0iul12hxvfnBTLhaug687PMBv7BAodInmbQxsRZpKxu9dFjdaNJAQ==",
+    "IdentityModel.AspNetCore.OAuth2Introspection/2.0.0": {
+      "sha512": "bbDaL6hYbCuzarnVkH+Z8Eza4wgsI3jXVCURqBnq1rFvRn14Kwtvbqa7BfEH1E8m/usnJMOp1uUk/qCQmQobCA==",
       "type": "package",
-      "path": "IdentityModel.AspNetCore.OAuth2Introspection/1.0.1",
+      "path": "IdentityModel.AspNetCore.OAuth2Introspection/2.0.0",
       "files": [
-        "IdentityModel.AspNetCore.OAuth2Introspection.1.0.1.nupkg.sha512",
+        "IdentityModel.AspNetCore.OAuth2Introspection.2.0.0.nupkg.sha512",
         "IdentityModel.AspNetCore.OAuth2Introspection.nuspec",
         "lib/net452/IdentityModel.AspNetCore.OAuth2Introspection.dll",
         "lib/netstandard1.3/IdentityModel.AspNetCore.OAuth2Introspection.dll"
@@ -13154,12 +13152,12 @@
         "lib/netstandard1.3/IdentityModel.AspNetCore.ScopeValidation.dll"
       ]
     },
-    "IdentityServer4.AccessTokenValidation/1.0.1-rc3": {
-      "sha512": "hLuQ6S3RFanKfaA8/xy5Qi6AyePA7ilXfR3w/iNI4PjgZMfcYx3XNrz6/jdBHyO6QC6vbzukQaLgV83zgbqOKw==",
+    "IdentityServer4.AccessTokenValidation/1.0.1-rc4-update1": {
+      "sha512": "F26TNkjFH/dyETlAXLgq0KgHtl/A67ZA0NmnvghLzxUF1DhbW9ueZGPVHPy2F7LHqyq+x2NdwTupD9OwZ7IZBA==",
       "type": "package",
-      "path": "IdentityServer4.AccessTokenValidation/1.0.1-rc3",
+      "path": "IdentityServer4.AccessTokenValidation/1.0.1-rc4-update1",
       "files": [
-        "IdentityServer4.AccessTokenValidation.1.0.1-rc3.nupkg.sha512",
+        "IdentityServer4.AccessTokenValidation.1.0.1-rc4-update1.nupkg.sha512",
         "IdentityServer4.AccessTokenValidation.nuspec",
         "lib/net452/IdentityServer4.AccessTokenValidation.dll",
         "lib/netstandard1.4/IdentityServer4.AccessTokenValidation.dll"
@@ -20619,7 +20617,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Apresentacao >= 1.0.0-*",
-      "IdentityServer4.AccessTokenValidation >= 1.0.1-rc3",
+      "IdentityServer4.AccessTokenValidation >= 1.0.1-rc4-update1",
       "Infraestrutura >= 1.0.0-*",
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 1.1.0",
       "Microsoft.AspNetCore.Mvc >= 1.1.0",
