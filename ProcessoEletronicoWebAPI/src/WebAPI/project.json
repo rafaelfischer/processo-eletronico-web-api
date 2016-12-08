@@ -16,9 +16,9 @@
     "Microsoft.NETCore.App": "1.1.0",
     "System.IdentityModel.Tokens.Jwt": "5.1.0",
     "Swashbuckle": "6.0.0-beta902",
-    "IdentityServer4.AccessTokenValidation": "1.0.1-rc3",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
-    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.1.0"
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.1.0",
+    "IdentityServer4.AccessTokenValidation": "1.0.1-rc4-update1"
   },
 
   "tools": {

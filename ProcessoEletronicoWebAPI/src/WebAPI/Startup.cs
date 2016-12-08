@@ -103,7 +103,7 @@ namespace WebAPI
                 Authority = autenticacaoIdentityServer.Authority,
                 RequireHttpsMetadata = autenticacaoIdentityServer.RequireHttpsMetadata,
 
-                ScopeName = autenticacaoIdentityServer.ScopeName,
+                AllowedScopes = autenticacaoIdentityServer.AllowedScopes,
                 AutomaticAuthenticate = autenticacaoIdentityServer.AutomaticAuthenticate
             });
             #endregion
