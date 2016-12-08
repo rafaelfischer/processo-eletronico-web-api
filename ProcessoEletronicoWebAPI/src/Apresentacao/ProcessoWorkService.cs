@@ -29,14 +29,14 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processoNegocio);
         }
 
-        public DespachoProcessoGetModelo Despachar(int idOrganizacao, int idProcesso, DespachoProcessoModeloPost despachoPost)
+        public DespachoProcessoModeloGet Despachar(int idOrganizacao, int idProcesso, DespachoProcessoModeloPost despachoPost)
         {
             DespachoModeloNegocio despachoNegocio = new DespachoModeloNegocio();
             Mapper.Map(despachoPost, despachoNegocio);
 
             despachoNegocio = this.processoNegocio.Despachar(idOrganizacao, idProcesso, despachoNegocio);
 
-            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoGetModelo>(despachoNegocio);
+            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoModeloGet>(despachoNegocio);
             
         }
 
@@ -68,11 +68,18 @@ namespace ProcessoEletronicoService.Apresentacao
             return p;
         }
 
-        public DespachoProcessoGetModelo PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso)
+        public DespachoProcessoModeloGet PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso)
         {
             DespachoModeloNegocio despachoNegocio = processoNegocio.PesquisarDespacho(idDespacho, idProcesso, idOrganizacaoProcesso);
 
-            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoGetModelo>(despachoNegocio);
+            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoModeloGet>(despachoNegocio);
+        }
+
+        public List<DespachoProcessoModeloCompleto> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario)
+        {
+            List<DespachoModeloNegocio> despachosModeloNegocio = processoNegocio.PesquisarDespachosUsuario(idOrganizacao, cpfUsuario);
+
+            return Mapper.Map<List<DespachoModeloNegocio>, List<DespachoProcessoModeloCompleto>>(despachosModeloNegocio);
         }
 
         public AnexoModeloGet PesquisarAnexo (int idOrganizacao, int idProcesso, int idDespacho, int idAnexo)
@@ -97,5 +104,15 @@ namespace ProcessoEletronicoService.Apresentacao
 
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
         }
+
+        public List<ProcessoModelo> PesquisarProcessosDespachadosUsuario(int idOrganizacao, string cpfUsuario)
+        {
+            List<ProcessoModeloNegocio> processosModeloNegocio = new List<ProcessoModeloNegocio>();
+            processosModeloNegocio = processoNegocio.PesquisarProcessosDespachadosUsuario(idOrganizacao, cpfUsuario);
+
+            return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processosModeloNegocio);
+        }
+
+        
     }
 }

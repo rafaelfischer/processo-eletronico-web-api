@@ -18,5 +18,7 @@ namespace ProcessoEletronicoService.Negocio.Base
         void Excluir();
         List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao);
         AnexoModeloNegocio PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo);
+        List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario(int idOrganizacao, string cpfUsuario);
+        List<DespachoModeloNegocio> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario);
     }
 }

@@ -160,6 +160,27 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return r;
         }
 
+        public List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario(int idOrganizacao, string cpfUsuario)
+        {
+            IQueryable<Processo> query;
+
+            query = repositorioProcessos;
+            query = query.Where(p => p.Despachos.Any(d => d.IdUsuarioDespachante == cpfUsuario))
+                         .Include(d => d.Despachos);
+
+            return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(query.ToList());
+        }
+
+        public List<DespachoModeloNegocio> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario)
+        {
+            IQueryable<Despacho> query;
+            query = repositorioDespachos;
+
+            query = query.Where(d => d.IdUsuarioDespachante == cpfUsuario).Include(p => p.Processo);
+
+            return Mapper.Map<List<Despacho>, List<DespachoModeloNegocio>>(query.ToList());
+        }
+
         public DespachoModeloNegocio PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso)
         {
             Despacho despacho = repositorioDespachos.Where(d => d.Id == idDespacho
@@ -188,7 +209,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             query = repositorioAnexos;
             query = query.Where(a => a.Id == idAnexo && a.Processo.Id == idProcesso && a.Processo.IdOrganizacaoProcesso == idOrganizacao);
 
-            if (idDespacho > 0 )
+            if (idDespacho > 0)
             {
                 query = query.Where(a => a.IdDespacho == idDespacho);
             }
@@ -450,5 +471,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             //Data/hora atual do despacho
             despacho.DataHoraDespacho = DateTime.Now;
         }
+
+        
     }
 }

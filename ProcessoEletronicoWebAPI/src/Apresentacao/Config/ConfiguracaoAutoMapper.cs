@@ -68,8 +68,12 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<DespachoProcessoModeloPost, DespachoModeloNegocio>()
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
 
-            CreateMap<DespachoModeloNegocio, DespachoProcessoGetModelo>()
+            CreateMap<DespachoModeloNegocio, DespachoProcessoModeloGet>()
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
+
+            CreateMap<DespachoModeloNegocio, DespachoProcessoModeloCompleto>()
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
+                .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo));
             #endregion
 
             #region Mapeamento de função
