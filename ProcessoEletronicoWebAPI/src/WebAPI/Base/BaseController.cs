@@ -23,29 +23,36 @@ namespace ProcessoEletronicoService.WebAPI.Base
             {
                 if (usuarioAutenticado == null)
                 {
-                    usuarioAutenticado = new Dictionary<string, string>();
-
                     var user = User as ClaimsPrincipal;
-                    
-                    usuarioAutenticado.Add("cpf", user.FindFirst("cpf").Value);
-                    usuarioAutenticado.Add("nome", user.FindFirst("nome").Value);
-
-                    string accessToken = user.FindFirst("accessToken").Value;
-
-                    Claim claimOrganizacao = user.FindFirst("orgao");
-
-                    if (claimOrganizacao != null)
+                    if (user != null)
                     {
-                        //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
-                        string siglaOrganizacao = claimOrganizacao.Value;
+                        Claim claimCpf = user.FindFirst("cpf");
+                        Claim claimNome = user.FindFirst("nome");
+                        if (claimCpf != null && claimNome != null)
+                        {
+                            usuarioAutenticado = new Dictionary<string, string>();
 
-                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + siglaOrganizacao, accessToken);
+                            usuarioAutenticado.Add("cpf", claimCpf.Value);
+                            usuarioAutenticado.Add("nome", claimNome.Value);
 
-                        usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
+                            string accessToken = user.FindFirst("accessToken").Value;
 
-                        Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
+                            Claim claimOrganizacao = user.FindFirst("orgao");
 
-                        usuarioAutenticado.Add("guidOrganizacaoPatriarca", organizacaoPatriarca.guid);
+                            if (claimOrganizacao != null)
+                            {
+                                //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
+                                string siglaOrganizacao = claimOrganizacao.Value;
+
+                                Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + siglaOrganizacao, accessToken);
+
+                                usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
+
+                                Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
+
+                                usuarioAutenticado.Add("guidOrganizacaoPatriarca", organizacaoPatriarca.guid);
+                            }
+                        }
                     }
                 }
 
