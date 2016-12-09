@@ -30,16 +30,23 @@ namespace ProcessoEletronicoService.WebAPI.Base
                     usuarioAutenticado.Add("cpf", user.FindFirst("cpf").Value);
                     usuarioAutenticado.Add("nome", user.FindFirst("nome").Value);
 
-                    string siglaOrganizacao = user.FindFirst("orgao").Value;
                     string accessToken = user.FindFirst("accessToken").Value;
 
-                    Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + siglaOrganizacao, accessToken);
+                    Claim claimOrganizacao = user.FindFirst("orgao");
 
-                    usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
+                    if (claimOrganizacao != null)
+                    {
+                        //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
+                        string siglaOrganizacao = claimOrganizacao.Value;
 
-                    Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
+                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + siglaOrganizacao, accessToken);
 
-                    usuarioAutenticado.Add("guidOrganizacaoPatriarca", organizacaoPatriarca.guid);
+                        usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
+
+                        Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
+
+                        usuarioAutenticado.Add("guidOrganizacaoPatriarca", organizacaoPatriarca.guid);
+                    }
                 }
 
                 return usuarioAutenticado;
