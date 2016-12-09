@@ -112,7 +112,7 @@ namespace WebAPI
             #region Configuração para buscar as permissões do usuário
             app.UseRequestUserInfo(new RequestUserInfoOptions
             {
-                UserInfoEndpoint = "https://sistemas.es.gov.br/prodest/acessocidadao/is/connect/userinfo"
+                UserInfoEndpoint = autenticacaoIdentityServer.Authority + "/connect/userinfo"
             });
             #endregion
 
