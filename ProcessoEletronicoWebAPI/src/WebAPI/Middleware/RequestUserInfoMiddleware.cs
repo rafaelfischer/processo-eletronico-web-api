@@ -34,6 +34,7 @@ namespace ProcessoEletronicoService.WebAPI.Middleware
                 UserInfoResponse userInfoResponse = await userInfoClient.GetAsync(accessToken);
 
                 var id = new ClaimsIdentity();
+                id.AddClaim(new Claim("accessToken", accessToken));
 
                 var userInfoList = userInfoResponse.Claims.ToList();
                 foreach (var ui in userInfoList)

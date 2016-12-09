@@ -8,6 +8,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public Processo()
         {
             Anexos = new HashSet<Anexo>();
+            Despachos = new HashSet<Despacho>();
             InteressadosPessoaFisica = new HashSet<InteressadoPessoaFisica>();
             InteressadosPessoaJuridica = new HashSet<InteressadoPessoaJuridica>();
             MunicipiosProcesso = new HashSet<MunicipioProcesso>();
@@ -23,16 +24,18 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public short Ano { get; set; }
         public string Resumo { get; set; }
         public int IdAtividade { get; set; }
-        public int IdOrganizacaoAutuadora { get; set; }
+        public int? IdOrganizacaoAutuadora { get; set; }
         public string NomeOrganizacaoAutuadora { get; set; }
         public string SiglaOrganizacaoAutuadora { get; set; }
-        public int IdUnidadeAutuadora { get; set; }
+        public int? IdUnidadeAutuadora { get; set; }
         public string NomeUnidadeAutuadora { get; set; }
         public string SiglaUnidadeAutuadora { get; set; }
         public string IdUsuarioAutuador { get; set; }
         public string NomeUsuarioAutuador { get; set; }
         public DateTime DataAutuacao { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
+        public Guid GuidOrganizacaoAutuadora { get; set; }
+        public Guid GuidUnidadeAutuadora { get; set; }
 
         public virtual ICollection<Anexo> Anexos { get; set; }
         public virtual ICollection<Despacho> Despachos { get; set; }

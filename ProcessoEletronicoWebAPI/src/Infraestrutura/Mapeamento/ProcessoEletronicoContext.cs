@@ -163,6 +163,10 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("dataHoraDespacho")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.GuidOrganizacaoDestino).HasColumnName("guidOrganizacaoDestino");
+
+                entity.Property(e => e.GuidUnidadeDestino).HasColumnName("guidUnidadeDestino");
+
                 entity.Property(e => e.IdOrganizacaoDestino).HasColumnName("idOrganizacaoDestino");
 
                 entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
@@ -327,7 +331,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasConstraintName("FK_Funcao_FuncaoPai");
 
                 entity.HasOne(d => d.PlanoClassificacao)
-                    .WithMany(p => p.Funcao)
+                    .WithMany(p => p.Funcoes)
                     .HasForeignKey(d => d.IdPlanoClassificacao)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Funcao_PlanoClassificacao");
@@ -349,6 +353,8 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .IsRequired()
                     .HasColumnName("cpf")
                     .HasColumnType("varchar(11)");
+
+                entity.Property(e => e.GuidMunicipio).HasColumnName("guidMunicipio");
 
                 entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
 
@@ -391,6 +397,8 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("cnpj")
                     .HasColumnType("varchar(14)");
 
+                entity.Property(e => e.GuidMunicipio).HasColumnName("guidMunicipio");
+
                 entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
 
                 entity.Property(e => e.NomeMunicipio)
@@ -429,11 +437,13 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
             modelBuilder.Entity<MunicipioProcesso>(entity =>
             {
-                entity.HasIndex(e => new { e.Nome, e.Uf, e.IdProcesso })
+                entity.HasIndex(e => new { e.IdProcesso, e.GuidMunicipio })
                     .HasName("UK_MunicipioProcesso")
-                    .IsUnique();
+                .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.GuidMunicipio).HasColumnName("guidMunicipio");
 
                 entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
 
@@ -460,7 +470,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasName("UK_OrganizacaoProcessoCnpj")
                     .IsUnique();
 
-                entity.HasIndex(e => e.IdOrganizacao)
+                entity.HasIndex(e => e.GuidOrganizacao)
                     .HasName("UK_OrganizacaoProcessoOrganograma")
                     .IsUnique();
 
@@ -475,6 +485,10 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("cnpj")
                     .HasColumnType("varchar(14)");
 
+                entity.Property(e => e.DigitoOrganizacao).HasColumnName("digitoOrganizacao");
+
+                entity.Property(e => e.GuidOrganizacao).HasColumnName("guidOrganizacao");
+
                 entity.Property(e => e.IdDigitoEsfera).HasColumnName("idDigitoEsfera");
 
                 entity.Property(e => e.IdDigitoPoder).HasColumnName("idDigitoPoder");
@@ -485,8 +499,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .IsRequired()
                     .HasColumnName("nomeFantasia")
                     .HasColumnType("varchar(100)");
-
-                entity.Property(e => e.DigitoOrganizacao).HasColumnName("digitoOrganizacao");
 
                 entity.Property(e => e.RazaoSocial)
                     .IsRequired()
@@ -513,7 +525,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
             modelBuilder.Entity<PlanoClassificacao>(entity =>
             {
-                entity.HasIndex(e => new { e.Codigo, e.IdOrganizacao })
+                entity.HasIndex(e => new { e.Codigo, e.GuidOrganizacao })
                     .HasName("UK_PlanoClassificacaoCodigoOrganizacao")
                     .IsUnique();
 
@@ -531,6 +543,8 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("descricao")
                     .HasColumnType("varchar(200)");
 
+                entity.Property(e => e.GuidOrganizacao).HasColumnName("guidOrganizacao");
+
                 entity.Property(e => e.IdOrganizacao).HasColumnName("idOrganizacao");
 
                 entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
@@ -540,7 +554,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnType("varchar(500)");
 
                 entity.HasOne(d => d.OrganizacaoProcesso)
-                    .WithMany(p => p.PlanoClassificacao)
+                    .WithMany(p => p.PlanosClassificacao)
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_PlanoClassificacao_OrganizacaoProcesso");
@@ -582,11 +596,15 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.DigitoVerificador).HasColumnName("digitoVerificador");
 
+                entity.Property(e => e.GuidOrganizacaoAutuadora).HasColumnName("guidOrganizacaoAutuadora");
+
+                entity.Property(e => e.GuidUnidadeAutuadora).HasColumnName("guidUnidadeAutuadora");
+
                 entity.Property(e => e.IdAtividade).HasColumnName("idAtividade");
 
-                entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
-
                 entity.Property(e => e.IdOrganizacaoAutuadora).HasColumnName("idOrganizacaoAutuadora");
+
+                entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
 
                 entity.Property(e => e.IdUnidadeAutuadora).HasColumnName("idUnidadeAutuadora");
 
@@ -634,7 +652,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasConstraintName("FK_Processo_Atividade");
 
                 entity.HasOne(d => d.OrganizacaoProcesso)
-                    .WithMany(p => p.Processo)
+                    .WithMany(p => p.Processos)
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Processo_OrganizacaoProcesso");
@@ -664,7 +682,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnType("image");
 
                 entity.HasOne(d => d.OrganizacaoProcesso)
-                    .WithMany(p => p.Sinalizacao)
+                    .WithMany(p => p.Sinalizacoes)
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Sinalizacao_OrganizacaoProcesso");

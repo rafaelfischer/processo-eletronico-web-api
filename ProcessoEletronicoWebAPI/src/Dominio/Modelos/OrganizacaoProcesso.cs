@@ -7,13 +7,13 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public OrganizacaoProcesso()
         {
-            PlanoClassificacao = new HashSet<PlanoClassificacao>();
-            Processo = new HashSet<Processo>();
-            Sinalizacao = new HashSet<Sinalizacao>();
+            PlanosClassificacao = new HashSet<PlanoClassificacao>();
+            Processos = new HashSet<Processo>();
+            Sinalizacoes = new HashSet<Sinalizacao>();
         }
 
         public int Id { get; set; }
-        public int IdOrganizacao { get; set; }
+        public int? IdOrganizacao { get; set; }
         public string Cnpj { get; set; }
         public string RazaoSocial { get; set; }
         public string NomeFantasia { get; set; }
@@ -21,10 +21,11 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int IdDigitoPoder { get; set; }
         public int IdDigitoEsfera { get; set; }
         public short DigitoOrganizacao { get; set; }
+        public Guid GuidOrganizacao { get; set; }
 
-        public virtual ICollection<PlanoClassificacao> PlanoClassificacao { get; set; }
-        public virtual ICollection<Processo> Processo { get; set; }
-        public virtual ICollection<Sinalizacao> Sinalizacao { get; set; }
+        public virtual ICollection<PlanoClassificacao> PlanosClassificacao { get; set; }
+        public virtual ICollection<Processo> Processos { get; set; }
+        public virtual ICollection<Sinalizacao> Sinalizacoes { get; set; }
         public virtual DigitoEsfera DigitoEsfera { get; set; }
         public virtual DigitoPoder DigitoPoder { get; set; }
     }

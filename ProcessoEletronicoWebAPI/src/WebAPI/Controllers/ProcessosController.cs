@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
 using System.Collections.Generic;
@@ -12,11 +14,11 @@ using System.Net;
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
     [Route("api/organizacoes-processo/{id}/processos")]
-    public class ProcessosController : Controller
+    public class ProcessosController : BaseController
     {
         IProcessoWorkService service;
         
-        public ProcessosController (IProcessoWorkService service)
+        public ProcessosController (IProcessoWorkService service, IOptions<OrganogramaApi> organogramaApiSettings) : base (organogramaApiSettings)
         {
             this.service = service;
         }
@@ -237,7 +239,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [HttpGet("organizacao/{idOrganizacao}")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
         [ProducesResponseType(typeof(string), 500)]
-        [Authorize]
         public IActionResult PesquisarPorOganizacao(int id, int idOrganizacao)
         {
             try
