@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -18,51 +19,18 @@ namespace ProcessoEletronicoService.WebAPI.Base
     {
         private readonly IOptions<OrganogramaApi> organogramaApiSettings;
         private Dictionary<string, string> usuarioAutenticado;
-        public Dictionary<string, string> UsuarioAutenticado {
+        public Dictionary<string, string> UsuarioAutenticado
+        {
             get
             {
-                if (usuarioAutenticado == null)
-                {
-                    var user = User as ClaimsPrincipal;
-                    if (user != null)
-                    {
-                        Claim claimCpf = user.FindFirst("cpf");
-                        Claim claimNome = user.FindFirst("nome");
-                        if (claimCpf != null && claimNome != null)
-                        {
-                            usuarioAutenticado = new Dictionary<string, string>();
-
-                            usuarioAutenticado.Add("cpf", claimCpf.Value);
-                            usuarioAutenticado.Add("nome", claimNome.Value);
-
-                            string accessToken = user.FindFirst("accessToken").Value;
-
-                            Claim claimOrganizacao = user.FindFirst("orgao");
-
-                            if (claimOrganizacao != null)
-                            {
-                                //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
-                                string siglaOrganizacao = claimOrganizacao.Value;
-
-                                Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + siglaOrganizacao, accessToken);
-
-                                usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
-
-                                Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
-
-                                usuarioAutenticado.Add("guidOrganizacaoPatriarca", organizacaoPatriarca.guid);
-                            }
-                        }
-                    }
-                }
-
                 return usuarioAutenticado;
             }
         }
 
-        public BaseController(IOptions<OrganogramaApi> organogramaApiSettings)
+        public BaseController(IHttpContextAccessor httpContextAccessor, IOptions<OrganogramaApi> organogramaApiSettings)
         {
             this.organogramaApiSettings = organogramaApiSettings;
+            PreencherUsuario(httpContextAccessor.HttpContext.User);
         }
 
         private T DownloadJsonData<T>(string url, string acessToken) where T : new()
@@ -85,6 +53,40 @@ namespace ProcessoEletronicoService.WebAPI.Base
                 else
                 {
                     return new T();
+                }
+            }
+        }
+
+        private void PreencherUsuario(ClaimsPrincipal user)
+        {
+            if (user != null)
+            {
+                Claim claimCpf = user.FindFirst("cpf");
+                Claim claimNome = user.FindFirst("nome");
+                if (claimCpf != null && claimNome != null)
+                {
+                    usuarioAutenticado = new Dictionary<string, string>();
+
+                    usuarioAutenticado.Add("cpf", claimCpf.Value);
+                    usuarioAutenticado.Add("nome", claimNome.Value);
+
+                    string accessToken = user.FindFirst("accessToken").Value;
+
+                    Claim claimOrganizacao = user.FindFirst("orgao");
+
+                    if (claimOrganizacao != null)
+                    {
+                        //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
+                        string siglaOrganizacao = claimOrganizacao.Value;
+
+                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + siglaOrganizacao, accessToken);
+
+                        usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
+
+                        Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
+
+                        usuarioAutenticado.Add("guidOrganizacaoPatriarca", organizacaoPatriarca.guid);
+                    }
                 }
             }
         }

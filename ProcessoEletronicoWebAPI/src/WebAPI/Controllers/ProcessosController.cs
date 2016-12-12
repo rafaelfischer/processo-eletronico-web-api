@@ -18,9 +18,10 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IProcessoWorkService service;
         
-        public ProcessosController (IProcessoWorkService service, IOptions<OrganogramaApi> organogramaApiSettings) : base (organogramaApiSettings)
+        public ProcessosController (IProcessoWorkService service, IHttpContextAccessor httpContextAccessor, IOptions<OrganogramaApi> organogramaApiSettings) : base (httpContextAccessor, organogramaApiSettings)
         {
             this.service = service;
+            this.service.Usuario = UsuarioAutenticado;
         }
 
         #region GET
@@ -231,19 +232,18 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <summary>
         /// Retorna a lista de processos que estão tramintando na organização especificada.
         /// </summary>
-        /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
-        /// <param name="idOrganizacao">Identificador da organização onde os processos estão tramintando.</param>
+        /// <param name="guidOrganizacao">Identificador da organização onde os processos estão tramintando.</param>
         /// <returns>Lista de processos que estão tramintando na organização especificada.</returns>
         /// <response code="201">Retorna a lista de processos que estão tramintando na organização especificada.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("organizacao/{idOrganizacao}")]
+        [HttpGet("/api/processos/organizacao/{guidOrganizacao}")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarPorOganizacao(int id, int idOrganizacao)
+        public IActionResult PesquisarPorOganizacao(string guidOrganizacao)
         {
             try
             {
-                return new ObjectResult(service.PesquisarProcessosNaOrganizacao(id, idOrganizacao));
+                return new ObjectResult(service.PesquisarProcessosNaOrganizacao(guidOrganizacao));
             }
             catch (Exception e)
             {

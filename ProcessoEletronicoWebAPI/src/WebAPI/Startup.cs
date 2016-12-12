@@ -49,6 +49,8 @@ namespace WebAPI
                         opt.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             InjecaoDependencias.InjetarDependencias(services);
             ConfiguracaoAutoMapper.CriarMapeamento();
 
@@ -112,7 +114,7 @@ namespace WebAPI
             #region Configuração para buscar as permissões do usuário
             app.UseRequestUserInfo(new RequestUserInfoOptions
             {
-                UserInfoEndpoint = autenticacaoIdentityServer.Authority + "/connect/userinfo"
+                UserInfoEndpoint = autenticacaoIdentityServer.Authority + "connect/userinfo"
             });
             #endregion
 
