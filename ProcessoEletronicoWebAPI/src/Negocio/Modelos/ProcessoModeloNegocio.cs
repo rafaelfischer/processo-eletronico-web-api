@@ -34,11 +34,14 @@ namespace ProcessoEletronicoService.Negocio.Modelos
 
                 if (Despachos != null)
                 {
-                    var dataUltimoDespacho = Despachos.GroupBy(d => d.IdProcesso)
-                                                 .Select(d => d.Max(gd => gd.DataHoraDespacho))
-                                                 .SingleOrDefault();
-                    if (dataUltimoDespacho != null)
-                        dataUltimoTramite = dataUltimoDespacho;
+                    if (Despachos.Count > 0)
+                    {
+                        var dataUltimoDespacho = Despachos.GroupBy(d => d.IdProcesso)
+                                                     .Select(d => d.Max(gd => gd.DataHoraDespacho))
+                                                     .SingleOrDefault();
+                        if (dataUltimoDespacho != null)
+                            dataUltimoTramite = dataUltimoDespacho;
+                    }
                 }
                 else
                     throw new ProcessoEletronicoException("Para obter a data do último tramite é necessário informar os despachos.");

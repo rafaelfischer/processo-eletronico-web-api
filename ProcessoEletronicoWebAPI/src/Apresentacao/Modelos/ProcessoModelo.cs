@@ -29,10 +29,10 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public int Id { get; set; }
         public string Resumo { get; set; }
         public int IdAtividade { get; set; }
-        public int GuidOrganizacaoAutuadora { get; set; }
+        public string GuidOrganizacaoAutuadora { get; set; }
         public string NomeOrganizacaoAutuadora { get; set; }
         public string SiglaOrganizacaoAutuadora { get; set; }
-        public int GuidUnidadeAutuadora { get; set; }
+        public string GuidUnidadeAutuadora { get; set; }
         public string NomeUnidadeAutuadora { get; set; }
         public string SiglaUnidadeAutuadora { get; set; }
         public string IdUsuarioAutuador { get; set; }
