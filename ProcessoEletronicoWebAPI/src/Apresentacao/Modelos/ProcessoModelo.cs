@@ -18,32 +18,21 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<MunicipioProcessoModelo> Municipios { get; set; }
         public List<AnexoModelo> Anexos { get; set; }
         public List<int> IdSinalizacoes { get; set; }
-        public int IdOrganizacaoAutuadora { get; set; }
         [Required]
-        public string NomeOrganizacaoAutuadora { get; set; }
+        public string GuidOrganizacaoAutuadora { get; set; }
         [Required]
-        public string SiglaOrganizacaoAutuadora { get; set; }
-        [Required]
-        public int IdUnidadeAutuadora { get; set; }
-        [Required]
-        public string NomeUnidadeAutuadora { get; set; }
-        [Required]
-        public string SiglaUnidadeAutuadora { get; set; }
-        [Required]
-        public string IdUsuarioAutuador { get; set; }
-        [Required]
-        public string NomeUsuarioAutuador { get; set; }
-    }
+        public string GuidUnidadeAutuadora { get; set; }
+      }
 
     public class ProcessoModelo
     {
         public int Id { get; set; }
         public string Resumo { get; set; }
         public int IdAtividade { get; set; }
-        public int IdOrganizacaoAutuadora { get; set; }
+        public int GuidOrganizacaoAutuadora { get; set; }
         public string NomeOrganizacaoAutuadora { get; set; }
         public string SiglaOrganizacaoAutuadora { get; set; }
-        public int IdUnidadeAutuadora { get; set; }
+        public int GuidUnidadeAutuadora { get; set; }
         public string NomeUnidadeAutuadora { get; set; }
         public string SiglaUnidadeAutuadora { get; set; }
         public string IdUsuarioAutuador { get; set; }
@@ -58,10 +47,10 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
     {
         public int Id { get; set; }
         public string Resumo { get; set; }
-        public int IdOrganizacaoAutuadora { get; set; }
+        public string GuidOrganizacaoAutuadora { get; set; }
         public string NomeOrganizacaoAutuadora { get; set; }
         public string SiglaOrganizacaoAutuadora { get; set; }
-        public int IdUnidadeAutuadora { get; set; }
+        public string GuidUnidadeAutuadora { get; set; }
         public string NomeUnidadeAutuadora { get; set; }
         public string SiglaUnidadeAutuadora { get; set; }
         public string IdUsuarioAutuador { get; set; }

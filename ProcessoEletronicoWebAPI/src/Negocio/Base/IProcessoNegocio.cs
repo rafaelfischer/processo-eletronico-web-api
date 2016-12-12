@@ -8,17 +8,15 @@ namespace ProcessoEletronicoService.Negocio.Base
 {
     public interface IProcessoNegocio : IBaseNegocio
     {
-        void Listar();
-        ProcessoModeloNegocio Pesquisar(int idOrganizacaoProcesso, int idProcesso);
+        ProcessoModeloNegocio Pesquisar(int id);
         ProcessoModeloNegocio Pesquisar(string numero);
         DespachoModeloNegocio PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso);
-        List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(int idOrganizacaoProcesso, int idUnidade);
-        ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int idOrganizacao);
+        List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(string guidUnidade);
+        ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio);
         DespachoModeloNegocio Despachar(int idOrganizacaoProcesso, int idProcesso, DespachoModeloNegocio despachoNegocio);
-        void Excluir();
         List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(string guidOrganizacao);
         AnexoModeloNegocio PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo);
-        List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario(int idOrganizacao, string cpfUsuario);
+        List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario();
         List<DespachoModeloNegocio> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario);
     }
 }

@@ -128,11 +128,15 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica))
                 .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.MunicipiosProcesso))
                 .ForMember(dest => dest.SinalizacoesProcesso, opt => opt.MapFrom(src => src.Sinalizacoes))
+                .ForMember(dest => dest.GuidOrganizacaoAutuadora, opt => opt.MapFrom(src => new Guid (src.GuidOrganizacaoAutuadora)))
+                .ForMember(dest => dest.GuidUnidadeAutuadora, opt => opt.MapFrom(src => new Guid (src.GuidUnidadeAutuadora)))
                 .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.Ignore());
 
 
             CreateMap<Processo, ProcessoModeloNegocio>()
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(s => s.SinalizacoesProcesso != null ? Mapper.Map<List<SinalizacaoProcesso>, List<SinalizacaoModeloNegocio>>(s.SinalizacoesProcesso.ToList()) : null))
+                .ForMember(dest => dest.GuidOrganizacaoAutuadora, opt => opt.MapFrom(src => src.GuidOrganizacaoAutuadora.ToString("D")))
+                .ForMember(dest => dest.GuidUnidadeAutuadora, opt => opt.MapFrom(src => src.GuidUnidadeAutuadora.ToString("D")))
                 .MaxDepth(1);
             #endregion
 

@@ -25,12 +25,12 @@ namespace ProcessoEletronicoService.Apresentacao
             processoNegocio.Usuario = Usuario;
         }
 
-        public ProcessoCompletoModelo Autuar(ProcessoModeloPost processo, int idOrganizacao)
+        public ProcessoCompletoModelo Autuar(ProcessoModeloPost processo)
         {
             ProcessoModeloNegocio processoNegocio = new ProcessoModeloNegocio();
             Mapper.Map(processo, processoNegocio);
 
-            processoNegocio = this.processoNegocio.Autuar(processoNegocio, idOrganizacao);
+            processoNegocio = this.processoNegocio.Autuar(processoNegocio);
 
             return Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processoNegocio);
         }
@@ -45,17 +45,7 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<DespachoModeloNegocio, DespachoProcessoModeloGet>(despachoNegocio);
             
         }
-
-        public void Excluir()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Listar()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public ProcessoCompletoModelo Pesquisar(string numero)
         {
             var processos = processoNegocio.Pesquisar(numero);
@@ -65,9 +55,9 @@ namespace ProcessoEletronicoService.Apresentacao
             return p;
         }
 
-        public ProcessoCompletoModelo Pesquisar(int idOrganizacaoProcesso, int idProcesso)
+        public ProcessoCompletoModelo Pesquisar(int id)
         {
-            var processos = processoNegocio.Pesquisar(idOrganizacaoProcesso, idProcesso);
+            var processos = processoNegocio.Pesquisar(id);
 
             var p = Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processos);
 
@@ -96,10 +86,9 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<AnexoModeloNegocio, AnexoModeloGet>(anexoModeloNegocio);
         }
 
-
-        public List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade)
+        public List<ProcessoModelo> PesquisarProcessosNaUnidade(string guidUnidade)
         {
-            var processos = processoNegocio.PesquisarProcessoNaUnidade(idOrganizacaoProcesso, idUnidade);
+            var processos = processoNegocio.PesquisarProcessoNaUnidade(guidUnidade);
 
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
         }
@@ -111,10 +100,10 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
         }
 
-        public List<ProcessoModelo> PesquisarProcessosDespachadosUsuario(int idOrganizacao, string cpfUsuario)
+        public List<ProcessoModelo> PesquisarProcessosDespachadosUsuario()
         {
             List<ProcessoModeloNegocio> processosModeloNegocio = new List<ProcessoModeloNegocio>();
-            processosModeloNegocio = processoNegocio.PesquisarProcessosDespachadosUsuario(idOrganizacao, cpfUsuario);
+            processosModeloNegocio = processoNegocio.PesquisarProcessosDespachadosUsuario();
 
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processosModeloNegocio);
         }

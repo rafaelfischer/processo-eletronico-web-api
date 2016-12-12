@@ -13,7 +13,7 @@ using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    [Route("api/organizacoes-processo/{id}/processos")]
+    [Route("api/processos")]
     public class ProcessosController : BaseController
     {
         IProcessoWorkService service;
@@ -25,31 +25,24 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         }
 
         #region GET
-        //GET api/processos
-        [HttpGet]
-        public IActionResult Listar()
-        {
-            return new ObjectResult("Listar");
-        }
 
         /// <summary>
-        /// Retorna o processo correspondente ao idProcesso informado.
+        /// Retorna o processo correspondente ao identificador informado.
         /// </summary>
-        /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
-        /// <param name="idProcesso">Identificador do processo.</param>
-        /// <returns>Processo correspondente ao idProcesso.</returns>
-        /// <response code="201">Retorna o processo correspondente ao idProcesso.</response>
+        /// <param name="id">Identificador do processo.</param>
+        /// <returns>Processo correspondente ao identificador.</returns>
+        /// <response code="200">Processo correspondente ao identificador.</response>
         /// <response code="404">Proceso não foi encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{idProcesso}")]
-        [ProducesResponseType(typeof(ProcessoCompletoModelo), 201)]
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProcessoCompletoModelo), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Pesquisar(int id, int idProcesso)
+        public IActionResult Pesquisar(int id)
         {
             try
             {
-                return new ObjectResult(service.Pesquisar(id, idProcesso));
+                return new ObjectResult(service.Pesquisar(id));
             }
             catch (RecursoNaoEncontradoException e)
             {
@@ -64,13 +57,14 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <summary>
         /// Retorna o processo correspondente ao número informado.
         /// </summary>
-        /// <param name="numero">Número do processo.Formato: SEQUENCIAL-DD.AAAA.P.E.OOOO</param>
+        /// <param name="numero">Número do processo. Formato: SEQUENCIAL-DD.AAAA.P.E.OOOO</param>
         /// <returns>Processo correspondente ao número.</returns>
-        /// <response code="201">Retorna o processo correspondente ao número.</response>
+        /// <response code="200">Retorna o processo correspondente ao número.</response>
+        /// <response code="400">Número do processo inválido.</response>
         /// <response code="404">Proceso não foi encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("/api/processos/numero/{numero}")]
-        [ProducesResponseType(typeof(ProcessoCompletoModelo), 201)]
+        [HttpGet("numero/{numero}")]
+        [ProducesResponseType(typeof(ProcessoCompletoModelo), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 500)]
@@ -95,24 +89,20 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Retorna lista de processos que posuem pelo menos um despacho feito pelo usuario
+        /// Retorna lista de processos que posuem pelo menos um despacho feito pelo usuario autenticado.
         /// </summary>
-        /// <param name="id">Identificador da organização patriarca</param>
-        /// <param name="cpfUsuario">CPF do usuário</param>
-        /// <returns></returns>
-        [HttpGet("usuario/{cpfUsuario}")]
+        /// <returns>Processo correspondente ao número.</returns>
+        /// <response code="200">Processos que posuem pelo menos um despacho feito pelo usuario autenticado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet("usuario")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 200)]
-        [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarProcessosDespachadosUsuario(int id, string cpfUsuario)
+        public IActionResult PesquisarProcessosDespachadosUsuario()
         {
             try
             {
-                return new ObjectResult(service.PesquisarProcessosDespachadosUsuario(id, cpfUsuario));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(e.Message);
+
+                return new ObjectResult(service.PesquisarProcessosDespachadosUsuario());
             }
             catch (Exception e)
             {
@@ -208,19 +198,18 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <summary>
         /// Retorna a lista de processos que estão tramintando na unidade especificada.
         /// </summary>
-        /// <param name="id">Identificador da organização patriarca a qual pertencem os processos.</param>
-        /// <param name="idUnidade">Identificador da unidade onde os processos estão tramintando.</param>
+        /// <param name="guidUnidade">Identificador da unidade onde os processos estão tramitando.</param>
         /// <returns>Lista de processos que estão tramintando na unidade especificada.</returns>
-        /// <response code="201">Retorna a lista de processos que estão tramintando na unidade especificada.</response>
+        /// <response code="200">Retorna a lista de processos que estão tramintando na unidade especificada.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("unidade/{idUnidade}")]
-        [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
+        [ProducesResponseType(typeof(List<ProcessoModelo>), 200)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarPorUnidade(int id, int idUnidade)
+        public IActionResult PesquisarPorUnidade(string guidUnidade)
         {
             try
             {
-                return new ObjectResult(service.PesquisarProcessosNaUnidade(id, idUnidade));
+                return new ObjectResult(service.PesquisarProcessosNaUnidade(guidUnidade));
             }
             catch (Exception e)
             {
@@ -230,14 +219,14 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
 
 
         /// <summary>
-        /// Retorna a lista de processos que estão tramintando na organização especificada.
+        /// Retorna a lista de processos que estão tramitando na organização especificada.
         /// </summary>
         /// <param name="guidOrganizacao">Identificador da organização onde os processos estão tramintando.</param>
         /// <returns>Lista de processos que estão tramintando na organização especificada.</returns>
-        /// <response code="201">Retorna a lista de processos que estão tramintando na organização especificada.</response>
+        /// <response code="200">Retorna a lista de processos que estão tramintando na organização especificada.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("/api/processos/organizacao/{guidOrganizacao}")]
-        [ProducesResponseType(typeof(List<ProcessoModelo>), 201)]
+        [HttpGet("organizacao/{guidOrganizacao}")]
+        [ProducesResponseType(typeof(List<ProcessoModelo>), 200)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarPorOganizacao(string guidOrganizacao)
         {
@@ -264,16 +253,19 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// O campo "conteudo" dos anexos do processo é uma string. O arquivo deve ser codificado para uma string base64 antes de ser enviado para a API.
         /// </remarks>
         /// <param name="processoPost"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Policy = "Processo.Autuar")]
-        public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost, int id)
+        [ProducesResponseType(typeof(ProcessoCompletoModelo), 201)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost)
         {
             try
             {
                 HttpRequest request = HttpContext.Request;
-                ProcessoCompletoModelo processoCompleto = service.Autuar(processoPost, id);
+                ProcessoCompletoModelo processoCompleto = service.Autuar(processoPost);
                 return Created("http://"+ request.Host.Value + request.Path.Value + "/" + processoCompleto.Id , processoCompleto);
             }
             catch (RequisicaoInvalidaException e)

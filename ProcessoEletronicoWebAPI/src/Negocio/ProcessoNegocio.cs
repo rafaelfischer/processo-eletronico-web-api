@@ -25,6 +25,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
         ProcessoValidacao processoValidacao;
         DespachoValidacao despachoValidacao;
         AnexoValidacao anexoValidacao;
+        UsuarioValidacao usuarioValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
 
         public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
@@ -37,17 +38,13 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             processoValidacao = new ProcessoValidacao(repositorios);
             despachoValidacao = new DespachoValidacao(repositorios);
             anexoValidacao = new AnexoValidacao(repositorios);
+            usuarioValidacao = new UsuarioValidacao();
         }
 
-        public void Listar()
-        {
-            throw new NotImplementedException();
-        }
 
-        public ProcessoModeloNegocio Pesquisar(int idOrganizacaoProcesso, int idProcesso)
+        public ProcessoModeloNegocio Pesquisar(int id)
         {
-            var processo = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                        && p.Id == idProcesso)
+            var processo = repositorioProcessos.Where(p => p.Id == id)
                                                .Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
                                                .Include(p => p.Despachos)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
@@ -116,21 +113,18 @@ namespace ProcessoEletronicoService.Negocio.Restrito
 
         }
 
-        public List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(int idOrganizacaoProcesso, int idUnidade)
+        public List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(string guidUnidade)
         {
-            var processosSemDespachoNaUnidade = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                             && p.IdUnidadeAutuadora == idUnidade
+            var processosSemDespachoNaUnidade = repositorioProcessos.Where(p => p.GuidUnidadeAutuadora.Equals(new Guid(guidUnidade))
                                                                              && !p.Despachos.Any())
                                                                     .Include(p => p.OrganizacaoProcesso)
                                                                     .Include(p => p.Atividade)
                                                                     .Include(p => p.Despachos);
 
-            var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso)
-                                                                   .GroupBy(d => d.IdProcesso)
+            var ultimosDespachosDosProcessos = repositorioDespachos.GroupBy(d => d.IdProcesso)
                                                                    .Select(d => new { IdProcesso = d.Key, DataHoraDespacho = d.Max(gbd => gbd.DataHoraDespacho) });
 
-            var idsUltimosDespachosParaUnidade = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                         && d.IdUnidadeDestino == idUnidade)
+            var idsUltimosDespachosParaUnidade = repositorioDespachos.Where(d => d.GuidUnidadeDestino.Equals(new Guid(guidUnidade)))
                                                                      .Join(ultimosDespachosDosProcessos,
                                                                             d => d.IdProcesso,
                                                                             ud => ud.IdProcesso,
@@ -138,8 +132,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                                      .Where(d => d.Despacho.DataHoraDespacho == d.DespachoProcesso.DataHoraDespacho)
                                                                      .Select(d => d.Despacho.Id);
 
-            var processosDespachadosParaUnidade = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                               && p.Despachos.Any(d => idsUltimosDespachosParaUnidade.Contains(d.Id)))
+            var processosDespachadosParaUnidade = repositorioProcessos.Where(p => p.Despachos.Any(d => idsUltimosDespachosParaUnidade.Contains(d.Id)))
                                                                       .Include(p => p.OrganizacaoProcesso)
                                                                       .Include(p => p.Atividade)
                                                                       .Include(p => p.Despachos);
@@ -160,12 +153,12 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return r;
         }
 
-        public List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario(int idOrganizacao, string cpfUsuario)
+        public List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario()
         {
             IQueryable<Processo> query;
 
             query = repositorioProcessos;
-            query = query.Where(p => p.Despachos.Any(d => d.IdUsuarioDespachante == cpfUsuario))
+            query = query.Where(p => p.Despachos.Any(d => d.IdUsuarioDespachante.Equals(UsuarioCpf)))
                          .Include(d => d.Despachos);
 
             return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(query.ToList());
@@ -221,7 +214,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return Mapper.Map<Anexo, AnexoModeloNegocio>(anexo);
         }
 
-        public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int IdOrganizacao)
+        public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio)
         {
             /*Validações*/
             processoValidacao.Preenchido(processoNegocio);
@@ -231,16 +224,20 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             Processo processo = new Processo();
             processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
 
-            InformacaoPadrao(processo, IdOrganizacao);
+            usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
+            usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
+            InformacoesOrganizacao(processo);
+            InformacoesUnidade(processo);
+
+            InformacaoPadrao(processo);
 
             /*Gera número do processo*/
-            NumeracaoProcesso(processo, IdOrganizacao);
+            NumeracaoProcesso(processo);
 
             repositorioProcessos.Add(processo);
             unitOfWork.Save();
 
-            return Pesquisar(IdOrganizacao, processo.Id);
-
+            return Pesquisar(processo.Id);
         }
 
         public DespachoModeloNegocio Despachar(int idOrganizacaoProcesso, int idProcesso, DespachoModeloNegocio despachoNegocio)
@@ -417,19 +414,45 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             return Convert.ToInt16(stringDigitoOrganizacao);
         }
 
-        private void InformacaoPadrao(Processo processo, int idOrganizacao)
+
+        private void InformacoesOrganizacao(Processo processo)
         {
-            processo.IdOrganizacaoProcesso = idOrganizacao;
-            processo.DataAutuacao = DateTime.Now;
+            OrganizacaoOrganogramaModelo organizacao = PesquisarOrganizacao(processo.GuidOrganizacaoAutuadora);
+            
+            processo.GuidOrganizacaoAutuadora = new Guid(organizacao.guid);
+            processo.NomeOrganizacaoAutuadora = organizacao.razaoSocial;
+            processo.SiglaOrganizacaoAutuadora = organizacao.sigla;
 
         }
-
-        private void NumeracaoProcesso(Processo processo, int idOrganizacao)
+        private void InformacoesUnidade(Processo processo)
         {
+            UnidadeOrganogramaModelo unidade = PesquisarUnidade(processo.GuidUnidadeAutuadora);
 
-            processo.DigitoOrganizacao = repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(s => s.DigitoOrganizacao).SingleOrDefault();
-            processo.DigitoPoder = (byte)repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(o => o.DigitoPoder.Id).SingleOrDefault();
-            processo.DigitoEsfera = (byte)repositorioOrganizacoesProcesso.Where(o => o.IdOrganizacao == idOrganizacao).Select(o => o.DigitoEsfera.Id).SingleOrDefault();
+            processo.GuidUnidadeAutuadora = new Guid(unidade.guid);
+            processo.NomeUnidadeAutuadora = unidade.nome;
+            processo.SiglaUnidadeAutuadora = unidade.sigla;
+        }
+
+        private void InformacaoPadrao(Processo processo)
+        {
+            int idOrganizacaoProcesso = repositorioOrganizacoesProcesso.Where(p => p.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
+                                                            .Single().Id;
+
+            processo.IdOrganizacaoProcesso = idOrganizacaoProcesso;
+            processo.DataAutuacao = DateTime.Now;
+            processo.IdUsuarioAutuador = UsuarioCpf;
+            processo.NomeUsuarioAutuador = UsuarioNome;
+        }
+
+        private void NumeracaoProcesso(Processo processo)
+        {
+            int idOrganizacaoProcesso = repositorioOrganizacoesProcesso.Where(p => p.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
+                                                            .Single()
+                                                            .Id;
+
+            processo.DigitoOrganizacao = repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)).Select(s => s.DigitoOrganizacao).SingleOrDefault();
+            processo.DigitoPoder = (byte)repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)).Select(o => o.DigitoPoder.Id).SingleOrDefault();
+            processo.DigitoEsfera = (byte)repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)).Select(o => o.DigitoEsfera.Id).SingleOrDefault();
             processo.Ano = (short)DateTime.Now.Year;
 
             processo.Sequencial = repositorioProcessos.Where(p => p.Ano == processo.Ano
@@ -481,6 +504,6 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             despacho.DataHoraDespacho = DateTime.Now;
         }
 
-        
+
     }
 }

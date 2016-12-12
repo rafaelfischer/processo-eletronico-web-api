@@ -19,7 +19,6 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         SinalizacaoValidacao sinalizacaoValidacao;
         AnexoValidacao anexoValidacao;
 
-
         public ProcessoValidacao(IProcessoEletronicoRepositorios repositorios)
         {
             this.repositorioProcessos = repositorios.Processos;
@@ -31,7 +30,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             anexoValidacao = new AnexoValidacao(repositorios);
         }
 
-        public void NaoEncontrado (Processo processo)
+        public void NaoEncontrado(Processo processo)
         {
             if (processo == null)
             {
@@ -48,14 +47,8 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             ResumoPreechido(processo);
             InteressadoPreenchido(processo);
             MunicipioPreenchido(processo);
-            IdOrganizacaoAutuadoraPreenchido(processo);
-            OrganizacaoAutuadoraPreenchido(processo);
-            SiglaOrganizacaoAutuadoraPreenchido(processo);
-            IdUnidadeAutuadoraPreenchida(processo);
-            UnidadeAutuadoraPreenchida(processo);
-            SiglaUnidadeAutuadoraPreenchida(processo);
-            IdUsuarioAutuadorPreenchido(processo);
-            UsuarioAutuadoroPreenchido(processo);
+            GuidOrganizacaoAutuadoraPreenchido(processo);
+            GuidUnidadeAutuadoraPreenchida(processo);
 
             /*Preenchimento de objetos associados ao processo*/
             interessadoPessoaFisicaValidacao.Preenchido(processo.InteressadosPessoaFisica);
@@ -124,69 +117,20 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         }
 
         /*Órgao Autuador*/
-        internal void IdOrganizacaoAutuadoraPreenchido(ProcessoModeloNegocio processo)
+        internal void GuidOrganizacaoAutuadoraPreenchido(ProcessoModeloNegocio processo)
         {
-            if (processo.IdOrganizacaoAutuadora <= 0)
+            if (string.IsNullOrWhiteSpace(processo.GuidOrganizacaoAutuadora))
             {
-                throw new RequisicaoInvalidaException("Identificador do orgnização autuadora não preenchido.");
-            }
-        }
-
-        internal void OrganizacaoAutuadoraPreenchido(ProcessoModeloNegocio processo)
-        {
-            if (string.IsNullOrWhiteSpace(processo.NomeOrganizacaoAutuadora))
-            {
-                throw new RequisicaoInvalidaException("Organização autuadora não preenchido.");
-            }
-        }
-
-        internal void SiglaOrganizacaoAutuadoraPreenchido(ProcessoModeloNegocio processo)
-        {
-            if (string.IsNullOrWhiteSpace(processo.SiglaOrganizacaoAutuadora))
-            {
-                throw new RequisicaoInvalidaException("Sigla da organização autuadora não preenchida.");
+                throw new RequisicaoInvalidaException("Identificador do organização autuadora não preenchido.");
             }
         }
 
         /*Unidade Autuadora*/
-        internal void IdUnidadeAutuadoraPreenchida(ProcessoModeloNegocio processo)
+        internal void GuidUnidadeAutuadoraPreenchida(ProcessoModeloNegocio processo)
         {
-            if (processo.IdUnidadeAutuadora <= 0)
+            if (string.IsNullOrWhiteSpace(processo.GuidUnidadeAutuadora))
             {
                 throw new RequisicaoInvalidaException("Identificador da Unidade Autuadora não preenchido.");
-            }
-        }
-
-        internal void UnidadeAutuadoraPreenchida(ProcessoModeloNegocio processo)
-        {
-            if (string.IsNullOrWhiteSpace(processo.NomeUnidadeAutuadora))
-            {
-                throw new RequisicaoInvalidaException("Unidade Autuadora não preenchida.");
-            }
-        }
-        internal void SiglaUnidadeAutuadoraPreenchida(ProcessoModeloNegocio processo)
-        {
-            if (string.IsNullOrWhiteSpace(processo.SiglaUnidadeAutuadora))
-            {
-                throw new RequisicaoInvalidaException("Sigla da Unidade Autuadora não preenchida.");
-            }
-        }
-
-
-        /*Usuário Autuador*/
-        internal void IdUsuarioAutuadorPreenchido(ProcessoModeloNegocio processo)
-        {
-            if (string.IsNullOrWhiteSpace(processo.IdUsuarioAutuador))
-            {
-                throw new RequisicaoInvalidaException("Identificador da Usuário Autuador não preenchido.");
-            }
-        }
-
-        internal void UsuarioAutuadoroPreenchido(ProcessoModeloNegocio processo)
-        {
-            if (string.IsNullOrWhiteSpace(processo.NomeUsuarioAutuador))
-            {
-                throw new RequisicaoInvalidaException("Usuário Autuador não preenchido.");
             }
         }
 
@@ -202,8 +146,10 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
             anexoValidacao.Valido(processo.Anexos, processo.Atividade.Id);
             UfMunicipioValida(processo);
-            SiglaOrganizacaoAutuadoraValido(processo);
-            SiglaUnidadeAutuadoraValida(processo);
+            GuidOrganizacaoValido(processo);
+            GuidUnidadeValido(processo);
+            OrganizacaoExistente(processo);
+            UnidadeExistente(processo);
 
         }
 
@@ -216,9 +162,9 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         }
 
-        internal void UfMunicipioValida (ProcessoModeloNegocio processo)
+        internal void UfMunicipioValida(ProcessoModeloNegocio processo)
         {
-           foreach (MunicipioProcessoModeloNegocio municipio in processo.MunicipiosProcesso)
+            foreach (MunicipioProcessoModeloNegocio municipio in processo.MunicipiosProcesso)
             {
                 if (municipio.Uf.Length != 2)
                 {
@@ -227,20 +173,38 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        internal void SiglaOrganizacaoAutuadoraValido(ProcessoModeloNegocio processo)
+        private void GuidOrganizacaoValido(ProcessoModeloNegocio processo)
         {
-            if (processo.SiglaOrganizacaoAutuadora.Length > 10)
+            try
             {
-                throw new RequisicaoInvalidaException("Sigla do órgão autuador deve conter no máximo 10 caracteres");
+                Guid guid = new Guid(processo.GuidOrganizacaoAutuadora);
+            }
+            catch (Exception)
+            {
+                throw new RequisicaoInvalidaException("Guid da Organização autuadora inválido");
             }
         }
 
-        internal void SiglaUnidadeAutuadoraValida(ProcessoModeloNegocio processo)
+        private void GuidUnidadeValido(ProcessoModeloNegocio processo)
         {
-            if (processo.SiglaUnidadeAutuadora.Length > 10)
+            try
             {
-                throw new RequisicaoInvalidaException("Sigla da unidade autuadora deve conter no máximo 10 caracteres");
+                Guid guid = new Guid(processo.GuidUnidadeAutuadora);
             }
+            catch (Exception)
+            {
+                throw new RequisicaoInvalidaException("Guid da Unidade autuadora inválido");
+            }
+        }
+
+        private void OrganizacaoExistente(ProcessoModeloNegocio processo)
+        {
+
+        }
+
+        private void UnidadeExistente(ProcessoModeloNegocio processo)
+        {
+
         }
 
         internal void NumeroValido(string numero)
