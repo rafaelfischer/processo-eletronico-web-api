@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.Negocio
 {
     public class BaseNegocio : IBaseNegocio
     {
-        private readonly string OrganogramaUrl = "https://sistemas.des.es.gov.br/prodest/organograma/api/";
+        private readonly string OrganogramaUrl = "http://organograma:8935/prodest/organograma/api/";
         private Dictionary<string, string> usuario;
         private string usuarioCpf;
         private string usuarioNome;

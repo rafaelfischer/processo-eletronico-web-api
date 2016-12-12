@@ -202,7 +202,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <returns>Lista de processos que estão tramintando na unidade especificada.</returns>
         /// <response code="200">Retorna a lista de processos que estão tramintando na unidade especificada.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("unidade/{idUnidade}")]
+        [HttpGet("unidade/{guidUnidade}")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 200)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarPorUnidade(string guidUnidade)
