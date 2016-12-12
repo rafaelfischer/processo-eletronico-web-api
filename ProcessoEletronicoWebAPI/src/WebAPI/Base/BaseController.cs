@@ -79,7 +79,7 @@ namespace ProcessoEletronicoService.WebAPI.Base
                         //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
                         string siglaOrganizacao = claimOrganizacao.Value;
 
-                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + siglaOrganizacao, accessToken);
+                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/sigla/" + siglaOrganizacao, accessToken);
 
                         usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
 
