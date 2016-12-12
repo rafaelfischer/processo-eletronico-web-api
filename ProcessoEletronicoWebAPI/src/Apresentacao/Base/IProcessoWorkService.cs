@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Apresentacao.Base
 {
-    public interface IProcessoWorkService
+    public interface IProcessoWorkService : IBaseWorkService
     {
         void Listar();
         ProcessoCompletoModelo Pesquisar(int idOrganizacaoProcesso, int idProcesso);
@@ -16,7 +16,7 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         DespachoProcessoModeloGet Despachar(int idOrganizacao, int idProcesso, DespachoProcessoModeloPost despachoPost);
         void Excluir();
         List<ProcessoModelo> PesquisarProcessosNaUnidade(int idOrganizacaoProcesso, int idUnidade);
-        List<ProcessoModelo> PesquisarProcessosNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao);
+        List<ProcessoModelo> PesquisarProcessosNaOrganizacao(string guidOrganizacao);
         AnexoModeloGet PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo);
         List<ProcessoModelo> PesquisarProcessosDespachadosUsuario(int id, string cpfUsuario);
         List<DespachoProcessoModeloCompleto> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario);

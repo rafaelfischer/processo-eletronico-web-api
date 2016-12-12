@@ -10,13 +10,19 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Apresentacao
 {
-    public class ProcessoWorkService : IProcessoWorkService
+    public class ProcessoWorkService : BaseWorkService, IProcessoWorkService
     {
         private IProcessoNegocio processoNegocio;
 
         public ProcessoWorkService(IProcessoNegocio processoNegocio)
         {
             this.processoNegocio = processoNegocio;
+            //this.processoNegocio.Usuario = Usuario;
+        }
+
+        public override void RaiseUsuarioAlterado()
+        {
+            processoNegocio.Usuario = Usuario;
         }
 
         public ProcessoCompletoModelo Autuar(ProcessoModeloPost processo, int idOrganizacao)
@@ -98,9 +104,9 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
         }
 
-        public List<ProcessoModelo> PesquisarProcessosNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao)
+        public List<ProcessoModelo> PesquisarProcessosNaOrganizacao(string guidOrganizacao)
         {
-            var processos = processoNegocio.PesquisarProcessoNaOrganizacao(idOrganizacaoProcesso, idOrganizacao);
+            var processos = processoNegocio.PesquisarProcessoNaOrganizacao(guidOrganizacao);
 
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processos);
         }
@@ -112,7 +118,5 @@ namespace ProcessoEletronicoService.Apresentacao
 
             return Mapper.Map<List<ProcessoModeloNegocio>, List<ProcessoModelo>>(processosModeloNegocio);
         }
-
-        
     }
 }

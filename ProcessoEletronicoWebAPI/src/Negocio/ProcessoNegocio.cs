@@ -15,7 +15,7 @@ using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 
 namespace ProcessoEletronicoService.Negocio.Restrito
 {
-    public class ProcessoNegocio : IProcessoNegocio
+    public class ProcessoNegocio : BaseNegocio, IProcessoNegocio
     {
         IUnitOfWork unitOfWork;
         IRepositorioGenerico<Processo> repositorioProcessos;
@@ -282,21 +282,23 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             throw new NotImplementedException();
         }
 
-        public List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao)
+        public List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(string guidOrganizacao)
         {
-            var processosSemDespachoNaOrganizacao = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                                 && p.IdOrganizacaoAutuadora == idOrganizacao
+            Guid gOrganizacao = new Guid(guidOrganizacao);
+
+            var processosSemDespachoNaOrganizacao = repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
+                                                                                 && p.GuidOrganizacaoAutuadora.Equals(gOrganizacao)
                                                                                 && !p.Despachos.Any())
                                                                         .Include(p => p.OrganizacaoProcesso)
                                                                         .Include(p => p.Atividade)
                                                                     .Include(p => p.Despachos);
 
-            var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso)
+            var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
                                                                    .GroupBy(d => d.IdProcesso)
                                                                    .Select(d => new { IdProcesso = d.Key, DataHoraDespacho = d.Max(gbd => gbd.DataHoraDespacho) });
 
-            var idsUltimosDespachosParaOrganizacao = repositorioDespachos.Where(d => d.Processo.IdOrganizacaoProcesso == idOrganizacaoProcesso
-                                                                                  && d.IdOrganizacaoDestino == idOrganizacao)
+            var idsUltimosDespachosParaOrganizacao = repositorioDespachos.Where(d => d.Processo.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
+                                                                                  && d.GuidOrganizacaoDestino.Equals(gOrganizacao))
                                                                          .Join(ultimosDespachosDosProcessos,
                                                                                 d => d.IdProcesso,
                                                                                 ud => ud.IdProcesso,
@@ -304,7 +306,7 @@ namespace ProcessoEletronicoService.Negocio.Restrito
                                                                          .Where(d => d.Despacho.DataHoraDespacho == d.DespachoProcesso.DataHoraDespacho)
                                                                          .Select(d => d.Despacho.Id);
 
-            var processosDespachadosParaOrganizacao = repositorioProcessos.Where(p => p.IdOrganizacaoProcesso == idOrganizacaoProcesso
+            var processosDespachadosParaOrganizacao = repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
                                                                                    && p.Despachos.Any(d => idsUltimosDespachosParaOrganizacao.Contains(d.Id)))
                                                                           .Include(p => p.OrganizacaoProcesso)
                                                                           .Include(p => p.Atividade)
@@ -313,14 +315,21 @@ namespace ProcessoEletronicoService.Negocio.Restrito
             var processosNaOrganizacao = processosDespachadosParaOrganizacao.Union(processosSemDespachoNaOrganizacao.Include(p => p.OrganizacaoProcesso)
                                                                                                                     .Include(p => p.Atividade)
                                                                                                                     .Include(p => p.Despachos))
-                                                                            .OrderBy(p => p.Sequencial)
-                                                                            .ThenBy(p => p.Ano)
-                                                                            .ThenBy(p => p.DigitoPoder)
-                                                                            .ThenBy(p => p.DigitoEsfera)
-                                                                            .ThenBy(p => p.DigitoOrganizacao)
+                                                                            //.OrderBy(p => p.Sequencial)
+                                                                            //.ThenBy(p => p.Ano)
+                                                                            //.ThenBy(p => p.DigitoPoder)
+                                                                            //.ThenBy(p => p.DigitoEsfera)
+                                                                            //.ThenBy(p => p.DigitoOrganizacao)
                                                                             .Include(p => p.OrganizacaoProcesso)
                                                                             .Include(p => p.Atividade)
                                                                             .ToList();
+
+            processosNaOrganizacao = processosNaOrganizacao.OrderBy(p => p.Sequencial)
+                                                           .ThenBy(p => p.Ano)
+                                                           .ThenBy(p => p.DigitoPoder)
+                                                           .ThenBy(p => p.DigitoEsfera)
+                                                           .ThenBy(p => p.DigitoOrganizacao)
+                                                           .ToList();
 
             return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(processosNaOrganizacao);
         }

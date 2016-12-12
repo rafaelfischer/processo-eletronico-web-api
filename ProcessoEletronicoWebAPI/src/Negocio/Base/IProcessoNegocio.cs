@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IProcessoNegocio
+    public interface IProcessoNegocio : IBaseNegocio
     {
         void Listar();
         ProcessoModeloNegocio Pesquisar(int idOrganizacaoProcesso, int idProcesso);
@@ -16,7 +16,7 @@ namespace ProcessoEletronicoService.Negocio.Base
         ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio, int idOrganizacao);
         DespachoModeloNegocio Despachar(int idOrganizacaoProcesso, int idProcesso, DespachoModeloNegocio despachoNegocio);
         void Excluir();
-        List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(int idOrganizacaoProcesso, int idOrganizacao);
+        List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(string guidOrganizacao);
         AnexoModeloNegocio PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo);
         List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario(int idOrganizacao, string cpfUsuario);
         List<DespachoModeloNegocio> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario);
