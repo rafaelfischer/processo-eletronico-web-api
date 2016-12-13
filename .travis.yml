@@ -12,7 +12,7 @@ deploy:
     on:
       branch: develop
   - provider: script
-    script: /bin/sh .hmg.sh
+    script: /bin/sh .release.sh
     on:
       all_branches: true
       condition: "$TRAVIS_BRANCH =~ ^release.*$"
