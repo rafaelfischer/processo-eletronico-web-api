@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -23,23 +23,13 @@ namespace ProcessoEletronicoService.Negocio
             repositorioTiposDocumentais = repositorios.TiposDocumentais;
         }
 
-        public List<TipoDocumentalModeloNegocio> Listar(int idOrganizacaoPatriarca, int idAtividade)
+        public List<TipoDocumentalModeloNegocio> Pesquisar(int idAtividade)
         {
-            IQueryable<TipoDocumental> query;
-
-            query = repositorioTiposDocumentais.Include(td => td.Atividade);
-            query = query.Where(td => td.Atividade.Funcao.PlanoClassificacao.OrganizacaoProcesso.IdOrganizacao == idOrganizacaoPatriarca);
-
-            if (idAtividade > 0)
-            {
-                query = query.Where(td => td.IdAtividade == idAtividade);
-            }
-
-            List<TipoDocumental> tiposDocumentais = query.ToList();
+            var tiposDocumentais = repositorioTiposDocumentais.Where(td => td.IdAtividade == idAtividade)
+                                                              .Include(td => td.Atividade)
+                                                              .ToList();
 
             return Mapper.Map<List<TipoDocumental>, List<TipoDocumentalModeloNegocio>>(tiposDocumentais);
         }
-
-        
     }
 }

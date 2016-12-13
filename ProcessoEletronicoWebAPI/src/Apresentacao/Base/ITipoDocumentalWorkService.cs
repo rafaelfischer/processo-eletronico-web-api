@@ -8,6 +8,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
 {
     public interface ITipoDocumentalWorkService
     {
-        List<TipoDocumentalModelo> Listar(int idOrganizacaoPatriarca, int idAtividade);
+        List<TipoDocumentalModelo> Pesquisar(int idAtividade);
     }
 }

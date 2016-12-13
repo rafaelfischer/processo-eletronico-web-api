@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Apresentacao.Base
 {
-    public interface IPlanoClassificacaoWorkService
+    public interface IPlanoClassificacaoWorkService : IBaseWorkService
     {
-        IEnumerable<PlanoClassificacaoModelo> Pesquisar(int idOrganizacaoPatriarca, int idOrganizacao);
+        IEnumerable<PlanoClassificacaoModelo> Pesquisar(string guidOrganizacao);
     }
 }

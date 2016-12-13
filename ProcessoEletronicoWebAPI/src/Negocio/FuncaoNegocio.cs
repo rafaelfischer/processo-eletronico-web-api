@@ -23,10 +23,9 @@ namespace ProcessoEletronicoService.Negocio
             repositorioFuncoes = repositorios.Funcoes;
         }
 
-        public List<FuncaoModeloNegocio> Pesquisar(int idOrganizacaoPatriarca, int idPlanoClassificacao)
+        public List<FuncaoModeloNegocio> Pesquisar(int idPlanoClassificacao)
         {
-            var funcoes = repositorioFuncoes.Where(f => f.PlanoClassificacao.OrganizacaoProcesso.IdOrganizacao == idOrganizacaoPatriarca
-                                                    && f.PlanoClassificacao.Id == idPlanoClassificacao)
+            var funcoes = repositorioFuncoes.Where(f => f.PlanoClassificacao.Id == idPlanoClassificacao)
                                             .Include(pc => pc.PlanoClassificacao)
                                             .ToList();
 

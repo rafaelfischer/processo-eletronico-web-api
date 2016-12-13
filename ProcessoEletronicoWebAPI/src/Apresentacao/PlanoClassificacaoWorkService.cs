@@ -10,7 +10,7 @@ using AutoMapper;
 
 namespace ProcessoEletronicoService.Apresentacao
 {
-    public class PlanoClassificacaoWorkService : IPlanoClassificacaoWorkService
+    public class PlanoClassificacaoWorkService : BaseWorkService, IPlanoClassificacaoWorkService
     {
         IPlanoClassificacaoNegocio planoClassificacaoNegocio;
 
@@ -19,11 +19,16 @@ namespace ProcessoEletronicoService.Apresentacao
             this.planoClassificacaoNegocio = planoClassificacaoNegocio;
         }
 
-        public IEnumerable<PlanoClassificacaoModelo> Pesquisar(int idOrganizacaoPatriarca, int idOrganizacao)
+        public IEnumerable<PlanoClassificacaoModelo> Pesquisar(string guidOrganizacao)
         {
-            List<PlanoClassificacaoModeloNegocio> planosClassificacao = planoClassificacaoNegocio.Pesquisar(idOrganizacaoPatriarca, idOrganizacao);
+            List<PlanoClassificacaoModeloNegocio> planosClassificacao = planoClassificacaoNegocio.Pesquisar(guidOrganizacao);
 
             return Mapper.Map<List<PlanoClassificacaoModeloNegocio>, List<PlanoClassificacaoModelo>>(planosClassificacao);
+        }
+
+        public override void RaiseUsuarioAlterado()
+        {
+            planoClassificacaoNegocio.Usuario = Usuario;
         }
     }
 }

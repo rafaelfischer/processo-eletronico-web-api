@@ -19,9 +19,9 @@ namespace ProcessoEletronicoService.Apresentacao
             this.sinalizacaoNegocio = sinalizacaoNegocio;
         }
 
-        public List<SinalizacaoModelo> Pesquisar(int idOrganizacaoPatriarca)
+        public List<SinalizacaoModelo> Pesquisar(string guidOrganizacaoPatriarca)
         {
-            List<SinalizacaoModeloNegocio> sinalizacoes = sinalizacaoNegocio.Pesquisar(idOrganizacaoPatriarca);
+            List<SinalizacaoModeloNegocio> sinalizacoes = sinalizacaoNegocio.Pesquisar(guidOrganizacaoPatriarca);
 
             return Mapper.Map<List<SinalizacaoModeloNegocio>, List<SinalizacaoModelo>>(sinalizacoes);
         }

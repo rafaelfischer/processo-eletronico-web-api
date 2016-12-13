@@ -19,9 +19,9 @@ namespace ProcessoEletronicoService.Apresentacao
             this.atividadeNegocio = atividadeNegocio;
         }
 
-        public IEnumerable<AtividadeModelo> Pesquisar(int idOrganizacaoPatriarca, int idFuncao)
+        public IEnumerable<AtividadeModelo> Pesquisar(int idFuncao)
         {
-            List<AtividadeModeloNegocio> atividades = atividadeNegocio.Pesquisar(idOrganizacaoPatriarca, idFuncao);
+            List<AtividadeModeloNegocio> atividades = atividadeNegocio.Pesquisar(idFuncao);
 
             return Mapper.Map<List<AtividadeModeloNegocio>, List<AtividadeModelo>>(atividades);
         }

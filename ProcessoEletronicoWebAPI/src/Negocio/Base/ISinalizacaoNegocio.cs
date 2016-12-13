@@ -5,6 +5,6 @@ namespace ProcessoEletronicoService.Negocio.Base
 {
     public interface ISinalizacaoNegocio
     {
-        List<SinalizacaoModeloNegocio> Pesquisar(int idOrganizacaoPatriarca);
+        List<SinalizacaoModeloNegocio> Pesquisar(string guidOrganizacaoPatriarca);
     }
 }

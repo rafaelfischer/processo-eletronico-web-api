@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ProcessoEletronicoService.Negocio.Validacao;
+using System;
 
 namespace ProcessoEletronicoService.Negocio.Restrito
 {
@@ -14,16 +16,20 @@ namespace ProcessoEletronicoService.Negocio.Restrito
     {
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<Sinalizacao> repositorioSinalizacoes;
+        private SinalizacaoValidacao Validacao;
 
         public SinalizacaoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             unitOfWork = repositorios.UnitOfWork;
             repositorioSinalizacoes = repositorios.Sinalizacoes;
+            Validacao = new SinalizacaoValidacao(repositorios);
         }
 
-        public List<SinalizacaoModeloNegocio> Pesquisar(int idOrganizacaoPatriarca)
+        public List<SinalizacaoModeloNegocio> Pesquisar(string guidOrganizacaoPatriarca)
         {
-            var sinalizacoes = repositorioSinalizacoes.Where(s => s.OrganizacaoProcesso.IdOrganizacao == idOrganizacaoPatriarca)
+            Validacao.GuidValido(guidOrganizacaoPatriarca);
+
+            var sinalizacoes = repositorioSinalizacoes.Where(s => s.OrganizacaoProcesso.GuidOrganizacao.Equals(new Guid(guidOrganizacaoPatriarca)))
                                                       .Include(pc => pc.OrganizacaoProcesso)
                                                       .ToList();
 

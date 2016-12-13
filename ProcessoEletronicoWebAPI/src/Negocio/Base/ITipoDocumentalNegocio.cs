@@ -8,7 +8,6 @@ namespace ProcessoEletronicoService.Negocio.Base
 {
     public interface ITipoDocumentalNegocio
     {
-        List<TipoDocumentalModeloNegocio> Listar(int idOrganizacaoPatriarca, int idAtividade);
-
+        List<TipoDocumentalModeloNegocio> Pesquisar(int idAtividade);
     }
 }

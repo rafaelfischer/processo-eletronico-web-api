@@ -5,6 +5,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
 {
     public interface ISinalizacaoWorkService
     {
-        List<SinalizacaoModelo> Pesquisar(int idOrganizacaoPatriarca);
+        List<SinalizacaoModelo> Pesquisar(string guidOrganizacaoPatriarca);
     }
 }

@@ -5,6 +5,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
 {
     public interface IAtividadeWorkService
     {
-        IEnumerable<AtividadeModelo> Pesquisar(int idOrganizacaoPatriarca, int idFuncao);
+        IEnumerable<AtividadeModelo> Pesquisar(int idFuncao);
     }
 }

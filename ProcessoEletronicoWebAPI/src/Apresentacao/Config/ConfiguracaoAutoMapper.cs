@@ -110,7 +110,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             #region Mapeamento de plano de classificação
             CreateMap<PlanoClassificacaoModeloNegocio, PlanoClassificacaoModelo>()
-                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao));
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id));
 
             CreateMap<PlanoClassificacaoModeloNegocio, PlanoClassificacaoProcessoGetModelo>();
             #endregion
@@ -127,13 +127,13 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.DataUltimoTramite, opt => opt.MapFrom(src => src.DataUltimoTramite.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
-                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao));
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id));
 
             CreateMap<ProcessoModeloNegocio, ProcessoCompletoModelo>()
                 .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.DataUltimoTramite, opt => opt.MapFrom(src => src.DataUltimoTramite.ToString("dd/MM/yyyy HH:mm:ss")))
                 //.ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
-                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.IdOrganizacao))
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
             #endregion
 

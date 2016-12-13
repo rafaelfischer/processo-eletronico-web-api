@@ -126,6 +126,12 @@ namespace ProcessoEletronicoService.Negocio
 
         }
 
+        public OrganizacaoOrganogramaModelo PesquisarOrganizacaoPatriarca(Guid guidOrganizacao)
+        {
+            OrganizacaoOrganogramaModelo organizacao = DownloadJsonData<OrganizacaoOrganogramaModelo>(UrlApiOrganograma + "organizacoes/" + guidOrganizacao.ToString("D") + "/patriarca");
+            return organizacao;
+        }
+
         public OrganizacaoOrganogramaModelo PesquisarOrganizacao(Guid guidOrganizacao)
         {
             OrganizacaoOrganogramaModelo organizacao = DownloadJsonData<OrganizacaoOrganogramaModelo>(UrlApiOrganograma + "organizacoes/" + guidOrganizacao.ToString("D"));

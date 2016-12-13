@@ -57,6 +57,19 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
+        internal void GuidValido(string guid)
+        {
+            try
+            {
+                Guid g = new Guid(guid);
 
+                if (g.Equals(Guid.Empty))
+                    throw new RequisicaoInvalidaException("Identificador inválido.");
+            }
+            catch (FormatException)
+            {
+                throw new RequisicaoInvalidaException("Formato do identificador inválido.");
+            }
+        }
     }
 }

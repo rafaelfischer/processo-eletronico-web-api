@@ -80,7 +80,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
             catch (RequisicaoInvalidaException e)
             {
-                return BadRequest(MensagemErro.ObterMensagem(e));
+                return BadRequest(e.Message);
             }
             catch (Exception e)
             {

@@ -117,7 +117,8 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #region Mapeamento de plano de classificação
             CreateMap<PlanoClassificacao, PlanoClassificacaoModeloNegocio>()
-                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { IdOrganizacao = src.IdOrganizacaoProcesso}));
+                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { Id = src.IdOrganizacaoProcesso}))
+                .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => src.GuidOrganizacao.ToString("D")));
             #endregion
 
             #region Mapeamento de Processo
@@ -164,7 +165,7 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #region Mapeamento de Sinalização
             CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()
-                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { IdOrganizacao = src.IdOrganizacaoProcesso }))
+                //.ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { IdOrganizacao = src.IdOrganizacaoProcesso }))
                 .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem == null ? null : src.Imagem));
 
             

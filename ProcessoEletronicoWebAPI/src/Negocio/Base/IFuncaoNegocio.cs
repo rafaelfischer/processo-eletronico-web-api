@@ -5,6 +5,6 @@ namespace ProcessoEletronicoService.Negocio.Base
 {
     public interface IFuncaoNegocio
     {
-        List<FuncaoModeloNegocio> Pesquisar(int idOrganizacaoPatriarca, int idPlanoClassificacao);
+        List<FuncaoModeloNegocio> Pesquisar(int idPlanoClassificacao);
     }
 }

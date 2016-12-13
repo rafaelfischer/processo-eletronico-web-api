@@ -18,10 +18,9 @@ namespace ProcessoEletronicoService.Apresentacao
         {
             this.tipoDocumentalNegocio = tipoDocumentalNegocio;
         }
-        public List<TipoDocumentalModelo> Listar(int idOrganizacaoPatriarca, int idAtividade)
+        public List<TipoDocumentalModelo> Pesquisar(int idAtividade)
         {
-
-            List<TipoDocumentalModeloNegocio> tiposDocumentais = tipoDocumentalNegocio.Listar(idOrganizacaoPatriarca, idAtividade);
+            List<TipoDocumentalModeloNegocio> tiposDocumentais = tipoDocumentalNegocio.Pesquisar(idAtividade);
 
             return Mapper.Map<List<TipoDocumentalModelo>>(tiposDocumentais);
 
