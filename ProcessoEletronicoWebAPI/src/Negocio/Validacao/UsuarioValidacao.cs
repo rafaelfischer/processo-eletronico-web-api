@@ -26,7 +26,13 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             {
                 throw new RequisicaoInvalidaException("Usuário não possui organização patriarca.");
             }
-        } 
-            
+        }
+
+        internal void PodeAutuarProcessoNaOrganizacao(ProcessoModeloNegocio processoNegocio, Guid usuarioGuidOrganizacao)
+        {
+
+            if (!usuarioGuidOrganizacao.Equals(new Guid(processoNegocio.GuidOrganizacaoAutuadora)))
+                throw new RequisicaoInvalidaException("Usuário não possui permissão para autuar processo para a organização informada.");
+        }
     }
 }

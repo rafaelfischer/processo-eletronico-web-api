@@ -177,7 +177,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             {
                 Guid guid = new Guid(processo.GuidOrganizacaoAutuadora);
             }
-            catch (Exception)
+            catch (FormatException)
             {
                 throw new RequisicaoInvalidaException("Guid da Organização autuadora inválido");
             }
@@ -255,6 +255,30 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             short digitoOrganizacao;
             if (!Int16.TryParse(stringDigitoOrganizacao, out digitoOrganizacao))
                 throw new RequisicaoInvalidaException("Número do processo inválido.");
+        }
+
+        internal void AtividadePertenceAOrganizacaoPatriarca(ProcessoModeloNegocio processoNegocio, Guid usuarioGuidOrganizacaoPatriarca)
+        {
+            Atividade atividade = repositorioAtividades.Where(a => a.Id == processoNegocio.Atividade.Id
+                                                                && a.Funcao.PlanoClassificacao.OrganizacaoProcesso.GuidOrganizacao.Equals(usuarioGuidOrganizacaoPatriarca))
+                                                       .SingleOrDefault();
+
+            if (atividade == null)
+                throw new RequisicaoInvalidaException("A atividade informada não pertence à organização patriarca da organização autuadora.");
+        }
+
+        internal void SinalizacoesPertencemAOrganizacaoPatriarca(ProcessoModeloNegocio processoNegocio, Guid usuarioGuidOrganizacaoPatriarca)
+        {
+            foreach (SinalizacaoModeloNegocio sinalizacao in processoNegocio.Sinalizacoes)
+            {
+                sinalizacaoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(sinalizacao, usuarioGuidOrganizacaoPatriarca);
+            }
+        }
+
+        internal void UnidadePertenceAOrganizacao(Guid guidOrganizacaoUnidade, Guid guidOrganizacaoAutuadora)
+        {
+            if (!guidOrganizacaoUnidade.Equals(guidOrganizacaoAutuadora))
+                throw new RequisicaoInvalidaException("A unidade autuadora informada não pertence à organização autuadora.");
         }
 
 

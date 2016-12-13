@@ -156,6 +156,7 @@ namespace ProcessoEletronicoService.Negocio
             public string guid { get; set; }
             public string nome { get; set; }
             public string sigla { get; set; }
+            public OrganizacaoOrganogramaModelo organizacao { get; set; }
         }
 
 

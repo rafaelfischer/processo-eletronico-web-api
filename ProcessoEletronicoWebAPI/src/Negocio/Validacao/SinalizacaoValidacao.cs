@@ -71,5 +71,15 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RequisicaoInvalidaException("Formato do identificador inválido.");
             }
         }
+
+        internal void SinalizacoesPertencemAOrganizacaoPatriarca(SinalizacaoModeloNegocio sinalizacaoNegocio, Guid usuarioGuidOrganizacaoPatriarca)
+        {
+            Sinalizacao sinalizacao = repositorioSinalizacoes.Where(s => s.Id == sinalizacaoNegocio.Id
+                                                                      && s.OrganizacaoProcesso.GuidOrganizacao.Equals(usuarioGuidOrganizacaoPatriarca))
+                                                             .SingleOrDefault();
+
+            if (sinalizacao == null)
+                throw new RequisicaoInvalidaException("Sinalização informada não pertence à organização patriarca da organização autuadora.");
+        }
     }
 }

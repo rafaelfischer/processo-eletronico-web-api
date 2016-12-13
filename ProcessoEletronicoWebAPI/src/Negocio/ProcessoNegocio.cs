@@ -184,16 +184,23 @@ namespace ProcessoEletronicoService.Negocio
 
         public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio)
         {
+            usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
+            usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
+
             /*Validações*/
             processoValidacao.Preenchido(processoNegocio);
             processoValidacao.Valido(processoNegocio);
+
+            usuarioValidacao.PodeAutuarProcessoNaOrganizacao(processoNegocio, UsuarioGuidOrganizacao);
+
+            processoValidacao.AtividadePertenceAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
+
+            processoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
 
             /*Mapeamento para inserção*/
             Processo processo = new Processo();
             processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
 
-            usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
-            usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
             InformacoesOrganizacao(processo);
             InformacoesUnidade(processo);
 
@@ -372,6 +379,8 @@ namespace ProcessoEletronicoService.Negocio
             {
                 throw new RequisicaoInvalidaException("Unidade autudora não encontrada no Organograma");
             }
+
+            processoValidacao.UnidadePertenceAOrganizacao(new Guid(unidade.organizacao.guid), processo.GuidOrganizacaoAutuadora);
 
             processo.GuidUnidadeAutuadora = new Guid(unidade.guid);
             processo.NomeUnidadeAutuadora = unidade.nome;
