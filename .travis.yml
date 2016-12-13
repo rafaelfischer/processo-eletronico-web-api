@@ -8,10 +8,10 @@ script:
   /bin/sh .travis.sh
 deploy:
   - provider: script
-     script: /bin/sh .develop.sh
-     on:
-       branch: develop
+    script: /bin/sh .develop.sh
+    on:
+      branch: develop
   - provider: script
-     script: /bin/sh .hmg.sh
-     on:
-       branch: /^release-.*$/
+    script: /bin/sh .hmg.sh
+    on:
+      branch: /^release-.*$/
