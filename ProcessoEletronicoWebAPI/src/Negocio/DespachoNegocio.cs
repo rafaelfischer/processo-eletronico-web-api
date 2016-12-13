@@ -45,7 +45,9 @@ namespace ProcessoEletronicoService.Negocio
             IQueryable<Despacho> query;
             query = repositorioDespachos;
 
-            query = query.Where(d => d.IdUsuarioDespachante.Equals(UsuarioCpf)).Include(p => p.Processo);
+            query = query.Where(d => d.IdUsuarioDespachante.Equals(UsuarioCpf))
+                         .Include(p => p.Processo)
+                         .Include(a => a.Anexos).ThenInclude(a => a.TipoDocumental);
 
             return Mapper.Map<List<Despacho>, List<DespachoModeloNegocio>>(query.ToList());
         }
