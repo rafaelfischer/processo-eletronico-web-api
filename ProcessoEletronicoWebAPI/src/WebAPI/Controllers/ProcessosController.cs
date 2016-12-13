@@ -18,7 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IProcessoWorkService service;
         
-        public ProcessosController (IProcessoWorkService service, IHttpContextAccessor httpContextAccessor, IOptions<OrganogramaApi> organogramaApiSettings) : base (httpContextAccessor, organogramaApiSettings)
+        public ProcessosController (IProcessoWorkService service, IHttpContextAccessor httpContextAccessor) : base (httpContextAccessor)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;

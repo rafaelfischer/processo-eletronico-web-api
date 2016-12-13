@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.Negocio
 {
     public class BaseNegocio : IBaseNegocio
     {
-        private readonly string OrganogramaUrl = "http://organograma:8935/prodest/organograma/api/";
+        private readonly string UrlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
         private Dictionary<string, string> usuario;
         private string usuarioCpf;
         private string usuarioNome;
@@ -128,13 +128,13 @@ namespace ProcessoEletronicoService.Negocio
 
         public OrganizacaoOrganogramaModelo PesquisarOrganizacao(Guid guidOrganizacao)
         {
-            OrganizacaoOrganogramaModelo organizacao = DownloadJsonData<OrganizacaoOrganogramaModelo>(OrganogramaUrl + "organizacoes/" + guidOrganizacao.ToString("D"));
+            OrganizacaoOrganogramaModelo organizacao = DownloadJsonData<OrganizacaoOrganogramaModelo>(UrlApiOrganograma + "organizacoes/" + guidOrganizacao.ToString("D"));
             return organizacao;
         }
 
         public UnidadeOrganogramaModelo PesquisarUnidade(Guid guidUnidade)
         {
-            UnidadeOrganogramaModelo unidade = DownloadJsonData<UnidadeOrganogramaModelo>(OrganogramaUrl + "unidades/" + guidUnidade.ToString("D"));
+            UnidadeOrganogramaModelo unidade = DownloadJsonData<UnidadeOrganogramaModelo>(UrlApiOrganograma + "unidades/" + guidUnidade.ToString("D"));
             return unidade;
         }
 
