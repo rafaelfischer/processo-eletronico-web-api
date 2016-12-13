@@ -13,7 +13,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 
-namespace ProcessoEletronicoService.Negocio.Restrito
+namespace ProcessoEletronicoService.Negocio
 {
     public class ProcessoNegocio : BaseNegocio, IProcessoNegocio
     {
