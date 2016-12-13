@@ -14,4 +14,5 @@ deploy:
   - provider: script
     script: /bin/sh .hmg.sh
     on:
-      branch: /^release-.*$/
+      all_branches: true
+      condition: "$TRAVIS_BRANCH =~ ^release.*$"
