@@ -49,6 +49,9 @@ namespace ProcessoEletronicoService.Negocio
                          .Include(p => p.Processo)
                          .Include(a => a.Anexos).ThenInclude(a => a.TipoDocumental);
 
+            List<Despacho> despachos = query.ToList();
+            LimparConteudoAnexos(despachos);
+            
             return Mapper.Map<List<Despacho>, List<DespachoModeloNegocio>>(query.ToList());
         }
 
@@ -167,6 +170,17 @@ namespace ProcessoEletronicoService.Negocio
         {
             despacho.IdUsuarioDespachante = UsuarioCpf;
             despacho.NomeUsuarioDespachante = UsuarioNome;
+        }
+
+        private void LimparConteudoAnexos(ICollection<Despacho> despachos)
+        {
+            if (despachos != null && despachos.Count() > 0)
+            {
+                foreach (Despacho despacho in despachos)
+                {
+                    LimparConteudoAnexos(despacho.Anexos);
+                }
+            }
         }
 
         private void LimparConteudoAnexos(ICollection<Anexo> anexos)
