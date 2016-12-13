@@ -7,7 +7,12 @@ env:
 script: 
   /bin/sh .travis.sh
 deploy:
-  provider: script
-  script: /bin/sh .develop.sh
-  on:
-    branch: develop
+  - provider: script
+    script: /bin/sh .develop.sh
+    on:
+      branch: develop
+  - provider: script
+    script: /bin/sh .release.sh
+    on:
+      all_branches: true
+      condition: "$TRAVIS_BRANCH =~ ^release.*$"
