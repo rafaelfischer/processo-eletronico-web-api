@@ -13,7 +13,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         ProcessoCompletoModelo Autuar(ProcessoModeloPost processoPost);
         List<ProcessoModelo> PesquisarProcessosNaUnidade(string guidUnidade);
         List<ProcessoModelo> PesquisarProcessosNaOrganizacao(string guidOrganizacao);
-        AnexoModeloGet PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo);
         List<ProcessoModelo> PesquisarProcessosDespachadosUsuario();
     }
 }

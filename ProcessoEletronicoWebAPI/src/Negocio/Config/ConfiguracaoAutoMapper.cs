@@ -22,6 +22,7 @@ namespace ProcessoEletronicoService.Negocio.Config
         {
             #region Mapeamento de anexo
             CreateMap<Anexo, AnexoModeloNegocio>()
+                .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo))
                 .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental));
 
             CreateMap<AnexoModeloNegocio, Anexo>()

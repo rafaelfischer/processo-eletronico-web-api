@@ -32,7 +32,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <param name="id">Identificador do processo.</param>
         /// <returns>Processo correspondente ao identificador.</returns>
         /// <response code="200">Processo correspondente ao identificador.</response>
-        /// <response code="404">Proceso não foi encontrado.</response>
+        /// <response code="404">Processo não foi encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ProcessoCompletoModelo), 200)]
@@ -110,30 +110,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
         }
         
-
-        /// </summary>
-        /// <param name="id">Identificador da organização patriarca</param>
-        /// <param name="idProcesso">Identificador do Processo</param>
-        /// <param name="idDespacho">Identificador do Despacho</param>
-        /// <param name="idAnexo">Identificador do Anexo</param>
-        /// <returns></returns>
-        [HttpGet("{idProcesso}/anexos/{idAnexo}")]
-        public IActionResult PesquisarAnexo(int id, int idProcesso, [FromQuery] int idDespacho,  int idAnexo)
-        {
-            try
-            {
-                return new ObjectResult(service.PesquisarAnexo(id, idProcesso, idDespacho , idAnexo));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
-        }
-
         /// <summary>
         /// Retorna a lista de processos que estão tramintando na unidade especificada.
         /// </summary>
