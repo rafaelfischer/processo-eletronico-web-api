@@ -54,14 +54,6 @@ namespace ProcessoEletronicoService.Apresentacao
             return p;
         }
         
-        public AnexoModeloGet PesquisarAnexo (int idOrganizacao, int idProcesso, int idDespacho, int idAnexo)
-        {
-            AnexoModeloNegocio anexoModeloNegocio = new AnexoModeloNegocio();
-            anexoModeloNegocio = processoNegocio.PesquisarAnexo(idOrganizacao, idProcesso, idDespacho, idAnexo);
-
-            return Mapper.Map<AnexoModeloNegocio, AnexoModeloGet>(anexoModeloNegocio);
-        }
-
         public List<ProcessoModelo> PesquisarProcessosNaUnidade(string guidUnidade)
         {
             var processos = processoNegocio.PesquisarProcessoNaUnidade(guidUnidade);

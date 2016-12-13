@@ -163,25 +163,6 @@ namespace ProcessoEletronicoService.Negocio
             return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(query.ToList());
         }
         
-        public AnexoModeloNegocio PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo)
-        {
-            IQueryable<Anexo> query;
-
-            query = repositorioAnexos;
-            query = query.Where(a => a.Id == idAnexo && a.Processo.Id == idProcesso && a.Processo.IdOrganizacaoProcesso == idOrganizacao);
-
-            if (idDespacho > 0)
-            {
-                query = query.Where(a => a.IdDespacho == idDespacho);
-            }
-
-            Anexo anexo = query.SingleOrDefault();
-
-            anexoValidacao.NaoEncontrado(anexo);
-
-            return Mapper.Map<Anexo, AnexoModeloNegocio>(anexo);
-        }
-
         public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio)
         {
             usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);

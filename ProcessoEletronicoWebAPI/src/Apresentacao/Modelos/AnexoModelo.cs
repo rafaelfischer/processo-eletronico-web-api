@@ -27,6 +27,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string MimeType { get; set; }
         public string Conteudo { get; set; }
 
+        public ProcessoModelo Processo { get; set; }
         public TipoDocumentalAnexoModelo TipoDocumental { get; set; }
     }
 }
