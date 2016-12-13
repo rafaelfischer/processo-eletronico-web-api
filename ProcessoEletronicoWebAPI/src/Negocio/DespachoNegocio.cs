@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace ProcessoEletronicoService.Negocio
     public class DespachoNegocio : BaseNegocio, IDespachoNegocio
     {
         IUnitOfWork unitOfWork;
+        IProcessoNegocio processoNegocio;
         IRepositorioGenerico<Anexo> repositorioAnexos;
         IRepositorioGenerico<Despacho> repositorioDespachos;
         IRepositorioGenerico<Processo> repositorioProcessos;
@@ -29,6 +31,7 @@ namespace ProcessoEletronicoService.Negocio
         public DespachoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             unitOfWork = repositorios.UnitOfWork;
+            processoNegocio = new ProcessoNegocio(repositorios);
             repositorioDespachos = repositorios.Despachos;
             repositorioProcessos = repositorios.Processos;
             repositorioAnexos = repositorios.Anexos;
@@ -37,7 +40,6 @@ namespace ProcessoEletronicoService.Negocio
             usuarioValidacao = new UsuarioValidacao();
         }
         
-
         public List<DespachoModeloNegocio> PesquisarDespachosUsuario()
         {
             IQueryable<Despacho> query;
@@ -48,7 +50,7 @@ namespace ProcessoEletronicoService.Negocio
             return Mapper.Map<List<Despacho>, List<DespachoModeloNegocio>>(query.ToList());
         }
 
-        public DespachoModeloNegocio PesquisarDespacho(int idDespacho)
+        public DespachoModeloNegocio Pesquisar(int idDespacho)
         {
             Despacho despacho = repositorioDespachos.Where(d => d.Id == idDespacho)
                                                     .Include(p => p.Processo)
@@ -67,61 +69,102 @@ namespace ProcessoEletronicoService.Negocio
             return Mapper.Map<Despacho, DespachoModeloNegocio>(despacho);
         }
 
-        public DespachoModeloNegocio Despachar(int idProcesso, DespachoModeloNegocio despachoNegocio)
+        public DespachoModeloNegocio Despachar(DespachoModeloNegocio despachoNegocio)
         {
-
-            /*
-            TODO: VERIFICAR SE O USUÁRIO TEM PERMISSÃO PARA EFETUAR O DESPACHO
-            (cruzar informações do usuário com o local (organição/unidade) em que o processo se encontra.
-            **Informações do usuário são do acesso cidadão** 
-            */
-            //despachoValidacao.Permissao(despachoNegocio)
-
-            /*Verificar se o usuário tem permissão para realizar o despacho na organização em que ele se encontra*/
-
-
-
-
+            despachoValidacao.Preenchido(despachoNegocio);
+            
             //Obter id da atividade do processo para validação dos anexos do despacho
             int idAtividadeProcesso;
             try
             {
-                idAtividadeProcesso = repositorioProcessos.Where(p => p.Id == idProcesso).Select(s => s.IdAtividade).SingleOrDefault();
+                idAtividadeProcesso = repositorioProcessos.Where(p => p.Id == despachoNegocio.IdProcesso).Select(s => s.IdAtividade).SingleOrDefault();
             }
             catch (Exception)
             {
                 idAtividadeProcesso = 0;
             }
 
-            despachoValidacao.Preenchido(despachoNegocio);
-            despachoValidacao.Valido(idOrganizacaoProcesso, idProcesso, idAtividadeProcesso, despachoNegocio);
+            despachoValidacao.Valido(idAtividadeProcesso, despachoNegocio, UsuarioGuidOrganizacaoPatriarca);
+
+            /*Verificar se o usuário tem permissão para realizar o despacho na organização em que ele se encontra*/
+            PermissaoDespacho(despachoNegocio);
 
             Despacho despacho = new Despacho();
-            PreparaInsercaoDespacho(despachoNegocio, idProcesso);
+            PreparaInsercaoDespacho(despachoNegocio);
             Mapper.Map(despachoNegocio, despacho);
+
+            usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
+            usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
+            InformacoesOrganizacao(despacho);
+            InformacoesUnidade(despacho);
+            InformacoesUsuario(despacho);
 
             repositorioDespachos.Add(despacho);
             unitOfWork.Save();
 
-            return PesquisarDespacho(despacho.Id, idProcesso, idOrganizacaoProcesso);
+            return Pesquisar(despacho.Id);
         }
 
-        private void PreparaInsercaoDespacho(DespachoModeloNegocio despacho, int idProcesso)
+        private void PermissaoDespacho(DespachoModeloNegocio despacho)
         {
-            //Processo do despacho
-            despacho.IdProcesso = idProcesso;
+            List<int> listaIdsProcessosNaOrganizacao;
+            processoNegocio.Usuario = Usuario;
+            listaIdsProcessosNaOrganizacao = processoNegocio.PesquisarProcessoNaOrganizacao(UsuarioGuidOrganizacao.ToString("D")).Select(p => p.Id).ToList();
 
+            if (!listaIdsProcessosNaOrganizacao.Contains(despacho.IdProcesso))
+            {
+                throw new RequisicaoInvalidaException("O processo não se encontra na organização do usuário. Não é possível realizar o despacho.");
+            }
+        }
+
+        private void PreparaInsercaoDespacho(DespachoModeloNegocio despacho)
+        {
+           
             //Preenche processo dos anexos
             if (despacho.Anexos != null)
             {
                 foreach (AnexoModeloNegocio anexo in despacho.Anexos)
                 {
-                    anexo.IdProcesso = idProcesso;
+                    anexo.IdProcesso = despacho.IdProcesso;
                 }
             }
 
             //Data/hora atual do despacho
             despacho.DataHoraDespacho = DateTime.Now;
+        }
+
+        private void InformacoesOrganizacao(Despacho despacho)
+        {
+            OrganizacaoOrganogramaModelo organizacao = PesquisarOrganizacao(despacho.GuidOrganizacaoDestino);
+
+            if (organizacao == null)
+            {
+                throw new RequisicaoInvalidaException("Organização autuadora não encontrada no Organograma");
+            }
+
+            despacho.GuidOrganizacaoDestino = new Guid(organizacao.guid);
+            despacho.NomeOrganizacaoDestino = organizacao.razaoSocial;
+            despacho.SiglaOrganizacaoDestino = organizacao.sigla;
+
+        }
+        private void InformacoesUnidade(Despacho despacho)
+        {
+            UnidadeOrganogramaModelo unidade = PesquisarUnidade(despacho.GuidUnidadeDestino);
+
+            if (unidade == null)
+            {
+                throw new RequisicaoInvalidaException("Unidade autudora não encontrada no Organograma");
+            }
+
+            despacho.GuidUnidadeDestino = new Guid(unidade.guid);
+            despacho.NomeUnidadeDestino = unidade.nome;
+            despacho.SiglaUnidadeDestino = unidade.sigla;
+        }
+
+        private void InformacoesUsuario(Despacho despacho)
+        {
+            despacho.IdUsuarioDespachante = UsuarioCpf;
+            despacho.NomeUsuarioDespachante = UsuarioNome;
         }
 
         private void LimparConteudoAnexos(ICollection<Anexo> anexos)

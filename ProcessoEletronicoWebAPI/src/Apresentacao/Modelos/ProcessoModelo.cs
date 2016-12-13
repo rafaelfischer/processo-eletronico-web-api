@@ -61,7 +61,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public int IdOrganizacaoProcesso { get; set; }
 
         public List<AnexoModeloGet> Anexos { get; set; }
-        public List<DespachoProcessoModeloGet> Despachos { get; set; }
+        public List<DespachoModeloGet> Despachos { get; set; }
         public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }
         public List<MunicipioProcessoModelo> MunicipiosProcesso { get; set; }

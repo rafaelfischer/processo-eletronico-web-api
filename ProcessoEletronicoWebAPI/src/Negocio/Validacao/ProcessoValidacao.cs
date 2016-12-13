@@ -148,9 +148,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             UfMunicipioValida(processo);
             GuidOrganizacaoValido(processo);
             GuidUnidadeValido(processo);
-            OrganizacaoExistente(processo);
-            UnidadeExistente(processo);
-
+            
         }
 
         internal void AtividadeExistente(ProcessoModeloNegocio processo)
@@ -196,17 +194,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RequisicaoInvalidaException("Guid da Unidade autuadora inválido");
             }
         }
-
-        private void OrganizacaoExistente(ProcessoModeloNegocio processo)
-        {
-
-        }
-
-        private void UnidadeExistente(ProcessoModeloNegocio processo)
-        {
-
-        }
-
+        
         internal void NumeroValido(string numero)
         {
             if (numero == null)

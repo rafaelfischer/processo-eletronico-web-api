@@ -120,7 +120,7 @@ namespace ProcessoEletronicoService.Negocio
                 }
                 else
                 {
-                    return new T();
+                    return default(T) ;
                 }
             }
 

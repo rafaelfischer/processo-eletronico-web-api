@@ -57,6 +57,7 @@ namespace WebAPI
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Processo.Autuar", policy => policy.RequireClaim("Acao$Processo", "Autuar"));
+                options.AddPolicy("Despacho.Inserir", policy => policy.RequireClaim("Acao$Despacho", "Inserir"));
             }
             );
             #endregion

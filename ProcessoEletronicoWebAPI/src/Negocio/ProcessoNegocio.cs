@@ -40,8 +40,7 @@ namespace ProcessoEletronicoService.Negocio
             anexoValidacao = new AnexoValidacao(repositorios);
             usuarioValidacao = new UsuarioValidacao();
         }
-
-
+        
         public ProcessoModeloNegocio Pesquisar(int id)
         {
             var processo = repositorioProcessos.Where(p => p.Id == id)
@@ -163,38 +162,7 @@ namespace ProcessoEletronicoService.Negocio
 
             return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(query.ToList());
         }
-
-        public List<DespachoModeloNegocio> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario)
-        {
-            IQueryable<Despacho> query;
-            query = repositorioDespachos;
-
-            query = query.Where(d => d.IdUsuarioDespachante == cpfUsuario).Include(p => p.Processo);
-
-            return Mapper.Map<List<Despacho>, List<DespachoModeloNegocio>>(query.ToList());
-        }
-
-        public DespachoModeloNegocio PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso)
-        {
-            Despacho despacho = repositorioDespachos.Where(d => d.Id == idDespacho
-                                                             && d.Processo.Id == idProcesso
-                                                             && d.Processo.OrganizacaoProcesso.Id == idOrganizacaoProcesso)
-                                                    .Include(p => p.Processo)
-                                                    .Include(a => a.Anexos).ThenInclude(td => td.TipoDocumental)
-                                                    .SingleOrDefault();
-
-            despachoValidacao.Existe(despacho);
-
-            //Limpando contedo dos anexos para não enviar na resposta da consulta de processos
-            if (despacho.Anexos != null)
-            {
-                LimparConteudoAnexos(despacho.Anexos);
-            }
-
-
-            return Mapper.Map<Despacho, DespachoModeloNegocio>(despacho);
-        }
-
+        
         public AnexoModeloNegocio PesquisarAnexo(int idOrganizacao, int idProcesso, int idDespacho, int idAnexo)
         {
             IQueryable<Anexo> query;
@@ -240,39 +208,6 @@ namespace ProcessoEletronicoService.Negocio
             return Pesquisar(processo.Id);
         }
 
-        public DespachoModeloNegocio Despachar(int idOrganizacaoProcesso, int idProcesso, DespachoModeloNegocio despachoNegocio)
-        {
-
-            /*
-            TODO: VERIFICAR SE O USUÁRIO TEM PERMISSÃO PARA EFETUAR O DESPACHO
-            (cruzar informações do usuário com o local (organição/unidade) em que o processo se encontra.
-            **Informações do usuário são do acesso cidadão** 
-            */
-            //despachoValidacao.Permissao(despachoNegocio)
-
-            //Obter id da atividade do processo para validação dos anexos do despacho
-            int idAtividadeProcesso;
-            try
-            {
-                idAtividadeProcesso = repositorioProcessos.Where(p => p.Id == idProcesso).Select(s => s.IdAtividade).SingleOrDefault();
-            }
-            catch (Exception)
-            {
-                idAtividadeProcesso = 0;
-            }
-
-            despachoValidacao.Preenchido(despachoNegocio);
-            despachoValidacao.Valido(idOrganizacaoProcesso, idProcesso, idAtividadeProcesso, despachoNegocio);
-
-            Despacho despacho = new Despacho();
-            PreparaInsercaoDespacho(despachoNegocio, idProcesso);
-            Mapper.Map(despachoNegocio, despacho);
-
-            repositorioDespachos.Add(despacho);
-            unitOfWork.Save();
-
-            return PesquisarDespacho(despacho.Id, idProcesso, idOrganizacaoProcesso);
-        }
 
         public void Excluir()
         {
@@ -418,7 +353,12 @@ namespace ProcessoEletronicoService.Negocio
         private void InformacoesOrganizacao(Processo processo)
         {
             OrganizacaoOrganogramaModelo organizacao = PesquisarOrganizacao(processo.GuidOrganizacaoAutuadora);
-            
+
+            if (organizacao == null)
+            {
+                throw new RequisicaoInvalidaException("Organização autuadora não encontrada no Organograma");
+            }
+
             processo.GuidOrganizacaoAutuadora = new Guid(organizacao.guid);
             processo.NomeOrganizacaoAutuadora = organizacao.razaoSocial;
             processo.SiglaOrganizacaoAutuadora = organizacao.sigla;
@@ -427,6 +367,11 @@ namespace ProcessoEletronicoService.Negocio
         private void InformacoesUnidade(Processo processo)
         {
             UnidadeOrganogramaModelo unidade = PesquisarUnidade(processo.GuidUnidadeAutuadora);
+
+            if (unidade == null)
+            {
+                throw new RequisicaoInvalidaException("Unidade autudora não encontrada no Organograma");
+            }
 
             processo.GuidUnidadeAutuadora = new Guid(unidade.guid);
             processo.NomeUnidadeAutuadora = unidade.nome;
