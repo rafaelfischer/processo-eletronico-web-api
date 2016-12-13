@@ -14,6 +14,7 @@ namespace ProcessoEletronicoService.WebAPI.Config
 
             dependencias = Apresentacao.Configuracao.ConfiguracaoDepedencias.ObterDependencias();
             dependencias.Add(typeof(IAtividadeWorkService), typeof(AtividadeWorkService));
+            dependencias.Add(typeof(IDespachoWorkService), typeof(DespachoWorkService));
             dependencias.Add(typeof(IFuncaoWorkService), typeof(FuncaoWorkService));
             dependencias.Add(typeof(IPlanoClassificacaoWorkService), typeof(PlanoClassificacaoWorkService));
             dependencias.Add(typeof(IProcessoWorkService), typeof(ProcessoWorkService));

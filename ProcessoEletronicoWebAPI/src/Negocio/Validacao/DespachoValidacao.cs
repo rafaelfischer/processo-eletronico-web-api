@@ -15,7 +15,6 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         IRepositorioGenerico<Despacho> repositorioDespachos;
         AnexoValidacao anexoValidacao;
 
-
         public DespachoValidacao(IProcessoEletronicoRepositorios repositorios)
         {
             this.repositorioProcessos = repositorios.Processos;
@@ -28,18 +27,21 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         public void Preenchido(DespachoModeloNegocio despacho)
         {
             /*Preenchimentos dos campos do processo*/
+            IdProcessoPreenchido(despacho);
             TextoPreenchido(despacho);
-            IdOrganizacaoDestinoPreenchido(despacho);
-            NomeOrganizacaoDestinoPreenchido(despacho);
-            SiglaOrganizacaoDestinoPreenchida(despacho);
-            IdUnidadeDestinoPreenchido(despacho);
-            NomeUnidadeDestinoPreenchido(despacho);
-            SiglaUnidadeDestinoPreenchida(despacho);
-            IdUsuarioDespachantePreenchido(despacho);
-            NomeUsuarioDespachantePreenchido(despacho);
+            GuidOrganizacaoDestinoPreenchido(despacho);
+            GuidUnidadeDestinoPreenchido(despacho);
             
             /*Preenchimento de objetos associados ao processo*/
             anexoValidacao.Preenchido(despacho.Anexos);
+        }
+
+        private void IdProcessoPreenchido(DespachoModeloNegocio despacho)
+        {
+            if (despacho.IdProcesso <= 0)
+            {
+                throw new RequisicaoInvalidaException("Identificador do processo não preenchido.");
+            }
         }
 
         private void TextoPreenchido(DespachoModeloNegocio despacho)
@@ -50,89 +52,65 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        private void IdOrganizacaoDestinoPreenchido(DespachoModeloNegocio despacho)
+        private void GuidOrganizacaoDestinoPreenchido(DespachoModeloNegocio despacho)
         {
-            if (despacho.IdOrganizacaoDestino == 0)
+            if (string.IsNullOrWhiteSpace(despacho.GuidOrganizacaoDestino))
             {
                 throw new RequisicaoInvalidaException("Identificador da organização de destino não preenchido.");
             }
         }
-
-        private void NomeOrganizacaoDestinoPreenchido(DespachoModeloNegocio despacho)
+        
+        private void GuidUnidadeDestinoPreenchido(DespachoModeloNegocio despacho)
         {
-            if (string.IsNullOrWhiteSpace(despacho.NomeOrganizacaoDestino))
-            {
-                throw new RequisicaoInvalidaException("Nome da organização de destino não preenchido.");
-            }
-        }
-
-        private void SiglaOrganizacaoDestinoPreenchida(DespachoModeloNegocio despacho)
-        {
-            if (string.IsNullOrWhiteSpace(despacho.SiglaOrganizacaoDestino))
-            {
-                throw new RequisicaoInvalidaException("Sigla da organização de destino não preenchida.");
-            }
-        }
-
-        private void IdUnidadeDestinoPreenchido(DespachoModeloNegocio despacho)
-        {
-            if (despacho.IdUnidadeDestino == 0)
+            if (string.IsNullOrWhiteSpace(despacho.GuidUnidadeDestino))
             {
                 throw new RequisicaoInvalidaException("Identificador da unidade de destino não preenchido.");
             }
         }
-
-        private void NomeUnidadeDestinoPreenchido(DespachoModeloNegocio despacho)
-        {
-            if (string.IsNullOrWhiteSpace(despacho.NomeUnidadeDestino))
-            {
-                throw new RequisicaoInvalidaException("Nome da unidade de destino não preenchido.");
-            }
-        }
-
-        private void SiglaUnidadeDestinoPreenchida(DespachoModeloNegocio despacho)
-        {
-            if (string.IsNullOrWhiteSpace(despacho.SiglaUnidadeDestino))
-            {
-                throw new RequisicaoInvalidaException("Sigla da unidade de destino não preenchida.");
-            }
-        }
-
-        private void IdUsuarioDespachantePreenchido(DespachoModeloNegocio despacho)
-        {
-            if (string.IsNullOrWhiteSpace(despacho.IdUsuarioDespachante))
-            {
-                throw new RequisicaoInvalidaException("Identificador do usuário despachante não preenchido.");
-            }
-        }
-
-        private void NomeUsuarioDespachantePreenchido(DespachoModeloNegocio despacho)
-        {
-            if (string.IsNullOrWhiteSpace(despacho.NomeUsuarioDespachante))
-            {
-                throw new RequisicaoInvalidaException("Nome do usuário despachante não preenchido.");
-            }
-        }
-
+        
         #endregion
 
         #region Validação dos campos
 
-        public void Valido(int idOrganizacaoProcesso, int idProcesso, int idAtividadeProcesso, DespachoModeloNegocio despacho)
+        public void Valido(int idAtividadeProcesso, DespachoModeloNegocio despacho, Guid guidOrganizacaoPatriarcaUsuario)
         {
-            ProcessoExistente(idOrganizacaoProcesso, idProcesso);
+            ProcessoExistente(despacho, guidOrganizacaoPatriarcaUsuario);
+            GuidOrganizacaoDestinoValido(despacho);
+            GuidUnidadeDestinoValido(despacho);
             anexoValidacao.Valido(despacho.Anexos, idAtividadeProcesso);
             anexoValidacao.TipoDocumentalExistente(despacho.Anexos, idAtividadeProcesso);
         }
 
-        private void ProcessoExistente (int idOrganizacao, int idProcesso)
+        private void ProcessoExistente (DespachoModeloNegocio despacho, Guid guidOrganizacaoPatriarcaUsuario)
         {
-            if (repositorioProcessos.Where(p => p.Id == idProcesso 
-                                             && p.OrganizacaoProcesso.Id == idOrganizacao)
-                                             .ToList().Count == 0)
+            if (repositorioProcessos.Where(p => p.Id == despacho.IdProcesso 
+                                             && p.OrganizacaoProcesso.GuidOrganizacao.Equals(guidOrganizacaoPatriarcaUsuario)).SingleOrDefault() == null)
             {
                 throw new RecursoNaoEncontradoException("Processo inexistente.");
+            }
+        }
 
+        private void GuidOrganizacaoDestinoValido(DespachoModeloNegocio despacho)
+        {
+            try
+            {
+                Guid guid = new Guid(despacho.GuidOrganizacaoDestino);
+            }
+            catch (Exception)
+            {
+                throw new RequisicaoInvalidaException("Guid da Organização de destino inválido");
+            }
+        }
+
+        private void GuidUnidadeDestinoValido(DespachoModeloNegocio despacho)
+        {
+            try
+            {
+                Guid guid = new Guid(despacho.GuidUnidadeDestino);
+            }
+            catch (Exception)
+            {
+                throw new RequisicaoInvalidaException("Guid da Unidade de destino inválido");
             }
         }
 

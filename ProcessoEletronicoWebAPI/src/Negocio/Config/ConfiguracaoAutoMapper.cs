@@ -49,7 +49,9 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #region Mapeamento de Despacho
             CreateMap<DespachoModeloNegocio, Despacho>()
-                .ForMember(dest => dest.Processo, opt => opt.Ignore());
+                .ForMember(dest => dest.Processo, opt => opt.Ignore())
+                .ForMember(dest => dest.GuidOrganizacaoDestino, opt => opt.MapFrom(src => new Guid(src.GuidOrganizacaoDestino)))
+                .ForMember(dest => dest.GuidUnidadeDestino, opt => opt.MapFrom(src => new Guid(src.GuidUnidadeDestino)));
 
 
             CreateMap<Despacho, DespachoModeloNegocio>()

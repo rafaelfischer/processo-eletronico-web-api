@@ -109,68 +109,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
             }
         }
-
-        /// <summary>
-        /// Retorna lista de despachos feitos pelo usuario
-        /// </summary>
-        /// <param name="id">Identificador da organização patriarca</param>
-        /// <param name="cpfUsuario">CPF do usuário</param>
-        /// <returns></returns>
-        [HttpGet("despachos/usuario/{cpfUsuario}")]
-        [ProducesResponseType(typeof(List<ProcessoModelo>), 200)]
-        [ProducesResponseType(typeof(string), 400)]
-        [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarDespachosUsuario(int id, string cpfUsuario)
-        {
-            try
-            {
-                return new ObjectResult(service.PesquisarDespachosUsuario(id, cpfUsuario));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
-        }
-
-
-        /// <summary>
-        /// Retorna o despacho correspondente ao identificador.
-        /// </summary>
-        /// <param name="idDespacho">Identificador do Despacho</param>
-        /// <param name="idProcesso">Identificador do Processo</param>
-        /// <param name="id">Identificador da Organização do Processo</param>
-        /// <returns>Despacho correspondente ao identificador.</returns>
-        /// <response code="201">Retorna o despacho correspondente ao identificador.</response>
-        /// <response code="404">Despacho não foi encontrado.</response>
-        /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{idProcesso}/despachos/{idDespacho}")]
-        [ProducesResponseType(typeof(DespachoProcessoModeloGet), 201)]
-        [ProducesResponseType(typeof(string), 404)]
-        [ProducesResponseType(typeof(string), 400)]
-        [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarDespacho(int idDespacho, int idProcesso, int id)
-        {
-            try
-            {
-                return new ObjectResult(service.PesquisarDespacho(idDespacho, idProcesso, id));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
-        }
+        
 
         /// </summary>
         /// <param name="id">Identificador da organização patriarca</param>
@@ -282,42 +221,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
                                  
         }
-
-        /// <summary>
-        /// Despacho de processos
-        /// </summary>
-        /// <param name="id">Identificador da organização patriarca</param>
-        /// <param name="idProcesso">Identificador do processo</param>
-        /// <param name="despachoPost">Informações do despacho do processo</param>
-        /// <returns></returns>
-        [HttpPost("{idProcesso}/despachos")]
-        [ProducesResponseType(typeof(DespachoProcessoModeloGet), 201)]
-        [ProducesResponseType(typeof(string), 404)]
-        [ProducesResponseType(typeof(string), 400)]
-        [ProducesResponseType(typeof(string), 500)]
-        //[Authorize]
-        public IActionResult Despachar(int id, int idProcesso, [FromBody]DespachoProcessoModeloPost despachoPost)
-        {
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                DespachoProcessoModeloGet despachoCompleto = service.Despachar(id, idProcesso, despachoPost);
-                return Created("http://" + request.Host.Value + request.Path.Value + "/" + despachoCompleto.Id, despachoCompleto);
-
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
-        }
+        
 
         #endregion
                 

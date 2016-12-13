@@ -34,17 +34,7 @@ namespace ProcessoEletronicoService.Apresentacao
 
             return Mapper.Map<ProcessoModeloNegocio, ProcessoCompletoModelo>(processoNegocio);
         }
-
-        public DespachoProcessoModeloGet Despachar(int idOrganizacao, int idProcesso, DespachoProcessoModeloPost despachoPost)
-        {
-            DespachoModeloNegocio despachoNegocio = new DespachoModeloNegocio();
-            Mapper.Map(despachoPost, despachoNegocio);
-
-            despachoNegocio = this.processoNegocio.Despachar(idOrganizacao, idProcesso, despachoNegocio);
-
-            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoModeloGet>(despachoNegocio);
-            
-        }
+        
         
         public ProcessoCompletoModelo Pesquisar(string numero)
         {
@@ -63,21 +53,7 @@ namespace ProcessoEletronicoService.Apresentacao
 
             return p;
         }
-
-        public DespachoProcessoModeloGet PesquisarDespacho(int idDespacho, int idProcesso, int idOrganizacaoProcesso)
-        {
-            DespachoModeloNegocio despachoNegocio = processoNegocio.PesquisarDespacho(idDespacho, idProcesso, idOrganizacaoProcesso);
-
-            return Mapper.Map<DespachoModeloNegocio, DespachoProcessoModeloGet>(despachoNegocio);
-        }
-
-        public List<DespachoProcessoModeloCompleto> PesquisarDespachosUsuario(int idOrganizacao, string cpfUsuario)
-        {
-            List<DespachoModeloNegocio> despachosModeloNegocio = processoNegocio.PesquisarDespachosUsuario(idOrganizacao, cpfUsuario);
-
-            return Mapper.Map<List<DespachoModeloNegocio>, List<DespachoProcessoModeloCompleto>>(despachosModeloNegocio);
-        }
-
+        
         public AnexoModeloGet PesquisarAnexo (int idOrganizacao, int idProcesso, int idDespacho, int idAnexo)
         {
             AnexoModeloNegocio anexoModeloNegocio = new AnexoModeloNegocio();
