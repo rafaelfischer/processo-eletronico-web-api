@@ -17,7 +17,6 @@ namespace ProcessoEletronicoService.WebAPI.Base
     [Authorize]
     public class BaseController : Controller
     {
-        private readonly IOptions<OrganogramaApi> organogramaApiSettings;
         private Dictionary<string, string> usuarioAutenticado;
         public Dictionary<string, string> UsuarioAutenticado
         {
@@ -27,9 +26,8 @@ namespace ProcessoEletronicoService.WebAPI.Base
             }
         }
 
-        public BaseController(IHttpContextAccessor httpContextAccessor, IOptions<OrganogramaApi> organogramaApiSettings)
+        public BaseController(IHttpContextAccessor httpContextAccessor)
         {
-            this.organogramaApiSettings = organogramaApiSettings;
             PreencherUsuario(httpContextAccessor.HttpContext.User);
         }
 
@@ -77,14 +75,16 @@ namespace ProcessoEletronicoService.WebAPI.Base
 
                     if (claimOrganizacao != null)
                     {
+                        string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
+
                         //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
                         string siglaOrganizacao = claimOrganizacao.Value;
 
-                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/sigla/" + siglaOrganizacao, accessToken);
+                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>(urlApiOrganograma + "organizacoes/sigla/" + siglaOrganizacao, accessToken);
 
                         usuarioAutenticado.Add("guidOrganizacao", organizacaoUsuario.guid);
 
-                        Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(organogramaApiSettings.Value.Url + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
+                        Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>(urlApiOrganograma + "organizacoes/" + organizacaoUsuario.guid + "/patriarca", accessToken);
 
                         usuarioAutenticado.Add("guidOrganizacaoPatriarca", organizacaoPatriarca.guid);
                     }
