@@ -167,11 +167,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.GuidUnidadeDestino).HasColumnName("guidUnidadeDestino");
 
-                entity.Property(e => e.IdOrganizacaoDestino).HasColumnName("idOrganizacaoDestino");
-
                 entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
-
-                entity.Property(e => e.IdUnidadeDestino).HasColumnName("idUnidadeDestino");
 
                 entity.Property(e => e.IdUsuarioDespachante)
                     .IsRequired()
@@ -493,8 +489,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdDigitoPoder).HasColumnName("idDigitoPoder");
 
-                entity.Property(e => e.IdOrganizacao).HasColumnName("idOrganizacao");
-
                 entity.Property(e => e.NomeFantasia)
                     .IsRequired()
                     .HasColumnName("nomeFantasia")
@@ -544,8 +538,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnType("varchar(200)");
 
                 entity.Property(e => e.GuidOrganizacao).HasColumnName("guidOrganizacao");
-
-                entity.Property(e => e.IdOrganizacao).HasColumnName("idOrganizacao");
 
                 entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
 
@@ -602,11 +594,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdAtividade).HasColumnName("idAtividade");
 
-                entity.Property(e => e.IdOrganizacaoAutuadora).HasColumnName("idOrganizacaoAutuadora");
-
                 entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
-
-                entity.Property(e => e.IdUnidadeAutuadora).HasColumnName("idUnidadeAutuadora");
 
                 entity.Property(e => e.IdUsuarioAutuador)
                     .IsRequired()
