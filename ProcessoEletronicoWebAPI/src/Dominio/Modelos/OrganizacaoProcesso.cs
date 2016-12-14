@@ -13,7 +13,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         }
 
         public int Id { get; set; }
-        public int? IdOrganizacao { get; set; }
         public string Cnpj { get; set; }
         public string RazaoSocial { get; set; }
         public string NomeFantasia { get; set; }

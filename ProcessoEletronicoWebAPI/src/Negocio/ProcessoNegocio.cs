@@ -167,16 +167,11 @@ namespace ProcessoEletronicoService.Negocio
         {
             usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
             usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
+            usuarioValidacao.PodeAutuarProcessoNaOrganizacao(processoNegocio, UsuarioGuidOrganizacao);
 
             /*Validações*/
             processoValidacao.Preenchido(processoNegocio);
             processoValidacao.Valido(processoNegocio);
-
-            usuarioValidacao.PodeAutuarProcessoNaOrganizacao(processoNegocio, UsuarioGuidOrganizacao);
-
-            processoValidacao.AtividadePertenceAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
-
-            processoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
 
             /*Mapeamento para inserção*/
             Processo processo = new Processo();
@@ -191,6 +186,12 @@ namespace ProcessoEletronicoService.Negocio
 
             /*Informações padrão, como a data de atuação*/
             InformacaoPadrao(processo);
+
+            processoValidacao.AtividadePertenceAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
+
+            processoValidacao.AtividadePertenceAOrganizacao(processoNegocio);
+
+            processoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
 
             /*Gera número do processo*/
             NumeracaoProcesso(processo);

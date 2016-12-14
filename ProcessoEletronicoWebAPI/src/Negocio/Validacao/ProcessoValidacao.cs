@@ -264,6 +264,17 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
+        internal void AtividadePertenceAOrganizacao(ProcessoModeloNegocio processoNegocio)
+        {
+            Atividade atividade = repositorioAtividades.Where(a => a.Id == processoNegocio.Atividade.Id
+                                                                && (a.Funcao.PlanoClassificacao.GuidOrganizacao.Equals(new Guid(processoNegocio.GuidOrganizacaoAutuadora))
+                                                                || !a.Funcao.PlanoClassificacao.AreaFim))
+                                                       .SingleOrDefault();
+
+            if (atividade == null)
+                throw new RequisicaoInvalidaException("A atividade informada não pertence à organização autuadora nem é de uma área meio.");
+        }
+
         internal void UnidadePertenceAOrganizacao(Guid guidOrganizacaoUnidade, Guid guidOrganizacaoAutuadora)
         {
             if (!guidOrganizacaoUnidade.Equals(guidOrganizacaoAutuadora))

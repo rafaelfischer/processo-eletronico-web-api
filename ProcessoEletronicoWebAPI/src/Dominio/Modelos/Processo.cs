@@ -24,10 +24,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public short Ano { get; set; }
         public string Resumo { get; set; }
         public int IdAtividade { get; set; }
-        public int? IdOrganizacaoAutuadora { get; set; }
         public string NomeOrganizacaoAutuadora { get; set; }
         public string SiglaOrganizacaoAutuadora { get; set; }
-        public int? IdUnidadeAutuadora { get; set; }
         public string NomeUnidadeAutuadora { get; set; }
         public string SiglaUnidadeAutuadora { get; set; }
         public string IdUsuarioAutuador { get; set; }
