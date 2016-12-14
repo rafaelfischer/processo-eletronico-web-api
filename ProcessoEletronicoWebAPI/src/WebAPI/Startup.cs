@@ -120,12 +120,6 @@ namespace WebAPI
 
             app.UseMvc();
 
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Documentacao")),
-                RequestPath = new PathString("/Documentacao")
-            });
-
             #region Configuração do Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
