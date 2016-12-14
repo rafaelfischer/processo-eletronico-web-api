@@ -10,5 +10,6 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public int Id { get; set; }
         public string Uf { get; set; }
         public string Nome { get; set; }
+        public string GuidMunicipio { get; set; }
     }
 }

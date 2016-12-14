@@ -13,14 +13,13 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         [Required]
         public string Cnpj { get; set; }
         public string Sigla { get; set; }
+        [Required]
+        public string GuidMunicipio { get; set; }
         public string NomeUnidade { get; set; }
         public string SiglaUnidade { get; set; }
         public List<ContatoModelo> Contatos { get; set; }
         public List<EmailModelo> Emails { get; set; }
-        [Required]
-        public string UfMunicipio { get; set; }
-        [Required]
-        public string NomeMunicipio { get; set; }
+        
     }
 
     public class InteressadoPessoaJuridicaProcessoGetModelo
@@ -31,6 +30,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string Sigla { get; set; }
         public string NomeUnidade { get; set; }
         public string SiglaUnidade { get; set; }
+        public string GuidMunicipio { get; set; }
         public string NomeMunicipio { get; set; }
         public string UfMunicipio { get; set; }
 

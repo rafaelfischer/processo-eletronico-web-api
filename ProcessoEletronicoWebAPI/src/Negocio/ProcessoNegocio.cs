@@ -40,7 +40,7 @@ namespace ProcessoEletronicoService.Negocio
             anexoValidacao = new AnexoValidacao(repositorios);
             usuarioValidacao = new UsuarioValidacao();
         }
-        
+
         public ProcessoModeloNegocio Pesquisar(int id)
         {
             var processo = repositorioProcessos.Where(p => p.Id == id)
@@ -162,7 +162,7 @@ namespace ProcessoEletronicoService.Negocio
 
             return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(query.ToList());
         }
-        
+
         public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio)
         {
             usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
@@ -182,9 +182,14 @@ namespace ProcessoEletronicoService.Negocio
             Processo processo = new Processo();
             processo = Mapper.Map<ProcessoModeloNegocio, Processo>(processoNegocio);
 
+            /*Preenchimento das informações que possuem GUID*/
             InformacoesOrganizacao(processo);
             InformacoesUnidade(processo);
+            InformacoesMunicipio(processo);
+            InformacoesMunicipioInteressadoPessoaFisica(processo);
+            InformacoesMunicipioInteressadoPessoaJuridica(processo);
 
+            /*Informações padrão, como a data de atuação*/
             InformacaoPadrao(processo);
 
             /*Gera número do processo*/
@@ -337,6 +342,21 @@ namespace ProcessoEletronicoService.Negocio
             return Convert.ToInt16(stringDigitoOrganizacao);
         }
 
+        private void InformacoesUnidade(Processo processo)
+        {
+            UnidadeOrganogramaModelo unidade = PesquisarUnidade(processo.GuidUnidadeAutuadora);
+
+            if (unidade == null)
+            {
+                throw new RequisicaoInvalidaException("Unidade autudora não encontrada no Organograma");
+            }
+
+            processoValidacao.UnidadePertenceAOrganizacao(new Guid(unidade.organizacao.guid), processo.GuidOrganizacaoAutuadora);
+
+            processo.GuidUnidadeAutuadora = new Guid(unidade.guid);
+            processo.NomeUnidadeAutuadora = unidade.nome;
+            processo.SiglaUnidadeAutuadora = unidade.sigla;
+        }
 
         private void InformacoesOrganizacao(Processo processo)
         {
@@ -352,20 +372,59 @@ namespace ProcessoEletronicoService.Negocio
             processo.SiglaOrganizacaoAutuadora = organizacao.sigla;
 
         }
-        private void InformacoesUnidade(Processo processo)
+        private void InformacoesMunicipio(Processo processo)
         {
-            UnidadeOrganogramaModelo unidade = PesquisarUnidade(processo.GuidUnidadeAutuadora);
-
-            if (unidade == null)
+            foreach (MunicipioProcesso municipio in processo.MunicipiosProcesso)
             {
-                throw new RequisicaoInvalidaException("Unidade autudora não encontrada no Organograma");
+                MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(municipio.GuidMunicipio);
+
+                if (municipioOrganograma == null)
+                {
+                    throw new RequisicaoInvalidaException("Municipio não encontrado no Organograma");
+                }
+
+                municipio.Nome = municipioOrganograma.nome;
+                municipio.Uf = municipioOrganograma.uf;
+
             }
+        }
 
-            processoValidacao.UnidadePertenceAOrganizacao(new Guid(unidade.organizacao.guid), processo.GuidOrganizacaoAutuadora);
+        private void InformacoesMunicipioInteressadoPessoaFisica(Processo processo)
+        {
+            if (processo.InteressadosPessoaFisica != null)
+            {
+                foreach (InteressadoPessoaFisica interessado in processo.InteressadosPessoaFisica)
+                {
+                    MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(interessado.GuidMunicipio);
 
-            processo.GuidUnidadeAutuadora = new Guid(unidade.guid);
-            processo.NomeUnidadeAutuadora = unidade.nome;
-            processo.SiglaUnidadeAutuadora = unidade.sigla;
+                    if (municipioOrganograma == null)
+                    {
+                        throw new RequisicaoInvalidaException("Municipio do interessado pessoa física não encontrado no Organograma");
+                    }
+
+                    interessado.NomeMunicipio = municipioOrganograma.nome;
+                    interessado.UfMunicipio = municipioOrganograma.uf;
+                }
+            }
+        }
+
+        private void InformacoesMunicipioInteressadoPessoaJuridica(Processo processo)
+        {
+            if (processo.InteressadosPessoaJuridica != null)
+            {
+                foreach (InteressadoPessoaJuridica interessado in processo.InteressadosPessoaJuridica)
+                {
+                    MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(interessado.GuidMunicipio);
+
+                    if (municipioOrganograma == null)
+                    {
+                        throw new RequisicaoInvalidaException("Municipio do interessado pessoa jurídica não encontrado no Organograma");
+                    }
+
+                    interessado.NomeMunicipio = municipioOrganograma.nome;
+                    interessado.UfMunicipio = municipioOrganograma.uf;
+                }
+            }
         }
 
         private void InformacaoPadrao(Processo processo)

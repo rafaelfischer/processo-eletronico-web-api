@@ -40,14 +40,13 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             {
                 RazaoSocialPreenchida(interessado);
                 CnpjPreenchido(interessado);
-                UfPreenchida(interessado);
-                MunicipioPreenchido(interessado);
+                GuidMunicipioPreenchido(interessado);
             }
         }
 
         #region Preenchimento de campos obrigatórios
 
-        internal void RazaoSocialPreenchida(InteressadoPessoaJuridicaModeloNegocio interessado)
+        private void RazaoSocialPreenchida(InteressadoPessoaJuridicaModeloNegocio interessado)
         {
             if (string.IsNullOrWhiteSpace(interessado.RazaoSocial))
             {
@@ -55,7 +54,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        internal void CnpjPreenchido(InteressadoPessoaJuridicaModeloNegocio interessado)
+        private void CnpjPreenchido(InteressadoPessoaJuridicaModeloNegocio interessado)
         {
             if (string.IsNullOrWhiteSpace(interessado.Cnpj))
             {
@@ -63,17 +62,9 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        internal void UfPreenchida(InteressadoPessoaJuridicaModeloNegocio interessado)
+        private void GuidMunicipioPreenchido(InteressadoPessoaJuridicaModeloNegocio interessado)
         {
-            if (string.IsNullOrWhiteSpace(interessado.UfMunicipio))
-            {
-                throw new RequisicaoInvalidaException("Uf do interessado não preenchido.");
-            }
-        }
-
-        internal void MunicipioPreenchido(InteressadoPessoaJuridicaModeloNegocio interessado)
-        {
-            if (string.IsNullOrWhiteSpace(interessado.NomeMunicipio))
+            if (string.IsNullOrWhiteSpace(interessado.GuidMunicipio))
             {
                 throw new RequisicaoInvalidaException("Municipio do interessado não preenchido.");
             }
@@ -102,18 +93,22 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             cnpjValidacao.CnpjValido(interessado.Cnpj);
             emailValidacao.Valido(interessado.Emails);
             contatoValidacao.Valido(interessado.Contatos);
-            UfValida(interessado);
+            GuidMunicipioValido(interessado);
         }
 
-        internal void UfValida(InteressadoPessoaJuridicaModeloNegocio interessado)
+        private void GuidMunicipioValido(InteressadoPessoaJuridicaModeloNegocio interessado)
         {
-            if (interessado.UfMunicipio.Length > 2)
+            try
             {
-                throw new RequisicaoInvalidaException("Uf do município do interessado deve conter apenas 2 dígitos.");
+                Guid guid = new Guid(interessado.GuidMunicipio);
+            }
+            catch (Exception)
+            {
+                throw new RequisicaoInvalidaException("Identificador do município do interessado inválido.");
             }
         }
 
-        internal void DuplicidadeCNPJ(List<InteressadoPessoaJuridicaModeloNegocio> interessados)
+        private void DuplicidadeCNPJ(List<InteressadoPessoaJuridicaModeloNegocio> interessados)
         {
             foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
             {

@@ -40,6 +40,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 /*Preenchimento dos campos do interessado*/
                 NomePreenchido(interessado);
                 CpfPreenchido(interessado);
+                GuidMunicipioPreenchido(interessado);
 
                 /*Preenchimento de objetos associados ao interessado*/
                 contatoValidacao.Preenchido(interessado.Contatos);
@@ -65,20 +66,12 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RequisicaoInvalidaException("Cpf do interessado não preenchido.");
             }
         }
-
-        internal void UfPreenchida(InteressadoPessoaFisicaModeloNegocio interessado)
+        
+        internal void GuidMunicipioPreenchido(InteressadoPessoaFisicaModeloNegocio interessado)
         {
-            if (string.IsNullOrWhiteSpace(interessado.UfMunicipio))
+            if (string.IsNullOrWhiteSpace(interessado.GuidMunicipio))
             {
-                throw new RequisicaoInvalidaException("Uf do interessado não preenchido.");
-            }
-        }
-
-        internal void MunicipioPreenchido(InteressadoPessoaFisicaModeloNegocio interessado)
-        {
-            if (string.IsNullOrWhiteSpace(interessado.NomeMunicipio))
-            {
-                throw new RequisicaoInvalidaException("Municipio do interessado não preenchido.");
+                throw new RequisicaoInvalidaException("Identificador do município do interessado não preenchido.");
             }
         }
 
@@ -105,14 +98,18 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             cpfValidacao.CpfValido(interessado.Cpf);
             emailValidacao.Valido(interessado.Emails);
             contatoValidacao.Valido(interessado.Contatos);
-            UfValida(interessado);
+            GuidMunicipioValido(interessado);
         }
 
-        internal void UfValida(InteressadoPessoaFisicaModeloNegocio interessado)
+        private void GuidMunicipioValido(InteressadoPessoaFisicaModeloNegocio interessado)
         {
-            if (interessado.UfMunicipio.Length > 2)
+            try
             {
-                throw new RequisicaoInvalidaException("Uf do município do interessado deve conter apenas 2 dígitos.");
+                Guid guid = new Guid(interessado.GuidMunicipio);
+            }
+            catch (Exception)
+            {
+                throw new RequisicaoInvalidaException("Identificador do município do interessado inválido.");
             }
         }
 

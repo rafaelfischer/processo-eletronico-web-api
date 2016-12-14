@@ -10,6 +10,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
     public class MunicipioValidacao
     {
 
+        #region Preenchimento de campos obrigatórios
         public void Preenchido(List<MunicipioProcessoModeloNegocio> municipios)
         {
             foreach (MunicipioProcessoModeloNegocio municipio in municipios)
@@ -22,30 +23,49 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (municipio != null)
             {
-                UfPreenchida(municipio);
-                MunicipioPreenchido(municipio);
+                GuidPreenchido(municipio);
             }
         }
-
-        #region Preenchimento de campos obrigatórios
-
-        internal void UfPreenchida(MunicipioProcessoModeloNegocio municipio)
+        
+        internal void GuidPreenchido(MunicipioProcessoModeloNegocio municipio)
         {
-            if (string.IsNullOrWhiteSpace(municipio.Uf))
+            if (string.IsNullOrWhiteSpace(municipio.GuidMunicipio))
             {
-                throw new RequisicaoInvalidaException("Uf do município não preenchido.");
+                throw new RequisicaoInvalidaException("Identificador do município não preenchido.");
             }
         }
-
-        internal void MunicipioPreenchido(MunicipioProcessoModeloNegocio municipio)
-        {
-            if (string.IsNullOrWhiteSpace(municipio.Nome))
-            {
-                throw new RequisicaoInvalidaException("Município não preenchido.");
-            }
-        }
-
         #endregion
+
+        #region Validação de campos 
+        public void Valido(List<MunicipioProcessoModeloNegocio> municipios)
+        {
+            foreach (MunicipioProcessoModeloNegocio municipio in municipios)
+            {
+                Valido(municipio);
+            }
+        }
+
+        public void Valido(MunicipioProcessoModeloNegocio municipio)
+        {
+            if (municipio != null)
+            {
+                GuidValido(municipio);
+            }
+        }
+
+        internal void GuidValido(MunicipioProcessoModeloNegocio municipio)
+        {
+            try
+            {
+                Guid guid = new Guid(municipio.GuidMunicipio);
+            }
+            catch (Exception)
+            {
+                throw new RequisicaoInvalidaException("Identificador do município inválido");
+            }
+        }
+        #endregion
+
 
     }
 }

@@ -145,7 +145,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaJuridicaValidacao.Valido(processo.InteressadosPessoaJuridica);
             sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
             anexoValidacao.Valido(processo.Anexos, processo.Atividade.Id);
-            UfMunicipioValida(processo);
+            municipioValidacao.Valido(processo.MunicipiosProcesso);
             GuidOrganizacaoValido(processo);
             GuidUnidadeValido(processo);
             
@@ -158,17 +158,6 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RecursoNaoEncontradoException("Atividade não existente.");
             }
 
-        }
-
-        internal void UfMunicipioValida(ProcessoModeloNegocio processo)
-        {
-            foreach (MunicipioProcessoModeloNegocio municipio in processo.MunicipiosProcesso)
-            {
-                if (municipio.Uf.Length != 2)
-                {
-                    throw new RequisicaoInvalidaException("Uf do município deve conter 2 dígitos");
-                }
-            }
         }
 
         private void GuidOrganizacaoValido(ProcessoModeloNegocio processo)

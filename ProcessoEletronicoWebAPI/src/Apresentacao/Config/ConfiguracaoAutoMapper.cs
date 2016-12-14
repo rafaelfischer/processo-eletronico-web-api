@@ -86,8 +86,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #region Mapeamento de Interessados Pessoa Física
             CreateMap<InteressadoPessoaFisicaModelo, InteressadoPessoaFisicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.NomeMunicipio));
+                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails));
 
             CreateMap<InteressadoPessoaFisicaModeloNegocio, InteressadoPessoaFisicaProcessoGetModelo>();
             #endregion
@@ -95,16 +94,15 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #region Mapeamento de Interessados  Pessoa Jurídica
             CreateMap<InteressadoPessoaJuridicaModelo, InteressadoPessoaJuridicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails))
-                .ForMember(dest => dest.NomeMunicipio, opt => opt.MapFrom(src => src.NomeMunicipio));
+                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails));
 
             CreateMap<InteressadoPessoaJuridicaModeloNegocio, InteressadoPessoaJuridicaProcessoGetModelo>();
             #endregion
 
             #region Mapeamento de Municipio
-            CreateMap<MunicipioProcessoModelo, MunicipioProcessoModeloNegocio>();
+            CreateMap<MunicipioProcessoModeloPost, MunicipioProcessoModeloNegocio>();
 
-            CreateMap<MunicipioProcessoModeloNegocio, MunicipioProcessoModelo>();
+            CreateMap<MunicipioProcessoModeloNegocio, MunicipioProcessoModeloGet>();
             #endregion
 
             #region Mapeamento de plano de classificação

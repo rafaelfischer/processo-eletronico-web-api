@@ -144,6 +144,12 @@ namespace ProcessoEletronicoService.Negocio
             return unidade;
         }
 
+        public MunicipioOrganogramaModelo PesquisarMunicipio(Guid guidMunicipio)
+        {
+            MunicipioOrganogramaModelo municipio = DownloadJsonData<MunicipioOrganogramaModelo>(UrlApiOrganograma + "municipios/" + guidMunicipio.ToString("D"));
+            return municipio;
+        }
+
         public class OrganizacaoOrganogramaModelo
         {
             public string guid { get; set; }
@@ -159,6 +165,13 @@ namespace ProcessoEletronicoService.Negocio
             public OrganizacaoOrganogramaModelo organizacao { get; set; }
         }
 
+        public class MunicipioOrganogramaModelo
+        {
+            public string guid { get; set; }
+            public string nome { get; set; }
+            public string uf { get; set; }
+            
+        }
 
     }
 }
