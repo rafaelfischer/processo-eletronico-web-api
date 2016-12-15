@@ -58,6 +58,9 @@ namespace ProcessoEletronicoService.Negocio
 
             processoValidacao.NaoEncontrado(processo);
 
+            //Ordenando os despachos
+            processo.Despachos = processo.Despachos.OrderByDescending(d => d.DataHoraDespacho).ToList();
+
             //Limpando contedo dos anexos para não enviar na resposta da consulta de processos
             if (processo.Anexos != null)
             {
