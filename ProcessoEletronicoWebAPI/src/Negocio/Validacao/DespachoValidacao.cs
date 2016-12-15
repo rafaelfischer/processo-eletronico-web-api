@@ -98,7 +98,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
             catch (Exception)
             {
-                throw new RequisicaoInvalidaException("Guid da Organização de destino inválido");
+                throw new RequisicaoInvalidaException("Identificador da Organização de destino inválido.");
             }
         }
 
@@ -110,7 +110,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
             catch (Exception)
             {
-                throw new RequisicaoInvalidaException("Guid da Unidade de destino inválido");
+                throw new RequisicaoInvalidaException("Identificador da Unidade de destino inválido.");
             }
         }
 
@@ -121,7 +121,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (despacho == null)
             {
-                throw new RecursoNaoEncontradoException("Despacho não existe.");
+                throw new RecursoNaoEncontradoException("Despacho não encontrado.");
             }
         }
         #endregion

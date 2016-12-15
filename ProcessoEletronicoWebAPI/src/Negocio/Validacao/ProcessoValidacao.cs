@@ -121,7 +121,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(processo.GuidOrganizacaoAutuadora))
             {
-                throw new RequisicaoInvalidaException("Identificador do organização autuadora não preenchido.");
+                throw new RequisicaoInvalidaException("Identificador do Organização autuadora não preenchido.");
             }
         }
 
@@ -168,7 +168,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
             catch (FormatException)
             {
-                throw new RequisicaoInvalidaException("Guid da Organização autuadora inválido");
+                throw new RequisicaoInvalidaException("Guid da Organização autuadora inválido.");
             }
         }
 
@@ -180,7 +180,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
             catch (Exception)
             {
-                throw new RequisicaoInvalidaException("Guid da Unidade autuadora inválido");
+                throw new RequisicaoInvalidaException("Guid da Unidade autuadora inválido.");
             }
         }
         

@@ -241,11 +241,6 @@ namespace ProcessoEletronicoService.Negocio
             var processosNaOrganizacao = processosDespachadosParaOrganizacao.Union(processosSemDespachoNaOrganizacao.Include(p => p.OrganizacaoProcesso)
                                                                                                                     .Include(p => p.Atividade)
                                                                                                                     .Include(p => p.Despachos))
-                                                                            //.OrderBy(p => p.Sequencial)
-                                                                            //.ThenBy(p => p.Ano)
-                                                                            //.ThenBy(p => p.DigitoPoder)
-                                                                            //.ThenBy(p => p.DigitoEsfera)
-                                                                            //.ThenBy(p => p.DigitoOrganizacao)
                                                                             .Include(p => p.OrganizacaoProcesso)
                                                                             .Include(p => p.Atividade)
                                                                             .ToList();
@@ -349,7 +344,7 @@ namespace ProcessoEletronicoService.Negocio
 
             if (unidade == null)
             {
-                throw new RequisicaoInvalidaException("Unidade autudora não encontrada no Organograma");
+                throw new RequisicaoInvalidaException("Unidade de destino não encontrada no Organograma.");
             }
 
             processoValidacao.UnidadePertenceAOrganizacao(new Guid(unidade.organizacao.guid), processo.GuidOrganizacaoAutuadora);
@@ -365,7 +360,7 @@ namespace ProcessoEletronicoService.Negocio
 
             if (organizacao == null)
             {
-                throw new RequisicaoInvalidaException("Organização autuadora não encontrada no Organograma");
+                throw new RequisicaoInvalidaException("Organização autuadora não encontrada no Organograma.");
             }
 
             processo.GuidOrganizacaoAutuadora = new Guid(organizacao.guid);
@@ -381,7 +376,7 @@ namespace ProcessoEletronicoService.Negocio
 
                 if (municipioOrganograma == null)
                 {
-                    throw new RequisicaoInvalidaException("Municipio não encontrado no Organograma");
+                    throw new RequisicaoInvalidaException("Municipio não encontrado no Organograma.");
                 }
 
                 municipio.Nome = municipioOrganograma.nome;
@@ -400,7 +395,7 @@ namespace ProcessoEletronicoService.Negocio
 
                     if (municipioOrganograma == null)
                     {
-                        throw new RequisicaoInvalidaException("Municipio do interessado pessoa física não encontrado no Organograma");
+                        throw new RequisicaoInvalidaException("Municipio do interessado pessoa física não encontrado no Organograma.");
                     }
 
                     interessado.NomeMunicipio = municipioOrganograma.nome;
@@ -419,7 +414,7 @@ namespace ProcessoEletronicoService.Negocio
 
                     if (municipioOrganograma == null)
                     {
-                        throw new RequisicaoInvalidaException("Municipio do interessado pessoa jurídica não encontrado no Organograma");
+                        throw new RequisicaoInvalidaException("Municipio do interessado pessoa jurídica não encontrado no Organograma.");
                     }
 
                     interessado.NomeMunicipio = municipioOrganograma.nome;
