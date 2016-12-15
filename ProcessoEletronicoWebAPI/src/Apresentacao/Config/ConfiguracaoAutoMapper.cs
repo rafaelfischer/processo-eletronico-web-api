@@ -70,6 +70,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
 
             CreateMap<DespachoModeloNegocio, DespachoModeloGet>()
+                .ForMember(dest => dest.DataHoraDespacho, opt => opt.MapFrom(src => src.DataHoraDespacho.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
                 .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo));
 
