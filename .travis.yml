@@ -8,15 +8,15 @@ script:
   /bin/sh ./scripts/.travis.sh
 deploy:
   - provider: script
-    script: /bin/sh ./scripts/.develop.sh
+    script: /bin/sh ./scripts/.develop.sh && /bin/sh ./scripts/.upgrade.sh
     on:
       branch: develop
   - provider: script
-    script: /bin/sh ./scripts/.release.sh
+    script: /bin/sh ./scripts/.release.sh && /bin/sh ./scripts/.upgrade.sh
     on:
       all_branches: true
       condition: "$TRAVIS_BRANCH =~ ^release.*$"
   - provider: script
-    script: /bin/sh ./scripts/.master.sh
+    script: /bin/sh ./scripts/.master.sh && /bin/sh ./scripts/.upgrade.sh
     on:
       branch: master
