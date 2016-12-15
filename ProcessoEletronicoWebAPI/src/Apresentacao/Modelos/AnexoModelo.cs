@@ -30,4 +30,14 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public ProcessoModelo Processo { get; set; }
         public TipoDocumentalAnexoModelo TipoDocumental { get; set; }
     }
+
+    public class AnexoSimplesModeloGet
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Descricao { get; set; }
+        public string MimeType { get; set; }
+
+        public TipoDocumentalAnexoModelo TipoDocumental { get; set; }
+    }
 }

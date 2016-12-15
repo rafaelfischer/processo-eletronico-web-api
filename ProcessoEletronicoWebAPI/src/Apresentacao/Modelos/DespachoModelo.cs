@@ -34,6 +34,21 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string DataHoraDespacho { get; set; }
         public List<AnexoModeloGet> Anexos { get; set; }
         public ProcessoModelo Processo { get; set; }
+    }
 
+    public class DespachoSimplesModeloGet
+    {
+        public int Id { get; set; }
+        public string Texto { get; set; }
+        public string GuidOrganizacaoDestino { get; set; }
+        public string NomeOrganizacaoDestino { get; set; }
+        public string SiglaOrganizacaoDestino { get; set; }
+        public string GuiUnidadeDestino { get; set; }
+        public string NomeUnidadeDestino { get; set; }
+        public string SiglaUnidadeDestino { get; set; }
+        public string IdUsuarioDespachante { get; set; }
+        public string NomeUsuarioDespachante { get; set; }
+        public string DataHoraDespacho { get; set; }
+        public List<AnexoSimplesModeloGet> Anexos { get; set; }
     }
 }
