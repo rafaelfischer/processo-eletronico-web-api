@@ -5,6 +5,7 @@ using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum;
 using ProcessoEletronicoService.WebAPI.Base;
+using ProcessoEletronicoService.WebAPI.Config;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -21,7 +22,15 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             this.service = service;
         }
 
+        /// <summary>
+        /// Retorna a lista de tipos de contatos.
+        /// </summary>
+        /// <returns>Lista de tipos de contatos.</returns>
+        /// <response code="200">Lista de tipos de contatos.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet]
+        [ProducesResponseType(typeof(List<TipoContatoModelo>), 200)]
+        [ProducesResponseType(typeof(string), 500)]
         public IActionResult Listar()
         {
             try
@@ -30,7 +39,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
             }
         }
     }

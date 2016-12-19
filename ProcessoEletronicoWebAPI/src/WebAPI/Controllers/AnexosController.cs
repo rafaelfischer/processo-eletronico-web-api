@@ -38,7 +38,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
             catch (RecursoNaoEncontradoException e)
             {
-                return NotFound(e.Message);
+                return NotFound(MensagemErro.ObterMensagem(e));
             }
             catch (Exception e)
             {

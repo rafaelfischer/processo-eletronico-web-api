@@ -25,7 +25,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <summary>
         /// Retorna a lista de funções que pertencem ao plano de classificação especificado.
         /// </summary>
-        /// <param name="idPlanoClassificacao">Identificador do plano de classificação o qual se deseja obter suas atividades.</param>
+        /// <param name="idPlanoClassificacao">Identificador do plano de classificação do qual se deseja obter suas atividades.</param>
         /// <returns>Lista de funções que pertencem ao plano de classificação especificado.</returns>
         /// <response code="200">Retorna a lista de funções que pertencem ao plano de classificação especificado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>

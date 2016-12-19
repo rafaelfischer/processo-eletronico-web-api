@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
+using ProcessoEletronicoService.WebAPI.Config;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -38,7 +39,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
             }
         }
     }

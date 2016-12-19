@@ -77,9 +77,9 @@ namespace WebAPI
                     {
                         Name = "PRODEST",
                         Email = "atendimento@prodest.es.gov.br",
-                        Url = "http://prodest.es.gov.br"
-                    }
-                });
+                        Url = "https://prodest.es.gov.br"
+                    },
+                                    });
 
                 //Determine base path for the application.
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
@@ -87,7 +87,7 @@ namespace WebAPI
                 //Set the comments path for the swagger json and ui.
                 var xmlPath = Path.Combine(basePath, "WebAPI.xml");
                 options.IncludeXmlComments(xmlPath);
-            });
+                });
             #endregion
         }
 

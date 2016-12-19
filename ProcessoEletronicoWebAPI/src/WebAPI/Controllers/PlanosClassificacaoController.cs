@@ -30,7 +30,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <param name="guidOrganizacao">Identificador da organização a qual se deseja obter seus planos de classificação.</param>
         /// <returns>Lista de planos de classificação que podem ser utilizados pela organização especificada.</returns>
         /// <response code="200">Retorna a lista de planos de classificação que podem ser utilizados pela organização especificada.</response>
-        /// <response code="400">Retorna o motivo da requisição inválida.</response>
+        /// <response code="400">Retorna o motivo da requisição estar inválida.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("organizacao/{guidOrganizacao}")]
         [ProducesResponseType(typeof(List<PlanoClassificacaoModelo>), 200)]
@@ -44,7 +44,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
             catch (RequisicaoInvalidaException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(MensagemErro.ObterMensagem(e));
             }
             catch (Exception e)
             {

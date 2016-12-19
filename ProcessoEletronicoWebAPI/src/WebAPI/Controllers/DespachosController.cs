@@ -27,10 +27,10 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         #region GET
         
         /// <summary>
-        /// Retorna lista de despachos feitos pelo usuario autenticado.
+        /// Retorna lista de despachos realizados pelo usuario autenticado.
         /// </summary>
         /// <returns>Lista de despacho feitos pelo usuário autenticado.</returns>
-        /// <response code="200">Retorna a lista de despachos feito pelo usuário</response>
+        /// <response code="200">Retorna a lista de despachos realizados pelo usuário</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("usuario")]
         [ProducesResponseType(typeof(List<DespachoModeloGet>), 200)]
@@ -84,41 +84,42 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         #region POST
 
         /// <summary>
-        /// Inserir Despacho de processos
+        /// Inserir despacho de processos.
         /// </summary>
-        /// <param name="despachoPost">Informações do despacho do processo</param>
-        /// <returns>Despacho inserido.</returns>
+        /// <param name="despachoPost">Informações do despacho do processo.</param>
+        /// <returns>URL do despacho no cabeçalho da resposta e o despacho inserido.</returns>
+        /// <response code="201">Retorna o despacho inserido.</response>
+        /// <response code="400">Retorna o motivo da requisição estar inválida.</response>
+        /// <response code="404">Recurso não encontrado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
         [HttpPost]
         [Authorize(Policy = "Despacho.Inserir")]
         [ProducesResponseType(typeof(DespachoModeloGet), 201)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 500)]
-
         public IActionResult Despachar([FromBody]DespachoModeloPost despachoPost)
         {
             try
             {
                 HttpRequest request = HttpContext.Request;
                 DespachoModeloGet despachoCompleto = service.Despachar(despachoPost);
-                return Created("http://" + request.Host.Value + request.Path.Value + "/" + despachoCompleto.Id, despachoCompleto);
+                return Created("https://" + request.Host.Value + request.Path.Value + "/" + despachoCompleto.Id, despachoCompleto);
 
             }
             catch (RequisicaoInvalidaException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(MensagemErro.ObterMensagem(e));
             }
             catch (RecursoNaoEncontradoException e)
             {
-                return NotFound(e.Message);
+                return NotFound(MensagemErro.ObterMensagem(e));
             }
             catch (Exception e)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
             }
         }
-
         #endregion
-
     }
 }

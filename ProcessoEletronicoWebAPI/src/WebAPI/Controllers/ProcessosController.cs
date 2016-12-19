@@ -65,8 +65,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("numero/{numero}")]
         [ProducesResponseType(typeof(ProcessoCompletoModelo), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(string numero)
         {
@@ -132,7 +132,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
         }
 
-
         /// <summary>
         /// Retorna a lista de processos que estão tramitando na organização especificada.
         /// </summary>
@@ -157,18 +156,20 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         #endregion
 
         #region POST
-
-        // POST api/processos
-
+        
         /// <summary>
-        /// Autuação de Processos
+        /// Autuação de Processos (inserção de processos).
         /// </summary>
         /// <remarks>
         /// Apesar das listas de interessados estarem sinalizadas como opcionais, o Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica).
         /// O campo "conteudo" dos anexos do processo é uma string. O arquivo deve ser codificado para uma string base64 antes de ser enviado para a API.
         /// </remarks>
-        /// <param name="processoPost"></param>
-        /// <returns></returns>
+        /// <param name="processoPost">Informações do processo.</param>
+        /// <returns>URL do processo inserido no cabeçalho da resposta e o processo recém inserido</returns>
+        /// <response code="201">Retorna o processo recém inserido.</response>
+        /// <response code="400">Retorna o motivo da requisição estar inválida.</response>
+        /// <response code="400">Recurso não encontrado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
         [HttpPost]
         [Authorize(Policy = "Processo.Autuar")]
         [ProducesResponseType(typeof(ProcessoCompletoModelo), 201)]
@@ -181,15 +182,15 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             {
                 HttpRequest request = HttpContext.Request;
                 ProcessoCompletoModelo processoCompleto = service.Autuar(processoPost);
-                return Created("http://"+ request.Host.Value + request.Path.Value + "/" + processoCompleto.Id , processoCompleto);
+                return Created(request.Scheme + "://"+ request.Host.Value + request.Path.Value + "/" + processoCompleto.Id , processoCompleto);
             }
             catch (RequisicaoInvalidaException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(MensagemErro.ObterMensagem(e));
             }
             catch (RecursoNaoEncontradoException e)
             {
-                return NotFound(e.Message);
+                return NotFound(MensagemErro.ObterMensagem(e));
             }
             catch (Exception e)
             {
@@ -198,8 +199,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
                                  
         }
         
-
         #endregion
-                
     }
 }
