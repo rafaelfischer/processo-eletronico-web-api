@@ -455,14 +455,14 @@ namespace ProcessoEletronicoService.Negocio
                                                  .GroupBy(g => new { g.Ano, g.DigitoEsfera, g.DigitoPoder, g.DigitoOrganizacao }).Select(p => p.Max(s => s.Sequencial)).FirstOrDefault() + 1;
 
 
+
             processo.DigitoVerificador = (byte)DigitoVerificador(processo.Sequencial);
 
         }
 
-        private int DigitoVerificador(int numero)
+        private int DigitoVerificador(int numero, string digito = "")
         {
             /*Digito Verificador base 11*/
-
             int i = 0;
             int soma = 0;
             int digitoVerificador = 0;
@@ -475,7 +475,19 @@ namespace ProcessoEletronicoService.Negocio
 
             digitoVerificador = 11 - (soma % 11);
 
-            return digitoVerificador;
+            if (digitoVerificador == 11 || digitoVerificador == 10)
+            {
+                digitoVerificador = 0;
+            }
+
+            /*chamada recursiva para o segundo digito verificador*/
+            if ((digito + digitoVerificador.ToString()).Count() < 2)
+            {
+                int numeroConcatenado = int.Parse(numero.ToString() + digitoVerificador.ToString());
+                return DigitoVerificador(numeroConcatenado, digitoVerificador.ToString());
+            }
+
+            return int.Parse(digito + digitoVerificador.ToString());
 
         }
 
@@ -496,7 +508,6 @@ namespace ProcessoEletronicoService.Negocio
             //Data/hora atual do despacho
             despacho.DataHoraDespacho = DateTime.Now;
         }
-
 
     }
 }

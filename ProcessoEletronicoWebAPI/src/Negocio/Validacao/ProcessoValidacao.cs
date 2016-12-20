@@ -148,7 +148,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             municipioValidacao.Valido(processo.MunicipiosProcesso);
             GuidOrganizacaoValido(processo);
             GuidUnidadeValido(processo);
-            
+
         }
 
         internal void AtividadeExistente(ProcessoModeloNegocio processo)
@@ -183,7 +183,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RequisicaoInvalidaException("Guid da Unidade autuadora inválido.");
             }
         }
-        
+
         internal void NumeroValido(string numero)
         {
             if (numero == null)
@@ -258,9 +258,12 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void SinalizacoesPertencemAOrganizacaoPatriarca(ProcessoModeloNegocio processoNegocio, Guid usuarioGuidOrganizacaoPatriarca)
         {
-            foreach (SinalizacaoModeloNegocio sinalizacao in processoNegocio.Sinalizacoes)
+            if (processoNegocio.Sinalizacoes != null)
             {
-                sinalizacaoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(sinalizacao, usuarioGuidOrganizacaoPatriarca);
+                foreach (SinalizacaoModeloNegocio sinalizacao in processoNegocio.Sinalizacoes)
+                {
+                    sinalizacaoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(sinalizacao, usuarioGuidOrganizacaoPatriarca);
+                }
             }
         }
 
