@@ -53,7 +53,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         {
             get
             {
-                return Sequencial + "-" + DigitoVerificador + "." + Ano + "." + DigitoPoder + "." + DigitoEsfera + "." + DigitoOrganizacao.ToString().PadLeft(4, '0');
+                return Sequencial + "-" + DigitoVerificador.ToString().PadLeft(2,'0') + "." + Ano + "." + DigitoPoder + "." + DigitoEsfera + "." + DigitoOrganizacao.ToString().PadLeft(4, '0');
             }
         }
 
