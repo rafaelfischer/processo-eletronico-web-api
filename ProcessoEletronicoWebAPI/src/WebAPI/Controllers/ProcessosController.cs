@@ -171,7 +171,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="400">Recurso não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpPost]
-        //[Authorize(Policy = "Processo.Autuar")]
+        [Authorize(Policy = "Processo.Autuar")]
         [ProducesResponseType(typeof(ProcessoCompletoModelo), 201)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
