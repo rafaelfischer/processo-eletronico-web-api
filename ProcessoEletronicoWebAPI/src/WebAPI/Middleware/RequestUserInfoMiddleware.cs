@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -17,11 +18,25 @@ namespace ProcessoEletronicoService.WebAPI.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly RequestUserInfoOptions _options;
+        private readonly IMemoryCache _memCache;
 
-        public RequestUserInfoMiddleware(RequestDelegate next, RequestUserInfoOptions options)
+        public RequestUserInfoMiddleware(RequestDelegate next, RequestUserInfoOptions options, IMemoryCache memCache)
         {
             _next = next;
             _options = options;
+        }
+
+        private UserInfoResponse GetUserInfoFromCache(string token)
+        {
+            return _memCache.GetOrCreate(token, c =>
+            {
+                //Cache de 5 minutos
+                c.SetAbsoluteExpiration(new TimeSpan(0, 5, 0));
+
+                var userInfoClient = new UserInfoClient(_options.UserInfoEndpoint);
+
+                return userInfoClient.GetAsync(token).Result;
+            });
         }
 
         public async Task Invoke(HttpContext context)

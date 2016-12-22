@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronico.Infraestrutura.Mapeamento;
 
 namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 {
@@ -33,6 +34,11 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(ConnectionString);
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                optionsBuilder.UseLoggerFactory(new ProcessoEletronicoLoggerFactory());
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

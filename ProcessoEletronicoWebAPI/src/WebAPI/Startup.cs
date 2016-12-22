@@ -42,6 +42,8 @@ namespace WebAPI
             //Configurar o objeto AutenticacaoIdentityServer para ser usado na autenticação
             services.Configure<AutenticacaoIdentityServer>(Configuration.GetSection("AutenticacaoIdentityServer"));
 
+            services.AddMemoryCache();
+
             services.AddMvc()
                     .AddJsonOptions(opt =>
                     {
