@@ -53,7 +53,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.Descricao)
                     .HasColumnName("descricao")
-                    .HasColumnType("varchar(500)");
+                    .HasColumnType("varchar(1000)");
 
                 entity.Property(e => e.IdDespacho).HasColumnName("idDespacho");
 
@@ -64,12 +64,12 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                 entity.Property(e => e.MimeType)
                     .IsRequired()
                     .HasColumnName("mimeType")
-                    .HasColumnType("varchar(20)");
+                    .HasColumnType("varchar(200)");
 
                 entity.Property(e => e.Nome)
                     .IsRequired()
                     .HasColumnName("nome")
-                    .HasColumnType("varchar(100)");
+                    .HasColumnType("varchar(200)");
 
                 entity.HasOne(d => d.Despacho)
                     .WithMany(p => p.Anexos)
