@@ -112,9 +112,17 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
             {
-                if (interessados.Where(i => i.Cnpj == interessado.Cnpj).ToList().Count() > 1)
+                if (interessados.Where(i => i.Cnpj == interessado.Cnpj && i.SiglaUnidade.Equals(interessado.SiglaUnidade)).ToList().Count() > 1)
                 {
-                    throw new RequisicaoInvalidaException("Cnpj " + interessado.Cnpj + " duplicado.");
+
+                    string concatenacaoUnidade = "";
+
+                    if (!string.IsNullOrEmpty(interessado.SiglaUnidade))
+                    {
+                        concatenacaoUnidade = " - " + interessado.SiglaUnidade;
+                    }
+
+                    throw new RequisicaoInvalidaException("Interessado " + interessado.Sigla + concatenacaoUnidade +  " duplicado.");
                 }
             }
         }
