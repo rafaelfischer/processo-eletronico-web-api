@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProcessoEletronicoService.Negocio
 {
-    public class AtividadeNegocio : IAtividadeNegocio
+    public class AtividadeNegocio : BaseNegocio, IAtividadeNegocio
     {
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<Atividade> repositorioAtividades;
@@ -28,6 +28,17 @@ namespace ProcessoEletronicoService.Negocio
             var atividades = repositorioAtividades.Where(f => f.Funcao.Id == idFuncao)
                                             .Include(pc => pc.Funcao)
                                             .ToList();
+
+            return Mapper.Map<List<Atividade>, List<AtividadeModeloNegocio>>(atividades);
+        }
+
+        public List<AtividadeModeloNegocio> Pesquisar()
+        {
+            var atividades = repositorioAtividades.Where(a => a.Funcao.PlanoClassificacao.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
+                                                                    && (a.Funcao.PlanoClassificacao.GuidOrganizacao.Equals(UsuarioGuidOrganizacao)
+                                                                    || !a.Funcao.PlanoClassificacao.AreaFim))
+                                                           .Include(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao).ThenInclude(pc => pc.OrganizacaoProcesso)
+                                                           .ToList();
 
             return Mapper.Map<List<Atividade>, List<AtividadeModeloNegocio>>(atividades);
         }

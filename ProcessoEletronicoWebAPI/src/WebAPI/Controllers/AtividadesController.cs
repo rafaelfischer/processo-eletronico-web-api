@@ -20,6 +20,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         public AtividadesController(IAtividadeWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             this.service = service;
+            this.service.Usuario = UsuarioAutenticado;
         }
 
         /// <summary>
@@ -37,6 +38,28 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             try
             {
                 return new ObjectResult(service.Pesquisar(idFuncao));
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
+        }
+
+
+        /// <summary>
+        /// Retorna a lista de atividades que o usuário pode utilizar.
+        /// </summary>
+        /// <returns>Lista de atividades que que o usuário pode utulizar.</returns>
+        /// <response code="200">Retorna a lista de atividades que o usuário pode utilizar.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(List<AtividadeProcessoGetModelo>), 200)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult Get()
+        {
+            try
+            {
+                return new ObjectResult(service.Pesquisar());
             }
             catch (Exception e)
             {

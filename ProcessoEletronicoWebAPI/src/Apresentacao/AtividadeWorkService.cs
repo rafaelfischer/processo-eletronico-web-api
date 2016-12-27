@@ -10,9 +10,14 @@ using AutoMapper;
 
 namespace ProcessoEletronicoService.Apresentacao
 {
-    public class AtividadeWorkService : IAtividadeWorkService
+    public class AtividadeWorkService : BaseWorkService, IAtividadeWorkService
     {
         IAtividadeNegocio atividadeNegocio;
+
+        public override void RaiseUsuarioAlterado()
+        {
+            atividadeNegocio.Usuario = Usuario;
+        }
 
         public AtividadeWorkService(IAtividadeNegocio atividadeNegocio)
         {
@@ -24,6 +29,13 @@ namespace ProcessoEletronicoService.Apresentacao
             List<AtividadeModeloNegocio> atividades = atividadeNegocio.Pesquisar(idFuncao);
 
             return Mapper.Map<List<AtividadeModeloNegocio>, List<AtividadeModelo>>(atividades);
+        }
+
+        public IEnumerable<AtividadeProcessoGetModelo> Pesquisar()
+        {
+            List<AtividadeModeloNegocio> atividades = atividadeNegocio.Pesquisar();
+
+            return Mapper.Map<List<AtividadeModeloNegocio>, List<AtividadeProcessoGetModelo>>(atividades);
         }
     }
 }
