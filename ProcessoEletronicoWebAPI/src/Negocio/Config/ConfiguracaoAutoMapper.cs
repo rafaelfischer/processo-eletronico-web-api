@@ -121,8 +121,13 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #region Mapeamento de plano de classificação
             CreateMap<PlanoClassificacao, PlanoClassificacaoModeloNegocio>()
-                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { Id = src.IdOrganizacaoProcesso}))
+                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.MapFrom(src => new OrganizacaoProcessoModeloNegocio() { Id = src.IdOrganizacaoProcesso }))
                 .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => src.GuidOrganizacao.ToString("D")));
+                
+            CreateMap<PlanoClassificacaoModeloNegocio, PlanoClassificacao>()
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
+                .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.Ignore())
+                .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => new Guid(src.GuidOrganizacao)));
             #endregion
 
             #region Mapeamento de Processo

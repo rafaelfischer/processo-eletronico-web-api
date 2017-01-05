@@ -17,25 +17,27 @@ namespace ProcessoEletronicoService.Negocio
     {
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<PlanoClassificacao> repositorioPlanosClassificacao;
-        PlanoClassificacaoValidacao Validacao;
+        private IRepositorioGenerico<OrganizacaoProcesso> repositorioOrganizacoesProcesso;
+        PlanoClassificacaoValidacao planoClassificacaoValidacao;
 
         public PlanoClassificacaoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             unitOfWork = repositorios.UnitOfWork;
             repositorioPlanosClassificacao = repositorios.PlanosClassificacao;
-            Validacao = new PlanoClassificacaoValidacao();
+            repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
+            planoClassificacaoValidacao = new PlanoClassificacaoValidacao(repositorios);
         }
-
+        
         public List<PlanoClassificacaoModeloNegocio> Pesquisar(string guidOrganizacao)
         {
-            Validacao.GuidValido(guidOrganizacao);
+            planoClassificacaoValidacao.GuidValido(guidOrganizacao);
 
             Guid gOrganizacao = new Guid(guidOrganizacao);
 
             OrganizacaoOrganogramaModelo organizacaoPatriarca = PesquisarOrganizacaoPatriarca(gOrganizacao);
 
-            Validacao.OrganizacaoPatriarcaExistente(organizacaoPatriarca);
-            Validacao.GuidValido(organizacaoPatriarca.guid);
+            planoClassificacaoValidacao.OrganizacaoPatriarcaExistente(organizacaoPatriarca);
+            planoClassificacaoValidacao.GuidValido(organizacaoPatriarca.guid);
 
             var planosClassificacao = repositorioPlanosClassificacao.Where(pc => pc.OrganizacaoProcesso.GuidOrganizacao.Equals(new Guid(organizacaoPatriarca.guid))
                                                                               && (pc.GuidOrganizacao.Equals(gOrganizacao)
@@ -44,6 +46,47 @@ namespace ProcessoEletronicoService.Negocio
                                                                     .ToList();
 
             return Mapper.Map<List<PlanoClassificacao>, List<PlanoClassificacaoModeloNegocio>>(planosClassificacao);
+        }
+
+        public PlanoClassificacaoModeloNegocio Pesquisar(int id)
+        {
+            PlanoClassificacao planoClassificacao = repositorioPlanosClassificacao.Where(pc => pc.Id == id).Include(op => op.OrganizacaoProcesso).SingleOrDefault();
+
+            planoClassificacaoValidacao.NaoEncontrado(planoClassificacao);
+
+            return Mapper.Map<PlanoClassificacao, PlanoClassificacaoModeloNegocio>(planoClassificacao);
+        }
+
+        public PlanoClassificacaoModeloNegocio Inserir(PlanoClassificacaoModeloNegocio planoClassificacaoModeloNegocio)
+        {
+            
+            planoClassificacaoValidacao.Preenchido(planoClassificacaoModeloNegocio);
+            planoClassificacaoValidacao.Valido(planoClassificacaoModeloNegocio);
+            planoClassificacaoValidacao.Permissao(planoClassificacaoModeloNegocio, UsuarioGuidOrganizacao);
+            InformacoesPadrao(planoClassificacaoModeloNegocio);
+
+            PlanoClassificacao planoClassificacao = new PlanoClassificacao();
+            Mapper.Map(planoClassificacaoModeloNegocio, planoClassificacao);
+
+
+            repositorioPlanosClassificacao.Add(planoClassificacao);
+            unitOfWork.Save(); 
+
+            return Pesquisar(planoClassificacao.Id);
+        }
+
+        private void InformacoesPadrao(PlanoClassificacaoModeloNegocio planoClassificacao)
+        {
+            string organizacaoPatriarca = UsuarioGuidOrganizacaoPatriarca.ToString("D");
+            planoClassificacao.OrganizacaoProcesso = new OrganizacaoProcessoModeloNegocio { Id = repositorioOrganizacoesProcesso.Where(op => op.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)).Single().Id };
+        }
+
+        public void Excluir(int id)
+        {
+            planoClassificacaoValidacao.PossivelExcluir(id);
+            PlanoClassificacao planoClassificacao = repositorioPlanosClassificacao.Where(pc => pc.Id == id).Single();
+            repositorioPlanosClassificacao.Remove(planoClassificacao);
+            unitOfWork.Save();       
         }
     }
 }

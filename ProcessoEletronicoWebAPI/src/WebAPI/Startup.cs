@@ -60,6 +60,9 @@ namespace WebAPI
             {
                 options.AddPolicy("Processo.Autuar", policy => policy.RequireClaim("Acao$Processo", "Autuar"));
                 options.AddPolicy("Despacho.Inserir", policy => policy.RequireClaim("Acao$Despacho", "Inserir"));
+                options.AddPolicy("PlanoClassificacao.Inserir", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Inserir"));
+                options.AddPolicy("PlanoClassficacao.Alterar", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Alterar"));
+                options.AddPolicy("PlanoClassficacao.Excluir", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Excluir"));
             }
             );
             #endregion

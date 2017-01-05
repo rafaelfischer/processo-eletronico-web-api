@@ -122,6 +122,9 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id));
 
             CreateMap<PlanoClassificacaoModeloNegocio, PlanoClassificacaoProcessoGetModelo>();
+
+            CreateMap<PlanoClassificacaoModeloPost, PlanoClassificacaoModeloNegocio>();
+
             #endregion
 
             #region Mapeamento de Processo

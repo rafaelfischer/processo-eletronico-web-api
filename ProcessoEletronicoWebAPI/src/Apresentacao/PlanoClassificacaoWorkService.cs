@@ -19,6 +19,12 @@ namespace ProcessoEletronicoService.Apresentacao
             this.planoClassificacaoNegocio = planoClassificacaoNegocio;
         }
 
+        public PlanoClassificacaoProcessoGetModelo Pesquisar(int id)
+        {
+            PlanoClassificacaoModeloNegocio planoClassificacao = planoClassificacaoNegocio.Pesquisar(id);
+            return Mapper.Map<PlanoClassificacaoModeloNegocio, PlanoClassificacaoProcessoGetModelo>(planoClassificacao);
+        }
+
         public IEnumerable<PlanoClassificacaoModelo> Pesquisar(string guidOrganizacao)
         {
             List<PlanoClassificacaoModeloNegocio> planosClassificacao = planoClassificacaoNegocio.Pesquisar(guidOrganizacao);
@@ -26,9 +32,27 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<List<PlanoClassificacaoModeloNegocio>, List<PlanoClassificacaoModelo>>(planosClassificacao);
         }
 
+        public PlanoClassificacaoProcessoGetModelo Inserir(PlanoClassificacaoModeloPost planoClassificacao)
+        {
+            PlanoClassificacaoModeloNegocio planoClassificacaoModeloNegocio = new PlanoClassificacaoModeloNegocio();
+            Mapper.Map(planoClassificacao, planoClassificacaoModeloNegocio);
+
+            planoClassificacaoModeloNegocio = planoClassificacaoNegocio.Inserir(planoClassificacaoModeloNegocio);
+
+            return Mapper.Map<PlanoClassificacaoModeloNegocio, PlanoClassificacaoProcessoGetModelo>(planoClassificacaoModeloNegocio);
+
+        }
+
+        public void Excluir(int id)
+        {
+            planoClassificacaoNegocio.Excluir(id);
+        }
+
         public override void RaiseUsuarioAlterado()
         {
             planoClassificacaoNegocio.Usuario = Usuario;
         }
+
+       
     }
 }

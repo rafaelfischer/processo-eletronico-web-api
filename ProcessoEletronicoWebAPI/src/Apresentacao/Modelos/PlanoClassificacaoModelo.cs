@@ -14,6 +14,15 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public int IdOrganizacaoProcesso { get; set; }
     }
 
+    public class PlanoClassificacaoModeloPost
+    {
+        public string Codigo { get; set; }
+        public string Descricao { get; set; }
+        public bool AreaFim { get; set; }
+        public string GuidOrganizacao { get; set; }
+        public string Observacao { get; set; }
+    }
+
     public partial class PlanoClassificacaoProcessoGetModelo
     {
         public int Id { get; set; }
@@ -21,5 +30,6 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string Descricao { get; set; }
         public bool AreaFim { get; set; }
         public string Observacao { get; set; }
+
     }
 }
