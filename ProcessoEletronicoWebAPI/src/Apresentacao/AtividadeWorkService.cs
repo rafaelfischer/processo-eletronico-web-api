@@ -13,7 +13,7 @@ namespace ProcessoEletronicoService.Apresentacao
     public class AtividadeWorkService : BaseWorkService, IAtividadeWorkService
     {
         IAtividadeNegocio atividadeNegocio;
-
+        
         public override void RaiseUsuarioAlterado()
         {
             atividadeNegocio.Usuario = Usuario;
@@ -24,9 +24,16 @@ namespace ProcessoEletronicoService.Apresentacao
             this.atividadeNegocio = atividadeNegocio;
         }
 
-        public IEnumerable<AtividadeModelo> Pesquisar(int idFuncao)
+        public AtividadeProcessoGetModelo Pesquisar(int id)
         {
-            List<AtividadeModeloNegocio> atividades = atividadeNegocio.Pesquisar(idFuncao);
+            AtividadeModeloNegocio atividade = atividadeNegocio.Pesquisar(id);
+
+            return Mapper.Map<AtividadeModeloNegocio, AtividadeProcessoGetModelo>(atividade);
+        }
+
+        public IEnumerable<AtividadeModelo> PesquisarPorFuncao(int idFuncao)
+        {
+            List<AtividadeModeloNegocio> atividades = atividadeNegocio.PesquisarPorFuncao(idFuncao);
 
             return Mapper.Map<List<AtividadeModeloNegocio>, List<AtividadeModelo>>(atividades);
         }
@@ -36,6 +43,21 @@ namespace ProcessoEletronicoService.Apresentacao
             List<AtividadeModeloNegocio> atividades = atividadeNegocio.Pesquisar();
 
             return Mapper.Map<List<AtividadeModeloNegocio>, List<AtividadeProcessoGetModelo>>(atividades);
+        }
+
+        public AtividadeProcessoGetModelo Inserir(AtividadeModeloPost atividade)
+        {
+            AtividadeModeloNegocio atividadeModeloNegocio = new AtividadeModeloNegocio();
+            Mapper.Map(atividade, atividadeModeloNegocio);
+
+            atividadeModeloNegocio = atividadeNegocio.Inserir(atividadeModeloNegocio);
+
+            return Mapper.Map<AtividadeModeloNegocio, AtividadeProcessoGetModelo>(atividadeModeloNegocio);
+        }
+
+        public void Excluir(int id)
+        {
+            atividadeNegocio.Excluir(id);
         }
     }
 }

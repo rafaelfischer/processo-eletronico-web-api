@@ -64,6 +64,8 @@ namespace WebAPI
                 options.AddPolicy("PlanoClassificacao.Excluir", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Excluir"));
                 options.AddPolicy("Funcao.Inserir", policy => policy.RequireClaim("Acao$Funcao", "Inserir"));
                 options.AddPolicy("Funcao.Excluir", policy => policy.RequireClaim("Acao$Funcao", "Excluir"));
+                options.AddPolicy("Atividade.Inserir", policy => policy.RequireClaim("Acao$Atividade", "Inserir"));
+                options.AddPolicy("Atividade.Excluir", policy => policy.RequireClaim("Acao$Atividade", "Excluir"));
             }
             );
             #endregion

@@ -5,7 +5,8 @@ namespace ProcessoEletronicoService.Apresentacao.Base
 {
     public interface IFuncaoWorkService : IBaseWorkService
     {
-        IEnumerable<FuncaoModelo> Pesquisar(int idPlanoClassificacao);
+        IEnumerable<FuncaoModelo> PesquisarPorPlanoClassificacao(int idPlanoClassificacao);
+        FuncaoProcessoGetModelo Pesquisar(int id);
         FuncaoProcessoGetModelo Inserir(FuncaoModeloPost funcao);
         void Excluir(int id);
     }

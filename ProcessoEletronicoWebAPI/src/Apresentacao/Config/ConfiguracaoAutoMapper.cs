@@ -31,12 +31,15 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
         public ApresentacaoProfile()
         {
-            #region Mapeamento de atividade
+            #region Mapeamento de Atividade
             CreateMap<AtividadeModeloNegocio, AtividadeModelo>()
                 .ForMember(dest => dest.IdFuncao, opt => opt.MapFrom(src => src.Funcao.Id));
             CreateMap<AtividadeModeloNegocio, AtividadeProcessoGetModelo>();
 
             CreateMap<AtividadeModelo, AtividadeModeloNegocio>();
+
+            CreateMap<AtividadeModeloPost, AtividadeModeloNegocio>()
+                .ForMember(dest => dest.Funcao, opt => opt.MapFrom(src => new FuncaoModeloNegocio { Id = src.IdFuncao }));
             #endregion
 
             #region Mapeamento de Anexos

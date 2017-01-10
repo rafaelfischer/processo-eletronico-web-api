@@ -5,7 +5,11 @@ namespace ProcessoEletronicoService.Apresentacao.Base
 {
     public interface IAtividadeWorkService : IBaseWorkService
     {
-        IEnumerable<AtividadeModelo> Pesquisar(int idFuncao);
+        AtividadeProcessoGetModelo Pesquisar(int id);
+        IEnumerable<AtividadeModelo> PesquisarPorFuncao(int idFuncao);
         IEnumerable<AtividadeProcessoGetModelo> Pesquisar();
+        AtividadeProcessoGetModelo Inserir(AtividadeModeloPost atividade);
+        void Excluir(int id);
+        
     }
 }

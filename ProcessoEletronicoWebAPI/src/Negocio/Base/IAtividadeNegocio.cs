@@ -5,7 +5,11 @@ namespace ProcessoEletronicoService.Negocio.Base
 {
     public interface IAtividadeNegocio : IBaseNegocio
     {
-        List<AtividadeModeloNegocio> Pesquisar(int idFuncao);
+        AtividadeModeloNegocio Pesquisar(int id);
+        List<AtividadeModeloNegocio> PesquisarPorFuncao(int idFuncao);
         List<AtividadeModeloNegocio> Pesquisar();
+        AtividadeModeloNegocio Inserir(AtividadeModeloNegocio atividadeModeloNegocio);
+        void Excluir(int id);
+
     }
 }

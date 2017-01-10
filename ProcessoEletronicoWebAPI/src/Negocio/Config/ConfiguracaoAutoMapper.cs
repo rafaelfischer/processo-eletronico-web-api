@@ -36,6 +36,10 @@ namespace ProcessoEletronicoService.Negocio.Config
             #region Mapeamento de atividade
             CreateMap<Atividade, AtividadeModeloNegocio>()
                 .ForMember(dest => dest.Funcao, opt => opt.MapFrom(s => s.Funcao));
+
+            CreateMap<AtividadeModeloNegocio, Atividade>()
+                .ForMember(dest => dest.Funcao, opt => opt.Ignore())
+                .ForMember(dest => dest.IdFuncao, opt => opt.MapFrom(src => src.Funcao.Id));
             #endregion
 
             #region Mapeamento de Contato

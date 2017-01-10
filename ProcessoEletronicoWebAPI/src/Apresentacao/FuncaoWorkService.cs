@@ -19,12 +19,20 @@ namespace ProcessoEletronicoService.Apresentacao
             this.funcaoNegocio = funcaoNegocio;
         }
         
-        public IEnumerable<FuncaoModelo> Pesquisar(int idPlanoClassificacao)
+        public IEnumerable<FuncaoModelo> PesquisarPorPlanoClassificacao(int idPlanoClassificacao)
         {
             List<FuncaoModeloNegocio> funcoes = funcaoNegocio.PesquisarPorPlanoClassificacao(idPlanoClassificacao);
 
             return Mapper.Map<List<FuncaoModeloNegocio>, List<FuncaoModelo>>(funcoes);
         }
+
+        public FuncaoProcessoGetModelo Pesquisar(int id)
+        {
+            FuncaoModeloNegocio funcao = funcaoNegocio.Pesquisar(id);
+
+            return Mapper.Map<FuncaoModeloNegocio, FuncaoProcessoGetModelo>(funcao);
+        }
+
         public FuncaoProcessoGetModelo Inserir(FuncaoModeloPost funcao)
         {
             FuncaoModeloNegocio funcaoModeloNegocio = new FuncaoModeloNegocio();

@@ -9,6 +9,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Restrito.Validacao;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ProcessoEletronicoService.Negocio.Validacao;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -16,14 +17,24 @@ namespace ProcessoEletronicoService.Negocio
     {
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<Atividade> repositorioAtividades;
+        private AtividadeValidacao atividadeValidacao;
 
         public AtividadeNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             unitOfWork = repositorios.UnitOfWork;
             repositorioAtividades = repositorios.Atividades;
+            atividadeValidacao = new AtividadeValidacao(repositorios);
         }
 
-        public List<AtividadeModeloNegocio> Pesquisar(int idFuncao)
+        public AtividadeModeloNegocio Pesquisar(int id)
+        {
+            Atividade atividade = repositorioAtividades.Where(a => a.Id == id).Include(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao).SingleOrDefault();
+            atividadeValidacao.NaoEncontrado(atividade);
+
+            return Mapper.Map<Atividade, AtividadeModeloNegocio>(atividade);
+        }
+
+        public List<AtividadeModeloNegocio> PesquisarPorFuncao(int idFuncao)
         {
             var atividades = repositorioAtividades.Where(f => f.Funcao.Id == idFuncao)
                                             .Include(pc => pc.Funcao)
@@ -41,6 +52,29 @@ namespace ProcessoEletronicoService.Negocio
                                                            .ToList();
 
             return Mapper.Map<List<Atividade>, List<AtividadeModeloNegocio>>(atividades);
+        }
+
+        public AtividadeModeloNegocio Inserir (AtividadeModeloNegocio atividadeModeloNegocio)
+        {
+            atividadeValidacao.Preenchido(atividadeModeloNegocio);
+            atividadeValidacao.Valido(atividadeModeloNegocio, UsuarioGuidOrganizacao);
+
+            Atividade atividade = new Atividade();
+            Mapper.Map(atividadeModeloNegocio, atividade);
+            repositorioAtividades.Add(atividade);
+            unitOfWork.Save();
+
+            return Pesquisar(atividade.Id);
+            
+        }
+
+        public void Excluir(int id)
+        {
+            atividadeValidacao.PossivelExcluir(id, UsuarioGuidOrganizacao);
+            Atividade atividade = repositorioAtividades.Where(a => a.Id == id).Single();
+
+            repositorioAtividades.Remove(atividade);
+            unitOfWork.Save();
         }
     }
 }

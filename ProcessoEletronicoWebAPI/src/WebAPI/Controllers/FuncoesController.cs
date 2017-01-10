@@ -38,7 +38,30 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         {
             try
             {
-                return new ObjectResult(service.Pesquisar(idPlanoClassificacao));
+                return new ObjectResult(service.PesquisarPorPlanoClassificacao(idPlanoClassificacao));
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
+        }
+
+        /// <summary>
+        /// Retorna a função de acordo com o identificador informado.
+        /// </summary>
+        /// <param name="id">Identificador da função.</param>
+        /// <returns>Função de acordo com o identificador informado.</returns>
+        /// <response code="200">Função de acordo com o identificador informado.</response>
+        /// <response code="404">Recurso não encontrado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(FuncaoProcessoGetModelo), 200)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult Pesquisar(int id)
+        {
+            try
+            {
+                return new ObjectResult(service.Pesquisar(id));
             }
             catch (Exception e)
             {
