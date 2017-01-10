@@ -3,8 +3,11 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IFuncaoNegocio
+    public interface IFuncaoNegocio : IBaseNegocio
     {
-        List<FuncaoModeloNegocio> Pesquisar(int idPlanoClassificacao);
+        List<FuncaoModeloNegocio> PesquisarPorPlanoClassificacao(int idPlanoClassificacao);
+        FuncaoModeloNegocio Pesquisar(int id);
+        FuncaoModeloNegocio Inserir(FuncaoModeloNegocio funcaoModeloNegocio);
+        void Excluir(int id);
     }
 }

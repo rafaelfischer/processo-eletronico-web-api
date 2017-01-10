@@ -89,6 +89,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.IdFuncaoPai, opt => opt.MapFrom(src => src.FuncaoPai != null ? src.FuncaoPai.Id : (int?)null));
 
             CreateMap<FuncaoModeloNegocio, FuncaoProcessoGetModelo>();
+
+            CreateMap<FuncaoModeloPost, FuncaoModeloNegocio>()
+                .ForMember(dest => dest.PlanoClassificacao, opt => opt.MapFrom(src => new PlanoClassificacaoModeloNegocio { Id = src.IdPlanoClassificacao }))
+                .ForMember(dest => dest.FuncaoPai, opt => opt.MapFrom(src => src.IdFuncaoPai.HasValue ? new FuncaoModeloNegocio { Id = src.IdFuncaoPai.Value } : null));
             #endregion
 
             #region Mapeamento de Interessados Pessoa Física

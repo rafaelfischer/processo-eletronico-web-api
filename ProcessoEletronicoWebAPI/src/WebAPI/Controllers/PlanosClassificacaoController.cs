@@ -126,7 +126,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="404">Plano de classificação não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpDelete("{id}")]
-        [Authorize(Policy = "PlanoClassificacao.Exluir")]
+        [Authorize(Policy = "PlanoClassificacao.Excluir")]
         [ProducesResponseType(typeof(void), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
