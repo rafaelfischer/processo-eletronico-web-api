@@ -11,9 +11,9 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string Codigo { get; set; }
         public string Descricao { get; set; }
         public byte? PrazoGuardaAnosCorrente { get; set; }
-        public PrazoGuardaSubjetivoModeloNegocio PrazoGuardaSubjetivoCorrente { get; set; }
+        public string PrazoGuardaSubjetivoCorrente { get; set; }
         public byte? PrazoGuardaAnosIntermediaria { get; set; }
-        public PrazoGuardaSubjetivoModeloNegocio PrazoGuardaSubjetivoIntermediaria { get; set; }
+        public string PrazoGuardaSubjetivoIntermediaria { get; set; }
         public string Observacao { get; set; }
         public DestinacaoFinalModeloNegocio DestinacaoFinal { get; set; }
         public AtividadeModeloNegocio Atividade { get; set; }

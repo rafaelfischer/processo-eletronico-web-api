@@ -169,18 +169,11 @@ namespace ProcessoEletronicoService.Negocio.Config
             #region Mapeamento de Tipo de Documento
 
             CreateMap<TipoDocumental, TipoDocumentalModeloNegocio>()
-                .ForMember(dest => dest.PrazoGuardaSubjetivoCorrente, opt => opt.MapFrom(src => src.PrazoGuardaSubjetivoCorrente))
-                .ForMember(dest => dest.PrazoGuardaSubjetivoIntermediaria, opt => opt.MapFrom(src => src.PrazoGuardaSubjetivoIntermediaria))
                 .ForMember(dest => dest.DestinacaoFinal, opt => opt.MapFrom(src => src.DestinacaoFinal))
                 .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade));
 
             #endregion
-
-            #region Mapeamento de Prazo de Guarda
-
-            CreateMap<PrazoGuardaSubjetivo, PrazoGuardaSubjetivoModeloNegocio>();
             
-            #endregion
 
             #region Mapeamento de Sinalização
             CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()

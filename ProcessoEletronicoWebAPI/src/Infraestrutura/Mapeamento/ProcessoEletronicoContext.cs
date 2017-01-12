@@ -24,7 +24,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
         public virtual DbSet<MunicipioProcesso> MunicipioProcesso { get; set; }
         public virtual DbSet<OrganizacaoProcesso> OrganizacaoProcesso { get; set; }
         public virtual DbSet<PlanoClassificacao> PlanoClassificacao { get; set; }
-        public virtual DbSet<PrazoGuardaSubjetivo> PrazoGuardaSubjetivo { get; set; }
         public virtual DbSet<Processo> Processo { get; set; }
         public virtual DbSet<Sinalizacao> Sinalizacao { get; set; }
         public virtual DbSet<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
@@ -557,21 +556,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_PlanoClassificacao_OrganizacaoProcesso");
             });
-
-            modelBuilder.Entity<PrazoGuardaSubjetivo>(entity =>
-            {
-                entity.HasIndex(e => e.Descricao)
-                    .HasName("UK_PrazoGuardaSubjetivoDescricao")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Descricao)
-                    .IsRequired()
-                    .HasColumnName("descricao")
-                    .HasColumnType("varchar(200)");
-            });
-
+            
             modelBuilder.Entity<Processo>(entity =>
             {
                 entity.HasIndex(e => new { e.Sequencial, e.DigitoPoder, e.DigitoEsfera, e.DigitoOrganizacao, e.Ano })
@@ -741,9 +726,9 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdDestinacaoFinal).HasColumnName("idDestinacaoFinal");
 
-                entity.Property(e => e.IdPrazoGuardaSubjetivoCorrente).HasColumnName("idPrazoGuardaSubjetivoCorrente");
+                entity.Property(e => e.PrazoGuardaSubjetivoCorrente).HasColumnName("prazoGuardaSubjetivoCorrente").HasColumnType("varchar(500)");
 
-                entity.Property(e => e.IdPrazoGuardaSubjetivoIntermediaria).HasColumnName("idPrazoGuardaSubjetivoIntermediaria");
+                entity.Property(e => e.PrazoGuardaSubjetivoIntermediaria).HasColumnName("prazoGuardaSubjetivoIntermediaria").HasColumnType("varchar(500)");
 
                 entity.Property(e => e.Obrigatorio).HasColumnName("obrigatorio");
 
@@ -766,16 +751,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdDestinacaoFinal)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_TipoDocumental_DestinacaoFinal");
-
-                entity.HasOne(d => d.PrazoGuardaSubjetivoCorrente)
-                    .WithMany(p => p.TipoDocumentalIdPrazoGuardaSubjetivoCorrente)
-                    .HasForeignKey(d => d.IdPrazoGuardaSubjetivoCorrente)
-                    .HasConstraintName("FK_TipoDocumental_PrazoGuardaSubjetivoCorrente");
-
-                entity.HasOne(d => d.PrazoGuardaSubjetivoIntermediaria)
-                    .WithMany(p => p.TipoDocumentalIdPrazoGuardaSubjetivoIntermediaria)
-                    .HasForeignKey(d => d.IdPrazoGuardaSubjetivoIntermediaria)
-                    .HasConstraintName("FK_TipoDocumental_PrazoGuardaSubjetivoIntermediaria");
+                
             });
         }
     }
