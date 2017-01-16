@@ -10,7 +10,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 
 namespace ProcessoEletronicoService.Apresentacao
 {
-    public class TipoDocumentalWorkService : ITipoDocumentalWorkService
+    public class TipoDocumentalWorkService : BaseWorkService, ITipoDocumentalWorkService
     {
         private ITipoDocumentalNegocio tipoDocumentalNegocio;
 
@@ -18,13 +18,40 @@ namespace ProcessoEletronicoService.Apresentacao
         {
             this.tipoDocumentalNegocio = tipoDocumentalNegocio;
         }
-        public List<TipoDocumentalModelo> Pesquisar(int idAtividade)
+
+        public TipoDocumentalModeloGet Pesquisar(int id)
         {
-            List<TipoDocumentalModeloNegocio> tiposDocumentais = tipoDocumentalNegocio.Pesquisar(idAtividade);
-
-            return Mapper.Map<List<TipoDocumentalModelo>>(tiposDocumentais);
-
-
+            TipoDocumentalModeloNegocio tipoDocumentalModeloNegocio = tipoDocumentalNegocio.Pesquisar(id);
+            return Mapper.Map<TipoDocumentalModeloNegocio, TipoDocumentalModeloGet>(tipoDocumentalModeloNegocio);
         }
+
+        public List<TipoDocumentalModeloGet> PesquisarPorAtividade(int idAtividade)
+        {
+            List<TipoDocumentalModeloNegocio> tiposDocumentais = tipoDocumentalNegocio.PesquisarPorAtividade(idAtividade);
+
+            return Mapper.Map<List<TipoDocumentalModeloGet>>(tiposDocumentais);
+            
+        }
+
+        public TipoDocumentalModeloGet Inserir(TipoDocumentalModeloPost tipoDocumental)
+        {
+            TipoDocumentalModeloNegocio tipoDocumentalModeloNegocio = new TipoDocumentalModeloNegocio();
+            Mapper.Map(tipoDocumental, tipoDocumentalModeloNegocio);
+
+            tipoDocumentalModeloNegocio = tipoDocumentalNegocio.Inserir(tipoDocumentalModeloNegocio);
+
+            return Mapper.Map<TipoDocumentalModeloNegocio, TipoDocumentalModeloGet>(tipoDocumentalModeloNegocio);
+        }
+
+        public void Excluir(int id)
+        {
+            tipoDocumentalNegocio.Excluir(id);
+        }
+
+        public override void RaiseUsuarioAlterado()
+        {
+            tipoDocumentalNegocio.Usuario = Usuario;
+        }
+
     }
 }

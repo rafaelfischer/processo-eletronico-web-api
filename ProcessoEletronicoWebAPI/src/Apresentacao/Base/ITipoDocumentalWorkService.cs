@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Apresentacao.Base
 {
-    public interface ITipoDocumentalWorkService
+    public interface ITipoDocumentalWorkService : IBaseWorkService
     {
-        List<TipoDocumentalModelo> Pesquisar(int idAtividade);
+        TipoDocumentalModeloGet Pesquisar(int id);
+        List<TipoDocumentalModeloGet> PesquisarPorAtividade(int idAtividade);
+        TipoDocumentalModeloGet Inserir(TipoDocumentalModeloPost tipoDocumental);
+        void Excluir(int id);
+        
     }
 }

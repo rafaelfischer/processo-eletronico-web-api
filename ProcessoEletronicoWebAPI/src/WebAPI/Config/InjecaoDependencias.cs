@@ -16,6 +16,7 @@ namespace ProcessoEletronicoService.WebAPI.Config
             dependencias.Add(typeof(IAnexoWorkService), typeof(AnexoWorkService));
             dependencias.Add(typeof(IAtividadeWorkService), typeof(AtividadeWorkService));
             dependencias.Add(typeof(IDespachoWorkService), typeof(DespachoWorkService));
+            dependencias.Add(typeof(IDestinacaoFinalWorkService), typeof(DestinacaoFinalWorkService));
             dependencias.Add(typeof(IFuncaoWorkService), typeof(FuncaoWorkService));
             dependencias.Add(typeof(IPlanoClassificacaoWorkService), typeof(PlanoClassificacaoWorkService));
             dependencias.Add(typeof(IProcessoWorkService), typeof(ProcessoWorkService));

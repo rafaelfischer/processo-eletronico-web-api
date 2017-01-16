@@ -64,6 +64,7 @@ namespace ProcessoEletronicoService.Negocio.Config
             #region Mapeamento de Destinação
 
             CreateMap<DestinacaoFinal, DestinacaoFinalModeloNegocio>();
+            CreateMap<DestinacaoFinalModeloNegocio, DestinacaoFinal>();
 
             #endregion
 
@@ -169,11 +170,18 @@ namespace ProcessoEletronicoService.Negocio.Config
             #region Mapeamento de Tipo de Documento
 
             CreateMap<TipoDocumental, TipoDocumentalModeloNegocio>()
-                .ForMember(dest => dest.DestinacaoFinal, opt => opt.MapFrom(src => src.DestinacaoFinal))
-                .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade));
+               .ForMember(dest => dest.DestinacaoFinal, opt => opt.MapFrom(src => src.DestinacaoFinal))
+               .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade));
+
+
+            CreateMap<TipoDocumentalModeloNegocio, TipoDocumental>()
+                .ForMember(dest => dest.Atividade, opt => opt.Ignore())
+                .ForMember(dest => dest.DestinacaoFinal, opt => opt.Ignore())
+                .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
+                .ForMember(dest => dest.IdDestinacaoFinal, opt => opt.MapFrom(src => src.DestinacaoFinal.Id));
 
             #endregion
-            
+
 
             #region Mapeamento de Sinalização
             CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()

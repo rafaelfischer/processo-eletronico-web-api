@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface ITipoDocumentalNegocio
+    public interface ITipoDocumentalNegocio : IBaseNegocio
     {
-        List<TipoDocumentalModeloNegocio> Pesquisar(int idAtividade);
+        TipoDocumentalModeloNegocio Pesquisar(int id);
+        List<TipoDocumentalModeloNegocio> PesquisarPorAtividade(int idAtividade);
+        TipoDocumentalModeloNegocio Inserir(TipoDocumentalModeloNegocio tipoDocumentalModeloNegocio);
+        void Excluir(int id);
+
+
     }
 }

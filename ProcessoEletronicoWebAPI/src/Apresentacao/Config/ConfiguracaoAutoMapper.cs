@@ -98,6 +98,14 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.FuncaoPai, opt => opt.MapFrom(src => src.IdFuncaoPai.HasValue ? new FuncaoModeloNegocio { Id = src.IdFuncaoPai.Value } : null));
             #endregion
 
+            #region Mapeamento de Destinação Final
+
+            CreateMap<DestinacaoFinalModeloNegocio, DestinacaoFinalModeloGet>();
+            CreateMap<DestinacaoFinalModeloPost, DestinacaoFinalModeloNegocio>();
+
+            
+            #endregion
+
             #region Mapeamento de Interessados Pessoa Física
             CreateMap<InteressadoPessoaFisicaModelo, InteressadoPessoaFisicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
@@ -153,7 +161,6 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.DataUltimoTramite, opt => opt.MapFrom(src => src.DataUltimoTramite.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => src.InteressadosPessoaFisica != null && src.InteressadosPessoaFisica.Count > 0 ? src.InteressadosPessoaFisica : null))
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica != null && src.InteressadosPessoaJuridica.Count > 0 ? src.InteressadosPessoaJuridica : null))
-                //.ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
             #endregion
@@ -169,10 +176,15 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             #endregion
 
             #region Mapeamento de Tipo Documental
+            CreateMap<TipoDocumentalModeloPost, TipoDocumentalModeloNegocio>()
+                .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => new AtividadeModeloNegocio { Id = src.IdAtividade }))
+                .ForMember(dest => dest.DestinacaoFinal, opt => opt.MapFrom(src => new DestinacaoFinalModeloNegocio { Id = src.IdDestinacaoFinal }));
+            
+            CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalModeloGet>()
+                .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
+                .ForMember(dest => dest.IdDestinacaoFinal, opt => opt.MapFrom(src => src.DestinacaoFinal.Id));
 
-            CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalModelo>().
-                ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id));
-
+            
             CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalAnexoModelo>();
 
 
