@@ -112,7 +112,16 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             foreach (InteressadoPessoaJuridicaModeloNegocio interessado in interessados)
             {
-                if (interessados.Where(i => i.Cnpj == interessado.Cnpj && i.SiglaUnidade.Equals(interessado.SiglaUnidade)).ToList().Count() > 1)
+
+                IEnumerable<InteressadoPessoaJuridicaModeloNegocio> query;
+                query = interessados.Where(i => i.Cnpj == interessado.Cnpj);
+
+                if (interessado.SiglaUnidade != null)
+                {
+                    query = query.Where(i => i.SiglaUnidade.Equals(interessado.SiglaUnidade));
+                }
+
+                if (query.ToList().Count() > 1)
                 {
 
                     string concatenacaoUnidade = "";
