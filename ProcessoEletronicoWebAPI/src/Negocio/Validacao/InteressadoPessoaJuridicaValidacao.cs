@@ -116,9 +116,13 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 IEnumerable<InteressadoPessoaJuridicaModeloNegocio> query;
                 query = interessados.Where(i => i.Cnpj == interessado.Cnpj);
 
-                if (interessado.SiglaUnidade != null)
+                if (!string.IsNullOrWhiteSpace(interessado.SiglaUnidade))
                 {
-                    query = query.Where(i => i.SiglaUnidade.Equals(interessado.SiglaUnidade));
+                    query = query.Where(i => !string.IsNullOrWhiteSpace(i.SiglaUnidade) && i.SiglaUnidade.Equals(interessado.SiglaUnidade));
+                }
+                else
+                {
+                    query = query.Where(i => string.IsNullOrWhiteSpace(i.SiglaUnidade));
                 }
 
                 if (query.ToList().Count() > 1)
@@ -126,7 +130,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
                     string concatenacaoUnidade = "";
 
-                    if (!string.IsNullOrEmpty(interessado.SiglaUnidade))
+                    if (!string.IsNullOrWhiteSpace(interessado.SiglaUnidade))
                     {
                         concatenacaoUnidade = " - " + interessado.SiglaUnidade;
                     }
