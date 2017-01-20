@@ -12,8 +12,8 @@ namespace ProcessoEletronicoService.Negocio.Validacao
     public class AnexoValidacao
     {
 
-        private string regexNomeArquivo = @"^[\w,\s-]+\.[A-Za-z0-9]{2,4}$";
-        private long tamanhoMaximo = 4000000;
+        //private string regexNomeArquivo = @"^[\w,\s-]+\.[A-Za-z0-9]{2,4}$";
+        private long tamanhoMaximo = 5000000;
 
         IRepositorioGenerico<TipoDocumental> repositorioTiposDocumentais;
 
@@ -96,13 +96,14 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         #region Preenchimento de campos obrigatórios
         public void Valido(AnexoModeloNegocio anexo, int idAtividadeProcesso)
         {
-            NomeValido(anexo);
+            //NomeValido(anexo);
             ConverteConteudo(anexo);
             TamanhoValido(anexo);
             TipoDocumentalValido(anexo);
             TipoDocumentalExistente(anexo, idAtividadeProcesso);
         }
 
+        /*
         private void NomeValido(AnexoModeloNegocio anexo)
         {
             Regex nomeRegex = new Regex(regexNomeArquivo);
@@ -112,6 +113,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RequisicaoInvalidaException("Nome do arquivo inválido.");
             }
         }
+        */
 
         private void TamanhoValido(AnexoModeloNegocio anexo)
         {
