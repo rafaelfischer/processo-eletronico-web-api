@@ -68,6 +68,8 @@ namespace WebAPI
                 options.AddPolicy("Atividade.Excluir", policy => policy.RequireClaim("Acao$Atividade", "Excluir"));
                 options.AddPolicy("TipoDocumental.Inserir", policy => policy.RequireClaim("Acao$TipoDocumental", "Inserir"));
                 options.AddPolicy("TipoDocumental.Excluir", policy => policy.RequireClaim("Acao$TipoDocumental", "Excluir"));
+                options.AddPolicy("DestinacaoFinal.Inserir", policy => policy.RequireClaim("Acao$DestinacaoFinal", "Inserir"));
+                options.AddPolicy("DestinacaoFinal.Excluir", policy => policy.RequireClaim("Acao$DestinacaoFinal", "Excluir"));
             }
             );
             #endregion

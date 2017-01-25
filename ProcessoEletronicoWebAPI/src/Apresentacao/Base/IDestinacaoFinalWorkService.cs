@@ -9,5 +9,8 @@ namespace ProcessoEletronicoService.Apresentacao.Base
     public interface IDestinacaoFinalWorkService : IBaseWorkService
     {
         List<DestinacaoFinalModeloGet> Listar();
+        DestinacaoFinalModeloGet Pesquisar(int id);
+        DestinacaoFinalModeloGet Inserir(DestinacaoFinalModeloPost destinacaoFinalPost);
+        void Excluir(int id);
     }
 }

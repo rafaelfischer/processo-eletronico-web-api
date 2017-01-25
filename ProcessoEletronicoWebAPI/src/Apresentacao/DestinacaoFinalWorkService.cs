@@ -19,11 +19,36 @@ namespace ProcessoEletronicoService.Apresentacao
             this.destinacaoFinalNegocio = destinacaoFinalNegocio;
         }
 
+       
+        public DestinacaoFinalModeloGet Inserir(DestinacaoFinalModeloPost destinacaoFinalPost)
+        {
+            DestinacaoFinalModeloNegocio destinacaoFinalModeloNegocio = new DestinacaoFinalModeloNegocio();
+            Mapper.Map(destinacaoFinalPost, destinacaoFinalModeloNegocio);
+
+            destinacaoFinalModeloNegocio = destinacaoFinalNegocio.Inserir(destinacaoFinalModeloNegocio);
+
+            return Mapper.Map<DestinacaoFinalModeloNegocio, DestinacaoFinalModeloGet>(destinacaoFinalModeloNegocio);
+
+        }
+
         public List<DestinacaoFinalModeloGet> Listar()
         {
             List<DestinacaoFinalModeloNegocio> destinacoesFinais = destinacaoFinalNegocio.Listar();
 
             return Mapper.Map<List<DestinacaoFinalModeloNegocio>, List<DestinacaoFinalModeloGet>>(destinacoesFinais);
+        }
+
+        public DestinacaoFinalModeloGet Pesquisar(int id)
+        {
+            DestinacaoFinalModeloNegocio destinacaoFinalModeloNegocio = destinacaoFinalNegocio.Pesquisar(id);
+
+            return Mapper.Map<DestinacaoFinalModeloNegocio, DestinacaoFinalModeloGet>(destinacaoFinalModeloNegocio);
+
+        }
+
+        public void Excluir(int id)
+        {
+            destinacaoFinalNegocio.Excluir(id);
         }
 
         public override void RaiseUsuarioAlterado()
