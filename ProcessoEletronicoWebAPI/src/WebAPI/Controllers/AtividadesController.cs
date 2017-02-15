@@ -38,7 +38,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         {
             try
             {
-                return new ObjectResult(service.Pesquisar(idFuncao));
+                return new ObjectResult(service.PesquisarPorFuncao(idFuncao));
             }
             catch (Exception e)
             {
