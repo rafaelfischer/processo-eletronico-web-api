@@ -95,7 +95,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             CreateMap<FuncaoModeloPost, FuncaoModeloNegocio>()
                 .ForMember(dest => dest.PlanoClassificacao, opt => opt.MapFrom(src => new PlanoClassificacaoModeloNegocio { Id = src.IdPlanoClassificacao }))
-                .ForMember(dest => dest.FuncaoPai, opt => opt.MapFrom(src => src.IdFuncaoPai.HasValue ? new FuncaoModeloNegocio { Id = src.IdFuncaoPai.Value } : null));
+                .ForMember(dest => dest.FuncaoPai, opt => opt.MapFrom(src => (src.IdFuncaoPai.HasValue && src.IdFuncaoPai.Value > 0) ? new FuncaoModeloNegocio { Id = src.IdFuncaoPai.Value } : null));
             #endregion
 
             #region Mapeamento de Destinação Final
