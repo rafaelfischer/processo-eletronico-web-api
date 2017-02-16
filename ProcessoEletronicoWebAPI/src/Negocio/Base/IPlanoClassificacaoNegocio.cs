@@ -7,6 +7,7 @@ namespace ProcessoEletronicoService.Negocio.Base
     {
         PlanoClassificacaoModeloNegocio Pesquisar(int id);
         List<PlanoClassificacaoModeloNegocio> Pesquisar(string guidOrganizacao);
+        List<PlanoClassificacaoModeloNegocio> Pesquisar();
         PlanoClassificacaoModeloNegocio Inserir(PlanoClassificacaoModeloNegocio planoClassificacaoModeloNegocio);
         void Excluir(int id);
     }

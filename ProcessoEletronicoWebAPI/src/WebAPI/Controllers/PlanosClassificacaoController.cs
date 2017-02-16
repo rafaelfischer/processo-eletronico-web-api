@@ -81,6 +81,27 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         }
 
         /// <summary>
+        /// Retorna a lista de planos de classificação que podem ser mantidos pelo usuário..
+        /// </summary>
+        /// <returns>Lista de planos de classificação que podem ser mantidos pelo usuário.</returns>
+        /// <response code="200">Retorna a lista de planos de classificação que podem ser mantidos pelo usuário.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(List<PlanoClassificacaoModelo>), 200)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult Get()
+        {
+            try
+            {
+                return new ObjectResult(service.Pesquisar());
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
+            }
+        }
+
+        /// <summary>
         /// Insere um plano de classificação de acordo com a organização do usuário.
         /// </summary>
         /// <param name="planoClassificacao">Informações do Plano de Classificacão.</param>

@@ -32,6 +32,13 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<List<PlanoClassificacaoModeloNegocio>, List<PlanoClassificacaoModelo>>(planosClassificacao);
         }
 
+        public IEnumerable<PlanoClassificacaoModelo> Pesquisar()
+        {
+            List<PlanoClassificacaoModeloNegocio> planosClassificacao = planoClassificacaoNegocio.Pesquisar();
+
+            return Mapper.Map<List<PlanoClassificacaoModeloNegocio>, List<PlanoClassificacaoModelo>>(planosClassificacao);
+        }
+
         public PlanoClassificacaoProcessoGetModelo Inserir(PlanoClassificacaoModeloPost planoClassificacao)
         {
             PlanoClassificacaoModeloNegocio planoClassificacaoModeloNegocio = new PlanoClassificacaoModeloNegocio();

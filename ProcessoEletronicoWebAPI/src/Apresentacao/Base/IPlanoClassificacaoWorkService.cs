@@ -7,6 +7,7 @@ namespace ProcessoEletronicoService.Apresentacao.Base
     {
         PlanoClassificacaoProcessoGetModelo Pesquisar(int id);
         IEnumerable<PlanoClassificacaoModelo> Pesquisar(string guidOrganizacao);
+        IEnumerable<PlanoClassificacaoModelo> Pesquisar();
         PlanoClassificacaoProcessoGetModelo Inserir(PlanoClassificacaoModeloPost planoClassificacao);
         void Excluir(int id);
     }

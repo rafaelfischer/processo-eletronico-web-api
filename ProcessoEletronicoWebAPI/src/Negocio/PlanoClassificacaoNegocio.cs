@@ -57,6 +57,15 @@ namespace ProcessoEletronicoService.Negocio
             return Mapper.Map<PlanoClassificacao, PlanoClassificacaoModeloNegocio>(planoClassificacao);
         }
 
+        public List<PlanoClassificacaoModeloNegocio> Pesquisar()
+        {
+            var planosClassificacao = repositorioPlanosClassificacao.Where(pc => pc.GuidOrganizacao.Equals(UsuarioGuidOrganizacao))
+                                                                    .Include(pc => pc.OrganizacaoProcesso)
+                                                                    .ToList();
+
+            return Mapper.Map<List<PlanoClassificacao>, List<PlanoClassificacaoModeloNegocio>>(planosClassificacao);
+        }
+
         public PlanoClassificacaoModeloNegocio Inserir(PlanoClassificacaoModeloNegocio planoClassificacaoModeloNegocio)
         {
             
