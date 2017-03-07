@@ -20,3 +20,7 @@ deploy:
     script: /bin/sh ./scripts/.master.sh
     on:
       branch: master
+  - provider: script
+    script: /bin/sh ./scripts/.demo.sh
+    on:
+      branch: demo
