@@ -23,6 +23,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public Guid GuidOrganizacao { get; set; }
 
         public virtual ICollection<PlanoClassificacao> PlanosClassificacao { get; set; }
+        public virtual ICollection<RascunhoProcesso> RascunhosProcesso { get; set; }
         public virtual ICollection<Processo> Processos { get; set; }
         public virtual ICollection<Sinalizacao> Sinalizacoes { get; set; }
         public virtual DigitoEsfera DigitoEsfera { get; set; }

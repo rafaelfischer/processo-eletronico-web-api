@@ -17,6 +17,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int IdOrganizacaoProcesso { get; set; }
 
         public virtual ICollection<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
+        public virtual ICollection<SinalizacaoRascunhoProcesso> SinalizacaoRascunhoProcesso { get; set; }
+
         public virtual OrganizacaoProcesso OrganizacaoProcesso { get; set; }
     }
 }
