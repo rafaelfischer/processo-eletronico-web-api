@@ -18,7 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IFuncaoWorkService service;
 
-        public FuncoesController(IFuncaoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public FuncoesController(IFuncaoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;

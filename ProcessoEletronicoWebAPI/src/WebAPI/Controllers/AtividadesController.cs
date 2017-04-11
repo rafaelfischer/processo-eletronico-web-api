@@ -18,7 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IAtividadeWorkService service;
 
-        public AtividadesController(IAtividadeWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public AtividadesController(IAtividadeWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;

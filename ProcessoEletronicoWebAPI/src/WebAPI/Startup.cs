@@ -1,22 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ProcessoEletronicoService.WebAPI.Config;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Swashbuckle.Swagger.Model;
 using Microsoft.Extensions.PlatformAbstractions;
 using ProcessoEletronicoService.Infraestrutura.Mapeamento;
+using ProcessoEletronicoService.WebAPI.Base;
+using ProcessoEletronicoService.WebAPI.Config;
 using ProcessoEletronicoService.WebAPI.Middleware;
+using Swashbuckle.Swagger.Model;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 
 namespace WebAPI
 {
@@ -51,6 +48,7 @@ namespace WebAPI
                     });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IClientAccessToken, AcessoCidadaoClientAccessToken>();
 
             InjecaoDependencias.InjetarDependencias(services);
             ConfiguracaoAutoMapper.CriarMapeamento();

@@ -18,7 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IDestinacaoFinalWorkService service;
 
-        public DestinacoesFinaisController(IDestinacaoFinalWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public DestinacoesFinaisController(IDestinacaoFinalWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;

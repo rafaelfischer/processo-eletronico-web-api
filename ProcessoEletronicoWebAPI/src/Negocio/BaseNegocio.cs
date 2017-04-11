@@ -16,7 +16,7 @@ namespace ProcessoEletronicoService.Negocio
         private Dictionary<string, string> usuario;
         private string usuarioCpf;
         private string usuarioNome;
-        private string usuarioAccessToken;
+        private string clientAccessToken;
         private Guid usuarioGuidOrganizacao;
         private Guid usuarioGuidOrganizacaoPatriarca;
 
@@ -53,17 +53,16 @@ namespace ProcessoEletronicoService.Negocio
                 return usuarioNome;
             }
         }
-        public string UsuarioAccessToken
+        public string ClientAccessToken
         {
             get
             {
-                if (usuarioAccessToken == null)
-                    usuarioAccessToken = Usuario["accessToken"];
+                if (clientAccessToken == null)
+                    clientAccessToken = Usuario["clientAccessToken"];
 
-                return usuarioAccessToken;
+                return clientAccessToken;
             }
         }
-
         public Guid UsuarioGuidOrganizacao
         {
             get
@@ -106,9 +105,9 @@ namespace ProcessoEletronicoService.Negocio
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                if (!string.IsNullOrWhiteSpace(UsuarioAccessToken))
+                if (!string.IsNullOrWhiteSpace(ClientAccessToken))
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", UsuarioAccessToken);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClientAccessToken);
                 }
                 var result = client.GetAsync(url).Result;
 

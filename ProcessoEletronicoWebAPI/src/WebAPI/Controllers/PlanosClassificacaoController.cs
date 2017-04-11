@@ -18,7 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IPlanoClassificacaoWorkService service;
 
-        public PlanosClassificacaoController(IPlanoClassificacaoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public PlanosClassificacaoController(IPlanoClassificacaoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;

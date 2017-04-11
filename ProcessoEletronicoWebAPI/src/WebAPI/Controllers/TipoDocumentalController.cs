@@ -17,7 +17,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         ITipoDocumentalWorkService service;
 
-        public TipoDocumentalController(ITipoDocumentalWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public TipoDocumentalController(ITipoDocumentalWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;

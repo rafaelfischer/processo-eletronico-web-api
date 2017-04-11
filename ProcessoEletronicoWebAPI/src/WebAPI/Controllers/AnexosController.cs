@@ -16,7 +16,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IAnexoWorkService service;
 
-        public AnexosController(IAnexoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public AnexosController(IAnexoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
         }

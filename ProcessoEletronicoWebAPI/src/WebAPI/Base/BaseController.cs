@@ -26,9 +26,9 @@ namespace ProcessoEletronicoService.WebAPI.Base
             }
         }
 
-        public BaseController(IHttpContextAccessor httpContextAccessor)
+        public BaseController(IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken)
         {
-            PreencherUsuario(httpContextAccessor.HttpContext.User);
+            PreencherUsuario(httpContextAccessor.HttpContext.User, clientAccessToken);
         }
 
         private T DownloadJsonData<T>(string url, string acessToken) where T : new()
@@ -55,7 +55,7 @@ namespace ProcessoEletronicoService.WebAPI.Base
             }
         }
 
-        private void PreencherUsuario(ClaimsPrincipal user)
+        private void PreencherUsuario(ClaimsPrincipal user, IClientAccessToken clientAccessToken)
         {
             if (user != null)
             {
@@ -68,8 +68,8 @@ namespace ProcessoEletronicoService.WebAPI.Base
                     usuarioAutenticado.Add("cpf", claimCpf.Value);
                     usuarioAutenticado.Add("nome", claimNome.Value);
 
-                    string accessToken = user.FindFirst("accessToken").Value;
-                    usuarioAutenticado.Add("accessToken", accessToken);
+                    string accessToken = clientAccessToken.AccessToken;
+                    usuarioAutenticado.Add("clientAccessToken", accessToken);
 
                     Claim claimOrganizacao = user.FindFirst("orgao");
 

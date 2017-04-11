@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
@@ -18,7 +17,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IProcessoWorkService service;
         
-        public ProcessosController (IProcessoWorkService service, IHttpContextAccessor httpContextAccessor) : base (httpContextAccessor)
+        public ProcessosController (IProcessoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;

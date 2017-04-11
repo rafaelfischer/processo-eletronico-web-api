@@ -17,7 +17,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         ITipoContatoWorkService service;
 
-        public TiposContatoController(ITipoContatoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public TiposContatoController(ITipoContatoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
         }

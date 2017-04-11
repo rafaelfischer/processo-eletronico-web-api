@@ -18,7 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IDespachoWorkService service;
 
-        public DespachosController(IDespachoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public DespachosController(IDespachoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;
