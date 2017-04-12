@@ -16,6 +16,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public int IdProcesso { get; set; }
         public int? IdDespacho { get; set; }
 
+        public RascunhoProcessoModeloNegocio RascunhoProcesso { get; set; }
         public ProcessoModeloNegocio Processo { get; set; }
         public TipoDocumentalModeloNegocio TipoDocumental { get; set; }
 

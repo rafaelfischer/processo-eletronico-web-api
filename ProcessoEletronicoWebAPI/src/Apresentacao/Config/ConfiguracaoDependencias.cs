@@ -15,9 +15,14 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias = Negocio.Config.ConfiguracaoDependencias.ObterDependencias();
             dependencias.Add(typeof(IAnexoNegocio), typeof(AnexoNegocio));
             dependencias.Add(typeof(IAtividadeNegocio), typeof(AtividadeNegocio));
+            dependencias.Add(typeof(IContatoNegocio), typeof(ContatoNegocio));
+            dependencias.Add(typeof(IEmailNegocio), typeof(EmailNegocio));
             dependencias.Add(typeof(IDespachoNegocio), typeof(DespachoNegocio));
             dependencias.Add(typeof(IDestinacaoFinalNegocio), typeof(DestinacaoFinalNegocio));
+            dependencias.Add(typeof(IInteressadoPessoaFisicaNegocio), typeof(InteressadoPessoaFisicaNegocio));
+            dependencias.Add(typeof(IInteressadoPessoaJuridicaNegocio), typeof(InteressadoPessoaJuridicaNegocio));
             dependencias.Add(typeof(IFuncaoNegocio), typeof(FuncaoNegocio));
+            dependencias.Add(typeof(IRascunhoProcessoNegocio), typeof(RascunhoProcessoNegocio));
             dependencias.Add(typeof(IPlanoClassificacaoNegocio), typeof(PlanoClassificacaoNegocio));
             dependencias.Add(typeof(IProcessoNegocio), typeof(ProcessoNegocio));
             dependencias.Add(typeof(ITipoDocumentalNegocio), typeof(TipoDocumentalNegocio));

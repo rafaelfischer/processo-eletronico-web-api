@@ -23,11 +23,13 @@ namespace ProcessoEletronicoService.Negocio.Config
             #region Mapeamento de anexo
             CreateMap<Anexo, AnexoModeloNegocio>()
                 .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo))
+                .ForMember(dest => dest.RascunhoProcesso, opt => opt.MapFrom(src => src.RascunhoProcesso))
                 .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental));
 
             CreateMap<AnexoModeloNegocio, Anexo>()
                 .ForMember(dest => dest.TipoDocumental, opt => opt.Ignore())
                 .ForMember(dest => dest.IdTipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental != null? src.TipoDocumental.Id : (int?)null))
+                .ForMember(dest => dest.RascunhoProcesso, opt => opt.Ignore())
                 .ForMember(dest => dest.Processo, opt => opt.Ignore())
                 .ForMember(dest => dest.Despacho, opt => opt.Ignore());
 
@@ -56,9 +58,9 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.GuidOrganizacaoDestino, opt => opt.MapFrom(src => new Guid(src.GuidOrganizacaoDestino)))
                 .ForMember(dest => dest.GuidUnidadeDestino, opt => opt.MapFrom(src => new Guid(src.GuidUnidadeDestino)));
 
-
             CreateMap<Despacho, DespachoModeloNegocio>()
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
+            
             #endregion
 
             #region Mapeamento de Destinação
@@ -117,6 +119,15 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #endregion
             
+            #region Mapeamento de Municipio do Rascunho do Processo
+            CreateMap<MunicipioRascunhoProcessoModeloNegocio, MunicipioRascunhoProcesso>()
+                .ForMember(dest => dest.Uf, opt => opt.MapFrom(src => src.Uf.ToUpper()))
+                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => new Guid(src.GuidMunicipio)));
+
+            CreateMap<MunicipioRascunhoProcesso, MunicipioRascunhoProcessoModeloNegocio>()
+                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.GuidMunicipio.ToString("D")));
+            #endregion
+
             #region Mapeamento de Municipio do Processo
             CreateMap<MunicipioProcessoModeloNegocio, MunicipioProcesso>()
                 .ForMember(dest => dest.Uf, opt => opt.MapFrom(src => src.Uf.ToUpper()))
@@ -139,6 +150,25 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
                 .ForMember(dest => dest.OrganizacaoProcesso, opt => opt.Ignore())
                 .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => new Guid(src.GuidOrganizacao)));
+            #endregion
+
+            #region Mapeamento de Rascunho de Processo
+            CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcesso>()
+                .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
+                .ForMember(dest => dest.Atividade, opt => opt.Ignore())
+                .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => src.InteressadosPessoaFisica))
+                .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica))
+                .ForMember(dest => dest.MunicipiosRascunhoProcesso, opt => opt.MapFrom(src => src.MunicipiosRascunhoProcesso))
+                .ForMember(dest => dest.SinalizacoesRascunhoProcesso, opt => opt.MapFrom(src => src.Sinalizacoes))
+                .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => new Guid(src.GuidOrganizacao)))
+                .ForMember(dest => dest.GuidUnidade, opt => opt.MapFrom(src => new Guid(src.GuidUnidade)))
+                .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.Ignore());
+            
+            CreateMap<RascunhoProcesso, RascunhoProcessoModeloNegocio>()
+                .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(s => s.SinalizacoesRascunhoProcesso != null ? Mapper.Map<List<SinalizacaoRascunhoProcesso>, List<SinalizacaoModeloNegocio>>(s.SinalizacoesRascunhoProcesso.ToList()) : null))
+                .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => src.GuidOrganizacao.ToString("D")))
+                .ForMember(dest => dest.GuidUnidade, opt => opt.MapFrom(src => src.GuidUnidade.ToString("D")))
+                .MaxDepth(1);
             #endregion
 
             #region Mapeamento de Processo
@@ -181,8 +211,7 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.IdDestinacaoFinal, opt => opt.MapFrom(src => src.DestinacaoFinal.Id));
 
             #endregion
-
-
+            
             #region Mapeamento de Sinalização
             CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()
                 .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem == null ? null : src.Imagem));

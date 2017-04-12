@@ -16,34 +16,46 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
 
             Anexos = UnitOfWork.MakeGenericRepository<Anexo>();
             Atividades = UnitOfWork.MakeGenericRepository<Atividade>();
+            Contatos = UnitOfWork.MakeGenericRepository<Contato>();
             Despachos = UnitOfWork.MakeGenericRepository<Despacho>();
+            Emails = UnitOfWork.MakeGenericRepository<Email>();
             DestinacoesFinais = UnitOfWork.MakeGenericRepository<DestinacaoFinal>();
             Funcoes = UnitOfWork.MakeGenericRepository<Funcao>();
+            InteressadosPessoaJuridica = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridica>();
+            InteressadosPessoaFisica = UnitOfWork.MakeGenericRepository<InteressadoPessoaFisica>();
+            MunicipiosRascunhoProcesso = UnitOfWork.MakeGenericRepository<MunicipioRascunhoProcesso>();
             PlanosClassificacao = UnitOfWork.MakeGenericRepository<PlanoClassificacao>();
             OrganizacoesProcesso = UnitOfWork.MakeGenericRepository<OrganizacaoProcesso>();
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
+            RascunhosProcesso = UnitOfWork.MakeGenericRepository<RascunhoProcesso>();
+            SinalizacoesRascunhoProcesso = UnitOfWork.MakeGenericRepository<SinalizacaoRascunhoProcesso>();
             TiposContato = UnitOfWork.MakeGenericRepository<TipoContato>();
             TiposDocumentais = UnitOfWork.MakeGenericRepository<TipoDocumental>();
             Sinalizacoes = UnitOfWork.MakeGenericRepository<Sinalizacao>();
+
         }
 
         public IUnitOfWork UnitOfWork { get; private set; }
 
         public IRepositorioGenerico<Anexo> Anexos { get; private set; }
         public IRepositorioGenerico<Atividade> Atividades { get; private set; }
+        public IRepositorioGenerico<Contato> Contatos { get; private set; }
         public IRepositorioGenerico<Despacho> Despachos { get; private set; }
+        public IRepositorioGenerico<Email> Emails { get; private set; }
         public IRepositorioGenerico<DestinacaoFinal> DestinacoesFinais { get; private set; }
         public IRepositorioGenerico<Funcao> Funcoes { get; private set; }
+        public IRepositorioGenerico<InteressadoPessoaFisica> InteressadosPessoaFisica { get; private set; }
+        public IRepositorioGenerico<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; private set; }
+        public IRepositorioGenerico<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; private set; }
         public IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; private set; }
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }
         public IRepositorioGenerico<Processo> Processos { get; private set; }
+        public IRepositorioGenerico<RascunhoProcesso> RascunhosProcesso { get; private set; }
+        public IRepositorioGenerico<SinalizacaoRascunhoProcesso> SinalizacoesRascunhoProcesso { get; private set; }
         public IRepositorioGenerico<TipoContato> TiposContato { get; private set; }
-
         public IRepositorioGenerico<TipoDocumental> TiposDocumentais { get; private set; }
         public IRepositorioGenerico<Sinalizacao> Sinalizacoes { get; private set; }
-
-
-
+        
         public void Dispose()
         {
             UnitOfWork.Dispose();

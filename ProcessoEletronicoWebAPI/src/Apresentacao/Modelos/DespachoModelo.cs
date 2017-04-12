@@ -33,7 +33,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string NomeUsuarioDespachante { get; set; }
         public string DataHoraDespacho { get; set; }
         public List<AnexoModeloGet> Anexos { get; set; }
-        public ProcessoModelo Processo { get; set; }
+        public RascunhoProcessoModelo Processo { get; set; }
     }
 
     public class DespachoSimplesModeloGet

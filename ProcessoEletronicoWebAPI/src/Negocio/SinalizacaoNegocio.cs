@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
 using System;
 
-namespace ProcessoEletronicoService.Negocio.Restrito
+namespace ProcessoEletronicoService.Negocio
 {
     public class SinalizacaoNegocio : ISinalizacaoNegocio
     {

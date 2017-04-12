@@ -30,9 +30,17 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         internal void PodeAutuarProcessoNaOrganizacao(ProcessoModeloNegocio processoNegocio, Guid usuarioGuidOrganizacao)
         {
-
-            if (!usuarioGuidOrganizacao.Equals(new Guid(processoNegocio.GuidOrganizacaoAutuadora)))
+            Guid guidOrganizacaoAutuadora = new Guid(processoNegocio.GuidOrganizacaoAutuadora);
+            if (!usuarioGuidOrganizacao.Equals(guidOrganizacaoAutuadora))
                 throw new RequisicaoInvalidaException("Usuário não possui permissão para autuar processo para a organização informada.");
+        }
+
+        internal void PodeSalvarProcessoNaOrganizacao(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio, Guid usuarioGuidOrganizacao)
+        {
+            Guid guidOrganizacao = new Guid(rascunhoProcessoNegocio.GuidOrganizacao);
+
+            if (!usuarioGuidOrganizacao.Equals(guidOrganizacao))
+                throw new RequisicaoInvalidaException("Usuário não possui permissão para salvar processo para a organização informada.");
         }
     }
 }
