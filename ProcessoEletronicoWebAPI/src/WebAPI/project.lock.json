@@ -4247,6 +4247,7 @@
         "dependencies": {
           "AutoMapper": "5.2.0",
           "Dominio": "1.0.0",
+          "Microsoft.AspNetCore.JsonPatch": "1.0.0",
           "Microsoft.AspNetCore.StaticFiles": "1.1.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
           "NEST": "2.4.3",
@@ -8668,6 +8669,7 @@
         "dependencies": {
           "AutoMapper": "5.2.0",
           "Dominio": "1.0.0",
+          "Microsoft.AspNetCore.JsonPatch": "1.0.0",
           "Microsoft.AspNetCore.StaticFiles": "1.1.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
           "NEST": "2.4.3",
@@ -13053,6 +13055,7 @@
         "dependencies": {
           "AutoMapper": "5.2.0",
           "Dominio": "1.0.0",
+          "Microsoft.AspNetCore.JsonPatch": "1.0.0",
           "Microsoft.AspNetCore.StaticFiles": "1.1.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
           "NEST": "2.4.3",

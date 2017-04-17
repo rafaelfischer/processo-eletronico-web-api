@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProcessoEletronicoService.Apresentacao.Base;
@@ -118,7 +119,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
                                  
         }
         #endregion
-        #region PATCH
+        #region PUT
 
         /// <summary>
         /// Altera o rascunhos de processo de acordo com o identificador informado.
@@ -129,18 +130,18 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="400">Retorna o motivo da requisição estar inválida.</response>
         /// <response code="404">Rascunho de processo não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Alterar(RascunhoProcessoModeloPatch rascunhoProcessoPatch)
+        public IActionResult Alterar(int id, [FromBody] AlteraRascunhoProcesso alteraRascunhoProcesso)
         {
             try
             {
-                service.Alterar(rascunhoProcessoPatch);
-                return Ok();
+                RascunhoProcessoCompletoModelo rascunhoProcessoCompleto =  service.Alterar(id, alteraRascunhoProcesso);
+                return Ok(rascunhoProcessoCompleto);
             }
             catch (RequisicaoInvalidaException e)
             {

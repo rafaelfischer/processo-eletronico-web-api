@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Negocio.Base;
@@ -45,9 +46,12 @@ namespace ProcessoEletronicoService.Apresentacao
             return Mapper.Map<RascunhoProcessoModeloNegocio, RascunhoProcessoCompletoModelo>(rascunhoProcessoNegocio);
         }
 
-        public RascunhoProcessoCompletoModelo Alterar(RascunhoProcessoModeloPatch rascunhoProcessoPatch)
+        public RascunhoProcessoCompletoModelo Alterar(int id, AlteraRascunhoProcesso alteraRascunhoProcesso)
         {
-            throw new NotImplementedException();
+            RascunhoProcessoModeloNegocio rascunhoProcessoModeloNegocio = Mapper.Map<RascunhoProcessoModeloNegocio>(alteraRascunhoProcesso);
+            rascunhoProcessoModeloNegocio = rascunhoProcessoNegocio.Alterar(id, rascunhoProcessoModeloNegocio);
+
+            return Mapper.Map<RascunhoProcessoCompletoModelo>(rascunhoProcessoModeloNegocio);
         }
         
         public void Excluir(int id)

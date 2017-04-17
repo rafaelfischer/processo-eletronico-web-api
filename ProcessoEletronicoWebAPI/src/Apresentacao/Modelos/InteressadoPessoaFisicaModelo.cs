@@ -16,8 +16,9 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string GuidMunicipio { get; set; }
         public List<ContatoModelo> Contatos { get; set; }
         public List<EmailModelo> Emails { get; set; }
-        
+
     }
+    
 
     public class InteressadoPessoaFisicaProcessoGetModelo
     {

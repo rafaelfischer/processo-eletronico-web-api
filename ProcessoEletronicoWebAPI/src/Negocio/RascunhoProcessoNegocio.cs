@@ -18,6 +18,8 @@ namespace ProcessoEletronicoService.Negocio
     public class RascunhoProcessoNegocio : BaseNegocio, IRascunhoProcessoNegocio
     {
         IUnitOfWork unitOfWork;
+        IRepositorioGenerico<Email> repositorioEmails;
+        IRepositorioGenerico<Contato> repositorioContatos;
         IRepositorioGenerico<InteressadoPessoaFisica> repositorioInteressadosPessoaFisica;
         IRepositorioGenerico<InteressadoPessoaJuridica> repositorioInteressadosPessoaJuridica;
         IRepositorioGenerico<MunicipioRascunhoProcesso> repositorioMunicipiosRascunhoProcesso;
@@ -35,6 +37,8 @@ namespace ProcessoEletronicoService.Negocio
         public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
         {
             unitOfWork = repositorios.UnitOfWork;
+            repositorioEmails = repositorios.Emails;
+            repositorioContatos = repositorios.Contatos;
             repositorioInteressadosPessoaFisica = repositorios.InteressadosPessoaFisica;
             repositorioInteressadosPessoaJuridica = repositorios.InteressadosPessoaJuridica;
             repositorioMunicipiosRascunhoProcesso = repositorios.MunicipiosRascunhoProcesso;
@@ -94,10 +98,6 @@ namespace ProcessoEletronicoService.Negocio
 
             /*Informações padrão, como a data de atuação*/
             InformacaoPadrao(rascunhoProcesso);
-
-            //processoValidacao.AtividadePertenceAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
-            //processoValidacao.AtividadePertenceAOrganizacao(processoNegocio);
-            //processoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
             
             repositorioRascunhosProcesso.Add(rascunhoProcesso);
             unitOfWork.Save();
@@ -105,11 +105,36 @@ namespace ProcessoEletronicoService.Negocio
             return Pesquisar(rascunhoProcesso.Id);
         }
 
-        public RascunhoProcessoModeloNegocio Alterar(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
+        public RascunhoProcessoModeloNegocio Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
         {
-            throw new NotImplementedException();
-        }
+            rascunhoProcessoValidacao.Preenchido(rascunhoProcessoNegocio);
+            usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
+            usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
+            usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, UsuarioGuidOrganizacao);
 
+            /*Validações*/
+            rascunhoProcessoValidacao.Valido(rascunhoProcessoNegocio, UsuarioGuidOrganizacao);
+
+            RascunhoProcesso rascunhoProcessoRemover = repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).SingleOrDefault();
+            rascunhoProcessoValidacao.NaoEncontrado(rascunhoProcessoRemover);
+            Excluir(rascunhoProcessoRemover.Id);
+
+            RascunhoProcesso rascunhoProcessoNovo = new RascunhoProcesso();
+            Mapper.Map(rascunhoProcessoNegocio, rascunhoProcessoNovo);
+
+            InformacoesOrganizacao(rascunhoProcessoNovo);
+            InformacoesUnidade(rascunhoProcessoNovo);
+            InformacoesMunicipio(rascunhoProcessoNovo);
+            InformacoesMunicipioInteressadoPessoaFisica(rascunhoProcessoNovo);
+            InformacoesMunicipioInteressadoPessoaJuridica(rascunhoProcessoNovo);
+            InformacaoPadrao(rascunhoProcessoNovo);
+
+            repositorioRascunhosProcesso.Add(rascunhoProcessoNovo);
+            unitOfWork.Save();
+
+            return Pesquisar(rascunhoProcessoNovo.Id);
+        }
+        
         public void Excluir(int id)
         {
             RascunhoProcesso rascunhoProcesso = repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).Include(p => p.Anexos)
@@ -126,7 +151,7 @@ namespace ProcessoEletronicoService.Negocio
             interessadoPessoaJuridicaNegocio.Excluir(rascunhoProcesso.InteressadosPessoaJuridica);
             municipioRascunhoProcessoNegocio.Excluir(rascunhoProcesso.MunicipiosRascunhoProcesso);
             sinalizacaoRascunhoProcessoNegocio.Excluir(rascunhoProcesso.SinalizacoesRascunhoProcesso);
-            
+
             repositorioRascunhosProcesso.Remove(rascunhoProcesso);
             unitOfWork.Save();
 
@@ -147,7 +172,7 @@ namespace ProcessoEletronicoService.Negocio
             rascunhoProcesso.SiglaOrganizacao = organizacao.sigla;
         }
 
-        
+
 
         private void InformacoesUnidade(RascunhoProcesso rascunhoProcesso)
         {
@@ -223,7 +248,7 @@ namespace ProcessoEletronicoService.Negocio
         }
 
         #endregion
-        
+
         private void InformacaoPadrao(RascunhoProcesso rascunhoProcesso)
         {
             var organizacaoProcesso = repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
@@ -233,6 +258,6 @@ namespace ProcessoEletronicoService.Negocio
 
             rascunhoProcesso.IdOrganizacaoProcesso = idOrganizacaoProcesso;
         }
-        
+
     }
 }

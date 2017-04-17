@@ -35,6 +35,11 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             return _set.Remove(entity).Entity;
         }
 
+        public TEntity Update (TEntity entity)
+        {
+            return _set.Update(entity).Entity;
+        }
+
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             _set.RemoveRange(entities);

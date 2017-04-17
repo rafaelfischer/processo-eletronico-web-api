@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string GuidMunicipio { get; set; }
 
     }
-
+    
     public class MunicipioProcessoModeloGet : MunicipioProcessoModeloPost
     {
         public string Uf { get; set; }

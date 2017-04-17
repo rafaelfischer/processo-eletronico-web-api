@@ -24,6 +24,11 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         {
             _context.SaveChanges();
         }
+        
+        public void Attach(object entity)
+        {
+            _context.Attach(entity);
+        }
 
         public void Dispose()
         {
