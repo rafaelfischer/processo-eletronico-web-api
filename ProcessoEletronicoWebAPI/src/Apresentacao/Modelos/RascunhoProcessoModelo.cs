@@ -9,7 +9,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
     public class RascunhoProcessoModeloPost
     {
         public int? IdAtividade { get; set; }
-        
+
         public string Resumo { get; set; }
         public List<InteressadoPessoaFisicaModelo> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaModelo> InteressadosPessoaJuridica { get; set; }
@@ -20,12 +20,22 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string GuidOrganizacao { get; set; }
         [Required]
         public string GuidUnidade { get; set; }
-      }
+    }
 
-    public class RascunhoProcessoModeloPatch : RascunhoProcessoModeloPost
+    public class AlteraRascunhoProcesso
     {
+        public int? IdAtividade { get; set; }
+        public string Resumo { get; set; }
         [Required]
-        public int Id { get; set; }
+        public string GuidOrganizacao { get; set; }
+        [Required]
+        public string GuidUnidade { get; set; }
+        public List<InteressadoPessoaFisicaModelo> InteressadosPessoaFisica { get; set; }
+        public List<InteressadoPessoaJuridicaModelo> InteressadosPessoaJuridica { get; set; }
+        public List<MunicipioProcessoModeloPost> MunicipiosRascunhoProcesso { get; set; }
+        public List<AnexoModelo> Anexos { get; set; }
+        public List<int> IdSinalizacoes { get; set; }
+
     }
 
     public class RascunhoProcessoModelo

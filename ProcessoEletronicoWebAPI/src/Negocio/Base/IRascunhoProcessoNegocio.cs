@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Negocio.Modelos;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace ProcessoEletronicoService.Negocio.Base
         //List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(string guidUnidade);
         List<RascunhoProcessoModeloNegocio> PesquisarRascunhosProcessoNaOrganizacao(Guid guidOrganizacao);
         RascunhoProcessoModeloNegocio Salvar(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio);
-        RascunhoProcessoModeloNegocio Alterar(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio);
+        RascunhoProcessoModeloNegocio Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoAlterado);
         void Excluir(int id);
     }
 }

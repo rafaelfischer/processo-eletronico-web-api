@@ -11,6 +11,7 @@ namespace ProcessoEletronicoService.Dominio.Base
     {
         T Add(T entity);
         void AddRange(IEnumerable<T> entities);
+        T Update(T entity);
         T Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
         IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path)

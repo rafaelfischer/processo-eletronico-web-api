@@ -31,6 +31,26 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         #region Preenchimento de campos obrigatórios
         public void Preenchido(RascunhoProcessoModeloNegocio rascunhoProcesso)
         {
+            GuidOrganizacaoPreenchido(rascunhoProcesso);
+            GuidUnidadePreenchida(rascunhoProcesso);
+        }
+
+        /*Órgao Autuador*/
+        internal void GuidOrganizacaoPreenchido(RascunhoProcessoModeloNegocio rascunhoProcesso)
+        {
+            if (string.IsNullOrWhiteSpace(rascunhoProcesso.GuidOrganizacao))
+            {
+                throw new RequisicaoInvalidaException("Identificador da Organização não preenchido.");
+            }
+        }
+
+        /*Unidade Autuadora*/
+        internal void GuidUnidadePreenchida(RascunhoProcessoModeloNegocio rascunhoProcesso)
+        {
+            if (string.IsNullOrWhiteSpace(rascunhoProcesso.GuidUnidade))
+            {
+                throw new RequisicaoInvalidaException("Identificador da Unidade Autuadora não preenchido.");
+            }
         }
         #endregion
 

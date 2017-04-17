@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Apresentacao.Modelos;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using ProcessoEletronicoService.Apresentacao.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ProcessoEletronicoService.Apresentacao.Base
         RascunhoProcessoCompletoModelo Pesquisar(int id);
         List<RascunhoProcessoModelo> PesquisarRascunhosProcessoNaOrganizacao(string guidOrganizacao);
         RascunhoProcessoCompletoModelo Salvar(RascunhoProcessoModeloPost rascunhoProcessoPost);
-        RascunhoProcessoCompletoModelo Alterar(RascunhoProcessoModeloPatch rascunhoProcessoPatch);
+        RascunhoProcessoCompletoModelo Alterar(int id, AlteraRascunhoProcesso alteraRascunhoProcesso);
         void Excluir(int id);
         
         //List<RascunhoProcessoModelo> PesquisarProcessosNaUnidade(string guidUnidade);

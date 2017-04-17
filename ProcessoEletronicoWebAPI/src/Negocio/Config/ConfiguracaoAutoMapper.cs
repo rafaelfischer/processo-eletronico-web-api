@@ -154,6 +154,7 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #region Mapeamento de Rascunho de Processo
             CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcesso>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
                 .ForMember(dest => dest.Atividade, opt => opt.Ignore())
                 .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => src.InteressadosPessoaFisica))
