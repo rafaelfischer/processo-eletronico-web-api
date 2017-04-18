@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
@@ -19,7 +17,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IRascunhoProcessoWorkService service;
         
-        public RascunhosProcessoController (IRascunhoProcessoWorkService service, IHttpContextAccessor httpContextAccessor) : base (httpContextAccessor)
+        public RascunhosProcessoController (IRascunhoProcessoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base (httpContextAccessor, clientAccessToken)
         {
             this.service = service;
             this.service.Usuario = UsuarioAutenticado;
