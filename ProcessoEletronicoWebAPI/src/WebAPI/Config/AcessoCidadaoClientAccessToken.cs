@@ -77,7 +77,7 @@ namespace ProcessoEletronicoService.WebAPI.Config
         {
             bool expired = true;
 
-            if (_expireTime.HasValue && _expireTime.Value < now)
+            if (_expireTime.HasValue && _expireTime.Value > now)
                 expired = false;
 
             return expired;
