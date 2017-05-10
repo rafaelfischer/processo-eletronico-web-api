@@ -15,7 +15,7 @@ namespace ProcessoEletronicoService.Negocio.Base
         //List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(string guidUnidade);
         List<RascunhoProcessoModeloNegocio> PesquisarRascunhosProcessoNaOrganizacao(Guid guidOrganizacao);
         RascunhoProcessoModeloNegocio Salvar(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio);
-        RascunhoProcessoModeloNegocio Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoAlterado);
+        void Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoAlterado);
         void Excluir(int id);
     }
 }

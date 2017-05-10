@@ -32,4 +32,9 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<ContatoProcessoGetModelo> Contatos { get; set; }
         public List<EmailModelo> Emails { get; set; }
     }
+
+    public class GetInteressadoPessoaFisicaRascunhoProcesso
+    {
+
+    }
 }

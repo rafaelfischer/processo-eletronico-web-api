@@ -18,7 +18,8 @@
     "Swashbuckle": "6.0.0-beta902",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.1.0",
-    "IdentityServer4.AccessTokenValidation": "1.0.1-rc4-update1"
+    "IdentityServer4.AccessTokenValidation": "1.0.1-rc4-update1",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.1"
   },
 
   "tools": {

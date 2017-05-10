@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -50,6 +51,7 @@ namespace WebAPI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IClientAccessToken, AcessoCidadaoClientAccessToken>();
 
+            services.AddAutoMapper();
             InjecaoDependencias.InjetarDependencias(services);
             ConfiguracaoAutoMapper.CriarMapeamento();
 
@@ -107,7 +109,7 @@ namespace WebAPI
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             #region Configurações de autenticação
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -129,6 +131,7 @@ namespace WebAPI
             });
             #endregion
 
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
 
             #region Configuração do Swagger

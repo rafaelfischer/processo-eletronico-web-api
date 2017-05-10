@@ -99,6 +99,5 @@ namespace ProcessoEletronicoService.WebAPI.Base
             public string sigla { get; set; }
         }
     }
-
-
+    
 }

@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -15,12 +18,14 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/rascunhos-processo")]
     public class RascunhosProcessoController : BaseController
     {
-        IRascunhoProcessoWorkService service;
-        
-        public RascunhosProcessoController (IRascunhoProcessoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base (httpContextAccessor, clientAccessToken)
+        IRascunhoProcessoNegocio _negocio;
+        IMapper _mapper;
+
+        public RascunhosProcessoController(IRascunhoProcessoNegocio negocio, IMapper mapper, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
-            this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
+            _negocio = negocio;
+            _negocio.Usuario = UsuarioAutenticado;
+            _mapper = mapper;
         }
 
         #region GET
@@ -33,26 +38,14 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="200">Rascunho de processo correspondente ao identificador.</response>
         /// <response code="404">Rascunho de processo não foi encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(RascunhoProcessoCompletoModelo), 200)]
+        [HttpGet("{id}", Name = "GetRascunhoProcesso")]
+        [ProducesResponseType(typeof(GetRascunhoProcessoDto), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<GetRascunhoProcessoDto>(_negocio.Pesquisar(id)));
         }
-
 
         /// <summary>
         /// Retorna a lista de rascunhos de processo da organização especificada.
@@ -60,64 +53,58 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <param name="guidOrganizacao">Identificador da organização.</param>
         /// <returns>Lista de rascunhos de processo da organização especificada.</returns>
         /// <response code="200">Retorna a lista de rascunhos de processo da organização especificada.</response>
+        /// <response code="404">Recurso não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpGet("organizacao/{guidOrganizacao}")]
-        [ProducesResponseType(typeof(List<RascunhoProcessoModelo>), 200)]
+        [ProducesResponseType(typeof(List<GetRascunhoProcessoPorOrganizacaoDto>), 200)]
+        [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarPorOganizacao(string guidOrganizacao)
         {
-            try
+            Guid guid;
+            if (Guid.TryParse(guidOrganizacao, out guid))
             {
-                return new ObjectResult(service.PesquisarRascunhosProcessoNaOrganizacao(guidOrganizacao));
+                return Ok(_mapper.Map<GetRascunhoProcessoPorOrganizacaoDto>(_negocio.PesquisarRascunhosProcessoNaOrganizacao(guid)));
             }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+
+            //Guid inválido
+            return BadRequest();
+
         }
         #endregion
 
         #region POST
-        
+
         /// <summary>
         /// Salvamento de Rascunhos Processos (inserção de processos).
         /// </summary>
         /// <param name="rascunhoProcessoPost">Informações do rascunho de processo.</param>
         /// <returns>URL do rascunho de processo inserido no cabeçalho da resposta e o rascunho de processo recém inserido</returns>
         /// <response code="201">Retorna o rascunho de processo recém inserido.</response>
-        /// <response code="400">Retorna o motivo da requisição estar inválida.</response>
+        /// <response code="400">Objeto não reconhecido.</response>
         /// <response code="404">Recurso não encontrado.</response>
+        /// <response code="422">Informa o motivo do objeto estar inválido.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
-        [ProducesResponseType(typeof(RascunhoProcessoCompletoModelo), 201)]
+        [ProducesResponseType(typeof(GetRascunhoProcessoDto), 201)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Salvar([FromBody]RascunhoProcessoModeloPost rascunhoProcessoPost)
+        public IActionResult Salvar([FromBody]PostRascunhoProcessoDto rascunhoProcessoPost)
         {
-            try
+            if (rascunhoProcessoPost == null)
             {
-                HttpRequest request = HttpContext.Request;
-                RascunhoProcessoCompletoModelo rascunhoProcessoCompleto = service.Salvar(rascunhoProcessoPost);
-                return Created(request.Scheme + "://"+ request.Host.Value + request.Path.Value + "/" + rascunhoProcessoCompleto.Id , rascunhoProcessoCompleto);
+                return BadRequest();
             }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
-                                 
+
+            //Mapeia para o modelo de negócio, obém o resultado e mapeia para o modelo de apresentação
+            GetRascunhoProcessoDto rascunhoProcesso = _mapper.Map<GetRascunhoProcessoDto>(_negocio.Salvar(_mapper.Map<RascunhoProcessoModeloNegocio>(rascunhoProcessoPost)));
+            return CreatedAtRoute("GetRascunhoProcesso", new { id = rascunhoProcesso.Id }, rascunhoProcesso);
         }
         #endregion
-        #region PUT
+        #region PATCH
 
         /// <summary>
         /// Altera o rascunhos de processo de acordo com o identificador informado.
@@ -125,34 +112,33 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <param name="id">Identificador da organização.</param>
         /// <returns></returns>
         /// <response code="200">Rascunho de processo alterado com sucesso.</response>
-        /// <response code="400">Retorna o motivo da requisição estar inválida.</response>
+        /// <response code="400">Objeto não reconhecido</response>
         /// <response code="404">Rascunho de processo não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
-        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(void), 204)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Alterar(int id, [FromBody] AlteraRascunhoProcesso alteraRascunhoProcesso)
+        public IActionResult Alterar(int id, [FromBody]  JsonPatchDocument<PatchRascunhoProcessoDto> patchRascunhoProcesso)
         {
-            try
+            if (patchRascunhoProcesso == null)
             {
-                RascunhoProcessoCompletoModelo rascunhoProcessoCompleto =  service.Alterar(id, alteraRascunhoProcesso);
-                return Ok(rascunhoProcessoCompleto);
+                return BadRequest();
             }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+
+            RascunhoProcessoModeloNegocio rascunhoProcessoNegocio = _negocio.Pesquisar(id);
+            PatchRascunhoProcessoDto rascunhoProcesso = _mapper.Map<PatchRascunhoProcessoDto>(rascunhoProcessoNegocio);
+
+            //Validação da existência de um "path" será feita posteriormente. Por enquanto caminhos não existentes são ignorados.
+            patchRascunhoProcesso.ApplyTo(rascunhoProcesso, ModelState);
+
+            _mapper.Map(rascunhoProcesso, rascunhoProcessoNegocio);
+            _negocio.Alterar(id, rascunhoProcessoNegocio);
+            return NoContent();
+
         }
         #endregion
 
@@ -166,31 +152,14 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="500">Retorna a descrição do erro.</response>
         [HttpDelete("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
-        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(void), 204)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Excluir(int id)
         {
-            try
-            {
-                service.Excluir(id);
-                return Ok();
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            _negocio.Excluir(id);
+            return NoContent();
         }
         #endregion
-
-
     }
 }

@@ -105,8 +105,11 @@ namespace ProcessoEletronicoService.Negocio
             return Pesquisar(rascunhoProcesso.Id);
         }
 
-        public RascunhoProcessoModeloNegocio Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
+        public void Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
         {
+            RascunhoProcesso rascunhoProcesso = repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).SingleOrDefault();
+            rascunhoProcessoValidacao.NaoEncontrado(rascunhoProcesso);
+
             rascunhoProcessoValidacao.Preenchido(rascunhoProcessoNegocio);
             usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
             usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
@@ -115,24 +118,8 @@ namespace ProcessoEletronicoService.Negocio
             /*Validações*/
             rascunhoProcessoValidacao.Valido(rascunhoProcessoNegocio, UsuarioGuidOrganizacao);
 
-            RascunhoProcesso rascunhoProcessoRemover = repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).SingleOrDefault();
-            rascunhoProcessoValidacao.NaoEncontrado(rascunhoProcessoRemover);
-            Excluir(rascunhoProcessoRemover.Id);
-
-            RascunhoProcesso rascunhoProcessoNovo = new RascunhoProcesso();
-            Mapper.Map(rascunhoProcessoNegocio, rascunhoProcessoNovo);
-
-            InformacoesOrganizacao(rascunhoProcessoNovo);
-            InformacoesUnidade(rascunhoProcessoNovo);
-            InformacoesMunicipio(rascunhoProcessoNovo);
-            InformacoesMunicipioInteressadoPessoaFisica(rascunhoProcessoNovo);
-            InformacoesMunicipioInteressadoPessoaJuridica(rascunhoProcessoNovo);
-            InformacaoPadrao(rascunhoProcessoNovo);
-
-            repositorioRascunhosProcesso.Add(rascunhoProcessoNovo);
+            MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
             unitOfWork.Save();
-
-            return Pesquisar(rascunhoProcessoNovo.Id);
         }
         
         public void Excluir(int id)
@@ -257,6 +244,12 @@ namespace ProcessoEletronicoService.Negocio
             int idOrganizacaoProcesso = organizacaoProcesso.Id;
 
             rascunhoProcesso.IdOrganizacaoProcesso = idOrganizacaoProcesso;
+        }
+
+        private void MapAlteracaoRascunhoProcesso(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio, RascunhoProcesso rascunhoProcesso)
+        {
+            rascunhoProcesso.IdAtividade = rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null;
+            rascunhoProcesso.Resumo = rascunhoProcessoNegocio.Resumo;
         }
 
     }
