@@ -22,24 +22,23 @@ namespace ProcessoEletronicoService.Negocio
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
 
-        private IContatoNegocio contatoNegocio;
-        private IEmailNegocio emailNegocio;
+        private IContatoNegocio _contatoNegocio;
+        private IEmailNegocio _emailNegocio;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
 
 
-        public InteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, InteressadoPessoaFisicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao)
+        public InteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, InteressadoPessoaFisicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, IContatoNegocio contatoNegocio, IEmailNegocio emailNegocio)
         {
             _repositorioInteressadosPessoaFisica = repositorios.InteressadosPessoaFisica;
             _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
             _validacao = validacao;
             _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
             _usuarioValidacao = usuarioValidacao;
-            contatoNegocio = new ContatoNegocio(repositorios);
-            emailNegocio = new EmailNegocio(repositorios);
+            _contatoNegocio = contatoNegocio;
+            _emailNegocio = emailNegocio;
             _mapper = mapper;
             _unitOfWork = repositorios.UnitOfWork;
-
         }
 
         public IList<InteressadoPessoaFisicaModeloNegocio> Get(int idRascunhoProcesso)
@@ -96,8 +95,8 @@ namespace ProcessoEletronicoService.Negocio
             _validacao.NaoEncontrado(interessadoPessoaFisica);
 
             //Excluir emails e contatos (caso haja)
-            emailNegocio.Delete(interessadoPessoaFisica.Emails);
-            contatoNegocio.Delete(interessadoPessoaFisica.Contatos);
+            _emailNegocio.Delete(interessadoPessoaFisica.Emails);
+            _contatoNegocio.Delete(interessadoPessoaFisica.Contatos);
             _repositorioInteressadosPessoaFisica.Remove(interessadoPessoaFisica);
             _unitOfWork.Save();
         }
@@ -117,8 +116,8 @@ namespace ProcessoEletronicoService.Negocio
         {
             if (interessadoPessoaFisica != null)
             {
-                contatoNegocio.Delete(interessadoPessoaFisica.Contatos);
-                emailNegocio.Delete(interessadoPessoaFisica.Emails);
+                _contatoNegocio.Delete(interessadoPessoaFisica.Contatos);
+                _emailNegocio.Delete(interessadoPessoaFisica.Emails);
                 _repositorioInteressadosPessoaFisica.Remove(interessadoPessoaFisica);
             }
         }
