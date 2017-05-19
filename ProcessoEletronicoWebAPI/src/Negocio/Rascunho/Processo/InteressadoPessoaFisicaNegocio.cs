@@ -1,5 +1,4 @@
-﻿using ProcessoEletronicoService.Negocio.Base;
-using ProcessoEletronicoService.Dominio.Base;
+﻿using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
 
 namespace ProcessoEletronicoService.Negocio
 {

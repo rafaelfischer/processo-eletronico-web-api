@@ -2,7 +2,7 @@
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using System.Collections.Generic;
 
-namespace ProcessoEletronicoService.Negocio.Base
+namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
 {
     public interface IEmailNegocio : IBaseNegocio
     {

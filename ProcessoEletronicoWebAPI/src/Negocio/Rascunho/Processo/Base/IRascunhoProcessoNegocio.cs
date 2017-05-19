@@ -3,7 +3,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
 
-namespace ProcessoEletronicoService.Negocio.Base
+namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
 {
     public interface IRascunhoProcessoNegocio : IBaseNegocio
     {
