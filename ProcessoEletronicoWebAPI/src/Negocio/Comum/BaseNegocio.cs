@@ -1,14 +1,11 @@
-﻿using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using ProcessoEletronicoService.Negocio.Base;
+﻿using Newtonsoft.Json;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
-namespace ProcessoEletronicoService.Negocio
+namespace ProcessoEletronicoService.Negocio.Comum
 {
     public class BaseNegocio : IBaseNegocio
     {

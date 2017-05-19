@@ -3,6 +3,7 @@ using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio;
 using System;
 using System.Collections.Generic;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo;
 
 namespace ProcessoEletronicoService.Apresentacao.Configuracao
 {

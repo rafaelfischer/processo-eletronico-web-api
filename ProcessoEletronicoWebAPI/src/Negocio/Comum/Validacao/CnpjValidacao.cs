@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace ProcessoEletronicoService.Negocio.Validacao
+namespace ProcessoEletronicoService.Negocio.Comum.Validacao
 {
     public class CnpjValidacao
     {

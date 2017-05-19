@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Negocio.Modelos;
+﻿using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -79,19 +79,6 @@ namespace ProcessoEletronicoService.Negocio.Config
                 ;
             #endregion
 
-            #region Mapeamento de Interessado Pessoa Física
-
-            CreateMap<InteressadoPessoaFisicaModeloNegocio, InteressadoPessoaFisica>()
-                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => new Guid(src.GuidMunicipio)))
-                .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails));
-
-            CreateMap<InteressadoPessoaFisica, InteressadoPessoaFisicaModeloNegocio>()
-                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.GuidMunicipio.ToString("D")))
-                .ForMember(dest => dest.Contatos, opt => opt.MapFrom(s => s.Contatos != null ? Mapper.Map<List<Contato>, List<ContatoModeloNegocio>>(s.Contatos.ToList()) : null))
-                .ForMember(dest => dest.Emails, opt => opt.MapFrom(s => s.Emails != null ? Mapper.Map<List<Email>, List<EmailModeloNegocio>>(s.Emails.ToList()) : null));
-            #endregion
-            
             #region Mapeamento de Interesasdo Pessoa Jurídica
 
             CreateMap<InteressadoPessoaJuridicaModeloNegocio, InteressadoPessoaJuridica>()
@@ -167,6 +154,10 @@ namespace ProcessoEletronicoService.Negocio.Config
             
             CreateMap<RascunhoProcesso, RascunhoProcessoModeloNegocio>()
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(s => s.SinalizacoesRascunhoProcesso != null ? Mapper.Map<List<SinalizacaoRascunhoProcesso>, List<SinalizacaoModeloNegocio>>(s.SinalizacoesRascunhoProcesso.ToList()) : null))
+                .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => src.InteressadosPessoaFisica.ToList()))
+                .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica.ToList()))
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
+                .ForMember(dest => dest.MunicipiosRascunhoProcesso, opt => opt.MapFrom(src => src.MunicipiosRascunhoProcesso))
                 .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => src.GuidOrganizacao.ToString("D")))
                 .ForMember(dest => dest.GuidUnidade, opt => opt.MapFrom(src => src.GuidUnidade.ToString("D")))
                 .MaxDepth(1);

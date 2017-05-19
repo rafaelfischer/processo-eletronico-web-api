@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ProcessoEletronicoService.Negocio.Validacao
+namespace ProcessoEletronicoService.Negocio.Comum.Validacao
 {
     public class UsuarioValidacao
     {

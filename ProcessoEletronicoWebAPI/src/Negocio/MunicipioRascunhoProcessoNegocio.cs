@@ -3,6 +3,7 @@ using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using System;
 using System.Collections.Generic;
+using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {

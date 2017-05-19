@@ -10,6 +10,7 @@ using ProcessoEletronicoService.Negocio.Restrito.Validacao;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
+using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {

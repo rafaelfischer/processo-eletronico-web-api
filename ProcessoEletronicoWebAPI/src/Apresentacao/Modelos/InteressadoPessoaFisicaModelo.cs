@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Apresentacao.Modelos
 {
-    public class InteressadoPessoaFisicaModelo
+    public class PostInteressadoPessoaFisicaDto
     {
         [Required]
         public string Nome { get; set; }
@@ -18,9 +18,8 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<EmailModelo> Emails { get; set; }
 
     }
-    
 
-    public class InteressadoPessoaFisicaProcessoGetModelo
+    public class GetInteressadoPessoaFisicaDto
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -33,8 +32,11 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<EmailModelo> Emails { get; set; }
     }
 
-    public class GetInteressadoPessoaFisicaRascunhoProcesso
+    public class PatchInteressadoPessoaFisicaDto
     {
-
+        public string Nome { get; set; }
+        public string Cpf { get; set; }
+        public string GuidMunicipio { get; set; }
     }
+
 }

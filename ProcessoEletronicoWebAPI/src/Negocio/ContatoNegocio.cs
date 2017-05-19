@@ -2,6 +2,7 @@
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using System.Collections.Generic;
+using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -16,18 +17,18 @@ namespace ProcessoEletronicoService.Negocio
             repositorioContatos = repositorios.Contatos;
         }
 
-        public void Excluir (ICollection<Contato> contatos)
+        public void Delete (ICollection<Contato> contatos)
         {
             if (contatos != null)
             {
                 foreach (var contato in contatos)
                 {
-                    Excluir(contato);
+                    Delete(contato);
                 }
             }
         }
 
-        public void Excluir(Contato contato)
+        public void Delete (Contato contato)
         {
             if (contato != null)
             {

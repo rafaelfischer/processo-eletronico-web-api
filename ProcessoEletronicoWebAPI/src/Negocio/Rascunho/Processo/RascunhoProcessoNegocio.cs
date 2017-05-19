@@ -12,8 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
 
-namespace ProcessoEletronicoService.Negocio
+namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
     public class RascunhoProcessoNegocio : BaseNegocio, IRascunhoProcessoNegocio
     {
@@ -34,7 +37,9 @@ namespace ProcessoEletronicoService.Negocio
         MunicipioRascunhoProcessoNegocio municipioRascunhoProcessoNegocio;
         SinalizacaoRascunhoProcessoNegocio sinalizacaoRascunhoProcessoNegocio;
 
-        public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
+        private IMapper _mapper;
+
+        public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper)
         {
             unitOfWork = repositorios.UnitOfWork;
             repositorioEmails = repositorios.Emails;
@@ -46,10 +51,11 @@ namespace ProcessoEletronicoService.Negocio
             repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             rascunhoProcessoValidacao = new RascunhoProcessoValidacao(repositorios);
             usuarioValidacao = new UsuarioValidacao();
-            interessadoPessoaFisicaNegocio = new InteressadoPessoaFisicaNegocio(repositorios);
+            //interessadoPessoaFisicaNegocio = new InteressadoPessoaFisicaNegocio(repositorios, mapper);
             interessadoPessoaJuridicaNegocio = new InteressadoPessoaJuridicaNegocio(repositorios);
             municipioRascunhoProcessoNegocio = new MunicipioRascunhoProcessoNegocio(repositorios);
             sinalizacaoRascunhoProcessoNegocio = new SinalizacaoRascunhoProcessoNegocio(repositorios);
+            _mapper = mapper;
         }
 
         public RascunhoProcessoModeloNegocio Pesquisar(int id)
@@ -67,7 +73,7 @@ namespace ProcessoEletronicoService.Negocio
                                                .SingleOrDefault();
 
             rascunhoProcessoValidacao.NaoEncontrado(rascunhoProcesso);
-            return Mapper.Map<RascunhoProcesso, RascunhoProcessoModeloNegocio>(rascunhoProcesso);
+            return _mapper.Map<RascunhoProcesso, RascunhoProcessoModeloNegocio>(rascunhoProcesso);
         }
 
         public List<RascunhoProcessoModeloNegocio> PesquisarRascunhosProcessoNaOrganizacao(Guid guidOrganizacao)
@@ -87,7 +93,7 @@ namespace ProcessoEletronicoService.Negocio
 
             /*Mapeamento para inserção*/
             RascunhoProcesso rascunhoProcesso = new RascunhoProcesso();
-            rascunhoProcesso = Mapper.Map<RascunhoProcessoModeloNegocio, RascunhoProcesso>(rascunhoProcessoNegocio);
+            rascunhoProcesso = _mapper.Map<RascunhoProcessoModeloNegocio, RascunhoProcesso>(rascunhoProcessoNegocio);
 
             /*Preenchimento das informações que possuem GUID*/
             InformacoesOrganizacao(rascunhoProcesso);
@@ -134,7 +140,7 @@ namespace ProcessoEletronicoService.Negocio
                                                .SingleOrDefault();
             rascunhoProcessoValidacao.NaoEncontrado(rascunhoProcesso);
 
-            interessadoPessoaFisicaNegocio.Excluir(rascunhoProcesso.InteressadosPessoaFisica);
+            interessadoPessoaFisicaNegocio.Delete(rascunhoProcesso.InteressadosPessoaFisica);
             interessadoPessoaJuridicaNegocio.Excluir(rascunhoProcesso.InteressadosPessoaJuridica);
             municipioRascunhoProcessoNegocio.Excluir(rascunhoProcesso.MunicipiosRascunhoProcesso);
             sinalizacaoRascunhoProcessoNegocio.Excluir(rascunhoProcesso.SinalizacoesRascunhoProcesso);

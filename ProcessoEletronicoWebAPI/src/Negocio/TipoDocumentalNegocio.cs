@@ -9,6 +9,7 @@ using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Restrito.Validacao;
+using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {

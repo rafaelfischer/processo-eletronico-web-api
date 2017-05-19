@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
 
 namespace ProcessoEletronicoService.Negocio
 {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using ProcessoEletronicoService.Apresentacao.Base;
 using Microsoft.Extensions.DependencyInjection;
 using ProcessoEletronicoService.Apresentacao;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
 
 namespace ProcessoEletronicoService.WebAPI.Config
 {
@@ -36,6 +38,12 @@ namespace ProcessoEletronicoService.WebAPI.Config
             {
                 services.AddTransient(dep.Key, dep.Value);
             }
+
+            //Demais dependências da camada de negócio (que não possuem interfaces)
+            services.AddTransient(typeof(UsuarioValidacao));
+            services.AddTransient(typeof(RascunhoProcessoValidacao));
+            services.AddTransient(typeof(InteressadoPessoaFisicaValidacao));
+
 
         }
 

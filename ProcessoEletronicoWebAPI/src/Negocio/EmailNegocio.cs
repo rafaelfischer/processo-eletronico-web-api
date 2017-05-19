@@ -10,6 +10,7 @@ using ProcessoEletronicoService.Negocio.Restrito.Validacao;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
+using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -24,7 +25,7 @@ namespace ProcessoEletronicoService.Negocio
             repositorioEmails = repositorios.Emails;
         }
 
-        public void Excluir(Email email)
+        public void Delete(Email email)
         {
             if (email != null)
             {
@@ -32,13 +33,13 @@ namespace ProcessoEletronicoService.Negocio
             }
         }
 
-        public void Excluir(ICollection<Email> emails)
+        public void Delete(ICollection<Email> emails)
         {
             if (emails != null)
             {
                 foreach (var email in emails)
                 {
-                    Excluir(email);
+                    Delete(email);
                 }
             }
         }

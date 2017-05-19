@@ -1,18 +1,16 @@
 ﻿using AutoMapper;
 using ProcessoEletronicoService.Negocio.Base;
-using ProcessoEletronicoService.Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using ProcessoEletronicoService.Infraestrutura.Repositorios;
-using ProcessoEletronicoService.Infraestrutura.Mapeamento;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
 
 namespace ProcessoEletronicoService.Negocio
 {

@@ -17,7 +17,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string NomeUnidade { get; set; }
         public string SiglaUnidade { get; set; }
         public List<AnexoSimplesModeloGet> Anexos { get; set; }
-        public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadosPessoaFisica { get; set; }
+        public List<GetInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }
         public List<MunicipioProcessoModeloGet> MunicipiosProcesso { get; set; }
         public List<SinalizacaoProcessoGetModelo> Sinalizacoes { get; set; }
@@ -42,7 +42,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
     {
         public int? IdAtividade { get; set; }
         public string Resumo { get; set; }
-        public List<InteressadoPessoaFisicaModelo> InteressadosPessoaFisica { get; set; }
+        public List<PostInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaModelo> InteressadosPessoaJuridica { get; set; }
         public List<MunicipioProcessoModeloPost> MunicipiosRascunhoProcesso { get; set; }
         public List<AnexoModelo> Anexos { get; set; }

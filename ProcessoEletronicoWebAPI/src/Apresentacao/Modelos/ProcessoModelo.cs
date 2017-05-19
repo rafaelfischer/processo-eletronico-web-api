@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public int IdAtividade { get; set; }
         [Required]
         public string Resumo { get; set; }
-        public List<InteressadoPessoaFisicaModelo> InteressadosPessoaFisica { get; set; }
+        public List<PostInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaModelo> InteressadosPessoaJuridica { get; set; }
         [Required]
         public List<MunicipioProcessoModeloPost> Municipios { get; set; }
@@ -62,7 +62,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
 
         public List<AnexoSimplesModeloGet> Anexos { get; set; }
         public List<DespachoSimplesModeloGet> Despachos { get; set; }
-        public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadosPessoaFisica { get; set; }
+        public List<GetInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }
         public List<MunicipioProcessoModeloGet> MunicipiosProcesso { get; set; }
         public List<SinalizacaoProcessoGetModelo> Sinalizacoes { get; set; }

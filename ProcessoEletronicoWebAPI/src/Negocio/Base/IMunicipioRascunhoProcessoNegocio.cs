@@ -1,4 +1,5 @@
 ﻿using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Base

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProcessoEletronicoService.Negocio.Base
+namespace ProcessoEletronicoService.Negocio.Comum.Base
 {
     public interface IBaseNegocio
     {

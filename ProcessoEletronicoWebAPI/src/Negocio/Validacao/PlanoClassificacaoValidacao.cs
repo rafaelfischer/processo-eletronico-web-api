@@ -1,11 +1,13 @@
 ﻿using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static ProcessoEletronicoService.Negocio.Comum.BaseNegocio;
 
 namespace ProcessoEletronicoService.Negocio.Validacao
 {
@@ -37,7 +39,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        internal void OrganizacaoPatriarcaExistente(BaseNegocio.OrganizacaoOrganogramaModelo organizacaoPatriarca)
+        internal void OrganizacaoPatriarcaExistente(OrganizacaoOrganogramaModelo organizacaoPatriarca)
         {
             if (organizacaoPatriarca == null)
                 throw new RecursoNaoEncontradoException("Organização patriarca não encontrada.");

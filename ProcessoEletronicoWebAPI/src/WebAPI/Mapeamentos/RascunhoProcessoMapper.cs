@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.WebAPI.Mapeamentos
             
             CreateMap<PostRascunhoProcessoDto, RascunhoProcessoModeloNegocio>()
                 .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.IdAtividade.HasValue ? new AtividadeModeloNegocio { Id = src.IdAtividade.Value } : null))
-                .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaFisicaModelo>, List<InteressadoPessoaFisicaModeloNegocio>>(src.InteressadosPessoaFisica)))
+                .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => Mapper.Map<List<PostInteressadoPessoaFisicaDto>, List<InteressadoPessoaFisicaModeloNegocio>>(src.InteressadosPessoaFisica)))
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModelo>, List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(src => src.IdSinalizacoes))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))

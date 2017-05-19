@@ -64,7 +64,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             Guid guid;
             if (Guid.TryParse(guidOrganizacao, out guid))
             {
-                return Ok(_mapper.Map<GetRascunhoProcessoPorOrganizacaoDto>(_negocio.PesquisarRascunhosProcessoNaOrganizacao(guid)));
+                return Ok(_mapper.Map<List<GetRascunhoProcessoPorOrganizacaoDto>>(_negocio.PesquisarRascunhosProcessoNaOrganizacao(guid)));
             }
 
             //Guid inválido

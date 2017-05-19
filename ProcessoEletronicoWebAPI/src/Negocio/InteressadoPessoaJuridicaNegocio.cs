@@ -2,6 +2,7 @@
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using System.Collections.Generic;
+using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -35,8 +36,8 @@ namespace ProcessoEletronicoService.Negocio
         {
             if (interessadoPessoaJuridica != null)
             {
-                contatoNegocio.Excluir(interessadoPessoaJuridica.Contatos);
-                emailNegocio.Excluir(interessadoPessoaJuridica.Emails);
+                contatoNegocio.Delete(interessadoPessoaJuridica.Contatos);
+                emailNegocio.Delete(interessadoPessoaJuridica.Emails);
                 repositorioInteressadosPessoaJuridica.Remove(interessadoPessoaJuridica);
             }
         }
