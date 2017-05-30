@@ -15,14 +15,19 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             UnitOfWork = new EFUnitOfWork(new ProcessoEletronicoContext());
 
             Anexos = UnitOfWork.MakeGenericRepository<Anexo>();
+            AnexosRascunho = UnitOfWork.MakeGenericRepository<AnexoRascunho>();
             Atividades = UnitOfWork.MakeGenericRepository<Atividade>();
             Contatos = UnitOfWork.MakeGenericRepository<Contato>();
+            ContatosRascunho = UnitOfWork.MakeGenericRepository<ContatoRascunho>();
             Despachos = UnitOfWork.MakeGenericRepository<Despacho>();
             Emails = UnitOfWork.MakeGenericRepository<Email>();
+            EmailsRascunho = UnitOfWork.MakeGenericRepository<EmailRascunho>();
             DestinacoesFinais = UnitOfWork.MakeGenericRepository<DestinacaoFinal>();
             Funcoes = UnitOfWork.MakeGenericRepository<Funcao>();
-            InteressadosPessoaJuridica = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridica>();
             InteressadosPessoaFisica = UnitOfWork.MakeGenericRepository<InteressadoPessoaFisica>();
+            InteressadosPessoaFisicaRascunho = UnitOfWork.MakeGenericRepository<InteressadoPessoaFisicaRascunho>();
+            InteressadosPessoaJuridica = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridica>();
+            InteressadosPessoaJuridicaRascunho = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridicaRascunho>();
             MunicipiosRascunhoProcesso = UnitOfWork.MakeGenericRepository<MunicipioRascunhoProcesso>();
             PlanosClassificacao = UnitOfWork.MakeGenericRepository<PlanoClassificacao>();
             OrganizacoesProcesso = UnitOfWork.MakeGenericRepository<OrganizacaoProcesso>();
@@ -38,14 +43,19 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         public IUnitOfWork UnitOfWork { get; private set; }
 
         public IRepositorioGenerico<Anexo> Anexos { get; private set; }
+        public IRepositorioGenerico<AnexoRascunho> AnexosRascunho { get; private set; }
         public IRepositorioGenerico<Atividade> Atividades { get; private set; }
         public IRepositorioGenerico<Contato> Contatos { get; private set; }
+        public IRepositorioGenerico<ContatoRascunho> ContatosRascunho { get; private set; }
         public IRepositorioGenerico<Despacho> Despachos { get; private set; }
         public IRepositorioGenerico<Email> Emails { get; private set; }
+        public IRepositorioGenerico<EmailRascunho> EmailsRascunho { get; }
         public IRepositorioGenerico<DestinacaoFinal> DestinacoesFinais { get; private set; }
         public IRepositorioGenerico<Funcao> Funcoes { get; private set; }
         public IRepositorioGenerico<InteressadoPessoaFisica> InteressadosPessoaFisica { get; private set; }
+        public IRepositorioGenerico<InteressadoPessoaFisicaRascunho> InteressadosPessoaFisicaRascunho { get; private set; }
         public IRepositorioGenerico<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; private set; }
+        public IRepositorioGenerico<InteressadoPessoaJuridicaRascunho> InteressadosPessoaJuridicaRascunho { get; private set; }
         public IRepositorioGenerico<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; private set; }
         public IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; private set; }
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }

@@ -17,12 +17,16 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
         public static void ExecutaMapeamento()
         {
+            /*
             Mapper.Initialize(cfg =>
             {
                 cfg.AllowNullCollections = true;
                 cfg.AddProfile<ApresentacaoProfile>();
                 cfg.AddProfile<NegocioProfile>();
+                cfg.AddProfiles("WebAPI");
+                //cfg.AddProfile<InteressadoPessoaFisicaMapper>();
             });
+            */
         }
 
     }
@@ -108,8 +112,8 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
 
             #endregion
-            
-            #region Mapeamento de Interessados  Pessoa Jurídica
+
+            #region Mapeamento de Interessados Pessoa Jurídica
             CreateMap<InteressadoPessoaJuridicaModelo, InteressadoPessoaJuridicaModeloNegocio>()
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
                 .ForMember(dest => dest.Emails, opt => opt.MapFrom(src => src.Emails));
@@ -141,7 +145,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
             CreateMap<PlanoClassificacaoModeloPost, PlanoClassificacaoModeloNegocio>();
 
             #endregion
-            
+
             #region Mapeamento de Processo
             CreateMap<ProcessoModeloPost, ProcessoModeloNegocio>()
                 .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => new AtividadeModeloNegocio { Id = src.IdAtividade }))
@@ -201,7 +205,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoProcessoGetModelo>();
             #endregion
-
+            
 
         }
 

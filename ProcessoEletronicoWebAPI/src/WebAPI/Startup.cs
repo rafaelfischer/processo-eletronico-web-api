@@ -8,7 +8,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using ProcessoEletronicoService.Infraestrutura.Mapeamento;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.WebAPI.Base;
+using ProcessoEletronicoService.WebAPI.Common;
 using ProcessoEletronicoService.WebAPI.Config;
 using ProcessoEletronicoService.WebAPI.Middleware;
 using Swashbuckle.Swagger.Model;
@@ -50,6 +52,7 @@ namespace WebAPI
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IClientAccessToken, AcessoCidadaoClientAccessToken>();
+            services.AddScoped<ICurrentUserProvider, CurrentUser>();
 
             services.AddAutoMapper();
             InjecaoDependencias.InjetarDependencias(services);

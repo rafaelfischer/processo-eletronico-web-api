@@ -3,22 +3,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Modelos;
-using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
 using ProcessoEletronicoService.WebAPI.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ProcessoEletronicoService.WebAPI.Controllers
+namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
-
-    /*
-     A rota padrão utiliza o Rascunho do processo, mas há métodos GET que utilizam o identificador do Processo.
-     Nos métodos que utilizarem o identificador do Processo, a rota completa será definida logo acima do método.
-     Não há métodos que resultem em maninupalção de dados (POST, DELETE, PATCH) que utilizam o identificador do processo, apenas rascunho de processos.
-    */
     [Route("api/rascunhos-processo/{idRascunhoProcesso}/interessados-pessoa-fisica")]
     public class InteressadosPessoaFisicaController : BaseController
     {

@@ -4,16 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Modelos;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
-using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
 using ProcessoEletronicoService.WebAPI.Base;
-using ProcessoEletronicoService.WebAPI.Config;
 using System;
 using System.Collections.Generic;
-using System.Net;
 
-namespace ProcessoEletronicoService.WebAPI.Controllers
+namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
     [Route("api/rascunhos-processo")]
     public class RascunhosProcessoController : BaseController
@@ -72,7 +69,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
 
         }
         #endregion
-
         #region POST
 
         /// <summary>
@@ -141,7 +137,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
 
         }
         #endregion
-
         #region DELETE
         /// <summary>
         /// Exclui o rascunho de processo de acordo com o identificador informado.

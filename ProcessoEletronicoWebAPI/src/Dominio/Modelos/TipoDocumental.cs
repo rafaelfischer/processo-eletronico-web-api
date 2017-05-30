@@ -7,7 +7,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public TipoDocumental()
         {
-            Anexo = new HashSet<Anexo>();
+            Anexos = new HashSet<Anexo>();
+            AnexosRascunho = new HashSet<AnexoRascunho>();
         }
 
         public int Id { get; set; }
@@ -22,7 +23,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int IdAtividade { get; set; }
         public bool Obrigatorio { get; set; }
 
-        public virtual ICollection<Anexo> Anexo { get; set; }
+        public virtual ICollection<Anexo> Anexos { get; set; }
+        public virtual ICollection<AnexoRascunho> AnexosRascunho { get; set; }
         public virtual Atividade Atividade { get; set; }
         public virtual DestinacaoFinal DestinacaoFinal { get; set; }
     }

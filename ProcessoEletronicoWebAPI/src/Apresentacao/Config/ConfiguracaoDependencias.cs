@@ -1,9 +1,9 @@
-﻿using ProcessoEletronicoService.Negocio.Restrito;
-using ProcessoEletronicoService.Negocio.Base;
+﻿using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio;
 using System;
 using System.Collections.Generic;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo;
+using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
 
 namespace ProcessoEletronicoService.Apresentacao.Configuracao
 {
@@ -16,12 +16,11 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias = Negocio.Config.ConfiguracaoDependencias.ObterDependencias();
             dependencias.Add(typeof(IAnexoNegocio), typeof(AnexoNegocio));
             dependencias.Add(typeof(IAtividadeNegocio), typeof(AtividadeNegocio));
-            dependencias.Add(typeof(IContatoNegocio), typeof(ContatoNegocio));
-            dependencias.Add(typeof(IEmailNegocio), typeof(EmailNegocio));
+            dependencias.Add(typeof(IContatoInteressadoPessoaFisicaNegocio), typeof(ContatoInteressadoPessoaFisicaNegocio));
             dependencias.Add(typeof(IDespachoNegocio), typeof(DespachoNegocio));
             dependencias.Add(typeof(IDestinacaoFinalNegocio), typeof(DestinacaoFinalNegocio));
             dependencias.Add(typeof(IInteressadoPessoaFisicaNegocio), typeof(InteressadoPessoaFisicaNegocio));
-            dependencias.Add(typeof(IInteressadoPessoaJuridicaNegocio), typeof(InteressadoPessoaJuridicaNegocio));
+            //dependencias.Add(typeof(IInteressadoPessoaJuridicaNegocio), typeof(InteressadoPessoaJuridicaNegocio));
             dependencias.Add(typeof(IFuncaoNegocio), typeof(FuncaoNegocio));
             dependencias.Add(typeof(IRascunhoProcessoNegocio), typeof(RascunhoProcessoNegocio));
             dependencias.Add(typeof(IPlanoClassificacaoNegocio), typeof(PlanoClassificacaoNegocio));

@@ -13,7 +13,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
         void Patch(int idRascunhoProcesso, int id, InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio);
         void Delete(int idRascunhoProcesso, int id);
 
-        void Delete(ICollection<InteressadoPessoaFisica> interessadosPessoaFisica);
-        void Delete(InteressadoPessoaFisica interessadoPessoaFisica);
+        void Delete(ICollection<InteressadoPessoaFisicaRascunho> interessadosPessoaFisica);
+        void Delete(InteressadoPessoaFisicaRascunho interessadoPessoaFisica);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
@@ -9,17 +10,16 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 {
-    public class InteressadoPessoaFisicaValidacao
+    public class InteressadoPessoaFisicaValidacao : IBaseValidation<InteressadoPessoaFisicaModeloNegocio, InteressadoPessoaFisicaRascunho>, IBaseCollectionValidation<InteressadoPessoaFisicaModeloNegocio>
     {
-
-        private IRepositorioGenerico<InteressadoPessoaFisica> _repositorioInteressadosPessoaFisica;
+        private IRepositorioGenerico<InteressadoPessoaFisicaRascunho> _repositorioInteressadosPessoaFisicaRascunho;
 
         public InteressadoPessoaFisicaValidacao(IProcessoEletronicoRepositorios repositorios)
         {
-            _repositorioInteressadosPessoaFisica = repositorios.InteressadosPessoaFisica;
+            _repositorioInteressadosPessoaFisicaRascunho = repositorios.InteressadosPessoaFisicaRascunho;
         }
 
-        public void NaoEncontrado(InteressadoPessoaFisica interessadoPessoaFisica)
+        public void Exists(InteressadoPessoaFisicaRascunho interessadoPessoaFisica)
         {
             if (interessadoPessoaFisica == null)
             {
@@ -27,36 +27,44 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             }
         }
 
-        public void Preenchido(InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
+        public void Exists(int idRascunhoProcesso, int id)
         {
-            NomePreenchido(interessadoPessoaFisicaNegocio);
-            GuidMunicipioPreenchido(interessadoPessoaFisicaNegocio);
-        }
-
-        private void NomePreenchido(InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
-        {
-            if (string.IsNullOrWhiteSpace(interessadoPessoaFisicaNegocio.Nome))
+            if (_repositorioInteressadosPessoaFisicaRascunho.Where(i => i.Id == id && i.IdRascunhoProcesso == idRascunhoProcesso).SingleOrDefault() == null)
             {
-                throw new RequisicaoInvalidaException("Nome do interessado pessoa física deve ser informado.");
+                throw new RecursoNaoEncontradoException("Interessado Pessoa Física não encontrado.");
+            }
+        }
+        
+        public void IsFilled(IEnumerable<InteressadoPessoaFisicaModeloNegocio> interessadosPessoaFisicaNegocio)
+        {
+            if (interessadosPessoaFisicaNegocio != null)
+            {
+                foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessadosPessoaFisicaNegocio)
+                {
+                    IsFilled(interessado);
+                }
             }
         }
 
-        private void GuidMunicipioPreenchido(InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
+        public void IsFilled(InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
         {
-            if (string.IsNullOrWhiteSpace(interessadoPessoaFisicaNegocio.GuidMunicipio))
+        }
+
+        public void IsValid(IEnumerable<InteressadoPessoaFisicaModeloNegocio> interessadosPessoaFisicaNegocio)
+        {
+            foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessadosPessoaFisicaNegocio)
             {
-                throw new RequisicaoInvalidaException("Guid do município do interessado pessoa física deve ser informado.");
+                IsValid(interessado);
             }
         }
 
-        public void Valido(InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
+        public void IsValid(InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
         {
             GuidMunicipioValido(interessadoPessoaFisicaNegocio);
         }
 
         private void GuidMunicipioValido(InteressadoPessoaFisicaModeloNegocio interesadoPessoaFisicaNegocio)
         {
-
             if (interesadoPessoaFisicaNegocio.GuidMunicipio != null)
             {
                 try

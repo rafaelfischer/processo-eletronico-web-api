@@ -9,11 +9,10 @@ namespace ProcessoEletronicoService.WebAPI.Mapeamentos
     {
         public RascunhoProcessoMapper()
         {
-            
             CreateMap<PostRascunhoProcessoDto, RascunhoProcessoModeloNegocio>()
                 .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.IdAtividade.HasValue ? new AtividadeModeloNegocio { Id = src.IdAtividade.Value } : null))
-                .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => Mapper.Map<List<PostInteressadoPessoaFisicaDto>, List<InteressadoPessoaFisicaModeloNegocio>>(src.InteressadosPessoaFisica)))
-                .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModelo>, List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
+                .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaFisicaModeloNegocio>>(src.InteressadosPessoaFisica)))
+                .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(src => src.IdSinalizacoes))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
                 .ForMember(dest => dest.MunicipiosRascunhoProcesso, opt => opt.MapFrom(src => src.MunicipiosRascunhoProcesso));
@@ -33,6 +32,9 @@ namespace ProcessoEletronicoService.WebAPI.Mapeamentos
 
             CreateMap<RascunhoProcessoModeloNegocio, PatchRascunhoProcessoDto>()
                 .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade != null ? src.Atividade.Id : (int?)null));
+
+
+            
         }
     }
 }

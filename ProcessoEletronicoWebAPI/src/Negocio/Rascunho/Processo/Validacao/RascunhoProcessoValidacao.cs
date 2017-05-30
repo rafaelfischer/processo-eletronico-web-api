@@ -1,6 +1,7 @@
 ﻿using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
@@ -9,18 +10,20 @@ using System.Text.RegularExpressions;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 {
-    public class RascunhoProcessoValidacao
+    public class RascunhoProcessoValidacao : IBaseValidation<RascunhoProcessoModeloNegocio, RascunhoProcesso>
     {
-        IRepositorioGenerico<Atividade> repositorioAtividades;
-        IRepositorioGenerico<RascunhoProcesso> repositorioRascunhosProcesso;
+        private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
+        private IRepositorioGenerico<Atividade> _repositorioAtividades;
+        private ICurrentUserProvider _user;
 
-        public RascunhoProcessoValidacao(IProcessoEletronicoRepositorios repositorios)
+        public RascunhoProcessoValidacao(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user)
         {
-            this.repositorioAtividades = repositorios.Atividades;
-            this.repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
+            _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
+            _repositorioAtividades = repositorios.Atividades;
+            _user = user;
         }
 
-        public void NaoEncontrado(RascunhoProcesso rascunhoProcesso)
+        public void Exists(RascunhoProcesso rascunhoProcesso)
         {
             if (rascunhoProcesso == null)
             {
@@ -28,15 +31,23 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             }
         }
 
-        #region Preenchimento de campos obrigatórios
-        public void Preenchido(RascunhoProcessoModeloNegocio rascunhoProcesso)
+        public void Exists(int id)
         {
-            GuidOrganizacaoPreenchido(rascunhoProcesso);
-            GuidUnidadePreenchida(rascunhoProcesso);
+            if (_repositorioRascunhosProcesso.Where(r => r.Id == id).SingleOrDefault() == null)
+            {
+                throw new RecursoNaoEncontradoException("Rascunho de Processo não encontrado");
+            }
+        }
+
+        #region Preenchimento de campos obrigatórios
+        public void IsFilled(RascunhoProcessoModeloNegocio rascunhoProcesso)
+        {
+            GuidOrganizacaoFilled(rascunhoProcesso);
+            GuidUnidadeFilled(rascunhoProcesso);
         }
 
         /*Órgao Autuador*/
-        internal void GuidOrganizacaoPreenchido(RascunhoProcessoModeloNegocio rascunhoProcesso)
+        internal void GuidOrganizacaoFilled(RascunhoProcessoModeloNegocio rascunhoProcesso)
         {
             if (string.IsNullOrWhiteSpace(rascunhoProcesso.GuidOrganizacao))
             {
@@ -45,22 +56,27 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
         }
 
         /*Unidade Autuadora*/
-        internal void GuidUnidadePreenchida(RascunhoProcessoModeloNegocio rascunhoProcesso)
+        internal void GuidUnidadeFilled(RascunhoProcessoModeloNegocio rascunhoProcesso)
         {
             if (string.IsNullOrWhiteSpace(rascunhoProcesso.GuidUnidade))
             {
-                throw new RequisicaoInvalidaException("Identificador da Unidade Autuadora não preenchido.");
+                throw new RequisicaoInvalidaException("Identificador da Unidade não preenchido.");
             }
         }
         #endregion
 
         #region Validação dos campos
 
-        public void Valido(RascunhoProcessoModeloNegocio rascunhoProcesso, Guid guidOrganizacaoUsuario)
+        public void IsValid(RascunhoProcessoModeloNegocio rascunhoProcesso)
+        {
+            AtividadeIsValid(rascunhoProcesso);
+        }
+
+        private void AtividadeIsValid(RascunhoProcessoModeloNegocio rascunhoProcesso)
         {
             if (rascunhoProcesso.Atividade != null && rascunhoProcesso.Atividade.Id > 0)
             {
-                if (repositorioAtividades.Where(a => a.Id == rascunhoProcesso.Atividade.Id).Where(pc => pc.Funcao.PlanoClassificacao.GuidOrganizacao.Equals(guidOrganizacaoUsuario)).SingleOrDefault() == null)
+                if (_repositorioAtividades.Where(a => a.Id == rascunhoProcesso.Atividade.Id).Where(pc => pc.Funcao.PlanoClassificacao.GuidOrganizacao.Equals(_user.UserGuidOrganizacao)).SingleOrDefault() == null)
                 {
                     throw new RecursoNaoEncontradoException("Atividade não encontrada.");
                 }

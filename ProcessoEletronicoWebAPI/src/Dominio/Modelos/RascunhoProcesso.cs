@@ -9,9 +9,9 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public RascunhoProcesso()
         {
-            Anexos = new HashSet<Anexo>();
-            InteressadosPessoaFisica = new HashSet<InteressadoPessoaFisica>();
-            InteressadosPessoaJuridica = new HashSet<InteressadoPessoaJuridica>();
+            Anexos = new HashSet<AnexoRascunho>();
+            InteressadosPessoaFisica = new HashSet<InteressadoPessoaFisicaRascunho>();
+            InteressadosPessoaJuridica = new HashSet<InteressadoPessoaJuridicaRascunho>();
             SinalizacoesRascunhoProcesso = new HashSet<SinalizacaoRascunhoProcesso>();
         }
 
@@ -26,10 +26,10 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public Guid GuidOrganizacao { get; set; }
         public Guid GuidUnidade { get; set; }
 
-        public virtual ICollection<Anexo> Anexos { get; set; }
+        public virtual ICollection<AnexoRascunho> Anexos { get; set; }
         public virtual Atividade Atividade { get; set; }
-        public virtual ICollection<InteressadoPessoaFisica> InteressadosPessoaFisica { get; set; }
-        public virtual ICollection<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; set; }
+        public virtual ICollection<InteressadoPessoaFisicaRascunho> InteressadosPessoaFisica { get; set; }
+        public virtual ICollection<InteressadoPessoaJuridicaRascunho> InteressadosPessoaJuridica { get; set; }
         public virtual ICollection<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; set; }
         public virtual OrganizacaoProcesso OrganizacaoRascunhoProcesso { get; set; }
         public virtual ICollection<SinalizacaoRascunhoProcesso> SinalizacoesRascunhoProcesso { get; set; }
