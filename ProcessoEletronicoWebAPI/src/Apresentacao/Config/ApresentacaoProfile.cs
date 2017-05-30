@@ -8,28 +8,6 @@ using System;
 
 namespace ProcessoEletronicoService.Apresentacao.Config
 {
-    public static class ConfiguracaoAutoMapper
-    {
-        public static ApresentacaoProfile GetApresentacaoProfile()
-        {
-            return new ApresentacaoProfile();
-        }
-
-        public static void ExecutaMapeamento()
-        {
-            /*
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AllowNullCollections = true;
-                cfg.AddProfile<ApresentacaoProfile>();
-                cfg.AddProfile<NegocioProfile>();
-                cfg.AddProfiles("WebAPI");
-                //cfg.AddProfile<InteressadoPessoaFisicaMapper>();
-            });
-            */
-        }
-
-    }
     public class ApresentacaoProfile : Profile
     {
 

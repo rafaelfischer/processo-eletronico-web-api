@@ -8,13 +8,6 @@ using System.Linq;
 
 namespace ProcessoEletronicoService.Negocio.Config
 {
-    public static class ConfiguracaoAutoMapper
-    {
-        public static NegocioProfile GetNegocioProfile()
-        {
-            return new NegocioProfile();
-        }
-    }
     public class NegocioProfile : Profile
     {
 
@@ -23,13 +16,11 @@ namespace ProcessoEletronicoService.Negocio.Config
             #region Mapeamento de anexo
             CreateMap<Anexo, AnexoModeloNegocio>()
                 .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo))
-                .ForMember(dest => dest.RascunhoProcesso, opt => opt.MapFrom(src => src.RascunhoProcesso))
                 .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental));
 
             CreateMap<AnexoModeloNegocio, Anexo>()
                 .ForMember(dest => dest.TipoDocumental, opt => opt.Ignore())
                 .ForMember(dest => dest.IdTipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental != null? src.TipoDocumental.Id : (int?)null))
-                .ForMember(dest => dest.RascunhoProcesso, opt => opt.Ignore())
                 .ForMember(dest => dest.Processo, opt => opt.Ignore())
                 .ForMember(dest => dest.Despacho, opt => opt.Ignore());
 

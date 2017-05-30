@@ -19,11 +19,13 @@ namespace ProcessoEletronicoService.Negocio
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<Anexo> repositorioAnexos;
         private AnexoValidacao anexoValidacao;
+        private IMapper _mapper;
 
-        public AnexoNegocio(IProcessoEletronicoRepositorios repositorios)
+        public AnexoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper)
         {
             unitOfWork = repositorios.UnitOfWork;
             repositorioAnexos = repositorios.Anexos;
+            _mapper = mapper;
             anexoValidacao = new AnexoValidacao(repositorios);
         }
 
@@ -36,7 +38,7 @@ namespace ProcessoEletronicoService.Negocio
 
             anexoValidacao.NaoEncontrado(anexo);
 
-            return Mapper.Map<Anexo, AnexoModeloNegocio>(anexo);
+            return _mapper.Map<AnexoModeloNegocio>(anexo);
         }
     }
 }

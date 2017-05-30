@@ -56,8 +56,7 @@ namespace WebAPI
 
             services.AddAutoMapper();
             InjecaoDependencias.InjetarDependencias(services);
-            ConfiguracaoAutoMapper.CriarMapeamento();
-
+            
             #region Políticas que serão concedidas
             services.AddAuthorization(options =>
             {

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -14,11 +16,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/anexos")]
     public class AnexosController : BaseController
     {
-        IAnexoWorkService service;
+        private IAnexoNegocio _negocio;
+        private IMapper _mapper;
 
-        public AnexosController(IAnexoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public AnexosController(IAnexoNegocio negocio, IMapper mapper , IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
         {
-            this.service = service;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -32,18 +36,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<AnexoModeloGet>(_negocio.Pesquisar(id)));
         }
     }
 }
