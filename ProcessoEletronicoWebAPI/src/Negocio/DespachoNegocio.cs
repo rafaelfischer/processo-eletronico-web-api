@@ -11,56 +11,64 @@ using ProcessoEletronicoService.Negocio.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
 namespace ProcessoEletronicoService.Negocio
 {
-    public class DespachoNegocio : BaseNegocio, IDespachoNegocio
+    public class DespachoNegocio : IDespachoNegocio 
     {
-        IUnitOfWork unitOfWork;
-        IProcessoNegocio processoNegocio;
-        IRepositorioGenerico<Anexo> repositorioAnexos;
-        IRepositorioGenerico<Despacho> repositorioDespachos;
-        IRepositorioGenerico<Processo> repositorioProcessos;
+        private IUnitOfWork _unitOfWork;
+        private IMapper _mapper;
+        private ICurrentUserProvider _user;
+        private IProcessoNegocio _processoNegocio;
+        private IRepositorioGenerico<Anexo> _repositorioAnexos;
+        private IRepositorioGenerico<Despacho> _repositorioDespachos;
+        private IRepositorioGenerico<Processo> _repositorioProcessos;
 
-        DespachoValidacao despachoValidacao;
-        AnexoValidacao anexoValidacao;
-        UsuarioValidacao usuarioValidacao;
+        private DespachoValidacao _validacao;
+        private AnexoValidacao _anexoValidacao;
+        private UsuarioValidacao _usuarioValidacao;
+        private OrganogramaValidacao _organogramaValidacao;
 
-        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios)
+        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, IProcessoNegocio processoNegocio, ICurrentUserProvider user, OrganogramaValidacao organogramaValidacao)
         {
-            unitOfWork = repositorios.UnitOfWork;
-            processoNegocio = new ProcessoNegocio(repositorios);
-            repositorioDespachos = repositorios.Despachos;
-            repositorioProcessos = repositorios.Processos;
-            repositorioAnexos = repositorios.Anexos;
-            despachoValidacao = new DespachoValidacao(repositorios);
-            anexoValidacao = new AnexoValidacao(repositorios);
-            usuarioValidacao = new UsuarioValidacao();
+            _unitOfWork = repositorios.UnitOfWork;
+            _mapper = mapper;
+            _user = user;
+            _processoNegocio = processoNegocio;
+            _repositorioDespachos = repositorios.Despachos;
+            _repositorioProcessos = repositorios.Processos;
+            _repositorioAnexos = repositorios.Anexos;
+            _validacao = new DespachoValidacao(repositorios);
+            _anexoValidacao = new AnexoValidacao(repositorios);
+            _usuarioValidacao = new UsuarioValidacao();
+            _organogramaValidacao = organogramaValidacao;
         }
         
         public List<DespachoModeloNegocio> PesquisarDespachosUsuario()
         {
             IQueryable<Despacho> query;
-            query = repositorioDespachos;
+            query = _repositorioDespachos;
 
-            query = query.Where(d => d.IdUsuarioDespachante.Equals(UsuarioCpf))
+            query = query.Where(d => d.IdUsuarioDespachante.Equals(_user.UserCpf))
                          .Include(p => p.Processo)
                          .Include(a => a.Anexos).ThenInclude(a => a.TipoDocumental);
 
             List<Despacho> despachos = query.ToList();
             LimparConteudoAnexos(despachos);
             
-            return Mapper.Map<List<Despacho>, List<DespachoModeloNegocio>>(query.ToList());
+            return _mapper.Map<List<DespachoModeloNegocio>>(query.ToList());
         }
 
         public DespachoModeloNegocio Pesquisar(int idDespacho)
         {
-            Despacho despacho = repositorioDespachos.Where(d => d.Id == idDespacho)
+            Despacho despacho = _repositorioDespachos.Where(d => d.Id == idDespacho)
                                                     .Include(p => p.Processo)
                                                     .Include(a => a.Anexos).ThenInclude(td => td.TipoDocumental)
                                                     .SingleOrDefault();
 
-            despachoValidacao.Existe(despacho);
+            _validacao.Existe(despacho);
 
             //Limpando conteúdo dos anexos para não ser enviado dentro do despacho
             if (despacho.Anexos != null)
@@ -69,41 +77,41 @@ namespace ProcessoEletronicoService.Negocio
             }
 
 
-            return Mapper.Map<Despacho, DespachoModeloNegocio>(despacho);
+            return _mapper.Map<DespachoModeloNegocio>(despacho);
         }
 
         public DespachoModeloNegocio Despachar(DespachoModeloNegocio despachoNegocio)
         {
-            despachoValidacao.Preenchido(despachoNegocio);
+            _validacao.Preenchido(despachoNegocio);
             
             //Obter id da atividade do processo para validação dos anexos do despacho
             int idAtividadeProcesso;
             try
             {
-                idAtividadeProcesso = repositorioProcessos.Where(p => p.Id == despachoNegocio.IdProcesso).Select(s => s.IdAtividade).SingleOrDefault();
+                idAtividadeProcesso = _repositorioProcessos.Where(p => p.Id == despachoNegocio.IdProcesso).Select(s => s.IdAtividade).SingleOrDefault();
             }
             catch (Exception)
             {
                 idAtividadeProcesso = 0;
             }
 
-            despachoValidacao.Valido(idAtividadeProcesso, despachoNegocio, UsuarioGuidOrganizacaoPatriarca);
+            _validacao.Valido(idAtividadeProcesso, despachoNegocio, _user.UserGuidOrganizacaoPatriarca);
 
             /*Verificar se o usuário tem permissão para realizar o despacho na organização em que ele se encontra*/
             PermissaoDespacho(despachoNegocio);
 
             Despacho despacho = new Despacho();
             PreparaInsercaoDespacho(despachoNegocio);
-            Mapper.Map(despachoNegocio, despacho);
+            _mapper.Map(despachoNegocio, despacho);
 
-            usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
-            usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
+            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
+            _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             InformacoesOrganizacao(despacho);
             InformacoesUnidade(despacho);
             InformacoesUsuario(despacho);
 
-            repositorioDespachos.Add(despacho);
-            unitOfWork.Save();
+            _repositorioDespachos.Add(despacho);
+            _unitOfWork.Save();
 
             return Pesquisar(despacho.Id);
         }
@@ -111,8 +119,7 @@ namespace ProcessoEletronicoService.Negocio
         private void PermissaoDespacho(DespachoModeloNegocio despacho)
         {
             List<int> listaIdsProcessosNaOrganizacao;
-            processoNegocio.Usuario = Usuario;
-            listaIdsProcessosNaOrganizacao = processoNegocio.PesquisarProcessoNaOrganizacao(UsuarioGuidOrganizacao.ToString("D")).Select(p => p.Id).ToList();
+            listaIdsProcessosNaOrganizacao = _processoNegocio.PesquisarProcessoNaOrganizacao(_user.UserGuidOrganizacao.ToString("D")).Select(p => p.Id).ToList();
 
             if (!listaIdsProcessosNaOrganizacao.Contains(despacho.IdProcesso))
             {
@@ -138,7 +145,7 @@ namespace ProcessoEletronicoService.Negocio
 
         private void InformacoesOrganizacao(Despacho despacho)
         {
-            OrganizacaoOrganogramaModelo organizacao = PesquisarOrganizacao(despacho.GuidOrganizacaoDestino);
+            OrganizacaoOrganogramaModelo organizacao = _organogramaValidacao.PesquisarOrganizacao(despacho.GuidOrganizacaoDestino);
 
             if (organizacao == null)
             {
@@ -152,7 +159,7 @@ namespace ProcessoEletronicoService.Negocio
         }
         private void InformacoesUnidade(Despacho despacho)
         {
-            UnidadeOrganogramaModelo unidade = PesquisarUnidade(despacho.GuidUnidadeDestino);
+            UnidadeOrganogramaModelo unidade = _organogramaValidacao.PesquisarUnidade(despacho.GuidUnidadeDestino);
 
             if (unidade == null)
             {
@@ -166,8 +173,8 @@ namespace ProcessoEletronicoService.Negocio
 
         private void InformacoesUsuario(Despacho despacho)
         {
-            despacho.IdUsuarioDespachante = UsuarioCpf;
-            despacho.NomeUsuarioDespachante = UsuarioNome;
+            despacho.IdUsuarioDespachante = _user.UserCpf;
+            despacho.NomeUsuarioDespachante = _user.UserNome;
         }
 
         private void LimparConteudoAnexos(ICollection<Despacho> despachos)

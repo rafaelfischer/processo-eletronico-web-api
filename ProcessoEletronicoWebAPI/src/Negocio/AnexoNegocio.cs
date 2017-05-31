@@ -14,7 +14,7 @@ using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {
-    public class AnexoNegocio : BaseNegocio, IAnexoNegocio
+    public class AnexoNegocio : IAnexoNegocio
     {
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<Anexo> repositorioAnexos;

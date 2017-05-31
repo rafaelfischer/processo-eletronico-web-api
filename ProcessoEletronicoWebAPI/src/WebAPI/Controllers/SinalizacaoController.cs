@@ -17,7 +17,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         ISinalizacaoWorkService service;
 
-        public SinalizacaoController(ISinalizacaoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public SinalizacaoController(ISinalizacaoWorkService service)
         {
             this.service = service;
         }

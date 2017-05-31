@@ -3,9 +3,6 @@ using ProcessoEletronicoService.Negocio.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using ProcessoEletronicoService.Infraestrutura.Repositorios;
-using ProcessoEletronicoService.Infraestrutura.Mapeamento;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +11,15 @@ using ProcessoEletronicoService.Negocio.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
 namespace ProcessoEletronicoService.Negocio
 {
-    public class ProcessoNegocio : BaseNegocio, IProcessoNegocio
+    public class ProcessoNegocio : IProcessoNegocio
     {
         IUnitOfWork unitOfWork;
+        private ICurrentUserProvider _user;
         IRepositorioGenerico<Processo> repositorioProcessos;
         IRepositorioGenerico<OrganizacaoProcesso> repositorioOrganizacoesProcesso;
         IRepositorioGenerico<Anexo> repositorioAnexos;
@@ -28,11 +28,14 @@ namespace ProcessoEletronicoService.Negocio
         DespachoValidacao despachoValidacao;
         AnexoValidacao anexoValidacao;
         UsuarioValidacao usuarioValidacao;
+        private OrganogramaValidacao _organogramaValidacao;
         IRepositorioGenerico<Despacho> repositorioDespachos;
 
-        public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios)
+        public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user, OrganogramaValidacao organogramaValidacao)
         {
             unitOfWork = repositorios.UnitOfWork;
+            _user = user;
+            _organogramaValidacao = organogramaValidacao;
             repositorioDespachos = repositorios.Despachos;
             repositorioProcessos = repositorios.Processos;
             repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
@@ -162,7 +165,7 @@ namespace ProcessoEletronicoService.Negocio
             IQueryable<Processo> query;
 
             query = repositorioProcessos;
-            query = query.Where(p => p.Despachos.Any(d => d.IdUsuarioDespachante.Equals(UsuarioCpf)))
+            query = query.Where(p => p.Despachos.Any(d => d.IdUsuarioDespachante.Equals(_user.UserCpf)))
                          .Include(d => d.Despachos);
 
             return Mapper.Map<List<Processo>, List<ProcessoModeloNegocio>>(query.ToList());
@@ -170,9 +173,9 @@ namespace ProcessoEletronicoService.Negocio
 
         public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio)
         {
-            usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
-            usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
-            usuarioValidacao.PodeAutuarProcessoNaOrganizacao(processoNegocio, UsuarioGuidOrganizacao);
+            usuarioValidacao.Autenticado(_user.UserCpf, _user.UserCpf);
+            usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
+            usuarioValidacao.PodeAutuarProcessoNaOrganizacao(processoNegocio, _user.UserGuidOrganizacao);
 
             /*Validações*/
             processoValidacao.Preenchido(processoNegocio);
@@ -192,11 +195,11 @@ namespace ProcessoEletronicoService.Negocio
             /*Informações padrão, como a data de atuação*/
             InformacaoPadrao(processo);
 
-            processoValidacao.AtividadePertenceAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
+            processoValidacao.AtividadePertenceAOrganizacaoPatriarca(processoNegocio, _user.UserGuidOrganizacaoPatriarca);
 
             processoValidacao.AtividadePertenceAOrganizacao(processoNegocio);
 
-            processoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(processoNegocio, UsuarioGuidOrganizacaoPatriarca);
+            processoValidacao.SinalizacoesPertencemAOrganizacaoPatriarca(processoNegocio, _user.UserGuidOrganizacaoPatriarca);
 
             /*Gera número do processo*/
             NumeracaoProcesso(processo);
@@ -217,18 +220,18 @@ namespace ProcessoEletronicoService.Negocio
         {
             Guid gOrganizacao = new Guid(guidOrganizacao);
 
-            var processosSemDespachoNaOrganizacao = repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
+            var processosSemDespachoNaOrganizacao = repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)
                                                                                  && p.GuidOrganizacaoAutuadora.Equals(gOrganizacao)
                                                                                 && !p.Despachos.Any())
                                                                         .Include(p => p.OrganizacaoProcesso)
                                                                         .Include(p => p.Atividade)
                                                                     .Include(p => p.Despachos);
 
-            var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
+            var ultimosDespachosDosProcessos = repositorioDespachos.Where(d => d.Processo.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca))
                                                                    .GroupBy(d => d.IdProcesso)
                                                                    .Select(d => new { IdProcesso = d.Key, DataHoraDespacho = d.Max(gbd => gbd.DataHoraDespacho) });
 
-            var idsUltimosDespachosParaOrganizacao = repositorioDespachos.Where(d => d.Processo.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
+            var idsUltimosDespachosParaOrganizacao = repositorioDespachos.Where(d => d.Processo.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)
                                                                                   && d.GuidOrganizacaoDestino.Equals(gOrganizacao))
                                                                          .Join(ultimosDespachosDosProcessos,
                                                                                 d => d.IdProcesso,
@@ -237,7 +240,7 @@ namespace ProcessoEletronicoService.Negocio
                                                                          .Where(d => d.Despacho.DataHoraDespacho == d.DespachoProcesso.DataHoraDespacho)
                                                                          .Select(d => d.Despacho.Id);
 
-            var processosDespachadosParaOrganizacao = repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
+            var processosDespachadosParaOrganizacao = repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)
                                                                                    && p.Despachos.Any(d => idsUltimosDespachosParaOrganizacao.Contains(d.Id)))
                                                                           .Include(p => p.OrganizacaoProcesso)
                                                                           .Include(p => p.Atividade)
@@ -345,7 +348,7 @@ namespace ProcessoEletronicoService.Negocio
 
         private void InformacoesUnidade(Processo processo)
         {
-            UnidadeOrganogramaModelo unidade = PesquisarUnidade(processo.GuidUnidadeAutuadora);
+            UnidadeOrganogramaModelo unidade = _organogramaValidacao.PesquisarUnidade(processo.GuidUnidadeAutuadora);
 
             if (unidade == null)
             {
@@ -361,7 +364,7 @@ namespace ProcessoEletronicoService.Negocio
 
         private void InformacoesOrganizacao(Processo processo)
         {
-            OrganizacaoOrganogramaModelo organizacao = PesquisarOrganizacao(processo.GuidOrganizacaoAutuadora);
+            OrganizacaoOrganogramaModelo organizacao = _organogramaValidacao.PesquisarOrganizacao(processo.GuidOrganizacaoAutuadora);
 
             if (organizacao == null)
             {
@@ -377,7 +380,7 @@ namespace ProcessoEletronicoService.Negocio
         {
             foreach (MunicipioProcesso municipio in processo.MunicipiosProcesso)
             {
-                MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(municipio.GuidMunicipio);
+                MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(municipio.GuidMunicipio);
 
                 if (municipioOrganograma == null)
                 {
@@ -396,7 +399,7 @@ namespace ProcessoEletronicoService.Negocio
             {
                 foreach (InteressadoPessoaFisica interessado in processo.InteressadosPessoaFisica)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(interessado.GuidMunicipio);
+                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessado.GuidMunicipio);
 
                     if (municipioOrganograma == null)
                     {
@@ -415,7 +418,7 @@ namespace ProcessoEletronicoService.Negocio
             {
                 foreach (InteressadoPessoaJuridica interessado in processo.InteressadosPessoaJuridica)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(interessado.GuidMunicipio);
+                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessado.GuidMunicipio);
 
                     if (municipioOrganograma == null)
                     {
@@ -430,24 +433,24 @@ namespace ProcessoEletronicoService.Negocio
 
         private void InformacaoPadrao(Processo processo)
         {
-            int idOrganizacaoProcesso = repositorioOrganizacoesProcesso.Where(p => p.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
+            int idOrganizacaoProcesso = repositorioOrganizacoesProcesso.Where(p => p.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca))
                                                             .Single().Id;
 
             processo.IdOrganizacaoProcesso = idOrganizacaoProcesso;
             processo.DataAutuacao = DateTime.Now;
-            processo.IdUsuarioAutuador = UsuarioCpf;
-            processo.NomeUsuarioAutuador = UsuarioNome;
+            processo.IdUsuarioAutuador = _user.UserCpf;
+            processo.NomeUsuarioAutuador = _user.UserNome;
         }
 
         private void NumeracaoProcesso(Processo processo)
         {
-            int idOrganizacaoProcesso = repositorioOrganizacoesProcesso.Where(p => p.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
+            int idOrganizacaoProcesso = repositorioOrganizacoesProcesso.Where(p => p.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca))
                                                             .Single()
                                                             .Id;
 
-            processo.DigitoOrganizacao = repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)).Select(s => s.DigitoOrganizacao).SingleOrDefault();
-            processo.DigitoPoder = (byte)repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)).Select(o => o.DigitoPoder.Id).SingleOrDefault();
-            processo.DigitoEsfera = (byte)repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)).Select(o => o.DigitoEsfera.Id).SingleOrDefault();
+            processo.DigitoOrganizacao = repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)).Select(s => s.DigitoOrganizacao).SingleOrDefault();
+            processo.DigitoPoder = (byte)repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)).Select(o => o.DigitoPoder.Id).SingleOrDefault();
+            processo.DigitoEsfera = (byte)repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)).Select(o => o.DigitoEsfera.Id).SingleOrDefault();
             processo.Ano = (short)DateTime.Now.Year;
 
             processo.Sequencial = repositorioProcessos.Where(p => p.Ano == processo.Ano

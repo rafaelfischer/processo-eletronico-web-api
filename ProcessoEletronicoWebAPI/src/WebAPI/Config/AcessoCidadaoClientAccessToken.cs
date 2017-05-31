@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using Microsoft.Extensions.Options;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using System;
 using System.Threading;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.WebAPI.Config
 {
-    public class AcessoCidadaoClientAccessToken : IClientAccessToken
+    public class AcessoCidadaoClientAccessToken : IClientAccessTokenProvider
     {
         private readonly string _clientId;
         private readonly string _secret;

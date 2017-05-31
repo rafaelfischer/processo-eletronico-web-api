@@ -5,6 +5,7 @@ using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -18,10 +19,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IDestinacaoFinalWorkService service;
 
-        public DestinacoesFinaisController(IDestinacaoFinalWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public DestinacoesFinaisController(IDestinacaoFinalWorkService service)
         {
             this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
         }
 
         /// <summary>

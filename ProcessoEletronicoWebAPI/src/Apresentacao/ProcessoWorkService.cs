@@ -19,12 +19,7 @@ namespace ProcessoEletronicoService.Apresentacao
             this.processoNegocio = processoNegocio;
             //this.processoNegocio.Usuario = Usuario;
         }
-
-        public override void RaiseUsuarioAlterado()
-        {
-            processoNegocio.Usuario = Usuario;
-        }
-
+                
         public ProcessoCompletoModelo Autuar(ProcessoModeloPost processo)
         {
             ProcessoModeloNegocio processoNegocio = new ProcessoModeloNegocio();

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IAnexoNegocio : IBaseNegocio
+    public interface IAnexoNegocio
     {
         AnexoModeloNegocio Pesquisar(int id);
         

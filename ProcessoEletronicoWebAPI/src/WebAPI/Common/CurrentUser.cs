@@ -21,7 +21,7 @@ namespace ProcessoEletronicoService.WebAPI.Common
         private Guid _userGuidOrganizacao;
         private Guid _userGuidOrganizacaoPatriarca;
 
-        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken)
+        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken)
         {
             FillUser(httpContextAccessor.HttpContext.User, clientAccessToken);
         }
@@ -58,7 +58,7 @@ namespace ProcessoEletronicoService.WebAPI.Common
             }
         }
 
-        private void FillUser(ClaimsPrincipal user, IClientAccessToken clientAccessToken)
+        private void FillUser(ClaimsPrincipal user, IClientAccessTokenProvider clientAccessToken)
         {
             if (user != null)
             {

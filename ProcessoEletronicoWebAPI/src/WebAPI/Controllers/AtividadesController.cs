@@ -22,7 +22,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         private IAtividadeNegocio _negocio;
         private IMapper _mapper;
 
-        public AtividadesController(IAtividadeNegocio negocio, IMapper mapper, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public AtividadesController(IAtividadeNegocio negocio, IMapper mapper)
         {
             _negocio = negocio;
             _mapper = mapper;
@@ -96,7 +96,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
             }
 
             AtividadeProcessoGetModelo atividadeGet = _mapper.Map<AtividadeProcessoGetModelo>(_negocio.Inserir(_mapper.Map<AtividadeModeloNegocio>(atividade)));
-            return CreatedAtRoute("GetAtividade", new { Id = atividadeGet.Id }, atividadeGet);
+            return CreatedAtRoute("GetAtividade", new { id = atividadeGet.Id }, atividadeGet);
         }
 
         /// <summary>

@@ -15,7 +15,6 @@ namespace ProcessoEletronicoService.WebAPI.Config
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
             dependencias = Apresentacao.Configuracao.ConfiguracaoDepedencias.ObterDependencias();
-            dependencias.Add(typeof(IDespachoWorkService), typeof(DespachoWorkService));
             dependencias.Add(typeof(IDestinacaoFinalWorkService), typeof(DestinacaoFinalWorkService));
             dependencias.Add(typeof(IFuncaoWorkService), typeof(FuncaoWorkService));
             dependencias.Add(typeof(IPlanoClassificacaoWorkService), typeof(PlanoClassificacaoWorkService));
@@ -42,6 +41,7 @@ namespace ProcessoEletronicoService.WebAPI.Config
             services.AddTransient(typeof(RascunhoProcessoValidacao));
             services.AddTransient(typeof(InteressadoPessoaFisicaValidacao));
             services.AddTransient(typeof(ContatoValidacao));
+            services.AddTransient(typeof(OrganogramaValidacao));
         }
     }
 }

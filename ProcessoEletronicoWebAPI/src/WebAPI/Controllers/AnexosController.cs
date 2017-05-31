@@ -19,7 +19,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         private IAnexoNegocio _negocio;
         private IMapper _mapper;
 
-        public AnexosController(IAnexoNegocio negocio, IMapper mapper , IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public AnexosController(IAnexoNegocio negocio, IMapper mapper)
         {
             _negocio = negocio;
             _mapper = mapper;

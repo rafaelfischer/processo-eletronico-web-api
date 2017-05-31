@@ -16,11 +16,10 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         IMapper _mapper;
         IInteressadoPessoaFisicaNegocio _negocio;
 
-        public InteressadosPessoaFisicaController(IMapper mapper, IInteressadoPessoaFisicaNegocio negocio, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public InteressadosPessoaFisicaController(IMapper mapper, IInteressadoPessoaFisicaNegocio negocio)
         {
             _mapper = mapper;
             _negocio = negocio;
-            _negocio.Usuario = UsuarioAutenticado;
         }
 
         [HttpGet]

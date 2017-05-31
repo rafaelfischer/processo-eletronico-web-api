@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IProcessoNegocio : IBaseNegocio
+    public interface IProcessoNegocio
     {
         ProcessoModeloNegocio Pesquisar(int id);
         ProcessoModeloNegocio Pesquisar(string numero);

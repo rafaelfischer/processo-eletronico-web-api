@@ -50,10 +50,6 @@ namespace ProcessoEletronicoService.Apresentacao
         {
             destinacaoFinalNegocio.Excluir(id);
         }
-
-        public override void RaiseUsuarioAlterado()
-        {
-            destinacaoFinalNegocio.Usuario = Usuario;
-        }
+        
     }
 }

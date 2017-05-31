@@ -55,11 +55,6 @@ namespace ProcessoEletronicoService.Apresentacao
             planoClassificacaoNegocio.Excluir(id);
         }
 
-        public override void RaiseUsuarioAlterado()
-        {
-            planoClassificacaoNegocio.Usuario = Usuario;
-        }
-
-       
+             
     }
 }

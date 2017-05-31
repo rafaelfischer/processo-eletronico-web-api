@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -16,16 +19,16 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/despachos")]
     public class DespachosController : BaseController
     {
-        IDespachoWorkService service;
+        private IDespachoNegocio _negocio;
+        private IMapper _mapper;
 
-        public DespachosController(IDespachoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public DespachosController(IDespachoNegocio negocio, IMapper mapper)
         {
-            this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         #region GET
-        
         /// <summary>
         /// Retorna lista de despachos realizados pelo usuario autenticado.
         /// </summary>
@@ -37,46 +40,24 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarDespachosUsuario()
         {
-            try
-            {
-                return new ObjectResult(service.PesquisarDespachosUsuario());
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<DespachoModeloGet>>(_negocio.PesquisarDespachosUsuario()));
         }
 
         /// <summary>
         /// Retorna o despacho correspondente ao identificador.
         /// </summary>
-        /// <param name="idDespacho">Identificador do Despacho</param>
+        /// <param name="id">Identificador do Despacho</param>
         /// <returns>Despacho correspondente ao identificador.</returns>
         /// <response code="200">Retorna o despacho correspondente ao identificador.</response>
         /// <response code="404">Despacho não foi encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{idDespacho}")]
+        [HttpGet("{id}", Name = "GetDespacho")]
         [ProducesResponseType(typeof(DespachoModeloGet), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarDespacho(int idDespacho)
+        public IActionResult PesquisarDespacho(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(idDespacho));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<DespachoModeloGet>(_negocio.Pesquisar(id)));
         }
 
         #endregion
@@ -100,25 +81,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Despachar([FromBody]DespachoModeloPost despachoPost)
         {
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                DespachoModeloGet despachoCompleto = service.Despachar(despachoPost);
-                return Created("https://" + request.Host.Value + request.Path.Value + "/" + despachoCompleto.Id, despachoCompleto);
-
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            DespachoModeloGet despachoCompleto = _mapper.Map<DespachoModeloGet>(_negocio.Despachar(_mapper.Map<DespachoModeloNegocio>(despachoPost)));
+            return CreatedAtRoute("GetDespacho", new { id = despachoCompleto.Id }, despachoCompleto);
         }
         #endregion
     }

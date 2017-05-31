@@ -15,7 +15,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
     {
         private IMapper _mapper;
         private IContatoInteressadoPessoaFisicaNegocio _negocio;
-        public ContatoInteressadoPessoaFisicaController(IMapper mapper, IContatoInteressadoPessoaFisicaNegocio negocio, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public ContatoInteressadoPessoaFisicaController(IMapper mapper, IContatoInteressadoPessoaFisicaNegocio negocio)
         {
             _mapper = mapper;
             _negocio = negocio;

@@ -18,10 +18,9 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         IRascunhoProcessoNegocio _negocio;
         IMapper _mapper;
 
-        public RascunhosProcessoController(IRascunhoProcessoNegocio negocio, IMapper mapper, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public RascunhosProcessoController(IRascunhoProcessoNegocio negocio, IMapper mapper)
         {
             _negocio = negocio;
-            _negocio.Usuario = UsuarioAutenticado;
             _mapper = mapper;
         }
 

@@ -47,11 +47,6 @@ namespace ProcessoEletronicoService.Apresentacao
         {
             tipoDocumentalNegocio.Excluir(id);
         }
-
-        public override void RaiseUsuarioAlterado()
-        {
-            tipoDocumentalNegocio.Usuario = Usuario;
-        }
-
+                
     }
 }

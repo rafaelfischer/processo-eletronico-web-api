@@ -17,10 +17,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         IProcessoWorkService service;
         
-        public ProcessosController (IProcessoWorkService service, IHttpContextAccessor httpContextAccessor, IClientAccessToken clientAccessToken) : base(httpContextAccessor, clientAccessToken)
+        public ProcessosController (IProcessoWorkService service)
         {
             this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
         }
 
         #region GET
