@@ -1,57 +1,62 @@
-﻿using ProcessoEletronicoService.Negocio.Base;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
-using ProcessoEletronicoService.Negocio.Comum;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProcessoEletronicoService.Negocio
 {
-    public class FuncaoNegocio : BaseNegocio, IFuncaoNegocio
+    public class FuncaoNegocio : IFuncaoNegocio
     {
-        private IUnitOfWork unitOfWork;
-        private IRepositorioGenerico<Funcao> repositorioFuncoes;
-        private FuncaoValidacao funcaoValidacao;
+        private IUnitOfWork _unitOfWork;
+        private IMapper _mapper;
+        private ICurrentUserProvider _user;
+        private IRepositorioGenerico<Funcao> _repositorioFuncoes;
+        private FuncaoValidacao _validacao;
 
-        public FuncaoNegocio(IProcessoEletronicoRepositorios repositorios)
+        public FuncaoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user)
         {
-            funcaoValidacao = new FuncaoValidacao(repositorios);
-            unitOfWork = repositorios.UnitOfWork;
-            repositorioFuncoes = repositorios.Funcoes;
+
+            _validacao = new FuncaoValidacao(repositorios);
+            _unitOfWork = repositorios.UnitOfWork;
+            _mapper = mapper;
+            _user = user;
+            _repositorioFuncoes = repositorios.Funcoes;
         }
 
         public FuncaoModeloNegocio Pesquisar (int id)
         {
-            Funcao funcao = repositorioFuncoes.Where(f => f.Id == id).Include(p => p.PlanoClassificacao).SingleOrDefault();
+            Funcao funcao = _repositorioFuncoes.Where(f => f.Id == id).Include(p => p.PlanoClassificacao).SingleOrDefault();
 
-            funcaoValidacao.NaoEncontrado(funcao);
+            _validacao.NaoEncontrado(funcao);
 
-            return Mapper.Map<Funcao, FuncaoModeloNegocio>(funcao);
+            return _mapper.Map<FuncaoModeloNegocio>(funcao);
         }
 
         public List<FuncaoModeloNegocio> PesquisarPorPlanoClassificacao(int idPlanoClassificacao)
         {
-            var funcoes = repositorioFuncoes.Where(f => f.PlanoClassificacao.Id == idPlanoClassificacao)
+            var funcoes = _repositorioFuncoes.Where(f => f.PlanoClassificacao.Id == idPlanoClassificacao)
                                             .Include(pc => pc.PlanoClassificacao)
                                             .ToList();
 
-            return Mapper.Map<List<Funcao>, List<FuncaoModeloNegocio>>(funcoes);
+            return _mapper.Map<List<FuncaoModeloNegocio>>(funcoes);
         }
 
         public FuncaoModeloNegocio Inserir(FuncaoModeloNegocio funcaoModeloNegocio)
         {
-            funcaoValidacao.Preenchido(funcaoModeloNegocio);
-            funcaoValidacao.Valido(funcaoModeloNegocio, UsuarioGuidOrganizacao);
+            _validacao.Preenchido(funcaoModeloNegocio);
+            _validacao.Valido(funcaoModeloNegocio, _user.UserGuidOrganizacao);
 
             Funcao funcao = new Funcao();
-            Mapper.Map(funcaoModeloNegocio, funcao);
+            _mapper.Map(funcaoModeloNegocio, funcao);
 
-            repositorioFuncoes.Add(funcao);
-            unitOfWork.Save();
+            _repositorioFuncoes.Add(funcao);
+            _unitOfWork.Save();
 
             return Pesquisar(funcao.Id);
 
@@ -59,10 +64,10 @@ namespace ProcessoEletronicoService.Negocio
 
         public void Excluir (int id)
         {
-            funcaoValidacao.PossivelExcluir(id, UsuarioGuidOrganizacao);
-            Funcao funcao = repositorioFuncoes.Where(f => f.Id == id).Single();
-            repositorioFuncoes.Remove(funcao);
-            unitOfWork.Save();
+            _validacao.PossivelExcluir(id, _user.UserGuidOrganizacao);
+            Funcao funcao = _repositorioFuncoes.Where(f => f.Id == id).Single();
+            _repositorioFuncoes.Remove(funcao);
+            _unitOfWork.Save();
         }
         
     }

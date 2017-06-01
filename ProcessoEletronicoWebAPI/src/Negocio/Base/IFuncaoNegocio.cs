@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IFuncaoNegocio : IBaseNegocio
+    public interface IFuncaoNegocio
     {
         List<FuncaoModeloNegocio> PesquisarPorPlanoClassificacao(int idPlanoClassificacao);
         FuncaoModeloNegocio Pesquisar(int id);
