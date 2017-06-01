@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IPlanoClassificacaoNegocio : IBaseNegocio
+    public interface IPlanoClassificacaoNegocio
     {
         PlanoClassificacaoModeloNegocio Pesquisar(int id);
         List<PlanoClassificacaoModeloNegocio> Pesquisar(string guidOrganizacao);

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static ProcessoEletronicoService.Negocio.Comum.BaseNegocio;
+using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
 namespace ProcessoEletronicoService.Negocio.Validacao
 {

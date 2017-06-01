@@ -45,12 +45,10 @@ namespace ProcessoEletronicoService.WebAPI.Middleware
             {
                 code = HttpStatusCode.InternalServerError;
             }
-
-
-            var result = exception.Message;
+            
             context.Response.ContentType = "text/plain";
             context.Response.StatusCode = (int)code;
-            return context.Response.WriteAsync(result);
+            return context.Response.WriteAsync(exception.Message);
         }
     }
 }
