@@ -16,7 +16,6 @@ namespace ProcessoEletronicoService.WebAPI.Config
 
             dependencias = Apresentacao.Configuracao.ConfiguracaoDepedencias.ObterDependencias();
             dependencias.Add(typeof(ITipoDocumentalWorkService), typeof(TipoDocumentalWorkService));
-            dependencias.Add(typeof(ITipoContatoWorkService), typeof(TipoContatoWorkService));
 
             return dependencias;
         }

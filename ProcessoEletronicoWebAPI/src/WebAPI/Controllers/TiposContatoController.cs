@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum;
+using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -15,11 +17,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/tipos-contato")]
     public class TiposContatoController : BaseController
     {
-        ITipoContatoWorkService service;
+        private ITipoContatoNegocio _negocio;
+        private IMapper _mapper;
 
-        public TiposContatoController(ITipoContatoWorkService service)
+        public TiposContatoController(ITipoContatoNegocio negocio, IMapper mapper)
         {
-            this.service = service;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -33,14 +37,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Listar()
         {
-            try
-            {
-                return new ObjectResult(service.Listar());
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<TipoContatoModelo>>(_negocio.Listar()));
         }
     }
 }
