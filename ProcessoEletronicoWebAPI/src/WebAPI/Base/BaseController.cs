@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProcessoEletronicoService.WebAPI.Base
 {
-    //[Authorize]
+    [Authorize]
     public class BaseController : Controller
     {
     }
