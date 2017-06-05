@@ -15,7 +15,6 @@ namespace ProcessoEletronicoService.WebAPI.Config
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
             dependencias = Apresentacao.Configuracao.ConfiguracaoDepedencias.ObterDependencias();
-            dependencias.Add(typeof(ITipoDocumentalWorkService), typeof(TipoDocumentalWorkService));
 
             return dependencias;
         }
