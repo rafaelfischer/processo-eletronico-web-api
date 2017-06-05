@@ -1,5 +1,8 @@
-require: sudo
-language: node_js
+language: csharp
+dist: trusty
+sudo: required
+mono: none
+dotnet: 1.0.0-preview2-1-003177
 services:
   - docker
 env:
