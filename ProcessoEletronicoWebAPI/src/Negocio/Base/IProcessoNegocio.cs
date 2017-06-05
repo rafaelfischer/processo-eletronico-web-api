@@ -11,9 +11,9 @@ namespace ProcessoEletronicoService.Negocio.Base
     {
         ProcessoModeloNegocio Pesquisar(int id);
         ProcessoModeloNegocio Pesquisar(string numero);
-        List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(string guidUnidade);
+        List<ProcessoModeloNegocio> PesquisarProcessosNaUnidade(string guidUnidade);
         ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio);
-        List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(string guidOrganizacao);
+        List<ProcessoModeloNegocio> PesquisarProcessosNaOrganizacao(string guidOrganizacao);
         List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario();
     }
 }

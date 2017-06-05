@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -15,11 +18,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/processos")]
     public class ProcessosController : BaseController
     {
-        IProcessoWorkService service;
+        private IProcessoNegocio _negocio;
+        private IMapper _mapper;
         
-        public ProcessosController (IProcessoWorkService service)
+        public ProcessosController (IProcessoNegocio negocio, IMapper mapper)
         {
-            this.service = service;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         #region GET
@@ -32,24 +37,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="200">Processo correspondente ao identificador.</response>
         /// <response code="404">Processo não foi encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetProcesso")]
         [ProducesResponseType(typeof(ProcessoCompletoModelo), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+           return Ok(_mapper.Map<ProcessoCompletoModelo>(_negocio.Pesquisar(id)));
         }
 
         /// <summary>
@@ -68,24 +62,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(string numero)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(numero));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<ProcessoCompletoModelo>(_negocio.Pesquisar(numero)));
         }
-
+         
         /// <summary>
         /// Retorna lista de processos que posuem pelo menos um despacho feito pelo usuario autenticado.
         /// </summary>
@@ -97,17 +76,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarProcessosDespachadosUsuario()
         {
-            try
-            {
-
-                return new ObjectResult(service.PesquisarProcessosDespachadosUsuario());
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<ProcessoModelo>>(_negocio.PesquisarProcessosDespachadosUsuario()));
         }
-        
+                
         /// <summary>
         /// Retorna a lista de processos que estão tramintando na unidade especificada.
         /// </summary>
@@ -120,16 +91,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarPorUnidade(string guidUnidade)
         {
-            try
-            {
-                return new ObjectResult(service.PesquisarProcessosNaUnidade(guidUnidade));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-            }
+            return Ok(_mapper.Map<List<ProcessoModelo>>(_negocio.PesquisarProcessosNaUnidade(guidUnidade)));
         }
-
+        
         /// <summary>
         /// Retorna a lista de processos que estão tramitando na organização especificada.
         /// </summary>
@@ -142,14 +106,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarPorOganizacao(string guidOrganizacao)
         {
-            try
-            {
-                return new ObjectResult(service.PesquisarProcessosNaOrganizacao(guidOrganizacao));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+           return Ok(_mapper.Map<List<ProcessoModelo>>(_negocio.PesquisarProcessosNaOrganizacao(guidOrganizacao)));
         }
         #endregion
 
@@ -176,27 +133,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost)
         {
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                ProcessoCompletoModelo processoCompleto = service.Autuar(processoPost);
-                return Created(request.Scheme + "://"+ request.Host.Value + request.Path.Value + "/" + processoCompleto.Id , processoCompleto);
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
-                                 
+            ProcessoCompletoModelo processoCompleto = _mapper.Map<ProcessoCompletoModelo>(_negocio.Autuar(_mapper.Map<ProcessoModeloNegocio>(processoPost)));
+            return CreatedAtRoute("GetProcesso", new { id = processoCompleto.Id }, processoCompleto);
         }
-        
         #endregion
     }
 }

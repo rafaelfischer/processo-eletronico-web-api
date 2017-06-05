@@ -32,7 +32,6 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             CreateMap<AnexoModeloNegocio, AnexoModeloGet>()
                 .ForMember(dest => dest.Conteudo, opt => opt.MapFrom(src => src.Conteudo != null ? Convert.ToBase64String(src.Conteudo) : null))
-                .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo))
                 .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental));
 
             CreateMap<AnexoModeloNegocio, AnexoSimplesModeloGet>()
@@ -62,8 +61,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             CreateMap<DespachoModeloNegocio, DespachoModeloGet>()
                 .ForMember(dest => dest.DataHoraDespacho, opt => opt.MapFrom(src => src.DataHoraDespacho.ToString("dd/MM/yyyy HH:mm:ss")))
-                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
-                .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo));
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
 
             CreateMap<DespachoModeloNegocio, DespachoSimplesModeloGet>()
                 .ForMember(dest => dest.DataHoraDespacho, opt => opt.MapFrom(src => src.DataHoraDespacho.ToString("dd/MM/yyyy HH:mm:ss")))

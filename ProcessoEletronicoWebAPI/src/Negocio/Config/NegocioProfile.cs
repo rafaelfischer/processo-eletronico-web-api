@@ -15,7 +15,6 @@ namespace ProcessoEletronicoService.Negocio.Config
         {
             #region Mapeamento de anexo
             CreateMap<Anexo, AnexoModeloNegocio>()
-                .ForMember(dest => dest.Processo, opt => opt.MapFrom(src => src.Processo))
                 .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental));
 
             CreateMap<AnexoModeloNegocio, Anexo>()
@@ -50,7 +49,8 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.GuidUnidadeDestino, opt => opt.MapFrom(src => new Guid(src.GuidUnidadeDestino)));
 
             CreateMap<Despacho, DespachoModeloNegocio>()
-                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
+                .MaxDepth(1);
             
             #endregion
 
@@ -81,7 +81,6 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.GuidMunicipio.ToString("D")))
                 .ForMember(dest => dest.Contatos, opt => opt.MapFrom(s => s.Contatos != null ? Mapper.Map<List<Contato>, List<ContatoModeloNegocio>>(s.Contatos.ToList()) : null))
                 .ForMember(dest => dest.Emails, opt => opt.MapFrom(s => s.Emails != null ? Mapper.Map<List<Email>, List<EmailModeloNegocio>>(s.Emails.ToList()) : null));
-
             #endregion
 
             #region Mapeamento de função
@@ -173,7 +172,7 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.GuidUnidadeAutuadora, opt => opt.MapFrom(src => src.GuidUnidadeAutuadora.ToString("D")))
                 .MaxDepth(1);
             #endregion
-
+            
             #region Mapeamento de tipo de contato
 
             CreateMap<TipoContato, TipoContatoModeloNegocio>();
@@ -197,7 +196,8 @@ namespace ProcessoEletronicoService.Negocio.Config
             
             #region Mapeamento de Sinalização
             CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()
-                .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem == null ? null : src.Imagem));
+                .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem == null ? null : src.Imagem))
+                .MaxDepth(1);
 
             
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoProcesso>()

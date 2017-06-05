@@ -10,7 +10,5 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public int Id { get; set; }
         public string Telefone { get; set; }
         public TipoContatoModeloNegocio TipoContato { get; set; }
-        public InteressadoPessoaFisicaModeloNegocio InteressadoPessoaFisica { get; set; }
-        public InteressadoPessoaJuridicaModeloNegocio InteressadoPessoaJuridica { get; set; }
     }
 }

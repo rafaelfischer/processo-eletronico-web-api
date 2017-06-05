@@ -119,7 +119,7 @@ namespace ProcessoEletronicoService.Negocio
         private void PermissaoDespacho(DespachoModeloNegocio despacho)
         {
             List<int> listaIdsProcessosNaOrganizacao;
-            listaIdsProcessosNaOrganizacao = _processoNegocio.PesquisarProcessoNaOrganizacao(_user.UserGuidOrganizacao.ToString("D")).Select(p => p.Id).ToList();
+            listaIdsProcessosNaOrganizacao = _processoNegocio.PesquisarProcessosNaOrganizacao(_user.UserGuidOrganizacao.ToString("D")).Select(p => p.Id).ToList();
 
             if (!listaIdsProcessosNaOrganizacao.Contains(despacho.IdProcesso))
             {
