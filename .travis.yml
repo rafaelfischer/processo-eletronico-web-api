@@ -4,8 +4,6 @@ mono: none
 dotnet: 1.0.0-preview2-1-003177
 services:
   - docker
-env:
-  - DOCKER_IMAGE=prodest/processoeletronico-api
 install:
   - nvm install 6.10
 script: 
