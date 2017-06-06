@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using ProcessoEletronicoService.Apresentacao.Modelos;
-using ProcessoEletronicoService.Infraestrutura.Repositorios.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
-using ProcessoEletronicoService.Negocio.Config;
 using System.Collections.Generic;
 using System;
 

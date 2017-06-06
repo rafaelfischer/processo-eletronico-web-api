@@ -1,9 +1,9 @@
 #!/bin/bash
 
-docker tag $DOCKER_IMAGE $DOCKER_IMAGE:$TRAVIS_COMMIT
+docker tag $DOCKER_IMAGE $DOCKER_IMAGE:$DOCKER_TAG
 
 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-docker push $DOCKER_IMAGE:$TRAVIS_COMMIT
+docker push $DOCKER_IMAGE:$DOCKER_TAG
 
 #Atualiza a infra
 git clone https://github.com/prodest/api-cloud-v2.git
@@ -11,4 +11,4 @@ cd api-cloud-v2
 npm install
 node ./client --ENVIRONMENT=SEP/Organograma \
     --STACK=prd --SERVICE=processoeletronico-api \
-    --IMAGE=$DOCKER_IMAGE:$TRAVIS_COMMIT --START_FIRST=true
+    --IMAGE=$DOCKER_IMAGE:$DOCKER_TAG --START_FIRST=true

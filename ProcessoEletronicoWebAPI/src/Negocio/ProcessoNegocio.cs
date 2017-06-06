@@ -214,7 +214,7 @@ namespace ProcessoEletronicoService.Negocio
         {
             Guid gOrganizacao = new Guid(guidOrganizacao);
 
-            var processosNaOrganizacao = repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca)
+            var processosNaOrganizacao = _repositorioProcessos.Where(p => p.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)
                                                                     
                                                                      //Processos sem despacho que foram autuados na organização
                                                                      && (p.GuidOrganizacaoAutuadora.Equals(gOrganizacao)
