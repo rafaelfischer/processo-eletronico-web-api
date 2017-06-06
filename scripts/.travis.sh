@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 export RANCHER_ENV=SEP/Organograma
 export RANCHER_SERVICE=processoeletronico-api
