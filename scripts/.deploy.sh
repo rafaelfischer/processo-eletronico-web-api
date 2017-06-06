@@ -5,7 +5,7 @@ docker tag $DOCKER_IMAGE $IMAGE_NAME
 
 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
-docker push $IMAGE_NAME-erro
+docker push $IMAGE_NAME
 
 #Atualiza a infra
 git clone https://github.com/prodest/api-cloud-v2.git
