@@ -3,4 +3,4 @@
 export RANCHER_STACK=dev
 export IMAGE_NAME=$DOCKER_IMAGE-dev:$DOCKER_TAG
 
-. ./.deploy.sh
+. ./scripts/.deploy.sh
