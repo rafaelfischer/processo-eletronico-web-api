@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Base
 {
-    public interface IContatoNegocio : IBaseNegocio
+    public interface IContatoNegocio
     {
         IList<ContatoModeloNegocio> Get(int idRascunhoProcesso, int idInteressado);
         ContatoModeloNegocio Get(int idRascunhoProcesso, int idInteressado, int id);

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
 {
-    public interface IRascunhoProcessoNegocio : IBaseNegocio
+    public interface IRascunhoProcessoNegocio
     {
         RascunhoProcessoModeloNegocio Pesquisar(int id);
 

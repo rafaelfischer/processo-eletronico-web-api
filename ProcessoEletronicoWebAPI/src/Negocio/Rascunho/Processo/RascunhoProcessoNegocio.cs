@@ -7,14 +7,15 @@ using ProcessoEletronicoService.Dominio.Modelos;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
-using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
-    public class RascunhoProcessoNegocio : BaseNegocio, IRascunhoProcessoNegocio
+    public class RascunhoProcessoNegocio : IRascunhoProcessoNegocio
     {
         private IRepositorioGenerico<Email> _repositorioEmails;
         private IRepositorioGenerico<Contato> _repositorioContatos;
@@ -28,6 +29,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private RascunhoProcessoValidacao _validacao;
         private InteressadoPessoaFisicaValidacao _interessadoPessoaFisicaValidacao;
         private UsuarioValidacao _usuarioValidacao;
+        private OrganogramaValidacao _organogramaValidacao;
         private IInteressadoPessoaFisicaNegocio _interessadoPessoaFisicaNegocio;
         //private IInteressadoPessoaJuridicaNegocio _interessadoPessoaJuridicaNegocio;
         private MunicipioRascunhoProcessoNegocio _municipioRascunhoProcessoNegocio;
@@ -35,8 +37,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
+        private ICurrentUserProvider _user;
 
-        public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, RascunhoProcessoValidacao validacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao, IInteressadoPessoaFisicaNegocio interessadoPessoaFisicaNegocio, UsuarioValidacao usuarioValidacao)
+        public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user, RascunhoProcessoValidacao validacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao, IInteressadoPessoaFisicaNegocio interessadoPessoaFisicaNegocio, UsuarioValidacao usuarioValidacao, OrganogramaValidacao organogramaValidacao)
         {
             _repositorioEmails = repositorios.Emails;
             _repositorioContatos = repositorios.Contatos;
@@ -48,12 +51,14 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _validacao = validacao;
             _interessadoPessoaFisicaValidacao = interessadoPessoaFisicaValidacao;
             _usuarioValidacao = usuarioValidacao;
+            _organogramaValidacao = organogramaValidacao;
             _interessadoPessoaFisicaNegocio = interessadoPessoaFisicaNegocio;
             //_interessadoPessoaJuridicaNegocio = interessadoPessoaJuridicaNegocio;
             _municipioRascunhoProcessoNegocio = new MunicipioRascunhoProcessoNegocio(repositorios);
             _sinalizacaoRascunhoProcessoNegocio = new SinalizacaoRascunhoProcessoNegocio(repositorios);
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
+            _user = user;
         }
 
         public RascunhoProcessoModeloNegocio Pesquisar(int id)
@@ -91,9 +96,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             //Municipios, Sinalizacoes, Anexos
 
-            _usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
-            _usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
-            _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, UsuarioGuidOrganizacao);
+            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
+            _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
+            _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
             
             /*Mapeamento para inserção*/
             RascunhoProcesso rascunhoProcesso = new RascunhoProcesso();
@@ -121,9 +126,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _validacao.Exists(rascunhoProcesso);
 
             _validacao.IsFilled(rascunhoProcessoNegocio);
-            _usuarioValidacao.Autenticado(UsuarioCpf, UsuarioNome);
-            _usuarioValidacao.PossuiOrganizaoPatriarca(UsuarioGuidOrganizacaoPatriarca);
-            _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, UsuarioGuidOrganizacao);
+            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
+            _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
+            _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
 
             /*Validações*/
             _validacao.IsValid(rascunhoProcessoNegocio);
@@ -157,7 +162,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         #region Preenchimento de Informações relacionadas com GUID
         private void InformacoesOrganizacao(RascunhoProcesso rascunhoProcesso)
         {
-            OrganizacaoOrganogramaModelo organizacao = PesquisarOrganizacao(rascunhoProcesso.GuidOrganizacao);
+            OrganizacaoOrganogramaModelo organizacao = _organogramaValidacao.PesquisarOrganizacao(rascunhoProcesso.GuidOrganizacao);
 
             if (organizacao == null)
             {
@@ -168,12 +173,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             rascunhoProcesso.NomeOrganizacao = organizacao.razaoSocial;
             rascunhoProcesso.SiglaOrganizacao = organizacao.sigla;
         }
-
-
-
+        
         private void InformacoesUnidade(RascunhoProcesso rascunhoProcesso)
         {
-            UnidadeOrganogramaModelo unidade = PesquisarUnidade(rascunhoProcesso.GuidUnidade);
+            UnidadeOrganogramaModelo unidade = _organogramaValidacao.PesquisarUnidade(rascunhoProcesso.GuidUnidade);
 
             if (unidade == null)
             {
@@ -192,7 +195,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
                 foreach (MunicipioRascunhoProcesso municipio in rascunhoProcesso.MunicipiosRascunhoProcesso)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(municipio.GuidMunicipio);
+                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(municipio.GuidMunicipio);
 
                     if (municipioOrganograma == null)
                     {
@@ -212,7 +215,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             {
                 foreach (InteressadoPessoaFisicaRascunho interessado in rascunhoProcesso.InteressadosPessoaFisica)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(interessado.GuidMunicipio.Value);
+                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessado.GuidMunicipio.Value);
 
                     if (municipioOrganograma == null)
                     {
@@ -231,7 +234,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             {
                 foreach (InteressadoPessoaJuridicaRascunho interessado in rascunhoProcesso.InteressadosPessoaJuridica)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(interessado.GuidMunicipio.Value);
+                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessado.GuidMunicipio.Value);
 
                     if (municipioOrganograma == null)
                     {
@@ -248,7 +251,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         private void InformacaoPadrao(RascunhoProcesso rascunhoProcesso)
         {
-            var organizacaoProcesso = _repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(UsuarioGuidOrganizacaoPatriarca))
+            var organizacaoProcesso = _repositorioOrganizacoesProcesso.Where(o => o.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca))
                                                             .SingleOrDefault();
 
             int idOrganizacaoProcesso = organizacaoProcesso.Id;

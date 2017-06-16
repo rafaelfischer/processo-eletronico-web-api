@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
 {
-    public interface IInteressadoPessoaFisicaNegocio : IBaseNegocio
+    public interface IInteressadoPessoaFisicaNegocio
     {
         IList<InteressadoPessoaFisicaModeloNegocio> Get(int idRascunhoProcesso);
         InteressadoPessoaFisicaModeloNegocio Get(int idRascunhoProcesso, int id);

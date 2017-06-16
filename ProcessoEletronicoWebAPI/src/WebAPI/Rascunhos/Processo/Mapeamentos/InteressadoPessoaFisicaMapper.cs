@@ -2,7 +2,7 @@
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 
-namespace ProcessoEletronicoService.WebAPI.Mapeamentos
+namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Mapeamentos
 {
     public class InteressadoPessoaFisicaMapper : Profile
     {

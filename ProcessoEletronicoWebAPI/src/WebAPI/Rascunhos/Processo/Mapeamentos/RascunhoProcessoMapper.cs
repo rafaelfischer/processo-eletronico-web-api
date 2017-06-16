@@ -3,7 +3,7 @@ using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System.Collections.Generic;
 
-namespace ProcessoEletronicoService.WebAPI.Mapeamentos
+namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Mapeamentos
 {
     public class RascunhoProcessoMapper : Profile
     {

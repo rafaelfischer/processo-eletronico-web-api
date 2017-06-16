@@ -11,33 +11,39 @@ using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
-    public class InteressadoPessoaFisicaNegocio : BaseNegocio, IInteressadoPessoaFisicaNegocio
+    public class InteressadoPessoaFisicaNegocio : IInteressadoPessoaFisicaNegocio
     {
         private IRepositorioGenerico<InteressadoPessoaFisicaRascunho> _repositorioInteressadosPessoaFisicaRascunho;
         private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
         private InteressadoPessoaFisicaValidacao _validacao;
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
+        private OrganogramaValidacao _organogramaValidacao;
 
         private IContatoInteressadoPessoaFisicaNegocio _contatoNegocio;
         //private IEmailNegocio _emailNegocio;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
+        private ICurrentUserProvider _user;
 
 
-        public InteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, InteressadoPessoaFisicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, IContatoInteressadoPessoaFisicaNegocio contatoNegocio)
+        public InteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user, InteressadoPessoaFisicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, OrganogramaValidacao organogramaValidacao, IContatoInteressadoPessoaFisicaNegocio contatoNegocio)
         {
             _repositorioInteressadosPessoaFisicaRascunho = repositorios.InteressadosPessoaFisicaRascunho;
             _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
             _validacao = validacao;
             _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
             _usuarioValidacao = usuarioValidacao;
+            _organogramaValidacao = organogramaValidacao;
             _contatoNegocio = contatoNegocio;
             //_emailNegocio = emailNegocio;
             _mapper = mapper;
+            _user = user;
             _unitOfWork = repositorios.UnitOfWork;
         }
 
@@ -56,7 +62,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public InteressadoPessoaFisicaModeloNegocio Post(int idRascunhoProcesso, InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
         {
-            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(r => r.Id == idRascunhoProcesso && r.GuidOrganizacao == UsuarioGuidOrganizacao).SingleOrDefault();
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(r => r.Id == idRascunhoProcesso && r.GuidOrganizacao == _user.UserGuidOrganizacao).SingleOrDefault();
             _rascunhoProcessoValidacao.Exists(rascunhoProcesso);
             _validacao.IsFilled(interessadoPessoaFisicaNegocio);
             _validacao.IsValid(interessadoPessoaFisicaNegocio);
@@ -74,7 +80,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public void Patch(int idRascunhoProcesso, int id, InteressadoPessoaFisicaModeloNegocio interessadoPessoaFisicaNegocio)
         {
-            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(r => r.Id == idRascunhoProcesso && r.GuidOrganizacao == UsuarioGuidOrganizacao).SingleOrDefault();
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(r => r.Id == idRascunhoProcesso && r.GuidOrganizacao == _user.UserGuidOrganizacao).SingleOrDefault();
             _rascunhoProcessoValidacao.Exists(rascunhoProcesso);
 
             InteressadoPessoaFisicaRascunho interessadoPessoaFisica = _repositorioInteressadosPessoaFisicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso && ipf.Id == id).SingleOrDefault();
@@ -133,7 +139,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             if (interessadoPessoaFisica.GuidMunicipio.HasValue)
             {
-                MunicipioOrganogramaModelo municipioOrganograma = PesquisarMunicipio(interessadoPessoaFisica.GuidMunicipio.Value);
+                MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessadoPessoaFisica.GuidMunicipio.Value);
 
                 if (municipioOrganograma == null)
                 {
