@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Dominio.Modelos;
+﻿using ProcessoEletronicoService.Dominio.Base;
+using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
@@ -12,7 +13,14 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 {
     public class EmailValidacao : IBaseValidation<EmailModeloNegocio, EmailRascunho>, IBaseCollectionValidation<EmailModeloNegocio>
     {
-        private string patternEmail = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+
+        private IRepositorioGenerico<EmailRascunho> _repositorioEmailsRascunho;
+        private string _patternEmail = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+
+        public EmailValidacao(IProcessoEletronicoRepositorios repositorios)
+        {
+            _repositorioEmailsRascunho = repositorios.EmailsRascunho;
+        }
 
         public void Exists(EmailRascunho email)
         {
@@ -21,7 +29,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
                 throw new RecursoNaoEncontradoException("Email não encontrado");
             }
         }
-
+        
         public void IsFilled(IEnumerable<EmailModeloNegocio> emailsModeloNegocio)
         {
             if (emailsModeloNegocio != null)
@@ -57,13 +65,13 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
         {
             if (!string.IsNullOrWhiteSpace(emailModeloNegocio.Endereco))
             {
-                Regex regexEmail = new Regex(patternEmail);
+                Regex regexEmail = new Regex(_patternEmail);
                 if (!regexEmail.IsMatch(emailModeloNegocio.Endereco))
                 {
                     throw new RequisicaoInvalidaException($"Email {emailModeloNegocio.Endereco} inválido");
                 }
             }
         }
-        
+
     }
 }

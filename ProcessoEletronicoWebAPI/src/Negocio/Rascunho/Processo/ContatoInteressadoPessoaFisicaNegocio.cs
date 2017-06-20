@@ -57,9 +57,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
             _interessadoPessoaFisicaValidacao.Exists(idRascunhoProcesso, idInteressadoPessoaFisica);
-            _validacao.ExistsInInteressadoPessoaFisica(idRascunhoProcesso, idInteressadoPessoaFisica, id);
-            
+
             ContatoRascunho contato = _repositorioContatosRascunho.Where(c => c.IdInteressadoPessoaFisicaRascunho == idInteressadoPessoaFisica && c.Id == id).Include(t => t.TipoContato).SingleOrDefault();
+            _validacao.Exists(contato);
+
             return _mapper.Map<ContatoModeloNegocio>(contato);
 
         }

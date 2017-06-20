@@ -28,23 +28,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
                 throw new RecursoNaoEncontradoException("Contato não encontrado.");
             }
         }
-
-        public void ExistsInInteressadoPessoaFisica(int idRascunhoProcesso, int idInteressadoPessoaFisica, int id)
-        {
-            if (_repositorioRascunhosContato.Where(c => c.Id == id && c.IdInteressadoPessoaFisicaRascunho == idInteressadoPessoaFisica && c.InteressadoPessoaFisicaRascunho.IdRascunhoProcesso == idRascunhoProcesso).SingleOrDefault() == null)
-            {
-                throw new RecursoNaoEncontradoException("Contato não encontrado");
-            }
-        }
-
-        public void ExistsInInteressadoPessoaJuridica(int idRascunhoProcesso, int idInteressadoPessoaJuridica, int id)
-        {
-            if (_repositorioRascunhosContato.Where(c => c.Id == id && c.IdInteressadoPessoaJuridicaRascunho == idInteressadoPessoaJuridica && c.InteressadoPessoaJuridicaRascunho.IdRascunhoProcesso == idRascunhoProcesso).SingleOrDefault() == null)
-            {
-                throw new RecursoNaoEncontradoException("Contato não encontrado");
-            }
-        }
-
+        
         public void IsFilled(IEnumerable<ContatoModeloNegocio> contatos)
         {
             if (contatos != null)

@@ -10,12 +10,12 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
-    [Route("api/rascunhos-processo/{idRascunhoProcesso}/interessados-pessoa-fisica/{idInteressado}/emails")]
-    public class EmailInteressadoPessoaFisicaController : BaseController
+    [Route("api/rascunhos-processo/{idRascunhoProcesso}/interessados-pessoa-juridica/{idInteressado}/emails")]
+    public class EmailInteressadoPessoaJuridicaController : BaseController
     {
         private IMapper _mapper;
-        private IEmailInteressadoPessoaFisicaNegocio _negocio;
-        public EmailInteressadoPessoaFisicaController(IMapper mapper, IEmailInteressadoPessoaFisicaNegocio negocio)
+        private IEmailInteressadoPessoaJuridicaNegocio _negocio;
+        public EmailInteressadoPessoaJuridicaController(IMapper mapper, IEmailInteressadoPessoaJuridicaNegocio negocio)
         {
             _mapper = mapper;
             _negocio = negocio;
@@ -27,7 +27,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             return Ok(_mapper.Map<IList<GetEmailDto>>(_negocio.Get(idRascunhoProcesso, idInteressado)));
         }
 
-        [HttpGet("{id}", Name = "GetEmailInteressadoPessoaFisica")]
+        [HttpGet("{id}", Name = "GetEmailInteressadoPessoaJuridica")]
         public IActionResult Get(int idRascunhoProcesso, int idInteressado, int id)
         {
             return Ok(_mapper.Map<GetEmailDto>(_negocio.Get(idRascunhoProcesso, idInteressado, id)));
@@ -45,7 +45,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             EmailModeloNegocio emailModeloNegocio = _negocio.Post(idRascunhoProcesso, idInteressado, _mapper.Map<EmailModeloNegocio>(postEmailDto));
             GetEmailDto getEmailDto = _mapper.Map<GetEmailDto>(emailModeloNegocio);
 
-            return CreatedAtRoute("GetEmailInteressadoPessoaFisica", new { Id = getEmailDto.Id }, getEmailDto);
+            return CreatedAtRoute("GetEmailInteressadoPessoaJuridica", new { Id = getEmailDto.Id }, getEmailDto);
         }
 
         [HttpPatch("{id}")]

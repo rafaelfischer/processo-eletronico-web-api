@@ -19,6 +19,7 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias.Add(typeof(IContatoInteressadoPessoaFisicaNegocio), typeof(ContatoInteressadoPessoaFisicaNegocio));
             dependencias.Add(typeof(IContatoInteressadoPessoaJuridicaNegocio), typeof(ContatoInteressadoPessoaJuridicaNegocio));
             dependencias.Add(typeof(IEmailInteressadoPessoaFisicaNegocio), typeof(EmailInteressadoPessoaFisicaNegocio));
+            dependencias.Add(typeof(IEmailInteressadoPessoaJuridicaNegocio), typeof(EmailInteressadoPessoaJuridicaNegocio));
             dependencias.Add(typeof(IDespachoNegocio), typeof(DespachoNegocio));
             dependencias.Add(typeof(IDestinacaoFinalNegocio), typeof(DestinacaoFinalNegocio));
             dependencias.Add(typeof(IInteressadoPessoaFisicaNegocio), typeof(InteressadoPessoaFisicaNegocio));
