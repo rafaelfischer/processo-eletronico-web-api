@@ -11,12 +11,12 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
-    [Route("api/rascunhos-processo/{idRascunhoProcesso}/interessados-pessoa-fisica/{idInteressado}/contatos")]
-    public class ContatoInteressadoPessoaFisicaController : BaseController
+    [Route("api/rascunhos-processo/{idRascunhoProcesso}/interessados-pessoa-juridica/{idInteressado}/contatos")]
+    public class ContatoInteressadoPessoaJuridicaController : BaseController
     {
         private IMapper _mapper;
-        private IContatoInteressadoPessoaFisicaNegocio _negocio;
-        public ContatoInteressadoPessoaFisicaController(IMapper mapper, IContatoInteressadoPessoaFisicaNegocio negocio)
+        private IContatoInteressadoPessoaJuridicaNegocio _negocio;
+        public ContatoInteressadoPessoaJuridicaController(IMapper mapper, IContatoInteressadoPessoaJuridicaNegocio negocio)
         {
             _mapper = mapper;
             _negocio = negocio;
@@ -28,7 +28,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             return Ok(_mapper.Map<IList<GetContatoDto>>(_negocio.Get(idRascunhoProcesso, idInteressado)));
         }
 
-        [HttpGet("{id}", Name = "GetContatoInteressadoPessoaFisica")]
+        [HttpGet("{id}", Name = "GetContatoInteressadoPessoaJuridica")]
         public IActionResult Get(int idRascunhoProcesso, int idInteressado, int id)
         {
             return Ok(_mapper.Map<GetContatoDto>(_negocio.Get(idRascunhoProcesso, idInteressado, id)));
@@ -46,7 +46,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             ContatoModeloNegocio contatoModeloNegocio = _negocio.Post(idRascunhoProcesso, idInteressado, _mapper.Map<ContatoModeloNegocio>(postContatoDto));
             GetContatoDto getContatoDto = _mapper.Map<GetContatoDto>(contatoModeloNegocio);
 
-            return CreatedAtRoute("GetContatoInteressadoPessoaFisica", new { Id = getContatoDto.Id }, getContatoDto);
+            return CreatedAtRoute("GetContatoInteressadoPessoaJuridica", new { Id = getContatoDto.Id }, getContatoDto);
         }
 
         [HttpPatch("{id}")]

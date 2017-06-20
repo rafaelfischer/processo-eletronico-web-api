@@ -25,13 +25,12 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private InteressadoPessoaFisicaValidacao _interessadoPessoaFisicaValidacao;
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
-        private ICurrentUserProvider _user;
                 
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
 
 
-        public ContatoInteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ContatoValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao , UsuarioValidacao usuarioValidacao, ICurrentUserProvider user)
+        public ContatoInteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ContatoValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao , UsuarioValidacao usuarioValidacao)
         {
             _repositorioContatosRascunho = repositorios.ContatosRascunho;
             _repositorioInteressadosPessoaFisica = repositorios.InteressadosPessoaFisica;
@@ -40,7 +39,6 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
             _interessadoPessoaFisicaValidacao = interessadoPessoaFisicaValidacao;
             _usuarioValidacao = usuarioValidacao;
-            _user = user;
             _mapper = mapper;
             _unitOfWork = repositorios.UnitOfWork;
         }

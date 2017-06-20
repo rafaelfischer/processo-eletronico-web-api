@@ -10,6 +10,7 @@ using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
@@ -19,47 +20,88 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private IRepositorioGenerico<InteressadoPessoaJuridica> _repositorioInteressadosPessoaJuridica;
         private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
         private ContatoValidacao _validacao;
-        //private InteressadoPessoaJuridicaValidacao _interessadoPessoaFisicaValidacao;
+        private InteressadoPessoaJuridicaValidacao _interessadoPessoaJuridicaValidacao;
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
-
-        private IContatoInteressadoPessoaJuridicaNegocio _contatoNegocio;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
 
-
-        public ContatoInteressadoPessoaJuridicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ContatoValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, IContatoInteressadoPessoaJuridicaNegocio contatoNegocio)
+        public ContatoInteressadoPessoaJuridicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ContatoValidacao validacao, InteressadoPessoaJuridicaValidacao interessadoPessoaJuridicaValidacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao)
         {
+            _repositorioContatosRascunho = repositorios.ContatosRascunho;
             _repositorioInteressadosPessoaJuridica = repositorios.InteressadosPessoaJuridica;
             _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
             _validacao = validacao;
-            //_interessadoPessoaJuridicaValidacao = interessadoPessoaJuridicaValidacao;
+            _interessadoPessoaJuridicaValidacao = interessadoPessoaJuridicaValidacao;
             _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
             _usuarioValidacao = usuarioValidacao;
-            _contatoNegocio = contatoNegocio;
             _mapper = mapper;
             _unitOfWork = repositorios.UnitOfWork;
         }
 
-        public IList<ContatoModeloNegocio> Get(int idRascunhoProcesso, int idInteressado)
+        public IList<ContatoModeloNegocio> Get(int idRascunhoProcesso, int idInteressadoPessoaJuridica)
         {
-            throw new NotImplementedException();
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+            _interessadoPessoaJuridicaValidacao.Exists(idRascunhoProcesso, idInteressadoPessoaJuridica);
+
+            IList<ContatoRascunho> contatos = _repositorioContatosRascunho.Where(c => c.IdInteressadoPessoaJuridicaRascunho.HasValue && c.IdInteressadoPessoaJuridicaRascunho.Value == idInteressadoPessoaJuridica)
+                                                .Include(t => t.TipoContato).ToList();
+            return _mapper.Map<IList<ContatoModeloNegocio>>(contatos);
         }
 
-        public ContatoModeloNegocio Get(int idRascunhoProcesso, int idInteressado, int id)
+        public ContatoModeloNegocio Get(int idRascunhoProcesso, int idInteressadoPessoaJuridica, int id)
         {
-            throw new NotImplementedException();
-        }
-        
-        public ContatoModeloNegocio Post(int idRascunhoProcesso, int idInteressado, ContatoModeloNegocio contatoModeloNegocio)
-        {
-            throw new NotImplementedException();
-        }
-        public void Patch(int idRascunhoProcesso, int idInteressado, int id, ContatoModeloNegocio contatoModeloNegocio)
-        {
-            throw new NotImplementedException();
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+            _interessadoPessoaJuridicaValidacao.Exists(idRascunhoProcesso, idInteressadoPessoaJuridica);
+            _validacao.ExistsInInteressadoPessoaJuridica(idRascunhoProcesso, idInteressadoPessoaJuridica, id);
+
+            ContatoRascunho contato = _repositorioContatosRascunho.Where(c => c.IdInteressadoPessoaJuridicaRascunho == idInteressadoPessoaJuridica && c.Id == id).Include(t => t.TipoContato).SingleOrDefault();
+            return _mapper.Map<ContatoModeloNegocio>(contato);
+
         }
 
+        public ContatoModeloNegocio Post(int idRascunhoProcesso, int idInteressadoPessoaJuridica, ContatoModeloNegocio contatoModeloNegocio)
+        {
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+            _interessadoPessoaJuridicaValidacao.Exists(idRascunhoProcesso, idInteressadoPessoaJuridica);
+
+            _validacao.IsFilled(contatoModeloNegocio);
+            _validacao.IsValid(contatoModeloNegocio);
+
+            ContatoRascunho contatoRascunho = new ContatoRascunho();
+            _mapper.Map(contatoModeloNegocio, contatoRascunho);
+            contatoRascunho.IdInteressadoPessoaJuridicaRascunho = idInteressadoPessoaJuridica;
+            _repositorioContatosRascunho.Add(contatoRascunho);
+
+            _unitOfWork.Save();
+            return Get(idRascunhoProcesso, idInteressadoPessoaJuridica, contatoRascunho.Id);
+
+        }
+        public void Patch(int idRascunhoProcesso, int idInteressadoJuridica, int id, ContatoModeloNegocio contatoModeloNegocio)
+        {
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+            _interessadoPessoaJuridicaValidacao.Exists(idRascunhoProcesso, idInteressadoJuridica);
+
+            ContatoRascunho contato = _repositorioContatosRascunho.Where(c => c.IdInteressadoPessoaJuridicaRascunho == idInteressadoJuridica && c.Id == id).SingleOrDefault();
+            _validacao.Exists(contato);
+            _validacao.IsFilled(contatoModeloNegocio);
+            _validacao.IsValid(contatoModeloNegocio);
+            MapContato(contatoModeloNegocio, contato);
+            _unitOfWork.Save();
+        }
+
+        public void Delete(int idRascunhoProcesso, int idInteressadoPessoaJuridica, int id)
+        {
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+            _interessadoPessoaJuridicaValidacao.Exists(idRascunhoProcesso, idInteressadoPessoaJuridica);
+
+            ContatoRascunho contatoRascunho = _repositorioContatosRascunho.Where(c => c.Id == id && c.IdInteressadoPessoaJuridicaRascunho == idInteressadoPessoaJuridica).SingleOrDefault();
+            _validacao.Exists(contatoRascunho);
+
+            _repositorioContatosRascunho.Remove(contatoRascunho);
+            _unitOfWork.Save();
+
+        }
         public void Delete(ContatoRascunho contato)
         {
             if (contato != null)
@@ -79,9 +121,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             }
         }
 
-        public void Delete(int idRascunhoProcesso, int idInteressado, int id)
+        private void MapContato(ContatoModeloNegocio contatoModeloNegocio, ContatoRascunho contato)
         {
-            throw new NotImplementedException();
+            contato.Telefone = contatoModeloNegocio.Telefone;
+            contato.IdTipoContato = contatoModeloNegocio.TipoContato != null ? contatoModeloNegocio.TipoContato.Id : (int?)null;
         }
     }
 }

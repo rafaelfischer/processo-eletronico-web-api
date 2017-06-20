@@ -24,15 +24,14 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
         private OrganogramaValidacao _organogramaValidacao;
-
-        //private IContatoInteressadoPessoaJuridicaNegocio _contatoNegocio;
+        private IContatoInteressadoPessoaJuridicaNegocio _contatoNegocio;
         //private IEmailInteressadopessoaJuridicaNegocio _emailNegocio;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
         private ICurrentUserProvider _user;
 
 
-        public InteressadoPessoaJuridicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user, InteressadoPessoaJuridicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, OrganogramaValidacao organogramaValidacao)
+        public InteressadoPessoaJuridicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user, IContatoInteressadoPessoaJuridicaNegocio contatoNegocio, InteressadoPessoaJuridicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, OrganogramaValidacao organogramaValidacao)
         {
             _repositorioInteressadosPessoaJuridicaRascunho = repositorios.InteressadosPessoaJuridicaRascunho;
             _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
@@ -40,7 +39,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
             _usuarioValidacao = usuarioValidacao;
             _organogramaValidacao = organogramaValidacao;
-            //_contatoNegocio = contatoNegocio;
+            _contatoNegocio = contatoNegocio;
             //_emailNegocio = emailNegocio;
             _mapper = mapper;
             _user = user;
@@ -96,34 +95,34 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public void Delete(int idRascunhoProcesso, int id)
         {
-            InteressadoPessoaJuridicaRascunho interessadoPessoaFisica = _repositorioInteressadosPessoaJuridicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso && ipf.Id == id).Include(ipf => ipf.ContatosRascunho).Include(ipf => ipf.EmailsRascunho).SingleOrDefault();
-            _validacao.Exists(interessadoPessoaFisica);
+            InteressadoPessoaJuridicaRascunho interessadoPessoaJuridica = _repositorioInteressadosPessoaJuridicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso && ipf.Id == id).Include(ipf => ipf.ContatosRascunho).Include(ipf => ipf.EmailsRascunho).SingleOrDefault();
+            _validacao.Exists(interessadoPessoaJuridica);
 
             //Excluir emails e contatos (caso haja)
             //_emailNegocio.Delete(interessadoPessoaFisica.EmailsRascunho);
-            //_contatoNegocio.Delete(interessadoPessoaFisica.ContatosRascunho);
-            _repositorioInteressadosPessoaJuridicaRascunho.Remove(interessadoPessoaFisica);
+            _contatoNegocio.Delete(interessadoPessoaJuridica.ContatosRascunho);
+            _repositorioInteressadosPessoaJuridicaRascunho.Remove(interessadoPessoaJuridica);
             _unitOfWork.Save();
         }
 
-        public void Delete(ICollection<InteressadoPessoaJuridicaRascunho> interessadosPessoaFisica)
+        public void Delete(ICollection<InteressadoPessoaJuridicaRascunho> interessadosPessoaJuridica)
         {
-            if (interessadosPessoaFisica != null)
+            if (interessadosPessoaJuridica != null)
             {
-                foreach (var interessadoPessoaFisica in interessadosPessoaFisica)
+                foreach (var interessadoPessoaJuridica in interessadosPessoaJuridica)
                 {
-                    Delete(interessadoPessoaFisica);
+                    Delete(interessadoPessoaJuridica);
                 }
             }
         }
 
-        public void Delete(InteressadoPessoaJuridicaRascunho interessadoPessoaFisica)
+        public void Delete(InteressadoPessoaJuridicaRascunho interessadoPessoaJuridica)
         {
-            if (interessadoPessoaFisica != null)
+            if (interessadoPessoaJuridica != null)
             {
-                //_contatoNegocio.Delete(interessadoPessoaFisica.ContatosRascunho);
+                _contatoNegocio.Delete(interessadoPessoaJuridica.ContatosRascunho);
                 //_emailNegocio.Delete(interessadoPessoaFisica.EmailsRascunho);
-                _repositorioInteressadosPessoaJuridicaRascunho.Remove(interessadoPessoaFisica);
+                _repositorioInteressadosPessoaJuridicaRascunho.Remove(interessadoPessoaJuridica);
             }
         }
 
