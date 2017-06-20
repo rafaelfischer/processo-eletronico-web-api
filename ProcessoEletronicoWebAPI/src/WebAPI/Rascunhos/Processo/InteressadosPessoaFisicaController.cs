@@ -28,7 +28,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             return Ok(_mapper.Map<List<GetInteressadoPessoaFisicaDto>>(_negocio.Get(idRascunhoProcesso)));
         }
 
-        [HttpGet("{id}", Name = "GetInteressado")]
+        [HttpGet("{id}", Name = "GetInteressadoPessoaFisica")]
         public IActionResult Get(int idRascunhoProcesso, int id)
         {
             return Ok(_mapper.Map<GetInteressadoPessoaFisicaDto>(_negocio.Get(idRascunhoProcesso, id)));
@@ -45,7 +45,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             InteressadoPessoaFisicaModeloNegocio intressadoPessoaFisicaNegocio = _negocio.Post(idRascunhoProcesso, _mapper.Map<InteressadoPessoaFisicaModeloNegocio>(interessadoPessoaFisicaDto));
             GetInteressadoPessoaFisicaDto getInteressadoPessoaFisicaDto = _mapper.Map<GetInteressadoPessoaFisicaDto>(intressadoPessoaFisicaNegocio);
 
-            return CreatedAtRoute("GetInteressado", new { Id = getInteressadoPessoaFisicaDto.Id }, getInteressadoPessoaFisicaDto);
+            return CreatedAtRoute("GetInteressadoFisica", new { Id = getInteressadoPessoaFisicaDto.Id }, getInteressadoPessoaFisicaDto);
         }
 
         [HttpPatch("{id}")]
