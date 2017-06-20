@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
         
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
         public IActionResult Post (int idRascunhoProcesso, [FromBody] PostInteressadoPessoaJuridicaDto interessadoPessoaJuridicaDto)
         {
             if (interessadoPessoaJuridicaDto == null)
@@ -50,6 +52,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
         public IActionResult Patch (int idRascunhoProcesso, int id, [FromBody] JsonPatchDocument<PatchInteressadoPessoaJuridicaDto> patchInteressadoPessoaJuridica)
         {
             if (patchInteressadoPessoaJuridica == null)
@@ -69,6 +72,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
         public IActionResult Delete(int idRascunhoProcesso, int id)
         {
             _negocio.Delete(idRascunhoProcesso, id);

@@ -33,6 +33,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
         public IActionResult Post(int idRascunhoProcesso, int idInteressado, [FromBody] PostEmailDto postEmailDto)
         {
             if (postEmailDto == null)
@@ -47,6 +48,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
         public IActionResult Patch(int idRascunhoProcesso, int idInteressado, int id, [FromBody] JsonPatchDocument<PatchEmailDto> patchEmailDto)
         {
             EmailModeloNegocio emailModeloNegocio = _negocio.Get(idRascunhoProcesso, idInteressado, id);
@@ -61,6 +63,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
         public IActionResult Delete(int idRascunhoProcesso, int idInteressado, int id)
         {
             _negocio.Delete(idRascunhoProcesso, idInteressado, id);
