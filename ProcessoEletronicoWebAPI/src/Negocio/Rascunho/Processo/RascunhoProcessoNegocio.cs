@@ -99,7 +99,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
-            
+
             /*Mapeamento para inserção*/
             RascunhoProcesso rascunhoProcesso = new RascunhoProcesso();
             rascunhoProcesso = _mapper.Map<RascunhoProcessoModeloNegocio, RascunhoProcesso>(rascunhoProcessoNegocio);
@@ -136,7 +136,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
             _unitOfWork.Save();
         }
-        
+
         public void Excluir(int id)
         {
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).Include(p => p.Anexos)
@@ -173,7 +173,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             rascunhoProcesso.NomeOrganizacao = organizacao.razaoSocial;
             rascunhoProcesso.SiglaOrganizacao = organizacao.sigla;
         }
-        
+
         private void InformacoesUnidade(RascunhoProcesso rascunhoProcesso)
         {
             UnidadeOrganogramaModelo unidade = _organogramaValidacao.PesquisarUnidade(rascunhoProcesso.GuidUnidade);
@@ -195,16 +195,18 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
                 foreach (MunicipioRascunhoProcesso municipio in rascunhoProcesso.MunicipiosRascunhoProcesso)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(municipio.GuidMunicipio);
-
-                    if (municipioOrganograma == null)
+                    if (municipio.GuidMunicipio.HasValue)
                     {
-                        throw new RequisicaoInvalidaException("Municipio não encontrado no Organograma.");
+                        MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(municipio.GuidMunicipio.Value);
+
+                        if (municipioOrganograma == null)
+                        {
+                            throw new RequisicaoInvalidaException("Municipio não encontrado no Organograma.");
+                        }
+
+                        municipio.Nome = municipioOrganograma.nome;
+                        municipio.Uf = municipioOrganograma.uf;
                     }
-
-                    municipio.Nome = municipioOrganograma.nome;
-                    municipio.Uf = municipioOrganograma.uf;
-
                 }
             }
         }

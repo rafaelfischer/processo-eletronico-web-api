@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace ProcessoEletronicoService.Negocio.Comum.Validacao
                 }
                 else
                 {
-                    return default(T);
+                    throw new ProcessoEletronicoException("Não foi possível obter informações do Organograma. Tente novamente mais tarde");
                 }
             }
 

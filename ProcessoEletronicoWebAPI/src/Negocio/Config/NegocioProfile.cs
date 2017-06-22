@@ -101,7 +101,7 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => new Guid(src.GuidMunicipio)));
 
             CreateMap<MunicipioRascunhoProcesso, MunicipioRascunhoProcessoModeloNegocio>()
-                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.GuidMunicipio.ToString("D")));
+                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.GuidMunicipio.HasValue ? src.GuidMunicipio.Value.ToString("D") : null));
             #endregion
 
             #region Mapeamento de Municipio do Processo

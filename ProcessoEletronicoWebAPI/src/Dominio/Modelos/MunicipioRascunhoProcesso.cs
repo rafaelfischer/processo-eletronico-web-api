@@ -9,7 +9,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string Nome { get; set; }
         public string Uf { get; set; }
         public int IdRascunhoProcesso { get; set; }
-        public Guid GuidMunicipio { get; set; }
+        public Guid? GuidMunicipio { get; set; }
 
         public virtual RascunhoProcesso RascunhoProcesso { get; set; }
     }
