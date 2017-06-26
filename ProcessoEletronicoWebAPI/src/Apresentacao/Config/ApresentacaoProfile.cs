@@ -104,10 +104,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
             #region Mapeamento de Municipio
             CreateMap<MunicipioProcessoModeloPost, MunicipioProcessoModeloNegocio>();
-            CreateMap<MunicipioProcessoModeloPost, MunicipioRascunhoProcessoModeloNegocio>();
-
             CreateMap<MunicipioProcessoModeloNegocio, MunicipioProcessoModeloGet>();
-            CreateMap<MunicipioRascunhoProcessoModeloNegocio, MunicipioProcessoModeloGet>();
             #endregion
 
             #region Mapeamento de plano de classificação
@@ -115,7 +112,6 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id));
 
             CreateMap<PlanoClassificacaoModeloNegocio, PlanoClassificacaoProcessoGetModelo>();
-
             CreateMap<PlanoClassificacaoModeloPost, PlanoClassificacaoModeloNegocio>();
 
             #endregion
@@ -164,9 +160,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
 
 
             CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalAnexoModelo>();
-
-
-
+            
             #endregion
 
             #region Mapeamento de Sinalização

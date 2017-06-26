@@ -61,7 +61,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _user = user;
         }
 
-        public RascunhoProcessoModeloNegocio Pesquisar(int id)
+        public RascunhoProcessoModeloNegocio Get(int id)
         {
 
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(p => p.Id == id)
@@ -72,20 +72,20 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                                                .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.EmailsRascunho)
                                                .Include(p => p.MunicipiosRascunhoProcesso)
                                                .Include(p => p.SinalizacoesRascunhoProcesso).ThenInclude(sp => sp.Sinalizacao)
-                                               .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
+                                               .Include(p => p.Atividade)
                                                .SingleOrDefault();
 
             _validacao.Exists(rascunhoProcesso);
             return _mapper.Map<RascunhoProcesso, RascunhoProcessoModeloNegocio>(rascunhoProcesso);
         }
 
-        public List<RascunhoProcessoModeloNegocio> PesquisarRascunhosProcessoNaOrganizacao(Guid guidOrganizacao)
+        public List<RascunhoProcessoModeloNegocio> Get(Guid guidOrganizacao)
         {
             List<RascunhoProcesso> rascunhos = _repositorioRascunhosProcesso.Where(rp => rp.GuidOrganizacao.Equals(guidOrganizacao)).ToList();
             return Mapper.Map<List<RascunhoProcesso>, List<RascunhoProcessoModeloNegocio>>(rascunhos);
 
         }
-        public RascunhoProcessoModeloNegocio Salvar(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
+        public RascunhoProcessoModeloNegocio Post(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
         {
             /*Validações*/
             _validacao.IsFilled(rascunhoProcessoNegocio);
@@ -117,10 +117,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _repositorioRascunhosProcesso.Add(rascunhoProcesso);
             _unitOfWork.Save();
 
-            return Pesquisar(rascunhoProcesso.Id);
+            return Get(rascunhoProcesso.Id);
         }
 
-        public void Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
+        public void Patch(int id, RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
         {
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).SingleOrDefault();
             _validacao.Exists(rascunhoProcesso);
@@ -137,16 +137,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _unitOfWork.Save();
         }
 
-        public void Excluir(int id)
+        public void Delete(int id)
         {
-            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).Include(p => p.Anexos)
-                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho)
-                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.EmailsRascunho)
-                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho)
-                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.EmailsRascunho)
-                                               .Include(p => p.MunicipiosRascunhoProcesso)
-                                               .Include(p => p.SinalizacoesRascunhoProcesso)
-                                               .SingleOrDefault();
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).SingleOrDefault();
             _validacao.Exists(rascunhoProcesso);
 
             _interessadoPessoaFisicaNegocio.Delete(rascunhoProcesso.InteressadosPessoaFisica);

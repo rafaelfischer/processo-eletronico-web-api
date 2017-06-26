@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ProcessoEletronicoService.Apresentacao.Modelos
+namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
 {
     public class GetRascunhoProcessoDto
     {
@@ -16,12 +13,12 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public string GuidUnidade { get; set; }
         public string NomeUnidade { get; set; }
         public string SiglaUnidade { get; set; }
-        public List<AnexoSimplesModeloGet> Anexos { get; set; }
+        //public List<AnexoSimplesModeloGet> Anexos { get; set; }
         public List<GetInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
-        public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }
-        public List<MunicipioProcessoModeloGet> MunicipiosProcesso { get; set; }
-        public List<SinalizacaoProcessoGetModelo> Sinalizacoes { get; set; }
-        public AtividadeProcessoGetModelo Atividade { get; set; }
+        public List<GetInteressadoPessoaJuridicaDto> InteressadosPessoaJuridica { get; set; }
+        public List<GetMunicipioDto> MunicipiosProcesso { get; set; }
+        public List<GetSinalizacaoDto> Sinalizacoes { get; set; }
+        //public GetAtividadeDto Atividade { get; set; }
     }
 
     public class GetRascunhoProcessoPorOrganizacaoDto
@@ -43,9 +40,9 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public int? IdAtividade { get; set; }
         public string Resumo { get; set; }
         public List<PostInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
-        public List<InteressadoPessoaJuridicaModelo> InteressadosPessoaJuridica { get; set; }
-        public List<MunicipioProcessoModeloPost> MunicipiosRascunhoProcesso { get; set; }
-        public List<AnexoModelo> Anexos { get; set; }
+        public List<PostInteressadoPessoaJuridicaDto> InteressadosPessoaJuridica { get; set; }
+        public List<PostMunicipioDto> MunicipiosRascunhoProcesso { get; set; }
+        //public List<AnexoModelo> Anexos { get; set; }
         public List<int> IdSinalizacoes { get; set; }
         [Required]
         public string GuidOrganizacao { get; set; }

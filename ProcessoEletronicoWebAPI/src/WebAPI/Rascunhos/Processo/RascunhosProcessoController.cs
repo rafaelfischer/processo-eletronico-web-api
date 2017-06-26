@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
 using ProcessoEletronicoService.WebAPI.Base;
+using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 using System;
 using System.Collections.Generic;
 
@@ -40,7 +39,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            return Ok(_mapper.Map<GetRascunhoProcessoDto>(_negocio.Pesquisar(id)));
+            return Ok(_mapper.Map<GetRascunhoProcessoDto>(_negocio.Get(id)));
         }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             Guid guid;
             if (Guid.TryParse(guidOrganizacao, out guid))
             {
-                return Ok(_mapper.Map<List<GetRascunhoProcessoPorOrganizacaoDto>>(_negocio.PesquisarRascunhosProcessoNaOrganizacao(guid)));
+                return Ok(_mapper.Map<List<GetRascunhoProcessoPorOrganizacaoDto>>(_negocio.Get(guid)));
             }
 
             //Guid inválido
@@ -95,7 +94,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             }
 
             //Mapeia para o modelo de negócio, obém o resultado e mapeia para o modelo de apresentação
-            GetRascunhoProcessoDto rascunhoProcesso = _mapper.Map<GetRascunhoProcessoDto>(_negocio.Salvar(_mapper.Map<RascunhoProcessoModeloNegocio>(rascunhoProcessoPost)));
+            GetRascunhoProcessoDto rascunhoProcesso = _mapper.Map<GetRascunhoProcessoDto>(_negocio.Post(_mapper.Map<RascunhoProcessoModeloNegocio>(rascunhoProcessoPost)));
             return CreatedAtRoute("GetRascunhoProcesso", new { id = rascunhoProcesso.Id }, rascunhoProcesso);
         }
         #endregion
@@ -124,14 +123,14 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
                 return BadRequest();
             }
 
-            RascunhoProcessoModeloNegocio rascunhoProcessoNegocio = _negocio.Pesquisar(id);
+            RascunhoProcessoModeloNegocio rascunhoProcessoNegocio = _negocio.Get(id);
             PatchRascunhoProcessoDto rascunhoProcesso = _mapper.Map<PatchRascunhoProcessoDto>(rascunhoProcessoNegocio);
 
             //Validação da existência de um "path" será feita posteriormente. Por enquanto caminhos não existentes são ignorados.
             patchRascunhoProcesso.ApplyTo(rascunhoProcesso, ModelState);
 
             _mapper.Map(rascunhoProcesso, rascunhoProcessoNegocio);
-            _negocio.Alterar(id, rascunhoProcessoNegocio);
+            _negocio.Patch(id, rascunhoProcessoNegocio);
             return NoContent();
 
         }
@@ -151,7 +150,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Excluir(int id)
         {
-            _negocio.Excluir(id);
+            _negocio.Delete(id);
             return NoContent();
         }
         #endregion

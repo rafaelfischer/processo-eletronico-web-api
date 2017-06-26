@@ -7,13 +7,13 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
 {
     public interface IRascunhoProcessoNegocio
     {
-        RascunhoProcessoModeloNegocio Pesquisar(int id);
+        RascunhoProcessoModeloNegocio Get(int id);
 
         //Método será feito quando o escopo de permissão do usuário estiver filtrado por unidade
         //List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(string guidUnidade);
-        List<RascunhoProcessoModeloNegocio> PesquisarRascunhosProcessoNaOrganizacao(Guid guidOrganizacao);
-        RascunhoProcessoModeloNegocio Salvar(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio);
-        void Alterar(int id, RascunhoProcessoModeloNegocio rascunhoProcessoAlterado);
-        void Excluir(int id);
+        List<RascunhoProcessoModeloNegocio> Get(Guid guidOrganizacao);
+        RascunhoProcessoModeloNegocio Post(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio);
+        void Patch(int id, RascunhoProcessoModeloNegocio rascunhoProcessoAlterado);
+        void Delete(int id);
     }
 }

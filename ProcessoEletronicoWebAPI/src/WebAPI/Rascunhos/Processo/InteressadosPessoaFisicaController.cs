@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
 using ProcessoEletronicoService.WebAPI.Base;
+using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo

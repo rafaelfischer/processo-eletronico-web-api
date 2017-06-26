@@ -37,6 +37,7 @@ namespace ProcessoEletronicoService.WebAPI.Config
             services.AddTransient(typeof(ContatoValidacao));
             services.AddTransient(typeof(EmailValidacao));
             services.AddTransient(typeof(MunicipioValidacao));
+            services.AddTransient(typeof(SinalizacaoValidacao));
             services.AddTransient(typeof(OrganogramaValidacao));
         }
     }

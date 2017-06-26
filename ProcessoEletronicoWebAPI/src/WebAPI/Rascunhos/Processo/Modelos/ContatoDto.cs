@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
 {
-
-
     public class GetContatoDto
     {
         public int Id { get; set; }
@@ -25,6 +23,5 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
         public string Telefone { get; set; }
         public int? IdTipoContato { get; set; }
     }
-
-
+    
 }

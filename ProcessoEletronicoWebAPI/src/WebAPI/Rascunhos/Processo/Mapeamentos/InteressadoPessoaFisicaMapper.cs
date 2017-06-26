@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Mapeamentos
 {
