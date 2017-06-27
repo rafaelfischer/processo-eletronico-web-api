@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProcessoEletronicoService.Apresentacao.Modelos
 {
-    public class PostInteressadoPessoaFisicaDto
+    public class InteressadoPessoaFisicaModelo
     {
         [Required]
         public string Nome { get; set; }
@@ -16,7 +16,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
 
     }
 
-    public class GetInteressadoPessoaFisicaDto
+    public class InteressadoPessoaFisicaProcessoGetModelo
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -27,13 +27,6 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
 
         public List<ContatoProcessoGetModelo> Contatos { get; set; }
         public List<EmailModelo> Emails { get; set; }
-    }
-
-    public class PatchInteressadoPessoaFisicaDto
-    {
-        public string Nome { get; set; }
-        public string Cpf { get; set; }
-        public string GuidMunicipio { get; set; }
     }
 
 }
