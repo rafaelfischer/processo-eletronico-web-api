@@ -10,7 +10,7 @@ using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 

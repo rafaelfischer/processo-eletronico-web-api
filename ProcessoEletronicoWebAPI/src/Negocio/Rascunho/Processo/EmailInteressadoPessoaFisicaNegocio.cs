@@ -1,4 +1,4 @@
-﻿using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+﻿using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +21,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private InteressadoPessoaFisicaValidacao _interessadoPessoaFisicaValidacao;
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
-        private ICurrentUserProvider _user;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
 
-        public EmailInteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user, IMapper mapper, EmailValidacao validacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao, RascunhoProcessoValidacao rascunhoProcessoValidacao)
+        public EmailInteressadoPessoaFisicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, EmailValidacao validacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao, RascunhoProcessoValidacao rascunhoProcessoValidacao)
         {
             _repositorioEmailsRascunho = repositorios.EmailsRascunho;
             _repositorioInteressadosPessoaFisicaRascunho = repositorios.InteressadosPessoaFisicaRascunho;

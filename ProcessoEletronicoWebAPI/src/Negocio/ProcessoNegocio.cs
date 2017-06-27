@@ -469,7 +469,7 @@ namespace ProcessoEletronicoService.Negocio
 
         }
 
-        private void PreparaInsercaoDespacho(DespachoModeloNegocio despacho, int idProcesso)
+        private void PreparaInsercaoDespacho(Despacho despacho, int idProcesso)
         {
             //Processo do despacho
             despacho.IdProcesso = idProcesso;
@@ -477,7 +477,7 @@ namespace ProcessoEletronicoService.Negocio
             //Preenche processo dos anexos
             if (despacho.Anexos != null)
             {
-                foreach (AnexoModeloNegocio anexo in despacho.Anexos)
+                foreach (Anexo anexo in despacho.Anexos)
                 {
                     anexo.IdProcesso = idProcesso;
                 }

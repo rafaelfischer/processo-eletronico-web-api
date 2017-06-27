@@ -2,7 +2,7 @@
 using ProcessoEletronicoService.Negocio.Modelos;
 using System.Collections.Generic;
 
-namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
+namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Base
 {
     public interface ISinalizacaoNegocio
     {

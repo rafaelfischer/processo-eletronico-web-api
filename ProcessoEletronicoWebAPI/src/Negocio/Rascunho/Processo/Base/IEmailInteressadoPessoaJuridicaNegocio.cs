@@ -4,7 +4,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using System.Collections.Generic;
 
-namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
+namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Base
 {
     public interface IEmailInteressadoPessoaJuridicaNegocio : IEmailNegocio
     {

@@ -31,6 +31,7 @@ namespace ProcessoEletronicoService.WebAPI.Config
 
             //Demais dependências da camada de negócio (que não possuem interfaces)
             services.AddTransient(typeof(UsuarioValidacao));
+            services.AddTransient(typeof(AnexoValidacao));
             services.AddTransient(typeof(RascunhoProcessoValidacao));
             services.AddTransient(typeof(InteressadoPessoaFisicaValidacao));
             services.AddTransient(typeof(InteressadoPessoaJuridicaValidacao));

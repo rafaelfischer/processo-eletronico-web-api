@@ -1,4 +1,4 @@
-﻿using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+﻿using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

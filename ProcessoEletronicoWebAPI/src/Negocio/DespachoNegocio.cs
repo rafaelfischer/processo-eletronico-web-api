@@ -101,8 +101,9 @@ namespace ProcessoEletronicoService.Negocio
             PermissaoDespacho(despachoNegocio);
 
             Despacho despacho = new Despacho();
-            PreparaInsercaoDespacho(despachoNegocio);
+            
             _mapper.Map(despachoNegocio, despacho);
+            PreparaInsercaoDespacho(despacho);
 
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
@@ -127,13 +128,12 @@ namespace ProcessoEletronicoService.Negocio
             }
         }
 
-        private void PreparaInsercaoDespacho(DespachoModeloNegocio despacho)
+        private void PreparaInsercaoDespacho(Despacho despacho)
         {
-           
             //Preenche processo dos anexos
             if (despacho.Anexos != null)
             {
-                foreach (AnexoModeloNegocio anexo in despacho.Anexos)
+                foreach (Anexo anexo in despacho.Anexos)
                 {
                     anexo.IdProcesso = despacho.IdProcesso;
                 }

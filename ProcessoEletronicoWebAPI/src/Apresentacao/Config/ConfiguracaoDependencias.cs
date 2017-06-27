@@ -3,7 +3,7 @@ using ProcessoEletronicoService.Negocio;
 using System;
 using System.Collections.Generic;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo;
-using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 
 namespace ProcessoEletronicoService.Apresentacao.Configuracao
 {
@@ -14,7 +14,8 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
             dependencias = Negocio.Config.ConfiguracaoDependencias.ObterDependencias();
-            dependencias.Add(typeof(IAnexoNegocio), typeof(AnexoNegocio));
+            dependencias.Add(typeof(Negocio.Base.IAnexoNegocio), typeof(Negocio.AnexoNegocio));
+            dependencias.Add(typeof(Negocio.Rascunho.Processo.Base.IAnexoNegocio), typeof(Negocio.Rascunho.Processo.AnexoNegocio));
             dependencias.Add(typeof(IAtividadeNegocio), typeof(AtividadeNegocio));
             dependencias.Add(typeof(IContatoInteressadoPessoaFisicaNegocio), typeof(ContatoInteressadoPessoaFisicaNegocio));
             dependencias.Add(typeof(IContatoInteressadoPessoaJuridicaNegocio), typeof(ContatoInteressadoPessoaJuridicaNegocio));
@@ -32,7 +33,7 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias.Add(typeof(ITipoDocumentalNegocio), typeof(TipoDocumentalNegocio));
             dependencias.Add(typeof(ITipoContatoNegocio), typeof(TipoContatoNegocio));
             dependencias.Add(typeof(Negocio.Base.ISinalizacaoNegocio), typeof(Negocio.SinalizacaoNegocio));
-            dependencias.Add(typeof(Negocio.Rascunho.Proceso.Base.ISinalizacaoNegocio), typeof(Negocio.Rascunho.Processo.SinalizacaoNegocio));
+            dependencias.Add(typeof(Negocio.Rascunho.Processo.Base.ISinalizacaoNegocio), typeof(Negocio.Rascunho.Processo.SinalizacaoNegocio));
 
             return dependencias;
         }

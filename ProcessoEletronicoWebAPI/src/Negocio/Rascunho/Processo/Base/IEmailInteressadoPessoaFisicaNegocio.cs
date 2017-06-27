@@ -1,4 +1,4 @@
-﻿namespace ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base
+﻿namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Base
 {
     public interface IEmailInteressadoPessoaFisicaNegocio : IEmailNegocio
     {

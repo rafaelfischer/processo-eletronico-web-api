@@ -9,7 +9,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
-using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 

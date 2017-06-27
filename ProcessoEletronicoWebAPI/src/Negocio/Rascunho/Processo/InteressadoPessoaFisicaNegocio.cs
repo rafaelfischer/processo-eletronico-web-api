@@ -10,7 +10,7 @@ using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using ProcessoEletronicoService.Negocio.Rascunho.Proceso.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
@@ -24,7 +24,6 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
         private OrganogramaValidacao _organogramaValidacao;
-
         private IContatoInteressadoPessoaFisicaNegocio _contatoNegocio;
         //private IEmailNegocio _emailNegocio;
         private IMapper _mapper;

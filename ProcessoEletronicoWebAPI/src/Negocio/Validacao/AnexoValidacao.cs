@@ -13,7 +13,8 @@ namespace ProcessoEletronicoService.Negocio.Validacao
     {
 
         //private string regexNomeArquivo = @"^[\w,\s-]+\.[A-Za-z0-9]{2,4}$";
-        private long tamanhoMaximo = 5000000;
+        // 5 MB =  5242880 bytes
+        private long tamanhoMaximo = 5242880;
 
         IRepositorioGenerico<TipoDocumental> repositorioTiposDocumentais;
 
@@ -119,7 +120,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (anexo.Conteudo.Length > tamanhoMaximo)
             {
-                throw new RequisicaoInvalidaException("Tamanho do anexo "+ anexo.Nome  +" é maior que o limite máximo de" + (tamanhoMaximo / 1000000) + "MB.");
+                throw new RequisicaoInvalidaException("Tamanho do anexo "+ anexo.Nome  +" é maior que o limite máximo de" + (tamanhoMaximo / 1048576) + "MB.");
             }
         }
 
@@ -133,7 +134,6 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             {
                 throw new RequisicaoInvalidaException("Conteúdo do anexo " + anexo.Nome + " inválido.");
             }
-                        
         }
 
         private void TipoDocumentalValido(AnexoModeloNegocio anexo)

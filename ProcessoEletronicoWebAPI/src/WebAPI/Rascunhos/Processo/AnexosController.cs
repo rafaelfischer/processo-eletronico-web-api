@@ -12,13 +12,13 @@ using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
-    [Route("api/rascunhos-processo/{idRascunhoProcesso}/municipios")]
-    public class MunicipiosController : BaseController
+    [Route("api/rascunhos-processo/{idRascunhoProcesso}/anexos")]
+    public class AnexosController : BaseController
     {
         IMapper _mapper;
-        IMunicipioNegocio _negocio;
+        IAnexoNegocio _negocio;
 
-        public MunicipiosController(IMapper mapper, IMunicipioNegocio negocio)
+        public AnexosController(IMapper mapper, IAnexoNegocio negocio)
         {
             _mapper = mapper;
             _negocio = negocio;
@@ -27,47 +27,47 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [HttpGet]
         public IActionResult Get(int idRascunhoProcesso)
         {
-            return Ok(_mapper.Map<List<GetMunicipioDto>>(_negocio.Get(idRascunhoProcesso)));
+            return Ok(_mapper.Map<List<GetAnexoDto>>(_negocio.Get(idRascunhoProcesso)));
         }
 
-        [HttpGet("{id}", Name = "GetMunicipio")]
+        [HttpGet("{id}", Name = "GetAnexo")]
         public IActionResult Get(int idRascunhoProcesso, int id)
         {
-            return Ok(_mapper.Map<GetMunicipioDto>(_negocio.Get(idRascunhoProcesso, id)));
+            return Ok(_mapper.Map<GetAnexoDto>(_negocio.Get(idRascunhoProcesso, id)));
         }
         
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
-        public IActionResult Post (int idRascunhoProcesso, [FromBody] PostMunicipioDto postMunicipioDto)
+        public IActionResult Post (int idRascunhoProcesso, [FromBody] PostAnexoDto postAnexoDto)
         {
-            if (postMunicipioDto == null)
+            if (postAnexoDto == null)
             {
                 return BadRequest();
             }
 
-            MunicipioRascunhoProcessoModeloNegocio municipioNegocio = _negocio.Post(idRascunhoProcesso, _mapper.Map<MunicipioRascunhoProcessoModeloNegocio>(postMunicipioDto));
-            GetMunicipioDto getMunicipioDto = _mapper.Map<GetMunicipioDto>(municipioNegocio);
+            AnexoModeloNegocio anexoNegocio = _negocio.Post(idRascunhoProcesso, _mapper.Map<AnexoModeloNegocio>(postAnexoDto));
+            GetAnexoDto getAnexoDto = _mapper.Map<GetAnexoDto>(anexoNegocio);
 
-            return CreatedAtRoute("GetMunicipio", new { Id = getMunicipioDto.Id }, getMunicipioDto);
+            return CreatedAtRoute("GetAnexo", new { Id = getAnexoDto.Id }, getAnexoDto);
         }
 
         [HttpPatch("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
-        public IActionResult Patch (int idRascunhoProcesso, int id, [FromBody] JsonPatchDocument<PatchMunicipioDto> patchMunicipio)
+        public IActionResult Patch (int idRascunhoProcesso, int id, [FromBody] JsonPatchDocument<PatchAnexoDto> patchAnexo)
         {
-            if (patchMunicipio == null)
+            if (patchAnexo == null)
             {
                 return BadRequest();
             }
 
-            MunicipioRascunhoProcessoModeloNegocio municipioNegocio = _negocio.Get(idRascunhoProcesso, id);
-            PatchMunicipioDto patchMunicipioDto = _mapper.Map<PatchMunicipioDto>(municipioNegocio);
+            AnexoModeloNegocio anexoNegocio = _negocio.Get(idRascunhoProcesso, id);
+            PatchAnexoDto patchAnexoDto = _mapper.Map<PatchAnexoDto>(anexoNegocio);
 
             //Validação da existência de um "path" será feita posteriormente. Por enquanto caminhos não existentes são ignorados.
-            patchMunicipio.ApplyTo(patchMunicipioDto, ModelState);
+            patchAnexo.ApplyTo(patchAnexoDto, ModelState);
 
-            _mapper.Map(patchMunicipioDto, municipioNegocio);
-            _negocio.Patch(idRascunhoProcesso, id, municipioNegocio);
+            _mapper.Map(patchAnexoDto, anexoNegocio);
+            _negocio.Patch(idRascunhoProcesso, id, anexoNegocio);
             return NoContent();
         }
 
