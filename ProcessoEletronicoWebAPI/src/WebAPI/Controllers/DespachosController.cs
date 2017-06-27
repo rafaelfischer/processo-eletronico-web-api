@@ -59,7 +59,6 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         {
             return Ok(_mapper.Map<DespachoModeloGet>(_negocio.Pesquisar(id)));
         }
-
         #endregion
 
         #region POST
