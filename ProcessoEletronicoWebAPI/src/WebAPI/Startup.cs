@@ -78,31 +78,31 @@ namespace WebAPI
             #endregion
 
             #region Configuração do Swagger
-            services.AddSwaggerGen();
+            // services.AddSwaggerGen();
 
-            services.ConfigureSwaggerGen(options =>
-            {
-                options.SingleApiVersion(new Info
-                {
-                    Version = "v1",
-                    Title = "Processo Eletrônico Web API",
-                    Description = "Núcleo de serviço do sistema Processo Eletrônico implementado pelo Governo do Estado do Espírito Santo.",
-                    TermsOfService = "None",
-                    Contact = new Contact
-                    {
-                        Name = "PRODEST",
-                        Email = "atendimento@prodest.es.gov.br",
-                        Url = "https://prodest.es.gov.br"
-                    },
-                                    });
+            // services.ConfigureSwaggerGen(options =>
+            // {
+            //     options.SingleApiVersion(new Info
+            //     {
+            //         Version = "v1",
+            //         Title = "Processo Eletrônico Web API",
+            //         Description = "Núcleo de serviço do sistema Processo Eletrônico implementado pelo Governo do Estado do Espírito Santo.",
+            //         TermsOfService = "None",
+            //         Contact = new Contact
+            //         {
+            //             Name = "PRODEST",
+            //             Email = "atendimento@prodest.es.gov.br",
+            //             Url = "https://prodest.es.gov.br"
+            //         },
+            //                         });
 
-                //Determine base path for the application.
-                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+            //     //Determine base path for the application.
+            //     var basePath = PlatformServices.Default.Application.ApplicationBasePath;
 
-                //Set the comments path for the swagger json and ui.
-                var xmlPath = Path.Combine(basePath, "WebAPI.xml");
-                options.IncludeXmlComments(xmlPath);
-                });
+            //     //Set the comments path for the swagger json and ui.
+            //     var xmlPath = Path.Combine(basePath, "WebAPI.xml");
+            //     options.IncludeXmlComments(xmlPath);
+            //     });
             #endregion
         }
 
