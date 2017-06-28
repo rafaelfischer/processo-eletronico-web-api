@@ -138,11 +138,11 @@ namespace WebAPI
 
             #region Configuração do Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint
-            app.UseSwagger();
+            // app.UseSwagger();
 
-            var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH") ?? string.Empty;
-            // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
-            app.UseSwaggerUi("api/documentation", requestPath + "/swagger/v1/swagger.json");
+            // var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH") ?? string.Empty;
+            // // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
+            // app.UseSwaggerUi("api/documentation", requestPath + "/swagger/v1/swagger.json");
             #endregion
         }
     }
