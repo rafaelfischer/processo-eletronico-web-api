@@ -45,7 +45,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
                 return BadRequest();
             }
 
-            MunicipioRascunhoProcessoModeloNegocio municipioNegocio = _negocio.Post(idRascunhoProcesso, _mapper.Map<MunicipioRascunhoProcessoModeloNegocio>(postMunicipioDto));
+            MunicipioProcessoModeloNegocio municipioNegocio = _negocio.Post(idRascunhoProcesso, _mapper.Map<MunicipioProcessoModeloNegocio>(postMunicipioDto));
             GetMunicipioDto getMunicipioDto = _mapper.Map<GetMunicipioDto>(municipioNegocio);
 
             return CreatedAtRoute("GetMunicipio", new { Id = getMunicipioDto.Id }, getMunicipioDto);
@@ -60,7 +60,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
                 return BadRequest();
             }
 
-            MunicipioRascunhoProcessoModeloNegocio municipioNegocio = _negocio.Get(idRascunhoProcesso, id);
+            MunicipioProcessoModeloNegocio municipioNegocio = _negocio.Get(idRascunhoProcesso, id);
             PatchMunicipioDto patchMunicipioDto = _mapper.Map<PatchMunicipioDto>(municipioNegocio);
 
             //Validação da existência de um "path" será feita posteriormente. Por enquanto caminhos não existentes são ignorados.

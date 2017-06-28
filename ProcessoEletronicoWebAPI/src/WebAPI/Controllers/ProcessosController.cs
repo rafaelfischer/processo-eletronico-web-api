@@ -20,8 +20,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     {
         private IProcessoNegocio _negocio;
         private IMapper _mapper;
-        
-        public ProcessosController (IProcessoNegocio negocio, IMapper mapper)
+
+        public ProcessosController(IProcessoNegocio negocio, IMapper mapper)
         {
             _negocio = negocio;
             _mapper = mapper;
@@ -41,9 +41,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(ProcessoCompletoModelo), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Pesquisar(int id)
+        public IActionResult Get(int id)
         {
-           return Ok(_mapper.Map<ProcessoCompletoModelo>(_negocio.Pesquisar(id)));
+            return Ok(_mapper.Map<ProcessoCompletoModelo>(_negocio.Pesquisar(id)));
         }
 
         /// <summary>
@@ -60,11 +60,11 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Pesquisar(string numero)
+        public IActionResult GetPorNumero(string numero)
         {
             return Ok(_mapper.Map<ProcessoCompletoModelo>(_negocio.Pesquisar(numero)));
         }
-         
+
         /// <summary>
         /// Retorna lista de processos que posuem pelo menos um despacho feito pelo usuario autenticado.
         /// </summary>
@@ -74,11 +74,11 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [HttpGet("usuario")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 200)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarProcessosDespachadosUsuario()
+        public IActionResult GetProcessosDespachadosPorUsuario()
         {
             return Ok(_mapper.Map<List<ProcessoModelo>>(_negocio.PesquisarProcessosDespachadosUsuario()));
         }
-                
+
         /// <summary>
         /// Retorna a lista de processos que estão tramintando na unidade especificada.
         /// </summary>
@@ -89,11 +89,11 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [HttpGet("unidade/{guidUnidade}")]
         [ProducesResponseType(typeof(List<ProcessoModelo>), 200)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult PesquisarPorUnidade(string guidUnidade)
+        public IActionResult GetPorUnidade(string guidUnidade)
         {
             return Ok(_mapper.Map<List<ProcessoModelo>>(_negocio.PesquisarProcessosNaUnidade(guidUnidade)));
         }
-        
+
         /// <summary>
         /// Retorna a lista de processos que estão tramitando na organização especificada.
         /// </summary>
@@ -106,20 +106,23 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarPorOganizacao(string guidOrganizacao)
         {
-           return Ok(_mapper.Map<List<ProcessoModelo>>(_negocio.PesquisarProcessosNaOrganizacao(guidOrganizacao)));
+            return Ok(_mapper.Map<List<ProcessoModelo>>(_negocio.PesquisarProcessosNaOrganizacao(guidOrganizacao)));
         }
         #endregion
 
         #region POST
-        
+
         /// <summary>
         /// Autuação de Processos (inserção de processos).
         /// </summary>
         /// <remarks>
         /// Apesar das listas de interessados estarem sinalizadas como opcionais, o Processo deve possuir ao menos um interessado (seja ele pessoa física ou jurídica).
         /// O campo "conteudo" dos anexos do processo é uma string. O arquivo deve ser codificado para uma string base64 antes de ser enviado para a API.
+        /// Quanto aos parâmetros, o processo a ser autuado pode ser passado no corpo da requisição ou então pode ser informado o identificador de um rascunho de processos.
+        /// O identificador do rascunho terá prioridade na escolha caso ambos os parâmetros sejam informados.
         /// </remarks>
         /// <param name="processoPost">Informações do processo.</param>
+        /// <param name="idRascunho">Identificador do rascunho de processo.</param>
         /// <returns>URL do processo inserido no cabeçalho da resposta e o processo recém inserido</returns>
         /// <response code="201">Retorna o processo recém inserido.</response>
         /// <response code="400">Retorna o motivo da requisição estar inválida.</response>
@@ -131,10 +134,24 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Inserir([FromBody]ProcessoModeloPost processoPost)
+        public IActionResult Post([FromBody]ProcessoModeloPost processoPost, [FromQuery] int idRascunhoProcesso)
         {
+
+            if (idRascunhoProcesso > 0)
+            {
+                ProcessoCompletoModelo GetProcesso = _mapper.Map<ProcessoCompletoModelo>(_negocio.Post(idRascunhoProcesso));
+                return CreatedAtRoute("GetProcesso", new { id = GetProcesso.Id }, GetProcesso);
+            }
+
+
+            if (processoPost == null)
+            {
+                return BadRequest();
+            }
+
             ProcessoCompletoModelo processoCompleto = _mapper.Map<ProcessoCompletoModelo>(_negocio.Autuar(_mapper.Map<ProcessoModeloNegocio>(processoPost)));
             return CreatedAtRoute("GetProcesso", new { id = processoCompleto.Id }, processoCompleto);
+            
         }
         #endregion
     }

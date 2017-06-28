@@ -14,6 +14,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Mapeamentos
         {
             CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcesso>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
                 .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
                 .ForMember(dest => dest.Atividade, opt => opt.Ignore())
                 .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => src.InteressadosPessoaFisica))

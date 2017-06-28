@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 {
-    public class MunicipioValidacao : IBaseValidation<MunicipioRascunhoProcessoModeloNegocio, MunicipioRascunhoProcesso>, IBaseCollectionValidation<MunicipioRascunhoProcessoModeloNegocio>
+    public class MunicipioValidacao : IBaseValidation<MunicipioProcessoModeloNegocio, MunicipioRascunhoProcesso>, IBaseCollectionValidation<MunicipioProcessoModeloNegocio>
     {
         private OrganogramaValidacao _organogramaValidacao;
 
@@ -26,33 +26,33 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             }
         }
 
-        public void IsFilled(IEnumerable<MunicipioRascunhoProcessoModeloNegocio> municipiosRascunhoProcesso)
+        public void IsFilled(IEnumerable<MunicipioProcessoModeloNegocio> municipiosRascunhoProcesso)
         {
             if (municipiosRascunhoProcesso != null)
             {
-                foreach (MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcesso in municipiosRascunhoProcesso)
+                foreach (MunicipioProcessoModeloNegocio municipioRascunhoProcesso in municipiosRascunhoProcesso)
                 {
                     IsFilled(municipioRascunhoProcesso);
                 }
             }
         }
 
-        public void IsFilled(MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcesso)
+        public void IsFilled(MunicipioProcessoModeloNegocio municipioRascunhoProcesso)
         {
         }
 
-        public void IsValid(IEnumerable<MunicipioRascunhoProcessoModeloNegocio> municipiosRascunhoProcesso)
+        public void IsValid(IEnumerable<MunicipioProcessoModeloNegocio> municipiosRascunhoProcesso)
         {
             if (municipiosRascunhoProcesso != null)
             {
-                foreach (MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcesso in municipiosRascunhoProcesso)
+                foreach (MunicipioProcessoModeloNegocio municipioRascunhoProcesso in municipiosRascunhoProcesso)
                 {
                     IsValid(municipioRascunhoProcesso);
                 }
             }
         }
 
-        public void IsValid(MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcesso)
+        public void IsValid(MunicipioProcessoModeloNegocio municipioRascunhoProcesso)
         {
             if (municipioRascunhoProcesso != null)
             {

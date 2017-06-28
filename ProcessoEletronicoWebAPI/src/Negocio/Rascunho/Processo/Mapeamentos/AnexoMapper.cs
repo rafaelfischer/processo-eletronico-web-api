@@ -13,7 +13,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Mapeamentos
         public AnexoMapper()
         {
             CreateMap<AnexoRascunho, AnexoModeloNegocio>()
-                .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental));
+                .ForMember(dest => dest.TipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental))
+                .ForMember(dest => dest.ConteudoString, opt => opt.MapFrom(src => Convert.ToBase64String(src.Conteudo)));
+
 
             CreateMap<AnexoModeloNegocio, AnexoRascunho>()
                 .ForMember(dest => dest.TipoDocumental, opt => opt.Ignore())

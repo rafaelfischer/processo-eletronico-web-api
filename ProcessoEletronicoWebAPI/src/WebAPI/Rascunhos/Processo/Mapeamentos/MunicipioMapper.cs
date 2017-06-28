@@ -8,9 +8,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Mapeamentos
     {
         public MunicipioMapper()
         {
-            CreateMap<MunicipioRascunhoProcessoModeloNegocio, GetMunicipioDto>();
-            CreateMap<PostMunicipioDto, MunicipioRascunhoProcessoModeloNegocio>();
-            CreateMap<PatchMunicipioDto, MunicipioRascunhoProcessoModeloNegocio>().ReverseMap();
+            CreateMap<MunicipioProcessoModeloNegocio, GetMunicipioDto>();
+            CreateMap<PostMunicipioDto, MunicipioProcessoModeloNegocio>();
+            CreateMap<PatchMunicipioDto, MunicipioProcessoModeloNegocio>().ReverseMap();
         }
     }
 }

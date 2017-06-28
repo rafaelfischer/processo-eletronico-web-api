@@ -10,14 +10,16 @@ using System.Linq;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 {
-    public class AnexoValidacao : IBaseValidation<AnexoModeloNegocio, AnexoRascunho>, IBaseCollectionValidation<AnexoModeloNegocio>
+    public class AnexoValidacao
     {
         private const long tamanhoMaximo = 5242880;
         private IRepositorioGenerico<TipoDocumental> _repositorioTiposDocumentais;
+        private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
 
         public AnexoValidacao(IProcessoEletronicoRepositorios repositorios)
         {
             _repositorioTiposDocumentais = repositorios.TiposDocumentais;
+            _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
         }
 
         public void Exists(AnexoRascunho anexo)
@@ -43,23 +45,23 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             }
         }
 
-        public void IsValid(AnexoModeloNegocio anexo)
+        public void IsValid(AnexoModeloNegocio anexo, int idRascunhoProcesso)
         {
             if (anexo != null)
             {
                 TamanhoIsValid(anexo);
                 ConteudoIsValid(anexo);
-                TipoDocumentalIsValid(anexo);
+                TipoDocumentalIsValid(anexo, idRascunhoProcesso);
             }
         }
 
-        public void IsValid(IEnumerable<AnexoModeloNegocio> anexos)
+        public void IsValid(IEnumerable<AnexoModeloNegocio> anexos, int idRascunhoProcesso)
         {
             if (anexos != null)
             {
                 foreach (AnexoModeloNegocio anexo in anexos)
                 {
-                    IsValid(anexo);
+                    IsValid(anexo, idRascunhoProcesso);
                 }
             }
         }
@@ -90,13 +92,15 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             }
         }
 
-        private void TipoDocumentalIsValid(AnexoModeloNegocio anexo)
+        private void TipoDocumentalIsValid(AnexoModeloNegocio anexo, int idRascunhoProcesso)
         {
             if (anexo.TipoDocumental != null)
             {
-                if (_repositorioTiposDocumentais.Where(td => td.Id == anexo.TipoDocumental.Id).SingleOrDefault() == null)
+                int? idAtividade = _repositorioRascunhosProcesso.Where(r => r.Id == idRascunhoProcesso).Single().IdAtividade; 
+
+                if (_repositorioTiposDocumentais.Where(td => td.Id == anexo.TipoDocumental.Id && td.IdAtividade == idAtividade.Value).SingleOrDefault() == null)
                 {
-                    throw new RecursoNaoEncontradoException("Tipo Documental informado não existe");
+                    throw new RecursoNaoEncontradoException("Tipo Documental informado não encontrado");
                 }
             }
         }

@@ -166,7 +166,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             {
                 if (repositorioTiposDocumentais.Where(td => td.Id == anexo.TipoDocumental.Id && td.IdAtividade == idAtividadeProcesso).ToList().Count == 0) 
                 {
-                    throw new RequisicaoInvalidaException("Tipo Documental do anexo inexistente.");
+                    throw new RequisicaoInvalidaException($"Tipo Documental do anexo {anexo.Nome} inexistente.");
                 }
             }
         }

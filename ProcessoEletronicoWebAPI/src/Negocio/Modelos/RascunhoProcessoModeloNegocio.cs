@@ -24,7 +24,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public List<AnexoModeloNegocio> Anexos { get; set; }
         public List<InteressadoPessoaFisicaModeloNegocio> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaModeloNegocio> InteressadosPessoaJuridica { get; set; }
-        public List<MunicipioRascunhoProcessoModeloNegocio> MunicipiosRascunhoProcesso { get; set; }
+        public List<MunicipioProcessoModeloNegocio> MunicipiosRascunhoProcesso { get; set; }
         public List<SinalizacaoModeloNegocio> Sinalizacoes { get; set; }
         public AtividadeModeloNegocio Atividade { get; set; }
         public OrganizacaoProcessoModeloNegocio OrganizacaoProcesso { get; set; }

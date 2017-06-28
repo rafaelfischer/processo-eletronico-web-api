@@ -67,7 +67,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
             _validacao.IsFilled(anexoRascunhoModeloNegocio);
-            _validacao.IsValid(anexoRascunhoModeloNegocio);
+            _validacao.IsValid(anexoRascunhoModeloNegocio, idRascunhoProcesso);
 
             AnexoRascunho anexoRascunho = new AnexoRascunho();
             _mapper.Map(anexoRascunhoModeloNegocio, anexoRascunho);
@@ -89,7 +89,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             _validacao.Exists(anexo);
             _validacao.IsFilled(anexoRascunhoModeloNegocio);
-            _validacao.IsValid(anexoRascunhoModeloNegocio);
+            _validacao.IsValid(anexoRascunhoModeloNegocio, idRascunhoProcesso);
             MapAnexo(anexoRascunhoModeloNegocio, anexo);
             _unitOfWork.Save();
         }
@@ -127,10 +127,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             }
         }
 
-        private void MapMunicipio(MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcessoModeloNegocio, MunicipioRascunhoProcesso municipio)
+        private void MapMunicipio(MunicipioProcessoModeloNegocio municipioProcessoModeloNegocio, MunicipioRascunhoProcesso municipio)
         {
             Guid guidMunicipio;
-            if (Guid.TryParse(municipioRascunhoProcessoModeloNegocio.GuidMunicipio, out guidMunicipio))
+            if (Guid.TryParse(municipioProcessoModeloNegocio.GuidMunicipio, out guidMunicipio))
             {
                 municipio.GuidMunicipio = guidMunicipio;
             }

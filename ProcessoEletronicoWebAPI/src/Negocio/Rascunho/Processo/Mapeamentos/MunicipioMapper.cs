@@ -12,7 +12,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Mapeamentos
     {
         public MunicipioMapper()
         {
-            CreateMap<MunicipioRascunhoProcessoModeloNegocio, MunicipioRascunhoProcesso>().ReverseMap();
+            CreateMap<MunicipioProcessoModeloNegocio, MunicipioRascunhoProcesso>().ReverseMap();
         }
     }
 }

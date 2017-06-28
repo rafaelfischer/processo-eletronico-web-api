@@ -34,13 +34,13 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _mapper = mapper;
         }
 
-        public IList<MunicipioRascunhoProcessoModeloNegocio> Get(int idRascunhoProcesso)
+        public IList<MunicipioProcessoModeloNegocio> Get(int idRascunhoProcesso)
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
-            return _mapper.Map<IList<MunicipioRascunhoProcessoModeloNegocio>>(_repositorioMunicipiosRascunhoProcesso.Where(m => m.IdRascunhoProcesso == idRascunhoProcesso)).ToList();
+            return _mapper.Map<IList<MunicipioProcessoModeloNegocio>>(_repositorioMunicipiosRascunhoProcesso.Where(m => m.IdRascunhoProcesso == idRascunhoProcesso)).ToList();
         }
 
-        public MunicipioRascunhoProcessoModeloNegocio Get(int idRascunhoProcesso, int id)
+        public MunicipioProcessoModeloNegocio Get(int idRascunhoProcesso, int id)
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
 
@@ -50,17 +50,17 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                                      .SingleOrDefault();
 
             _validacao.Exists(municipio);
-            return _mapper.Map<MunicipioRascunhoProcessoModeloNegocio>(municipio);
+            return _mapper.Map<MunicipioProcessoModeloNegocio>(municipio);
         }
 
-        public MunicipioRascunhoProcessoModeloNegocio Post(int idRascunhoProcesso, MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcessoModeloNegocio)
+        public MunicipioProcessoModeloNegocio Post(int idRascunhoProcesso, MunicipioProcessoModeloNegocio MunicipioProcessoModeloNegocio)
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
-            _validacao.IsFilled(municipioRascunhoProcessoModeloNegocio);
-            _validacao.IsValid(municipioRascunhoProcessoModeloNegocio);
+            _validacao.IsFilled(MunicipioProcessoModeloNegocio);
+            _validacao.IsValid(MunicipioProcessoModeloNegocio);
 
             MunicipioRascunhoProcesso municipioRascunho = new MunicipioRascunhoProcesso();
-            _mapper.Map(municipioRascunhoProcessoModeloNegocio, municipioRascunho);
+            _mapper.Map(MunicipioProcessoModeloNegocio, municipioRascunho);
             municipioRascunho.IdRascunhoProcesso = idRascunhoProcesso;
             InformacoesMunicipio(municipioRascunho);
             _repositorioMunicipiosRascunhoProcesso.Add(municipioRascunho);
@@ -69,7 +69,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             return Get(idRascunhoProcesso, municipioRascunho.Id);
         }
 
-        public void Patch(int idRascunhoProcesso, int id, MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcessoModeloNegocio)
+        public void Patch(int idRascunhoProcesso, int id, MunicipioProcessoModeloNegocio MunicipioProcessoModeloNegocio)
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
 
@@ -79,9 +79,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                                       .SingleOrDefault();
 
             _validacao.Exists(municipio);
-            _validacao.IsFilled(municipioRascunhoProcessoModeloNegocio);
-            _validacao.IsValid(municipioRascunhoProcessoModeloNegocio);
-            MapMunicipio(municipioRascunhoProcessoModeloNegocio, municipio);
+            _validacao.IsFilled(MunicipioProcessoModeloNegocio);
+            _validacao.IsValid(MunicipioProcessoModeloNegocio);
+            MapMunicipio(MunicipioProcessoModeloNegocio, municipio);
             InformacoesMunicipio(municipio);
             ClearNomeUf(municipio);
             _unitOfWork.Save();
@@ -120,10 +120,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             }
         }
 
-        private void MapMunicipio(MunicipioRascunhoProcessoModeloNegocio municipioRascunhoProcessoModeloNegocio, MunicipioRascunhoProcesso municipio)
+        private void MapMunicipio(MunicipioProcessoModeloNegocio MunicipioProcessoModeloNegocio, MunicipioRascunhoProcesso municipio)
         {
             Guid guidMunicipio;
-            if (Guid.TryParse(municipioRascunhoProcessoModeloNegocio.GuidMunicipio, out guidMunicipio))
+            if (Guid.TryParse(MunicipioProcessoModeloNegocio.GuidMunicipio, out guidMunicipio))
             {
                 municipio.GuidMunicipio = guidMunicipio;
             }

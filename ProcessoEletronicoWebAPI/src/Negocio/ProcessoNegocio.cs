@@ -25,15 +25,17 @@ namespace ProcessoEletronicoService.Negocio
         private IRepositorioGenerico<OrganizacaoProcesso> _repositorioOrganizacoesProcesso;
         private IRepositorioGenerico<Anexo> _repositorioAnexos;
         private IRepositorioGenerico<Despacho> _repositorioDespachos;
+        private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
 
         private ProcessoValidacao _validacao;
         private DespachoValidacao _despachoValidacao;
         private AnexoValidacao _anexoValidacao;
         private UsuarioValidacao _usuarioValidacao;
         private OrganogramaValidacao _organogramaValidacao;
-        
+        private Rascunho.Processo.Validacao.RascunhoProcessoValidacao _rascunhoProcessoValidacao;
 
-        public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user, IMapper mapper, OrganogramaValidacao organogramaValidacao)
+
+        public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user, IMapper mapper, OrganogramaValidacao organogramaValidacao, Rascunho.Processo.Validacao.RascunhoProcessoValidacao rascunhoProcessoValidacao)
         {
             _unitOfWork = repositorios.UnitOfWork;
             _user = user;
@@ -43,9 +45,11 @@ namespace ProcessoEletronicoService.Negocio
             _repositorioProcessos = repositorios.Processos;
             _repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             _repositorioAnexos = repositorios.Anexos;
+            _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
             _validacao = new ProcessoValidacao(repositorios);
             _despachoValidacao = new DespachoValidacao(repositorios);
             _anexoValidacao = new AnexoValidacao(repositorios);
+            _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
             _usuarioValidacao = new UsuarioValidacao();
         }
 
@@ -175,7 +179,7 @@ namespace ProcessoEletronicoService.Negocio
 
         public ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio)
         {
-            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserCpf);
+            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _usuarioValidacao.PodeAutuarProcessoNaOrganizacao(processoNegocio, _user.UserGuidOrganizacao);
 
@@ -208,6 +212,26 @@ namespace ProcessoEletronicoService.Negocio
             _unitOfWork.Save();
 
             return Pesquisar(processo.Id);
+        }
+
+        public ProcessoModeloNegocio Post(int idRascunhoProcesso)
+        {
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(p => p.Id == idRascunhoProcesso)
+                                               .Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.EmailsRascunho)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.EmailsRascunho)
+                                               .Include(p => p.MunicipiosRascunhoProcesso)
+                                               .Include(p => p.SinalizacoesRascunhoProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                               .SingleOrDefault();
+
+            _rascunhoProcessoValidacao.Exists(rascunhoProcesso);
+
+            ProcessoModeloNegocio processo = _mapper.Map<ProcessoModeloNegocio>(rascunhoProcesso);
+
+            return Autuar(processo);          
+            
         }
         
         public List<ProcessoModeloNegocio> PesquisarProcessosNaOrganizacao(string guidOrganizacao)
