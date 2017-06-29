@@ -56,7 +56,7 @@ namespace WebAPI
 
             services.AddAutoMapper();
             InjecaoDependencias.InjetarDependencias(services);
-            
+
             #region Políticas que serão concedidas
             services.AddAuthorization(options =>
             {
@@ -78,31 +78,31 @@ namespace WebAPI
             #endregion
 
             #region Configuração do Swagger
-            // services.AddSwaggerGen();
+            services.AddSwaggerGen();
 
-            // services.ConfigureSwaggerGen(options =>
-            // {
-            //     options.SingleApiVersion(new Info
-            //     {
-            //         Version = "v1",
-            //         Title = "Processo Eletrônico Web API",
-            //         Description = "Núcleo de serviço do sistema Processo Eletrônico implementado pelo Governo do Estado do Espírito Santo.",
-            //         TermsOfService = "None",
-            //         Contact = new Contact
-            //         {
-            //             Name = "PRODEST",
-            //             Email = "atendimento@prodest.es.gov.br",
-            //             Url = "https://prodest.es.gov.br"
-            //         },
-            //                         });
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.SingleApiVersion(new Info
+                {
+                    Version = "v1",
+                    Title = "Processo Eletrônico Web API",
+                    Description = "Núcleo de serviço do sistema Processo Eletrônico implementado pelo Governo do Estado do Espírito Santo.",
+                    TermsOfService = "None",
+                    Contact = new Contact
+                    {
+                        Name = "PRODEST",
+                        Email = "atendimento@prodest.es.gov.br",
+                        Url = "https://prodest.es.gov.br"
+                    },
+                });
 
-            //     //Determine base path for the application.
-            //     var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                //Determine base path for the application.
+                //var basePath = PlatformServices.Default.Application.ApplicationBasePath;
 
-            //     //Set the comments path for the swagger json and ui.
-            //     var xmlPath = Path.Combine(basePath, "WebAPI.xml");
-            //     options.IncludeXmlComments(xmlPath);
-            //     });
+                //Set the comments path for the swagger json and ui.
+                //var xmlPath = Path.Combine(basePath, "WebAPI.xml");
+                //options.IncludeXmlComments(xmlPath);
+            });
             #endregion
         }
 
@@ -111,7 +111,7 @@ namespace WebAPI
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
             #region Configurações de autenticação
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -138,11 +138,11 @@ namespace WebAPI
 
             #region Configuração do Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint
-            // app.UseSwagger();
+            app.UseSwagger();
 
-            // var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH") ?? string.Empty;
-            // // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
-            // app.UseSwaggerUi("api/documentation", requestPath + "/swagger/v1/swagger.json");
+            var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH") ?? string.Empty;
+            // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
+            app.UseSwaggerUi("api/documentation", requestPath + "/swagger/v1/swagger.json");
             #endregion
         }
     }
