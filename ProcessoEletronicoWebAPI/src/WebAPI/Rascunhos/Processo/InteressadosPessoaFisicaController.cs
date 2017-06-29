@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Negocio.Modelos;
@@ -8,6 +7,7 @@ using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 using System.Collections.Generic;
+using WebAPI.Config;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
@@ -24,12 +24,14 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         [HttpGet]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso)
         {
             return Ok(_mapper.Map<List<GetInteressadoPessoaFisicaDto>>(_negocio.Get(idRascunhoProcesso)));
         }
 
         [HttpGet("{id}", Name = "GetInteressadoPessoaFisica")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso, int id)
         {
             return Ok(_mapper.Map<GetInteressadoPessoaFisicaDto>(_negocio.Get(idRascunhoProcesso, id)));
@@ -37,6 +39,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Post (int idRascunhoProcesso, [FromBody] PostInteressadoPessoaFisicaDto interessadoPessoaFisicaDto)
         {
             if (interessadoPessoaFisicaDto == null)
@@ -52,6 +55,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 
         [HttpPatch("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Patch (int idRascunhoProcesso, int id, [FromBody] JsonPatchDocument<PatchInteressadoPessoaFisicaDto> patchInteressadoPessoaFisica)
         {
             if (patchInteressadoPessoaFisica == null)
@@ -72,6 +76,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Delete(int idRascunhoProcesso, int id)
         {
             _negocio.Delete(idRascunhoProcesso, id);

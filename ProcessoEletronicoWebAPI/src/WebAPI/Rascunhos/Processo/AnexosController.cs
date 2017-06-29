@@ -9,6 +9,7 @@ using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 using System.Collections.Generic;
+using WebAPI.Config;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
@@ -24,13 +25,16 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             _negocio = negocio;
         }
 
+
         [HttpGet]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso)
         {
             return Ok(_mapper.Map<List<GetAnexoDto>>(_negocio.Get(idRascunhoProcesso)));
         }
 
         [HttpGet("{id}", Name = "GetAnexo")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso, int id)
         {
             return Ok(_mapper.Map<GetAnexoDto>(_negocio.Get(idRascunhoProcesso, id)));
@@ -38,6 +42,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Post (int idRascunhoProcesso, [FromBody] PostAnexoDto postAnexoDto)
         {
             if (postAnexoDto == null)
@@ -53,6 +58,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 
         [HttpPatch("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Patch (int idRascunhoProcesso, int id, [FromBody] JsonPatchDocument<PatchAnexoDto> patchAnexo)
         {
             if (patchAnexo == null)
@@ -73,6 +79,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Delete(int idRascunhoProcesso, int id)
         {
             _negocio.Delete(idRascunhoProcesso, id);

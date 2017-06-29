@@ -122,7 +122,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// O identificador do rascunho terá prioridade na escolha caso ambos os parâmetros sejam informados.
         /// </remarks>
         /// <param name="processoPost">Informações do processo.</param>
-        /// <param name="idRascunho">Identificador do rascunho de processo.</param>
+        /// <param name="idRascunhoProcesso">Identificador do rascunho de processo.</param>
         /// <returns>URL do processo inserido no cabeçalho da resposta e o processo recém inserido</returns>
         /// <response code="201">Retorna o processo recém inserido.</response>
         /// <response code="400">Retorna o motivo da requisição estar inválida.</response>

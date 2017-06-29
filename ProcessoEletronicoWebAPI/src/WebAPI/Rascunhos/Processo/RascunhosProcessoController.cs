@@ -8,6 +8,7 @@ using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 using System;
 using System.Collections.Generic;
+using WebAPI.Config;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
@@ -37,6 +38,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(GetRascunhoProcessoDto), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Pesquisar(int id)
         {
             return Ok(_mapper.Map<GetRascunhoProcessoDto>(_negocio.Get(id)));
@@ -54,6 +56,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(List<GetRascunhoProcessoPorOrganizacaoDto>), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult PesquisarPorOganizacao(string guidOrganizacao)
         {
             Guid guid;
@@ -86,6 +89,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Salvar([FromBody]PostRascunhoProcessoDto rascunhoProcessoPost)
         {
             if (rascunhoProcessoPost == null)
@@ -104,8 +108,9 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// Altera o rascunhos de processo de acordo com o identificador informado.
         /// </summary>
         /// <param name="id">Identificador da organização.</param>
+        /// <param name="patchRascunhoProcesso">Informações a serem alteradas no Rascunho (JSON Patch Document)</param>
         /// <returns></returns>
-        /// <response code="200">Rascunho de processo alterado com sucesso.</response>
+        /// <response code="204">Rascunho de processo alterado com sucesso</response>
         /// <response code="400">Objeto não reconhecido</response>
         /// <response code="404">Rascunho de processo não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
@@ -116,6 +121,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Alterar(int id, [FromBody]  JsonPatchDocument<PatchRascunhoProcessoDto> patchRascunhoProcesso)
         {
             if (patchRascunhoProcesso == null)
@@ -148,6 +154,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(void), 204)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Excluir(int id)
         {
             _negocio.Delete(id);

@@ -7,6 +7,7 @@ using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 using System.Collections.Generic;
+using WebAPI.Config;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
@@ -22,12 +23,14 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         [HttpGet]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso, int idInteressado)
         {
             return Ok(_mapper.Map<IList<GetEmailDto>>(_negocio.Get(idRascunhoProcesso, idInteressado)));
         }
 
         [HttpGet("{id}", Name = "GetEmailInteressadoPessoaJuridica")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso, int idInteressado, int id)
         {
             return Ok(_mapper.Map<GetEmailDto>(_negocio.Get(idRascunhoProcesso, idInteressado, id)));
@@ -35,6 +38,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Post(int idRascunhoProcesso, int idInteressado, [FromBody] PostEmailDto postEmailDto)
         {
             if (postEmailDto == null)
@@ -50,6 +54,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 
         [HttpPatch("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Patch(int idRascunhoProcesso, int idInteressado, int id, [FromBody] JsonPatchDocument<PatchEmailDto> patchEmailDto)
         {
             EmailModeloNegocio emailModeloNegocio = _negocio.Get(idRascunhoProcesso, idInteressado, id);
@@ -65,6 +70,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Delete(int idRascunhoProcesso, int idInteressado, int id)
         {
             _negocio.Delete(idRascunhoProcesso, idInteressado, id);
