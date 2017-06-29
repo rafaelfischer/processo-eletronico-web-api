@@ -97,11 +97,11 @@ namespace WebAPI
                 });
 
                 //Determine base path for the application.
-                //var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
 
                 //Set the comments path for the swagger json and ui.
-                //var xmlPath = Path.Combine(basePath, "WebAPI.xml");
-                //options.IncludeXmlComments(xmlPath);
+                var xmlPath = Path.Combine(basePath, "WebAPI.xml");
+                options.IncludeXmlComments(xmlPath);
             });
             #endregion
         }
