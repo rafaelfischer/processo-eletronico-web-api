@@ -42,7 +42,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             //Verificar se a sinalização está cadastrada no rascunho do Processo
             return _repositorioSinalizacoesRascunhoProcesso.Where(srp => srp.IdRascunhoProcesso == idRascunhoProcesso && srp.IdSinalizacao == idSinalizacao).SingleOrDefault() != null;
         }
-
+        
         public void IsValid(IList<int> idSinalizacoes)
         {
             if (idSinalizacoes != null)

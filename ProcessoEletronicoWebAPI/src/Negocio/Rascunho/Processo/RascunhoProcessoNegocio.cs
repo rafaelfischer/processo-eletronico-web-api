@@ -17,45 +17,68 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
     public class RascunhoProcessoNegocio : IRascunhoProcessoNegocio
     {
-        private IRepositorioGenerico<Email> _repositorioEmails;
-        private IRepositorioGenerico<Contato> _repositorioContatos;
+        //Repositórios
+        private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
+        private IRepositorioGenerico<AnexoRascunho> _repositorioAnexos;
         private IRepositorioGenerico<InteressadoPessoaFisica> _repositorioInteressadosPessoaFisica;
         private IRepositorioGenerico<InteressadoPessoaJuridica> _repositorioInteressadosPessoaJuridica;
-        private IRepositorioGenerico<MunicipioRascunhoProcesso> _repositorioMunicipiosRascunhoProcesso;
-        private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
+        private IRepositorioGenerico<MunicipioRascunhoProcesso> _repositorioMunicipios;
+        private IRepositorioGenerico<SinalizacaoRascunhoProcesso> _repositorioSinalizacoes;
         private IRepositorioGenerico<OrganizacaoProcesso> _repositorioOrganizacoesProcesso;
-        private IRepositorioGenerico<Anexo> _repositorioAnexos;
 
+        //Validadores
         private RascunhoProcessoValidacao _validacao;
+        private AnexoValidacao _anexoValidacao;
         private InteressadoPessoaFisicaValidacao _interessadoPessoaFisicaValidacao;
-        private UsuarioValidacao _usuarioValidacao;
+        private InteressadoPessoaJuridicaValidacao _interessadoPessoaJuridicaValidacao;
+        private MunicipioValidacao _municipioValidacao;
         private OrganogramaValidacao _organogramaValidacao;
+        private SinalizacaoValidacao _sinalizacaoValidacao;
+        private UsuarioValidacao _usuarioValidacao;
+
+        //Classes de negócio
+        private IAnexoNegocio _anexoNegocio;
         private IInteressadoPessoaFisicaNegocio _interessadoPessoaFisicaNegocio;
-        //private IInteressadoPessoaJuridicaNegocio _interessadoPessoaJuridicaNegocio;
-        private MunicipioRascunhoProcessoNegocio _municipioRascunhoProcessoNegocio;
-        private SinalizacaoRascunhoProcessoNegocio _sinalizacaoRascunhoProcessoNegocio;
+        private IInteressadoPessoaJuridicaNegocio _interessadoPessoaJuridicaNegocio;
+        private IMunicipioNegocio _municipioNegocio;
+        private ISinalizacaoNegocio _sinalizacaoNegocio;
 
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
         private ICurrentUserProvider _user;
 
-        public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user, RascunhoProcessoValidacao validacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao, IInteressadoPessoaFisicaNegocio interessadoPessoaFisicaNegocio, UsuarioValidacao usuarioValidacao, OrganogramaValidacao organogramaValidacao)
+        public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios, RascunhoProcessoValidacao validacao,
+                                       AnexoValidacao anexoValidacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao, 
+                                       InteressadoPessoaJuridicaValidacao interessadoPessoaJuridicaValidacao, MunicipioValidacao municipioValidacao, 
+                                       OrganogramaValidacao organogramaValidacao, SinalizacaoValidacao sinalizacaoValidacao, 
+                                       UsuarioValidacao usuarioValidacao, IAnexoNegocio anexoNegocio, 
+                                       IInteressadoPessoaFisicaNegocio interessadoPessoaFisicaNegocio, IInteressadoPessoaJuridicaNegocio interessadoPessoaJuridicaNegocio, 
+                                       ISinalizacaoNegocio sinalizacaoNegocio, IMunicipioNegocio municipioNegocio, 
+                                       IMapper mapper, ICurrentUserProvider user)
         {
-            _repositorioEmails = repositorios.Emails;
-            _repositorioContatos = repositorios.Contatos;
+            _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
+            _repositorioAnexos = repositorios.AnexosRascunho;
             _repositorioInteressadosPessoaFisica = repositorios.InteressadosPessoaFisica;
             _repositorioInteressadosPessoaJuridica = repositorios.InteressadosPessoaJuridica;
-            _repositorioMunicipiosRascunhoProcesso = repositorios.MunicipiosRascunhoProcesso;
-            _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
+            _repositorioMunicipios = repositorios.MunicipiosRascunhoProcesso;
+            _repositorioSinalizacoes = repositorios.SinalizacoesRascunhoProcesso;
+
             _repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
+
             _validacao = validacao;
+            _anexoValidacao = anexoValidacao;
             _interessadoPessoaFisicaValidacao = interessadoPessoaFisicaValidacao;
-            _usuarioValidacao = usuarioValidacao;
+            _interessadoPessoaJuridicaValidacao = interessadoPessoaJuridicaValidacao;
+            _municipioValidacao = municipioValidacao;
             _organogramaValidacao = organogramaValidacao;
+            _sinalizacaoValidacao = sinalizacaoValidacao;
+            _usuarioValidacao = usuarioValidacao;
+
+
             _interessadoPessoaFisicaNegocio = interessadoPessoaFisicaNegocio;
-            //_interessadoPessoaJuridicaNegocio = interessadoPessoaJuridicaNegocio;
-            _municipioRascunhoProcessoNegocio = new MunicipioRascunhoProcessoNegocio(repositorios);
-            _sinalizacaoRascunhoProcessoNegocio = new SinalizacaoRascunhoProcessoNegocio(repositorios);
+            _interessadoPessoaJuridicaNegocio = interessadoPessoaJuridicaNegocio;
+            _municipioNegocio = municipioNegocio;
+            _sinalizacaoNegocio = sinalizacaoNegocio;
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
             _user = user;
@@ -87,19 +110,27 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         }
         public RascunhoProcessoModeloNegocio Post(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
         {
-            /*Validações*/
-            _validacao.IsFilled(rascunhoProcessoNegocio);
-            _interessadoPessoaFisicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaFisica);
-
-            _validacao.IsValid(rascunhoProcessoNegocio);
-            _interessadoPessoaFisicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaFisica);
-
-            //Municipios, Sinalizacoes, Anexos
-
+            //Autenticação do usuário
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
+            
+            //Preechimento de campos obrigatórios
+            _validacao.IsFilled(rascunhoProcessoNegocio);
+            _anexoValidacao.IsFilled(rascunhoProcessoNegocio.Anexos);
+            _interessadoPessoaFisicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaFisica);
+            _interessadoPessoaJuridicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
+            _municipioValidacao.IsFilled(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
+            //Como sinalizações são representadas como lista de inteiros, não faz sentido verificar o preechimento um a um, apenas sua validade.
 
+            //Preenchimento correto dos campos
+            _validacao.IsValid(rascunhoProcessoNegocio);
+            _anexoValidacao.IsValid(rascunhoProcessoNegocio.Anexos, rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?) null);
+            _interessadoPessoaFisicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaFisica);
+            _interessadoPessoaJuridicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
+            _municipioValidacao.IsValid(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
+            _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
+            
             /*Mapeamento para inserção*/
             RascunhoProcesso rascunhoProcesso = new RascunhoProcesso();
             rascunhoProcesso = _mapper.Map<RascunhoProcessoModeloNegocio, RascunhoProcesso>(rascunhoProcessoNegocio);
@@ -125,14 +156,26 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).SingleOrDefault();
             _validacao.Exists(rascunhoProcesso);
 
-            _validacao.IsFilled(rascunhoProcessoNegocio);
+            //Autenticacao do usuário
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
+            
+            _validacao.IsFilled(rascunhoProcessoNegocio);
+            _anexoValidacao.IsFilled(rascunhoProcessoNegocio.Anexos);
+            _interessadoPessoaFisicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaFisica);
+            _interessadoPessoaJuridicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
+            _municipioValidacao.IsFilled(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
+            //Como sinalizações são representadas como lista de inteiros, não faz sentido verificar o preechimento um a um, apenas sua validade.
 
-            /*Validações*/
+            //Preenchimento correto dos campos
             _validacao.IsValid(rascunhoProcessoNegocio);
-
+            _anexoValidacao.IsValid(rascunhoProcessoNegocio.Anexos, rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null);
+            _interessadoPessoaFisicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaFisica);
+            _interessadoPessoaJuridicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
+            _municipioValidacao.IsValid(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
+            _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
+            
             MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
             _unitOfWork.Save();
         }
@@ -142,10 +185,11 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).SingleOrDefault();
             _validacao.Exists(rascunhoProcesso);
 
+            _anexoNegocio.Delete(rascunhoProcesso.Anexos);
             _interessadoPessoaFisicaNegocio.Delete(rascunhoProcesso.InteressadosPessoaFisica);
-            //_interessadoPessoaJuridicaNegocio.Excluir(rascunhoProcesso.InteressadosPessoaJuridica);
-            _municipioRascunhoProcessoNegocio.Excluir(rascunhoProcesso.MunicipiosRascunhoProcesso);
-            _sinalizacaoRascunhoProcessoNegocio.Excluir(rascunhoProcesso.SinalizacoesRascunhoProcesso);
+            _interessadoPessoaJuridicaNegocio.Delete(rascunhoProcesso.InteressadosPessoaJuridica);
+            _municipioNegocio.Delete(rascunhoProcesso.MunicipiosRascunhoProcesso);
+            _sinalizacaoNegocio.Delete(rascunhoProcesso.SinalizacoesRascunhoProcesso);
 
             _repositorioRascunhosProcesso.Remove(rascunhoProcesso);
             _unitOfWork.Save();

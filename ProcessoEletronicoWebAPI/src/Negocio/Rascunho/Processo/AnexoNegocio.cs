@@ -65,9 +65,11 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public AnexoModeloNegocio Post(int idRascunhoProcesso, AnexoModeloNegocio anexoRascunhoModeloNegocio)
         {
-            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhos.Where(r => r.Id == idRascunhoProcesso).SingleOrDefault();
+            _rascunhoProcessoValidacao.Exists(rascunhoProcesso);
+
             _validacao.IsFilled(anexoRascunhoModeloNegocio);
-            _validacao.IsValid(anexoRascunhoModeloNegocio, idRascunhoProcesso);
+            _validacao.IsValid(anexoRascunhoModeloNegocio, rascunhoProcesso.IdAtividade);
 
             AnexoRascunho anexoRascunho = new AnexoRascunho();
             _mapper.Map(anexoRascunhoModeloNegocio, anexoRascunho);
@@ -80,7 +82,8 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public void Patch(int idRascunhoProcesso, int id, AnexoModeloNegocio anexoRascunhoModeloNegocio)
         {
-            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhos.Where(r => r.Id == idRascunhoProcesso).SingleOrDefault();
+            _rascunhoProcessoValidacao.Exists(rascunhoProcesso);
 
             AnexoRascunho anexo = _repositorioAnexosRascunho
                              .Where(m => m.IdRascunhoProcesso == idRascunhoProcesso
@@ -89,7 +92,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             _validacao.Exists(anexo);
             _validacao.IsFilled(anexoRascunhoModeloNegocio);
-            _validacao.IsValid(anexoRascunhoModeloNegocio, idRascunhoProcesso);
+            _validacao.IsValid(anexoRascunhoModeloNegocio, rascunhoProcesso.IdAtividade);
             MapAnexo(anexoRascunhoModeloNegocio, anexo);
             _unitOfWork.Save();
         }

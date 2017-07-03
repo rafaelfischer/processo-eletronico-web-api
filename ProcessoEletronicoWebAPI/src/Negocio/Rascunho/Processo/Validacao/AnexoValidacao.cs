@@ -1,8 +1,6 @@
 ﻿using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
-using ProcessoEletronicoService.Negocio.Comum.Base;
-using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
@@ -45,23 +43,23 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             }
         }
 
-        public void IsValid(AnexoModeloNegocio anexo, int idRascunhoProcesso)
+        public void IsValid(AnexoModeloNegocio anexo, int? idAtividade)
         {
             if (anexo != null)
             {
                 TamanhoIsValid(anexo);
                 ConteudoIsValid(anexo);
-                TipoDocumentalIsValid(anexo, idRascunhoProcesso);
+                TipoDocumentalIsValid(anexo, idAtividade);
             }
         }
 
-        public void IsValid(IEnumerable<AnexoModeloNegocio> anexos, int idRascunhoProcesso)
+        public void IsValid(IEnumerable<AnexoModeloNegocio> anexos, int? idAtividade)
         {
             if (anexos != null)
             {
                 foreach (AnexoModeloNegocio anexo in anexos)
                 {
-                    IsValid(anexo, idRascunhoProcesso);
+                    IsValid(anexo, idAtividade);
                 }
             }
         }
@@ -92,12 +90,10 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
             }
         }
 
-        private void TipoDocumentalIsValid(AnexoModeloNegocio anexo, int idRascunhoProcesso)
+        private void TipoDocumentalIsValid(AnexoModeloNegocio anexo, int? idAtividade)
         {
             if (anexo.TipoDocumental != null)
             {
-                int? idAtividade = _repositorioRascunhosProcesso.Where(r => r.Id == idRascunhoProcesso).Single().IdAtividade; 
-
                 if (_repositorioTiposDocumentais.Where(td => td.Id == anexo.TipoDocumental.Id && td.IdAtividade == idAtividade.Value).SingleOrDefault() == null)
                 {
                     throw new RecursoNaoEncontradoException("Tipo Documental informado não encontrado");

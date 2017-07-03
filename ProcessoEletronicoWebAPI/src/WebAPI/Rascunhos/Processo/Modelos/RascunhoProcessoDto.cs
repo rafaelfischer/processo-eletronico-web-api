@@ -17,7 +17,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
         public List<GetAnexoDto> Anexos { get; set; }
         public List<GetInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
         public List<GetInteressadoPessoaJuridicaDto> InteressadosPessoaJuridica { get; set; }
-        public List<GetMunicipioDto> MunicipiosProcesso { get; set; }
+        public List<GetMunicipioDto> Municipios { get; set; }
         public List<GetSinalizacaoDto> Sinalizacoes { get; set; }
 
     }
@@ -42,7 +42,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
         public string Resumo { get; set; }
         public List<PostInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
         public List<PostInteressadoPessoaJuridicaDto> InteressadosPessoaJuridica { get; set; }
-        public List<PostMunicipioDto> MunicipiosRascunhoProcesso { get; set; }
+        public List<PostMunicipioDto> Municipios { get; set; }
         public List<PostAnexoDto> Anexos { get; set; }
         public List<int> IdSinalizacoes { get; set; }
         [Required]
