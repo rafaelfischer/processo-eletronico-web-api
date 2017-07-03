@@ -88,7 +88,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
 
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(p => p.Id == id)
-                                               .Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
+                                               .Include(p => p.Anexos)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.EmailsRascunho)
                                                .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
@@ -97,8 +97,11 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                                                .Include(p => p.SinalizacoesRascunhoProcesso).ThenInclude(sp => sp.Sinalizacao)
                                                .Include(p => p.Atividade)
                                                .SingleOrDefault();
-
             _validacao.Exists(rascunhoProcesso);
+
+            //Removendo o conteudo dos anexos
+            DeleteConteudoAnexos(rascunhoProcesso);
+
             return _mapper.Map<RascunhoProcesso, RascunhoProcessoModeloNegocio>(rascunhoProcesso);
         }
 
@@ -182,13 +185,13 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public void Delete(int id)
         {
-            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
-                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).Include(p => p.Anexos)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.EmailsRascunho)
-                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho)
                                                .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.EmailsRascunho)
                                                .Include(p => p.MunicipiosRascunhoProcesso)
-                                               .Include(p => p.SinalizacoesRascunhoProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                               .Include(p => p.SinalizacoesRascunhoProcesso)
                                                .Include(p => p.Atividade).SingleOrDefault();
             _validacao.Exists(rascunhoProcesso);
 
@@ -309,6 +312,17 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             rascunhoProcesso.IdAtividade = rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null;
             rascunhoProcesso.Resumo = rascunhoProcessoNegocio.Resumo;
+        }
+
+        private void DeleteConteudoAnexos(RascunhoProcesso rascunhoProcesso)
+        {
+            if (rascunhoProcesso.Anexos != null)
+            {
+                foreach (AnexoRascunho anexo in rascunhoProcesso.Anexos)
+                {
+                    anexo.Conteudo = null;
+                }
+            }
         }
 
     }
