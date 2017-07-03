@@ -26,20 +26,20 @@ namespace ProcessoEletronicoService.WebAPI.Config
 
             foreach (var dep in dependencias)
             {
-                services.AddTransient(dep.Key, dep.Value);
+                services.AddScoped(dep.Key, dep.Value);
             }
 
             //Demais dependências da camada de negócio (que não possuem interfaces)
-            services.AddTransient(typeof(UsuarioValidacao));
-            services.AddTransient(typeof(AnexoValidacao));
-            services.AddTransient(typeof(RascunhoProcessoValidacao));
-            services.AddTransient(typeof(InteressadoPessoaFisicaValidacao));
-            services.AddTransient(typeof(InteressadoPessoaJuridicaValidacao));
-            services.AddTransient(typeof(ContatoValidacao));
-            services.AddTransient(typeof(EmailValidacao));
-            services.AddTransient(typeof(MunicipioValidacao));
-            services.AddTransient(typeof(SinalizacaoValidacao));
-            services.AddTransient(typeof(OrganogramaValidacao));
+            services.AddScoped(typeof(UsuarioValidacao));
+            services.AddScoped(typeof(AnexoValidacao));
+            services.AddScoped(typeof(RascunhoProcessoValidacao));
+            services.AddScoped(typeof(InteressadoPessoaFisicaValidacao));
+            services.AddScoped(typeof(InteressadoPessoaJuridicaValidacao));
+            services.AddScoped(typeof(ContatoValidacao));
+            services.AddScoped(typeof(EmailValidacao));
+            services.AddScoped(typeof(MunicipioValidacao));
+            services.AddScoped(typeof(SinalizacaoValidacao));
+            services.AddScoped(typeof(OrganogramaValidacao));
         }
     }
 }

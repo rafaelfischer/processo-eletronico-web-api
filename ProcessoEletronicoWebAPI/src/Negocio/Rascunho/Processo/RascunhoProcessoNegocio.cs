@@ -74,7 +74,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _sinalizacaoValidacao = sinalizacaoValidacao;
             _usuarioValidacao = usuarioValidacao;
 
-
+            _anexoNegocio = anexoNegocio;
             _interessadoPessoaFisicaNegocio = interessadoPessoaFisicaNegocio;
             _interessadoPessoaJuridicaNegocio = interessadoPessoaJuridicaNegocio;
             _municipioNegocio = municipioNegocio;
@@ -182,7 +182,14 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public void Delete(int id)
         {
-            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).SingleOrDefault();
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.EmailsRascunho)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.EmailsRascunho)
+                                               .Include(p => p.MunicipiosRascunhoProcesso)
+                                               .Include(p => p.SinalizacoesRascunhoProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                               .Include(p => p.Atividade).SingleOrDefault();
             _validacao.Exists(rascunhoProcesso);
 
             _anexoNegocio.Delete(rascunhoProcesso.Anexos);
