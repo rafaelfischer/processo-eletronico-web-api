@@ -101,6 +101,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// Alteração de um anexo do rascunho de processos
         /// </summary>
         /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
+        /// <param name="id">Identificador do Anexo</param>
         /// <param name="patchAnexo">Informações a serem alteradas (JSON Patch Document)</param>
         /// <response code="204">Alteração feita com sucesso</response>
         /// <response code="400">Bad Request</response>
@@ -115,18 +116,18 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
-        public IActionResult Patch (int idRascunhoProcesso, int id, [FromBody] JsonPatchDocument<PatchAnexoDto> patchAnexo)
+        public IActionResult Patch (int idRascunhoProcesso, int id, [FromBody] JsonPatchDocument<PatchAnexoDto> patchAnexoDto)
         {
-            if (patchAnexo == null)
+            if (patchAnexoDto == null)
             {
                 return BadRequest();
             }
 
             AnexoModeloNegocio anexoNegocio = _negocio.Get(idRascunhoProcesso, id);
-            PatchAnexoDto patchAnexoDto = _mapper.Map<PatchAnexoDto>(anexoNegocio);
+            PatchAnexoDto AnexoToPatch = _mapper.Map<PatchAnexoDto>(anexoNegocio);
 
             //Validação da existência de um "path" será feita posteriormente. Por enquanto caminhos não existentes são ignorados.
-            patchAnexo.ApplyTo(patchAnexoDto, ModelState);
+            patchAnexoDto.ApplyTo(AnexoToPatch, ModelState);
 
             _mapper.Map(patchAnexoDto, anexoNegocio);
             _negocio.Patch(idRascunhoProcesso, id, anexoNegocio);

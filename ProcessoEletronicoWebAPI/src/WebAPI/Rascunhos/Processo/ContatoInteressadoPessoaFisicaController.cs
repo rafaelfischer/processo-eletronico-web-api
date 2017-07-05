@@ -22,22 +22,63 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             _negocio = negocio;
         }
 
+        /// <summary>
+        /// Lista de contatos do interessado pessoa física do rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do rascunho de processos</param>
+        /// <param name="idInteressado">Identificador do interessado pessoa física</param>
+        /// <returns>Lista de contatos de interessados pessoa física do rascunho de processos</returns>
+        /// <response code="200">Lista de contatos de interessados pessoa física do rascunho de processos</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="500">Falha inesperada</response>
         [HttpGet]
+        [ProducesResponseType(typeof(List<GetContatoDto>), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso, int idInteressado)
         {
             return Ok(_mapper.Map<IList<GetContatoDto>>(_negocio.Get(idRascunhoProcesso, idInteressado)));
         }
 
+        /// <summary>
+        /// Contato do interessado pessoa física do rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do rascunho de processos</param>
+        /// <param name="idInteressado">Identificador do interessado pessoa física</param>
+        /// <param name="id">Identificador do contato</param>
+        /// <returns>Contato do interessado pessoa física do rascunho de processos</returns>
+        /// <response code="200">Lista de contatos de interessados pessoa física do rascunho de processos</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="500">Falha inesperada</response>
         [HttpGet("{id}", Name = "GetContatoInteressadoPessoaFisica")]
+        [ProducesResponseType(typeof(List<GetContatoDto>), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso, int idInteressado, int id)
         {
             return Ok(_mapper.Map<GetContatoDto>(_negocio.Get(idRascunhoProcesso, idInteressado, id)));
         }
 
+        /// <summary>
+        /// Inserção de contato ao interessado pessoa física do rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do rascunho de processos</param>
+        /// <param name="idInteressado">Identificador do interessado pessoa física</param>
+        /// <param name="postContatoDto">Informações do contato a ser inserido</param>
+        /// <returns>Contato recém inserido</returns>
+        /// <response code="200">Lista de contatos de interessados pessoa física do rascunho de processos</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="422">Objeto não processável</response>
+        /// <response code="500">Falha inesperada</response>
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ProducesResponseType(typeof(GetContatoDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 422)]
+        [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Post(int idRascunhoProcesso, int idInteressado, [FromBody] PostContatoDto postContatoDto)
         {
@@ -52,8 +93,26 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             return CreatedAtRoute("GetContatoInteressadoPessoaFisica", new { Id = getContatoDto.Id }, getContatoDto);
         }
 
+        /// <summary>
+        /// Alteração de contato do interessado pessoa física do rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do rascunho de processos</param>
+        /// <param name="idInteressado">Identificador do interessado pessoa física</param>
+        /// <param name="id">Identificador do contato</param>
+        /// <param name="patchContatoDto">Informações do contato a ser inserido</param>
+        /// <returns>Contato recém inserido</returns>
+        /// <response code="204"></response>
+        /// <response code="400"></response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="422">Objeto não processável</response>
+        /// <response code="500">Falha inesperada</response>
         [HttpPatch("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 422)]
+        [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Patch(int idRascunhoProcesso, int idInteressado, int id, [FromBody] JsonPatchDocument<PatchContatoDto> patchContatoDto)
         {
@@ -68,8 +127,21 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             return NoContent();
         }
 
+        /// <summary>
+        /// Exclusão de contato do interessado pessoa física do rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do rascunho de processos</param>
+        /// <param name="idInteressado">Identificador do interessado pessoa física</param>
+        /// <param name="id">Identificador do contato</param>
+        /// <returns></returns>
+        /// <response code="204"></response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="500">Falha inesperada</response>
         [HttpDelete("{id}")]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Delete(int idRascunhoProcesso, int idInteressado, int id)
         {
