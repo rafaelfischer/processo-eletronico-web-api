@@ -51,7 +51,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
         [HttpGet("{id}", Name = "GetMunicipio")]
-        [ProducesResponseType(typeof(List<GetMunicipioDto>), 200)]
+        [ProducesResponseType(typeof(GetMunicipioDto), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
