@@ -102,8 +102,8 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// </summary>
         /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
         /// <param name="id">Identificador do Anexo</param>
-        /// <param name="patchAnexo">Informações a serem alteradas (JSON Patch Document)</param>
-        /// <response code="204">Alteração feita com sucesso</response>
+        /// <param name="patchAnexoDto">Informações a serem alteradas (JSON Patch Document)</param>
+        /// <response code="204">Operação feita com sucesso</response>
         /// <response code="400">Bad Request</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="422">Objeto não processável</response>
@@ -139,7 +139,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// </summary>
         /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
         /// <param name="id">Identificador do anexo a ser excluído</param>
-        /// <response code="204">Exclusão feita com sucesso</response>
+        /// <response code="204">Operação feita com sucesso</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
         [HttpDelete("{id}")]

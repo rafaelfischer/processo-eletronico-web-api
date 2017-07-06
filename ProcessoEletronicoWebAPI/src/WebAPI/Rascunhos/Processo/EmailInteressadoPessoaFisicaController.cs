@@ -101,8 +101,8 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <param name="id">Identificador do email</param>
         /// <param name="patchEmailDto">Informações do email a ser inserido</param>
         /// <returns></returns>
-        /// <response code="204"></response>
-        /// <response code="400"></response>
+        /// <response code="204">Operação feita com sucesso</response>
+        /// <response code="400">Bad Request</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="422">Objeto não processável</response>
         /// <response code="500">Falha inesperada</response>
@@ -134,7 +134,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <param name="idInteressado">Identificador do interessado pessoa física</param>
         /// <param name="id">Identificador do email</param>
         /// <returns></returns>
-        /// <response code="204"></response>
+        /// <response code="204">Operação feita com sucesso</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
         [HttpDelete("{id}")]
