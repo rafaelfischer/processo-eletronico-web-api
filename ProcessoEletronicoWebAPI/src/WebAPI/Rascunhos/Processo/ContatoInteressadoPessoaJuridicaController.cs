@@ -28,7 +28,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <param name="idRascunhoProcesso">Identificador do rascunho de processos</param>
         /// <param name="idInteressado">Identificador do interessado pessoa jurídica</param>
         /// <returns>Lista de contatos de interessados pessoa jurídica do rascunho de processos</returns>
-        /// <response code="200">Lista de contatos de interessados pessoa jurídica do rascunho de processos</response>
+        /// <response code="200">Lista de contatos do interessado pessoa jurídica do rascunho de processos</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
         [HttpGet]
@@ -48,11 +48,11 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <param name="idInteressado">Identificador do interessado pessoa jurídica</param>
         /// <param name="id">Identificador do contato</param>
         /// <returns>Contato do interessado pessoa jurídica do rascunho de processos</returns>
-        /// <response code="200">Lista de contatos de interessados pessoa jurídica do rascunho de processos</response>
+        /// <response code="200">Contato do interessado pessoa jurídica do rascunho de processos</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
         [HttpGet("{id}", Name = "GetContatoInteressadoPessoaJuridica")]
-        [ProducesResponseType(typeof(List<GetContatoDto>), 200)]
+        [ProducesResponseType(typeof(GetContatoDto), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
@@ -68,13 +68,13 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <param name="idInteressado">Identificador do interessado pessoa jurídica</param>
         /// <param name="postContatoDto">Informações do contato a ser inserido</param>
         /// <returns>Contato recém inserido</returns>
-        /// <response code="200">Lista de contatos de interessados pessoa jurídica do rascunho de processos</response>
+        /// <response code="201">Contato recém inserido do interessado pessoa jurídica do rascunho de processos</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="422">Objeto não processável</response>
         /// <response code="500">Falha inesperada</response>
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
-        [ProducesResponseType(typeof(GetContatoDto), 200)]
+        [ProducesResponseType(typeof(GetContatoDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 422)]
@@ -100,7 +100,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <param name="idInteressado">Identificador do interessado pessoa física</param>
         /// <param name="id">Identificador do contato</param>
         /// <param name="patchContatoDto">Informações do contato a ser inserido</param>
-        /// <returns>Contato recém inserido</returns>
+        /// <returns></returns>
         /// <response code="204"></response>
         /// <response code="400"></response>
         /// <response code="404">Recurso não encontrado</response>
