@@ -73,9 +73,9 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         #region POST
 
         /// <summary>
-        /// Salvamento de Rascunhos Processos (inserção de processos).
+        /// Inserção de Rascunhos de Processos
         /// </summary>
-        /// <param name="rascunhoProcessoPost">Informações do rascunho de processo.</param>
+        /// <param name="rascunhoProcessoPost">Informações do rascunho de processo</param>
         /// <returns>URL do rascunho de processo inserido no cabeçalho da resposta e o rascunho de processo recém inserido</returns>
         /// <response code="201">Retorna o rascunho de processo recém inserido</response>
         /// <response code="400">Bad Request</response>

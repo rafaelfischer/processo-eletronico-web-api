@@ -62,7 +62,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// Inserção de sinalizações no rascunho de processos
         /// </summary>
         /// <remarks>
-        /// A lista de todas as sinalizações disponíveis está na consulta do recurso sinalizações (GET /api/sinalizacoes)
+        /// A lista de todas as sinalizações disponíveis está na consulta do recurso sinalizações (GET /api/sinalizacoes/organizacao-patriarca/{guidOrganizacaoPatriarca})
         /// </remarks>
         /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
         /// <param name="idsSinalizacoes">Lista de IDs de sinalizações</param>
