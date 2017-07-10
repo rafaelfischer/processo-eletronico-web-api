@@ -25,6 +25,7 @@ namespace ProcessoEletronicoService.Dominio.Base
         IRepositorioGenerico<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; }
         IRepositorioGenerico<InteressadoPessoaJuridicaRascunho> InteressadosPessoaJuridicaRascunho { get; }
         IRepositorioGenerico<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; }
+        IRepositorioGenerico<Notificacao> Notificacoes { get; }
         IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; }
         IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; }
         IRepositorioGenerico<Processo> Processos { get; }

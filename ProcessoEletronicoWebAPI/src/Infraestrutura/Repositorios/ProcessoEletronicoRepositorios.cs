@@ -57,6 +57,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         public IRepositorioGenerico<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; private set; }
         public IRepositorioGenerico<InteressadoPessoaJuridicaRascunho> InteressadosPessoaJuridicaRascunho { get; private set; }
         public IRepositorioGenerico<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; private set; }
+        public IRepositorioGenerico<Notificacao> Notificacoes { get; private set; }
         public IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; private set; }
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }
         public IRepositorioGenerico<Processo> Processos { get; private set; }
