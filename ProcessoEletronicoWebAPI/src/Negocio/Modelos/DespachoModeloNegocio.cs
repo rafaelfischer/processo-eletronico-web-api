@@ -21,5 +21,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string NomeUsuarioDespachante { get; set; }
         public DateTime DataHoraDespacho { get; set; }
         public List<AnexoModeloNegocio> Anexos { get; set; }
+        public ProcessoModeloNegocio Processo { get; set; }
+
     }
 }
