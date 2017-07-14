@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+using Negocio.Notificacoes.Base;
+using Negocio.Notificacoes;
 
 namespace ProcessoEletronicoService.Apresentacao.Configuracao
 {
@@ -26,6 +28,7 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias.Add(typeof(IInteressadoPessoaFisicaNegocio), typeof(InteressadoPessoaFisicaNegocio));
             dependencias.Add(typeof(IInteressadoPessoaJuridicaNegocio), typeof(InteressadoPessoaJuridicaNegocio));
             dependencias.Add(typeof(IMunicipioNegocio), typeof(MunicipioNegocio));
+            dependencias.Add(typeof(INotificacoesService), typeof(NotificacoesService));
             dependencias.Add(typeof(IFuncaoNegocio), typeof(FuncaoNegocio));
             dependencias.Add(typeof(IRascunhoProcessoNegocio), typeof(RascunhoProcessoNegocio));
             dependencias.Add(typeof(IPlanoClassificacaoNegocio), typeof(PlanoClassificacaoNegocio));

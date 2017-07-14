@@ -29,6 +29,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             InteressadosPessoaJuridica = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridica>();
             InteressadosPessoaJuridicaRascunho = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridicaRascunho>();
             MunicipiosRascunhoProcesso = UnitOfWork.MakeGenericRepository<MunicipioRascunhoProcesso>();
+            Notificacoes = UnitOfWork.MakeGenericRepository<Notificacao>();
             PlanosClassificacao = UnitOfWork.MakeGenericRepository<PlanoClassificacao>();
             OrganizacoesProcesso = UnitOfWork.MakeGenericRepository<OrganizacaoProcesso>();
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
