@@ -34,7 +34,13 @@ namespace Negocio.Notificacoes
             return _repositorioNotificacoes.Where(n => n.DataNotificacao == null).Include(p => p.Processo).Include(d => d.Despacho).ToList();
         }
 
-        public void Post(int idProcesso, int idDespacho, string email)
+        public void Insert(int idProcesso, string email)
+        {
+            Notificacao notificacao = new Notificacao { IdProcesso = idProcesso, Email = email };
+            _repositorioNotificacoes.Add(notificacao);
+        }
+
+        public void Insert(int idProcesso, int idDespacho, string email)
         {
             Notificacao notificacao = new Notificacao { IdProcesso = idProcesso, IdDespacho = idDespacho, Email = email };
             _repositorioNotificacoes.Add(notificacao);
