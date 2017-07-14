@@ -28,6 +28,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
         public virtual DbSet<InteressadoPessoaJuridicaRascunho> InteressadoPessoaJuridicaRascunho { get; set; }
         public virtual DbSet<MunicipioProcesso> MunicipioProcesso { get; set; }
         public virtual DbSet<MunicipioRascunhoProcesso> MunicipioRascunhoProcesso { get; set; }
+        public virtual DbSet<Notificacao> Notificacao { get; set; }
         public virtual DbSet<OrganizacaoProcesso> OrganizacaoProcesso { get; set; }
         public virtual DbSet<PlanoClassificacao> PlanoClassificacao { get; set; }
         public virtual DbSet<Processo> Processo { get; set; }
@@ -638,6 +639,35 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdRascunhoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_MunicipioRascunhoProcesso_RascunhoProcesso");
+            });
+
+            modelBuilder.Entity<Notificacao>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.DataNotificacao)
+                    .HasColumnName("dataNotificacao")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnName("email")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.IdDespacho).HasColumnName("idDespacho");
+
+                entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
+
+                entity.HasOne(d => d.Despacho)
+                    .WithMany(p => p.Notificacoes)
+                    .HasForeignKey(d => d.IdDespacho)
+                    .HasConstraintName("FK__NotificacaoDespacho");
+
+                entity.HasOne(d => d.Processo)
+                    .WithMany(p => p.Notificacoes)
+                    .HasForeignKey(d => d.IdProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__NotificacaoProcesso");
             });
 
             modelBuilder.Entity<OrganizacaoProcesso>(entity =>

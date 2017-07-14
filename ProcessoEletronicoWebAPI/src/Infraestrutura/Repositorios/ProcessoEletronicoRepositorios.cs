@@ -29,6 +29,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             InteressadosPessoaJuridica = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridica>();
             InteressadosPessoaJuridicaRascunho = UnitOfWork.MakeGenericRepository<InteressadoPessoaJuridicaRascunho>();
             MunicipiosRascunhoProcesso = UnitOfWork.MakeGenericRepository<MunicipioRascunhoProcesso>();
+            Notificacoes = UnitOfWork.MakeGenericRepository<Notificacao>();
             PlanosClassificacao = UnitOfWork.MakeGenericRepository<PlanoClassificacao>();
             OrganizacoesProcesso = UnitOfWork.MakeGenericRepository<OrganizacaoProcesso>();
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
@@ -57,6 +58,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         public IRepositorioGenerico<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; private set; }
         public IRepositorioGenerico<InteressadoPessoaJuridicaRascunho> InteressadosPessoaJuridicaRascunho { get; private set; }
         public IRepositorioGenerico<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; private set; }
+        public IRepositorioGenerico<Notificacao> Notificacoes { get; private set; }
         public IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; private set; }
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }
         public IRepositorioGenerico<Processo> Processos { get; private set; }

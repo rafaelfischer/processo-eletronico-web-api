@@ -12,6 +12,7 @@ using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
+using Negocio.Notificacoes.Base;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -24,13 +25,14 @@ namespace ProcessoEletronicoService.Negocio
         private IRepositorioGenerico<Anexo> _repositorioAnexos;
         private IRepositorioGenerico<Despacho> _repositorioDespachos;
         private IRepositorioGenerico<Processo> _repositorioProcessos;
+        private INotificacoesService _notificacoesService;
 
         private DespachoValidacao _validacao;
         private AnexoValidacao _anexoValidacao;
         private UsuarioValidacao _usuarioValidacao;
         private OrganogramaValidacao _organogramaValidacao;
 
-        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, IProcessoNegocio processoNegocio, ICurrentUserProvider user, OrganogramaValidacao organogramaValidacao)
+        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, IProcessoNegocio processoNegocio, INotificacoesService notificacoesService, ICurrentUserProvider user, OrganogramaValidacao organogramaValidacao)
         {
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
@@ -39,6 +41,7 @@ namespace ProcessoEletronicoService.Negocio
             _repositorioDespachos = repositorios.Despachos;
             _repositorioProcessos = repositorios.Processos;
             _repositorioAnexos = repositorios.Anexos;
+            _notificacoesService = notificacoesService;
             _validacao = new DespachoValidacao(repositorios);
             _anexoValidacao = new AnexoValidacao(repositorios);
             _usuarioValidacao = new UsuarioValidacao();
@@ -112,6 +115,7 @@ namespace ProcessoEletronicoService.Negocio
 
             _repositorioDespachos.Add(despacho);
             _unitOfWork.Save();
+            _notificacoesService.Insert(despacho);
 
             return Pesquisar(despacho.Id);
         }
