@@ -20,12 +20,14 @@ namespace Negocio.Notificacoes
         private readonly int mailServerPort = 25;
 
         private IRepositorioGenerico<Notificacao> _repositorioNotificacoes;
+        private IRepositorioGenerico<Processo> _repositorioProcessos;
 
         private IUnitOfWork _unityOfWork;
 
         public NotificacoesService(IProcessoEletronicoRepositorios repositorios)
         {
             _repositorioNotificacoes = repositorios.Notificacoes;
+            _repositorioProcessos = repositorios.Processos;
             _unityOfWork = repositorios.UnitOfWork;
         }
 
@@ -34,16 +36,60 @@ namespace Negocio.Notificacoes
             return _repositorioNotificacoes.Where(n => n.DataNotificacao == null).Include(p => p.Processo).Include(d => d.Despacho).ToList();
         }
 
-        public void Insert(int idProcesso, string email)
+        public void Insert(Processo processo)
         {
-            Notificacao notificacao = new Notificacao { IdProcesso = idProcesso, Email = email };
-            _repositorioNotificacoes.Add(notificacao);
+            InsertInteressadosPessoaFisica(processo);
+            InsertInteressadosPessoaJuridica(processo);
+            _unityOfWork.Save();
         }
 
-        public void Insert(int idProcesso, int idDespacho, string email)
+        public void Insert(Despacho despacho)
         {
-            Notificacao notificacao = new Notificacao { IdProcesso = idProcesso, IdDespacho = idDespacho, Email = email };
-            _repositorioNotificacoes.Add(notificacao);
+            Processo processo = _repositorioProcessos.Where(p => p.Id == despacho.IdProcesso)
+                .Include(i => i.InteressadosPessoaFisica).ThenInclude(e => e.Emails)
+                .Include(i => i.InteressadosPessoaJuridica).ThenInclude(e => e.Emails)
+                .Single();
+
+            InsertInteressadosPessoaFisica(processo, despacho.Id);
+            InsertInteressadosPessoaJuridica(processo, despacho.Id);
+            _unityOfWork.Save();
+        }
+
+        private void InsertInteressadosPessoaFisica(Processo processo, int? idDespacho = null)
+        {
+            //Inserir notificações para interessados pessoa física
+            if (processo.InteressadosPessoaFisica != null)
+            {
+                foreach (InteressadoPessoaFisica interessadoPessoaFisica in processo.InteressadosPessoaFisica)
+                {
+                    if (interessadoPessoaFisica.Emails != null)
+                    {
+                        foreach (Email email in interessadoPessoaFisica.Emails)
+                        {
+                            Notificacao notificacao = new Notificacao { IdProcesso = processo.Id, IdDespacho = idDespacho, Email = email.Endereco };
+                            _repositorioNotificacoes.Add(notificacao);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void InsertInteressadosPessoaJuridica(Processo processo, int? idDespacho = null)
+        {
+            if (processo.InteressadosPessoaJuridica != null)
+            {
+                foreach (InteressadoPessoaJuridica interessadoPessoaJuridica in processo.InteressadosPessoaJuridica)
+                {
+                    if (interessadoPessoaJuridica.Emails != null)
+                    {
+                        foreach (Email email in interessadoPessoaJuridica.Emails)
+                        {
+                            Notificacao notificacao = new Notificacao { IdProcesso = processo.Id, IdDespacho = idDespacho, Email = email.Endereco };
+                            _repositorioNotificacoes.Add(notificacao);
+                        }
+                    }
+                }
+            }
         }
 
         public void Run()
@@ -89,7 +135,7 @@ namespace Negocio.Notificacoes
                 _unityOfWork.Save();
             }
         }
-        
+
         private string GenerateAutuacaoMailBody(Notificacao notificacao)
         {
             string numeroProcesso = GetNumeroProcesso(notificacao);

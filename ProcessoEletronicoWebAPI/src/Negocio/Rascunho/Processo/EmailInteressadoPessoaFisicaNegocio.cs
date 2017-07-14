@@ -109,6 +109,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             _validacao.Exists(email);
             _repositorioEmailsRascunho.Remove(email);
+            _unitOfWork.Save();
         }
 
         public void Delete(EmailRascunho email)

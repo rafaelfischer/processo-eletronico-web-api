@@ -13,6 +13,7 @@ using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
+using Negocio.Notificacoes.Base;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -26,6 +27,7 @@ namespace ProcessoEletronicoService.Negocio
         private IRepositorioGenerico<Anexo> _repositorioAnexos;
         private IRepositorioGenerico<Despacho> _repositorioDespachos;
         private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhosProcesso;
+        private INotificacoesService _notificacoesService;
 
         private ProcessoValidacao _validacao;
         private DespachoValidacao _despachoValidacao;
@@ -35,7 +37,7 @@ namespace ProcessoEletronicoService.Negocio
         private Rascunho.Processo.Validacao.RascunhoProcessoValidacao _rascunhoProcessoValidacao;
 
 
-        public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user, IMapper mapper, OrganogramaValidacao organogramaValidacao, Rascunho.Processo.Validacao.RascunhoProcessoValidacao rascunhoProcessoValidacao)
+        public ProcessoNegocio(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user, INotificacoesService notificacoesService, IMapper mapper, OrganogramaValidacao organogramaValidacao, Rascunho.Processo.Validacao.RascunhoProcessoValidacao rascunhoProcessoValidacao)
         {
             _unitOfWork = repositorios.UnitOfWork;
             _user = user;
@@ -46,6 +48,7 @@ namespace ProcessoEletronicoService.Negocio
             _repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             _repositorioAnexos = repositorios.Anexos;
             _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
+            _notificacoesService = notificacoesService;
             _validacao = new ProcessoValidacao(repositorios);
             _despachoValidacao = new DespachoValidacao(repositorios);
             _anexoValidacao = new AnexoValidacao(repositorios);
@@ -200,7 +203,7 @@ namespace ProcessoEletronicoService.Negocio
 
             /*Informações padrão, como a data de atuação*/
             InformacaoPadrao(processo);
-
+            
             _validacao.AtividadePertenceAOrganizacaoPatriarca(processoNegocio, _user.UserGuidOrganizacaoPatriarca);
             _validacao.AtividadePertenceAOrganizacao(processoNegocio);
             _validacao.SinalizacoesPertencemAOrganizacaoPatriarca(processoNegocio, _user.UserGuidOrganizacaoPatriarca);
@@ -210,6 +213,7 @@ namespace ProcessoEletronicoService.Negocio
 
             _repositorioProcessos.Add(processo);
             _unitOfWork.Save();
+            _notificacoesService.Insert(processo);
 
             return Pesquisar(processo.Id);
         }
@@ -510,6 +514,6 @@ namespace ProcessoEletronicoService.Negocio
             //Data/hora atual do despacho
             despacho.DataHoraDespacho = DateTime.Now;
         }
-
+        
     }
 }
