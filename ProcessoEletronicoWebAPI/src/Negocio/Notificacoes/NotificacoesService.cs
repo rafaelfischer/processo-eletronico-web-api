@@ -15,9 +15,6 @@ namespace Negocio.Notificacoes
     {
         private readonly string FromEmail = "noreply@prodest.es.gov.br";
         private readonly string EmailSubject = "Notificação automática do Processo Eletrônico";
-        //Environment Variable (host + port)
-        private readonly string mailServerAddress = "sistemas.mail.dchm.es.gov.br";
-        private readonly int mailServerPort = 25;
 
         private IRepositorioGenerico<Notificacao> _repositorioNotificacoes;
         private IRepositorioGenerico<Processo> _repositorioProcessos;
@@ -94,45 +91,50 @@ namespace Negocio.Notificacoes
 
         public void Run()
         {
+            //Obtém lista de notificações que devem ser feitas
             IList<Notificacao> notificacoes = Get();
 
             if (notificacoes.Count > 0)
             {
-                SmtpClient client = new SmtpClient();
-                client.Connect(mailServerAddress, mailServerPort, false);
-
-                foreach (Notificacao notificacao in notificacoes)
+                using (SmtpClient client = new SmtpClient())
                 {
+                    client.Connect(Environment.GetEnvironmentVariable("mailServerHost"), int.Parse(Environment.GetEnvironmentVariable("mailServerPort")), false);
+
                     MimeMessage mimeMessage = new MimeMessage();
                     mimeMessage.From.Add(new MailboxAddress(FromEmail));
                     mimeMessage.Subject = EmailSubject;
-                    mimeMessage.To.Add(new MailboxAddress(notificacao.Email));
-
-                    //Notificar autuação
-                    if (!notificacao.IdDespacho.HasValue)
+                    
+                    foreach (Notificacao notificacao in notificacoes)
                     {
-                        mimeMessage.Body = new TextPart("plain")
+                        mimeMessage.To.Add(new MailboxAddress(notificacao.Email));
+                        //Notificar autuação
+                        if (!notificacao.IdDespacho.HasValue)
                         {
-                            Text = GenerateAutuacaoMailBody(notificacao)
-                        };
+                            mimeMessage.Body = new TextPart("plain")
+                            {
+                                Text = GenerateAutuacaoMailBody(notificacao)
+                            };
 
-                        client.Send(mimeMessage);
-                        notificacao.DataNotificacao = DateTime.Now;
-                    }
-                    //Notificar despacho
-                    else
-                    {
-                        mimeMessage.Body = new TextPart("plain")
+                            client.Send(mimeMessage);
+                            notificacao.DataNotificacao = DateTime.Now;
+                        }
+                        //Notificar despacho
+                        else
                         {
-                            Text = GenerateDespachoMailBody(notificacao)
-                        };
+                            mimeMessage.Body = new TextPart("plain")
+                            {
+                                Text = GenerateDespachoMailBody(notificacao)
+                            };
 
-                        client.Send(mimeMessage);
-                        notificacao.DataNotificacao = DateTime.Now;
+                            client.Send(mimeMessage);
+                            notificacao.DataNotificacao = DateTime.Now;
+                        }
+
+                        mimeMessage.To.Clear();
                     }
+                    client.Disconnect(true);
+                    _unityOfWork.Save();
                 }
-                client.Disconnect(true);
-                _unityOfWork.Save();
             }
         }
 
@@ -146,7 +148,7 @@ namespace Negocio.Notificacoes
             EmailBody += $"Para consultar detalhes do processo, utilize o Sistema de Processo Eletrônico clicando no link abaixo:\n\n";
             EmailBody += $"https://www.processoeletronico.es.gov.br \n\n";
             EmailBody += $"Essa é uma notificação automática. Não é necessário responder a esse e-mail.\n\n";
-            EmailBody += $"(A qualidade da mensagem será melhorada. Essa é uma versão de testes ainda)";
+            EmailBody += $"(A qualidade da mensagem será revisada. Essa é uma versão de testes ainda)";
 
             return EmailBody;
         }
@@ -161,7 +163,7 @@ namespace Negocio.Notificacoes
             EmailBody += $"Para consultar detalhes do processo, utilize o Sistema de Processo Eletrônico clicando no link abaixo:\n\n";
             EmailBody += $"https://www.processoeletronico.es.gov.br \n\n";
             EmailBody += $"Essa é uma notificação automática. Não é necessário responder a esse e-mail.\n\n";
-            EmailBody += $"(A qualidade da mensagem será melhorada. Essa é uma versão de testes ainda)";
+            EmailBody += $"(A qualidade da mensagem será revisada. Essa é uma versão de testes ainda)";
 
             return EmailBody;
         }
