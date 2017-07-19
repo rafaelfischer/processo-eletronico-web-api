@@ -98,7 +98,7 @@ namespace Negocio.Notificacoes
             {
                 using (SmtpClient client = new SmtpClient())
                 {
-                    client.Connect(Environment.GetEnvironmentVariable("mailServerHost"), int.Parse(Environment.GetEnvironmentVariable("mailServerPort")), false);
+                    client.Connect(Environment.GetEnvironmentVariable("MailServerHost"), int.Parse(Environment.GetEnvironmentVariable("MailServerPort")), false);
 
                     MimeMessage mimeMessage = new MimeMessage();
                     mimeMessage.From.Add(new MailboxAddress(FromEmail));
