@@ -148,7 +148,6 @@ namespace Negocio.Notificacoes
             EmailBody += $"Para consultar detalhes do processo, utilize o Sistema de Processo Eletrônico clicando no link abaixo:\n\n";
             EmailBody += $"https://www.processoeletronico.es.gov.br \n\n";
             EmailBody += $"Essa é uma notificação automática. Não é necessário responder a esse e-mail.\n\n";
-            EmailBody += $"(A qualidade da mensagem será revisada. Essa é uma versão de testes ainda)";
 
             return EmailBody;
         }
@@ -163,7 +162,6 @@ namespace Negocio.Notificacoes
             EmailBody += $"Para consultar detalhes do processo, utilize o Sistema de Processo Eletrônico clicando no link abaixo:\n\n";
             EmailBody += $"https://www.processoeletronico.es.gov.br \n\n";
             EmailBody += $"Essa é uma notificação automática. Não é necessário responder a esse e-mail.\n\n";
-            EmailBody += $"(A qualidade da mensagem será revisada. Essa é uma versão de testes ainda)";
 
             return EmailBody;
         }
