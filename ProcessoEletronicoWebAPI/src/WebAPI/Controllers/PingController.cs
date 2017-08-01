@@ -2,7 +2,7 @@
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
-    //[Route("api/ping")]
+    [Route("api/ping")]
     public class PingController : Controller
     {
         /// <summary>
