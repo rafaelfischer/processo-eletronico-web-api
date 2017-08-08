@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export RANCHER_ENV=SEP/Organograma
+export RANCHER_ENV=processo-eletronico
 export RANCHER_SERVICE=processoeletronico-api
 export RANCHER_START_FIRST=true
 export DOCKER_IMAGE=prodest/processoeletronico-api
