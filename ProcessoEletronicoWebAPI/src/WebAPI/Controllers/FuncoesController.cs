@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -16,12 +19,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/funcoes")]
     public class FuncoesController : BaseController
     {
-        IFuncaoWorkService service;
+        private IFuncaoNegocio _negocio;
+        private IMapper _mapper;
 
-        public FuncoesController(IFuncaoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public FuncoesController(IFuncaoNegocio negocio, IMapper mapper)
         {
-            this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,14 +40,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get(int idPlanoClassificacao)
         {
-            try
-            {
-                return new ObjectResult(service.PesquisarPorPlanoClassificacao(idPlanoClassificacao));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<FuncaoModelo>>(_negocio.PesquisarPorPlanoClassificacao(idPlanoClassificacao)));
         }
 
         /// <summary>
@@ -54,19 +51,12 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="200">Função de acordo com o identificador informado.</response>
         /// <response code="404">Recurso não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetFuncao")]
         [ProducesResponseType(typeof(FuncaoProcessoGetModelo), 200)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<FuncaoProcessoGetModelo>(_negocio.Pesquisar(id)));
         }
 
         /// <summary>
@@ -86,31 +76,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Inserir([FromBody] FuncaoModeloPost funcao)
         {
-
             if (funcao == null)
             {
-                return BadRequest("Objeto Inválido.");
+                return BadRequest();
             }
 
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                FuncaoProcessoGetModelo funcaoGet = service.Inserir(funcao);
-                return Created(request.Scheme + "://" + request.Host.Value + request.Path.Value + "/" + funcaoGet.Id, funcaoGet);
-
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            FuncaoProcessoGetModelo funcaoGet = _mapper.Map<FuncaoProcessoGetModelo>(_negocio.Inserir(_mapper.Map<FuncaoModeloNegocio>(funcao)));
+            return CreatedAtRoute("GetFuncao", new { id = funcaoGet.Id }, funcaoGet);
         }
 
         /// <summary>
@@ -127,23 +99,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Excluir(int id)
         {
-            try
-            {
-                service.Excluir(id);
-                return Ok();
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            _negocio.Excluir(id);
+            return NoContent();
         }
     }
 }

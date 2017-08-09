@@ -1,22 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ProcessoEletronicoService.WebAPI.Config;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Swashbuckle.Swagger.Model;
 using Microsoft.Extensions.PlatformAbstractions;
 using ProcessoEletronicoService.Infraestrutura.Mapeamento;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.WebAPI.Base;
+using ProcessoEletronicoService.WebAPI.Common;
+using ProcessoEletronicoService.WebAPI.Config;
 using ProcessoEletronicoService.WebAPI.Middleware;
+using Swashbuckle.Swagger.Model;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 
 namespace WebAPI
 {
@@ -51,14 +51,17 @@ namespace WebAPI
                     });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IClientAccessTokenProvider, AcessoCidadaoClientAccessToken>();
+            services.AddScoped<ICurrentUserProvider, CurrentUser>();
 
+            services.AddAutoMapper();
             InjecaoDependencias.InjetarDependencias(services);
-            ConfiguracaoAutoMapper.CriarMapeamento();
 
             #region Políticas que serão concedidas
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Processo.Autuar", policy => policy.RequireClaim("Acao$Processo", "Autuar"));
+                options.AddPolicy("RascunhoProcesso.Rascunhar", policy => policy.RequireClaim("Acao$RascunhoProcesso", "Rascunhar"));
                 options.AddPolicy("Despacho.Inserir", policy => policy.RequireClaim("Acao$Despacho", "Inserir"));
                 options.AddPolicy("PlanoClassificacao.Inserir", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Inserir"));
                 options.AddPolicy("PlanoClassificacao.Excluir", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Excluir"));
@@ -91,7 +94,7 @@ namespace WebAPI
                         Email = "atendimento@prodest.es.gov.br",
                         Url = "https://prodest.es.gov.br"
                     },
-                                    });
+                });
 
                 //Determine base path for the application.
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
@@ -99,7 +102,7 @@ namespace WebAPI
                 //Set the comments path for the swagger json and ui.
                 var xmlPath = Path.Combine(basePath, "WebAPI.xml");
                 options.IncludeXmlComments(xmlPath);
-                });
+            });
             #endregion
         }
 
@@ -130,6 +133,7 @@ namespace WebAPI
             });
             #endregion
 
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
 
             #region Configuração do Swagger

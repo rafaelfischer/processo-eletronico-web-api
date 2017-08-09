@@ -1,27 +1,24 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
-using ProcessoEletronicoService.Infraestrutura.Comum;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
-using ProcessoEletronicoService.WebAPI.Config;
-using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
     [Route("api/planos-classificacao")]
     public class PlanosClassificacaoController : BaseController
     {
-        IPlanoClassificacaoWorkService service;
+        private IPlanoClassificacaoNegocio _negocio;
+        private IMapper _mapper;
 
-        public PlanosClassificacaoController(IPlanoClassificacaoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public PlanosClassificacaoController(IPlanoClassificacaoNegocio negocio, IMapper mapper)
         {
-            this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -38,18 +35,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get(string guidOrganizacao)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(guidOrganizacao));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<PlanoClassificacaoModelo>>(_negocio.Pesquisar(guidOrganizacao)));
         }
 
         /// <summary>
@@ -60,24 +46,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="200">Plano de classificação de acordo com o identificador informado.</response>
         /// <response code="404">Plano de classificação não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetPlanoClassificacao")]
         [ProducesResponseType(typeof(PlanoClassificacaoProcessoGetModelo), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<PlanoClassificacaoModelo>(_negocio.Pesquisar(id)));
         }
 
         /// <summary>
@@ -91,16 +66,9 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get()
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar());
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<PlanoClassificacaoModelo>>(_negocio.Pesquisar()));
         }
-
+        
         /// <summary>
         /// Insere um plano de classificação de acordo com a organização do usuário.
         /// </summary>
@@ -116,27 +84,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Inserir([FromBody]PlanoClassificacaoModeloPost planoClassificacao)
         {
-
             if (planoClassificacao == null)
             {
-                return BadRequest("Objeto Inválido");
+                return BadRequest();
             }
 
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                PlanoClassificacaoProcessoGetModelo planoClassificacaoGet = service.Inserir(planoClassificacao);
-                return Created(request.Scheme + "://" + request.Host.Value + request.Path.Value + "/" + planoClassificacaoGet.Id, planoClassificacaoGet);
-
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            PlanoClassificacaoModelo planoClassificacaoGet = _mapper.Map<PlanoClassificacaoModelo>(_negocio.Inserir(_mapper.Map<PlanoClassificacaoModeloNegocio>(planoClassificacao)));
+            return CreatedAtRoute("GetPlanoClassificacao", new { id = planoClassificacaoGet.Id }, planoClassificacaoGet);
         }
 
         /// <summary>
@@ -153,23 +107,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Excluir(int id)
         {
-            try
-            {
-                service.Excluir(id);
-                return Ok();
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            _negocio.Excluir(id);
+            return NoContent();
         }
     }
 }

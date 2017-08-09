@@ -8,6 +8,6 @@ namespace ProcessoEletronicoService.Apresentacao.Base
     public interface IBaseWorkService
     {
         Dictionary<string, string> Usuario { get; set; }
-        void RaiseUsuarioAlterado();
+        
     }
 }

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -16,12 +19,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/atividades")]
     public class AtividadesController : BaseController
     {
-        IAtividadeWorkService service;
+        private IAtividadeNegocio _negocio;
+        private IMapper _mapper;
 
-        public AtividadesController(IAtividadeWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public AtividadesController(IAtividadeNegocio negocio, IMapper mapper)
         {
-            this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,16 +40,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get(int idFuncao)
         {
-            try
-            {
-                return new ObjectResult(service.PesquisarPorFuncao(idFuncao));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<AtividadeModelo>>(_negocio.PesquisarPorFuncao(idFuncao)));
         }
-
 
         /// <summary>
         /// Retorna a lista de atividades que o usuário pode utilizar.
@@ -58,14 +54,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get()
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar());
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<AtividadeProcessoGetModelo>>(_negocio.Pesquisar()));
         }
 
         /// <summary>
@@ -76,21 +65,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="200">Atividade de acordo com o identificador informado.</response>
         /// <response code="404">Recurso não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetAtividade")]
         [ProducesResponseType(typeof(AtividadeProcessoGetModelo), 200)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<AtividadeProcessoGetModelo>(_negocio.Pesquisar(id)));
         }
-
 
         /// <summary>
         /// Insere uma atividade
@@ -107,32 +88,15 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public IActionResult Inserir ([FromBody] AtividadeModeloPost atividade)
+        public IActionResult Inserir([FromBody] AtividadeModeloPost atividade)
         {
             if (atividade == null)
             {
-                return BadRequest("Objeto Inválido.");
+                return BadRequest();
             }
 
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                AtividadeProcessoGetModelo atividadeGet = service.Inserir(atividade);
-                return Created(request.Scheme + "://" + request.Host.Value + request.Path.Value + "/" + atividadeGet.Id, atividadeGet);
-
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            AtividadeProcessoGetModelo atividadeGet = _mapper.Map<AtividadeProcessoGetModelo>(_negocio.Inserir(_mapper.Map<AtividadeModeloNegocio>(atividade)));
+            return CreatedAtRoute("GetAtividade", new { id = atividadeGet.Id }, atividadeGet);
         }
 
         /// <summary>
@@ -149,23 +113,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Excluir(int id)
         {
-            try
-            {
-                service.Excluir(id);
-                return Ok();
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            _negocio.Excluir(id);
+            return NoContent();
         }
     }
 }

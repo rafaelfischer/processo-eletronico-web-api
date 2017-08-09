@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -15,11 +17,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/sinalizacoes")]
     public class SinalizacaoController : BaseController
     {
-        ISinalizacaoWorkService service;
+        private ISinalizacaoNegocio _negocio;
+        private IMapper _mapper;
 
-        public SinalizacaoController(ISinalizacaoWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public SinalizacaoController(ISinalizacaoNegocio negocio, IMapper mapper)
         {
-            this.service = service;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,18 +40,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get(string guidOrganizacaoPatriarca)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(guidOrganizacaoPatriarca));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<SinalizacaoModelo>>(_negocio.Pesquisar(guidOrganizacaoPatriarca)));
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public byte[] Imagem { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
     }
-
+    
     public class SinalizacaoProcessoGetModelo
     {
         public int Id { get; set; }

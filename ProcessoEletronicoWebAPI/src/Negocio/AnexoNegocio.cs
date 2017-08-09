@@ -1,28 +1,26 @@
 ﻿using ProcessoEletronicoService.Negocio.Base;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
-using ProcessoEletronicoService.Negocio.Restrito.Validacao;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
 
 namespace ProcessoEletronicoService.Negocio
 {
-    public class AnexoNegocio : BaseNegocio, IAnexoNegocio
+    public class AnexoNegocio : IAnexoNegocio
     {
         private IUnitOfWork unitOfWork;
         private IRepositorioGenerico<Anexo> repositorioAnexos;
         private AnexoValidacao anexoValidacao;
+        private IMapper _mapper;
 
-        public AnexoNegocio(IProcessoEletronicoRepositorios repositorios)
+        public AnexoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper)
         {
             unitOfWork = repositorios.UnitOfWork;
             repositorioAnexos = repositorios.Anexos;
+            _mapper = mapper;
             anexoValidacao = new AnexoValidacao(repositorios);
         }
 
@@ -35,7 +33,7 @@ namespace ProcessoEletronicoService.Negocio
 
             anexoValidacao.NaoEncontrado(anexo);
 
-            return Mapper.Map<Anexo, AnexoModeloNegocio>(anexo);
+            return _mapper.Map<AnexoModeloNegocio>(anexo);
         }
     }
 }

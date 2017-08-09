@@ -20,10 +20,9 @@ namespace ProcessoEletronicoService.Apresentacao
             set
             {
                 usuario = value;
-                RaiseUsuarioAlterado();
+                
             }
         }
-
-        public abstract void RaiseUsuarioAlterado();
+               
     }
 }

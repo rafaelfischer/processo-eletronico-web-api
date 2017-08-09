@@ -7,8 +7,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public Atividade()
         {
-            Processo = new HashSet<Processo>();
-            TipoDocumental = new HashSet<TipoDocumental>();
+            Processos = new HashSet<Processo>();
+            TiposDocumentais = new HashSet<TipoDocumental>();
         }
 
         public int Id { get; set; }
@@ -17,8 +17,9 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string Observacao { get; set; }
         public int IdFuncao { get; set; }
 
-        public virtual ICollection<Processo> Processo { get; set; }
-        public virtual ICollection<TipoDocumental> TipoDocumental { get; set; }
+        public virtual ICollection<Processo> Processos { get; set; }
+        public virtual ICollection<RascunhoProcesso> RascunhosProcesso { get; set; }
+        public virtual ICollection<TipoDocumental> TiposDocumentais { get; set; }
         public virtual Funcao Funcao { get; set; }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Modelos
 {
@@ -13,10 +10,8 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string GuidMunicipio { get; set; }
         public string NomeMunicipio { get; set; }
         public string UfMunicipio { get; set; }
-
         public List<ContatoModeloNegocio> Contatos { get; set; }
         public List<EmailModeloNegocio> Emails { get; set; }
     }
-
 }
 

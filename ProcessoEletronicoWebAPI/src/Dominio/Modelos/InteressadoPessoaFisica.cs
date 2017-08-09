@@ -14,7 +14,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }
-        public int IdProcesso { get; set; }
+        public int? IdProcesso { get; set; }
         public string NomeMunicipio { get; set; }
         public string UfMunicipio { get; set; }
         public Guid GuidMunicipio { get; set; }
@@ -22,5 +22,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public virtual ICollection<Contato> Contatos { get; set; }
         public virtual ICollection<Email> Emails { get; set; }
         public virtual Processo Processo { get; set; }
+
     }
 }

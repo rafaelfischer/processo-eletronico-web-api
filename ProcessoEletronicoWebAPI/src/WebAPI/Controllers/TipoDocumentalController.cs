@@ -1,26 +1,24 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
-using ProcessoEletronicoService.WebAPI.Config;
-using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {
     [Route("api/tipos-documento")]
     public class TipoDocumentalController : BaseController
     {
-        ITipoDocumentalWorkService service;
+        private ITipoDocumentalNegocio _negocio;
+        private IMapper _mapper;
 
-        public TipoDocumentalController(ITipoDocumentalWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public TipoDocumentalController(ITipoDocumentalNegocio negocio, IMapper mapper)
         {
-            this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -31,20 +29,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="200">Tipo documental de acordo com o identificador informado.</response>
         /// <response code="404">Recurso não encotrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetTipoDocumental")]
         [ProducesResponseType(typeof(TipoDocumentalModeloGet), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<TipoDocumentalModeloGet>(_negocio.Pesquisar(id)));
         }
 
         /// <summary>
@@ -59,14 +50,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Listar(int idAtividade)
         {
-            try
-            {
-                return new ObjectResult(service.PesquisarPorAtividade(idAtividade));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<TipoDocumentalModeloGet>>(_negocio.PesquisarPorAtividade(idAtividade)));
         }
 
         /// <summary>
@@ -86,31 +70,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Inserir([FromBody] TipoDocumentalModeloPost tipoDocumentalPost)
         {
-
             if (tipoDocumentalPost == null)
             {
-                throw new RequisicaoInvalidaException("Objeto inválido.");
+                return BadRequest();
             }
 
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                TipoDocumentalModeloGet tipoDocumentalGet = service.Inserir(tipoDocumentalPost);
-                return Created(request.Scheme + "://" + request.Host.Value + request.Path.Value + "/" + tipoDocumentalGet.Id, tipoDocumentalGet);
-
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            TipoDocumentalModeloGet tipoDocumentalGet = _mapper.Map<TipoDocumentalModeloGet>(_negocio.Inserir(_mapper.Map<TipoDocumentalModeloNegocio>(tipoDocumentalPost)));
+            return CreatedAtRoute("GetTipoDocumental", new { id = tipoDocumentalGet.Id }, tipoDocumentalGet);
         }
 
         /// <summary>
@@ -127,23 +93,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Excluir(int id)
         {
-            try
-            {
-                service.Excluir(id);
-                return Ok();
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            _negocio.Excluir(id);
+            return NoContent();
         }
     }
 }

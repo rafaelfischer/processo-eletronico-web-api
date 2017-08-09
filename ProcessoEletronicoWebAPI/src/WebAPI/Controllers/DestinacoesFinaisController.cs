@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Config;
 using System;
@@ -16,12 +20,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
     [Route("api/destinacoes-finais")]
     public class DestinacoesFinaisController : BaseController
     {
-        IDestinacaoFinalWorkService service;
+        private IDestinacaoFinalNegocio _negocio;
+        private IMapper _mapper;
 
-        public DestinacoesFinaisController(IDestinacaoFinalWorkService service, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public DestinacoesFinaisController(IDestinacaoFinalNegocio negocio, IMapper mapper)
         {
-            this.service = service;
-            this.service.Usuario = UsuarioAutenticado;
+            _negocio = negocio;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -35,14 +40,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Listar()
         {
-            try
-            {
-                return new ObjectResult(service.Listar());
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<List<DestinacaoFinalModeloGet>>(_negocio.Listar()));
         }
 
         /// <summary>
@@ -53,20 +51,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         /// <response code="200">Destinação final de acordo com o identificador informado.</response>
         /// <response code="404">Recurso não encontrado.</response>
         /// <response code="500">Retorna a descrição do erro.</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetDestinacaoFinal")]
         [ProducesResponseType(typeof(DestinacaoFinalModeloGet), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Pesquisar(int id)
         {
-            try
-            {
-                return new ObjectResult(service.Pesquisar(id));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            return Ok(_mapper.Map<DestinacaoFinalModeloGet>(_negocio.Pesquisar(id)));
         }
 
         /// <summary>
@@ -86,31 +77,13 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Inserir([FromBody] DestinacaoFinalModeloPost destinacaoFinalPost)
         {
-
             if (destinacaoFinalPost == null)
             {
-                return BadRequest("Objeto Inválido.");
+                return BadRequest();
             }
 
-            try
-            {
-                HttpRequest request = HttpContext.Request;
-                DestinacaoFinalModeloGet destinacaoFinalGet = service.Inserir(destinacaoFinalPost);
-                return Created(request.Scheme + "://" + request.Host.Value + request.Path.Value + "/" + destinacaoFinalGet.Id, destinacaoFinalGet);
-
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            DestinacaoFinalModeloGet destinacaoFinalGet = _mapper.Map<DestinacaoFinalModeloGet>(_negocio.Inserir(_mapper.Map<DestinacaoFinalModeloNegocio>(destinacaoFinalPost)));
+            return CreatedAtRoute("GetDestinacaoFinal", new { id = destinacaoFinalGet.Id }, destinacaoFinalGet);
         }
 
         /// <summary>
@@ -127,24 +100,8 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Excluir(int id)
         {
-            try
-            {
-                service.Excluir(id);
-                return Ok();
-            }
-            catch (RecursoNaoEncontradoException e)
-            {
-                return NotFound(MensagemErro.ObterMensagem(e));
-            }
-            catch (RequisicaoInvalidaException e)
-            {
-                return BadRequest(MensagemErro.ObterMensagem(e));
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, MensagemErro.ObterMensagem(e));
-            }
+            _negocio.Excluir(id);
+            return NoContent();
         }
-
     }
 }

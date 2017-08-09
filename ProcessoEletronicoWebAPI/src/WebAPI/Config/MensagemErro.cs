@@ -11,7 +11,8 @@ namespace ProcessoEletronicoService.WebAPI.Config
     {
         public static string ObterMensagem(Exception e)
         {
-            return ObterTexto(e);
+            var msg = ObterTexto(e);
+            return msg;
         }
 
         private static string ObterTexto(Exception e)

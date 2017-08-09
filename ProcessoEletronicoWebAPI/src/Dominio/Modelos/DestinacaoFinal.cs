@@ -7,12 +7,12 @@ namespace ProcessoEletronicoService.Dominio.Modelos
     {
         public DestinacaoFinal()
         {
-            TipoDocumental = new HashSet<TipoDocumental>();
+            TiposDocumentais = new HashSet<TipoDocumental>();
         }
 
         public int Id { get; set; }
         public string Descricao { get; set; }
 
-        public virtual ICollection<TipoDocumental> TipoDocumental { get; set; }
+        public virtual ICollection<TipoDocumental> TiposDocumentais { get; set; }
     }
 }
