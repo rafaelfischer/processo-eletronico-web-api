@@ -106,8 +106,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("descricao")
                     .HasColumnType("varchar(1000)");
 
-                entity.Property(e => e.IdDespachoRascunho).HasColumnName("idDespachoRascunho");
-
                 entity.Property(e => e.IdRascunhoProcesso).HasColumnName("idRascunhoProcesso");
 
                 entity.Property(e => e.IdTipoDocumental).HasColumnName("idTipoDocumental");

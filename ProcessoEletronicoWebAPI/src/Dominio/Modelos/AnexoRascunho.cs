@@ -14,7 +14,6 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public string MimeType { get; set; }
         public int? IdRascunhoProcesso { get; set; }
         public int? IdTipoDocumental { get; set; }
-        public int? IdDespachoRascunho { get; set; }
 
         public virtual RascunhoProcesso RascunhoProcesso { get; set; }
         public virtual TipoDocumental TipoDocumental { get; set; }
