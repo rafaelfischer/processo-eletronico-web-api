@@ -1,24 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6D335080-5952-48DE-B0C3-89B3CD25C459}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1E2DA5E-FDC0-44E9-B00F-B79A3E83A3F9}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dominio", "src\Dominio\Dominio.xproj", "{9889EE7B-CA7A-41E1-9875-75319EFF6184}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dominio", "src\Dominio\Dominio.csproj", "{9889EE7B-CA7A-41E1-9875-75319EFF6184}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Negocio", "src\Negocio\Negocio.xproj", "{C3B7DB17-4814-4D50-A245-89ECBA40E7E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Negocio", "src\Negocio\Negocio.csproj", "{C3B7DB17-4814-4D50-A245-89ECBA40E7E2}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Infraestrutura", "src\Infraestrutura\Infraestrutura.xproj", "{7AE89C5D-F960-417C-95CA-5CDEF4782B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infraestrutura", "src\Infraestrutura\Infraestrutura.csproj", "{7AE89C5D-F960-417C-95CA-5CDEF4782B1B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Apresentacao", "src\Apresentacao\Apresentacao.xproj", "{B7DDE990-0C2A-46AA-A662-22D6523C6EC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apresentacao", "src\Apresentacao\Apresentacao.csproj", "{B7DDE990-0C2A-46AA-A662-22D6523C6EC1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "WebAPI", "src\WebAPI\WebAPI.xproj", "{4556CC15-B443-426F-99B8-92F7AD916E2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\WebAPI\WebAPI.csproj", "{4556CC15-B443-426F-99B8-92F7AD916E2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
