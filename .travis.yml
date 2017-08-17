@@ -1,26 +1,28 @@
-require: sudo
-language: node_js
+language: csharp
+dist: trusty
+mono: none
+dotnet: 1.0.4
 services:
   - docker
-env:
-  - DOCKER_IMAGE=prodest/processoeletronico-api RANCHER_SERVICE_NAME=processoeletronico-api
+install:
+  - nvm install 6.10
 script: 
-  /bin/sh ./scripts/.travis.sh
+  - . ./scripts/.travis.sh
 deploy:
   - provider: script
-    script: /bin/sh ./scripts/.develop.sh
+    script: . ./scripts/.develop.sh
     on:
       branch: develop
   - provider: script
-    script: /bin/sh ./scripts/.release.sh
+    script: . ./scripts/.release.sh
     on:
       all_branches: true
       condition: "$TRAVIS_BRANCH =~ ^release.*$"
   - provider: script
-    script: /bin/sh ./scripts/.master.sh
+    script: . ./scripts/.master.sh
     on:
       branch: master
   - provider: script
-    script: /bin/sh ./scripts/.demo.sh
+    script: . ./scripts/.demo.sh
     on:
       branch: demo

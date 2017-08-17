@@ -24,6 +24,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public Guid GuidUnidadeDestino { get; set; }
 
         public virtual ICollection<Anexo> Anexos { get; set; }
+        public virtual ICollection<Notificacao> Notificacoes { get; set; }
         public virtual Processo Processo { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ProcessoEletronicoService.Negocio.Modelos;
+﻿using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IProcessoNegocio : IBaseNegocio
+    public interface IProcessoNegocio
     {
         ProcessoModeloNegocio Pesquisar(int id);
         ProcessoModeloNegocio Pesquisar(string numero);
-        List<ProcessoModeloNegocio> PesquisarProcessoNaUnidade(string guidUnidade);
+        List<ProcessoModeloNegocio> PesquisarProcessosNaUnidade(string guidUnidade);
         ProcessoModeloNegocio Autuar(ProcessoModeloNegocio processoNegocio);
-        List<ProcessoModeloNegocio> PesquisarProcessoNaOrganizacao(string guidOrganizacao);
+        ProcessoModeloNegocio Post(int idRascunhoProcesso);
+        List<ProcessoModeloNegocio> PesquisarProcessosNaOrganizacao(string guidOrganizacao);
         List<ProcessoModeloNegocio> PesquisarProcessosDespachadosUsuario();
     }
 }

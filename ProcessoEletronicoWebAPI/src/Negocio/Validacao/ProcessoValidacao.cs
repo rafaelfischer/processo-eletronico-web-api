@@ -112,7 +112,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (processo.MunicipiosProcesso.Count == 0)
             {
-                throw new RequisicaoInvalidaException("Município não preenchido.");
+                throw new RequisicaoInvalidaException("Pelo menos um município deve ser informado.");
             }
         }
 

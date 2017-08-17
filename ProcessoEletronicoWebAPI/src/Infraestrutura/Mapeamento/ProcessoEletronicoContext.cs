@@ -11,25 +11,34 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
         public static string ConnectionString { get; set; }
 
         public virtual DbSet<Anexo> Anexo { get; set; }
+        public virtual DbSet<AnexoRascunho> AnexoRascunho { get; set; }
         public virtual DbSet<Atividade> Atividade { get; set; }
         public virtual DbSet<Contato> Contato { get; set; }
+        public virtual DbSet<ContatoRascunho> ContatoRascunho { get; set; }
         public virtual DbSet<Despacho> Despacho { get; set; }
         public virtual DbSet<DestinacaoFinal> DestinacaoFinal { get; set; }
         public virtual DbSet<DigitoEsfera> DigitoEsfera { get; set; }
         public virtual DbSet<DigitoPoder> DigitoPoder { get; set; }
         public virtual DbSet<Email> Email { get; set; }
+        public virtual DbSet<EmailRascunho> EmailRascunho { get; set; }
         public virtual DbSet<Funcao> Funcao { get; set; }
         public virtual DbSet<InteressadoPessoaFisica> InteressadoPessoaFisica { get; set; }
+        public virtual DbSet<InteressadoPessoaFisicaRascunho> InteressadoPessoaFisicaRascunho { get; set; }
         public virtual DbSet<InteressadoPessoaJuridica> InteressadoPessoaJuridica { get; set; }
+        public virtual DbSet<InteressadoPessoaJuridicaRascunho> InteressadoPessoaJuridicaRascunho { get; set; }
         public virtual DbSet<MunicipioProcesso> MunicipioProcesso { get; set; }
+        public virtual DbSet<MunicipioRascunhoProcesso> MunicipioRascunhoProcesso { get; set; }
+        public virtual DbSet<Notificacao> Notificacao { get; set; }
         public virtual DbSet<OrganizacaoProcesso> OrganizacaoProcesso { get; set; }
         public virtual DbSet<PlanoClassificacao> PlanoClassificacao { get; set; }
         public virtual DbSet<Processo> Processo { get; set; }
+        public virtual DbSet<RascunhoProcesso> RascunhoProcesso { get; set; }
         public virtual DbSet<Sinalizacao> Sinalizacao { get; set; }
         public virtual DbSet<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
+        public virtual DbSet<SinalizacaoRascunhoProcesso> SinalizacaoRascunhoProcesso { get; set; }
         public virtual DbSet<TipoContato> TipoContato { get; set; }
         public virtual DbSet<TipoDocumental> TipoDocumental { get; set; }
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(ConnectionString);
@@ -82,9 +91,42 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasConstraintName("FK_AnexoProcesso");
 
                 entity.HasOne(d => d.TipoDocumental)
-                    .WithMany(p => p.Anexo)
+                    .WithMany(p => p.Anexos)
                     .HasForeignKey(d => d.IdTipoDocumental)
                     .HasConstraintName("FK_AnexoTipoDocumental");
+            });
+
+            modelBuilder.Entity<AnexoRascunho>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Conteudo).HasColumnName("conteudo");
+
+                entity.Property(e => e.Descricao)
+                    .HasColumnName("descricao")
+                    .HasColumnType("varchar(1000)");
+
+                entity.Property(e => e.IdRascunhoProcesso).HasColumnName("idRascunhoProcesso");
+
+                entity.Property(e => e.IdTipoDocumental).HasColumnName("idTipoDocumental");
+
+                entity.Property(e => e.MimeType)
+                    .HasColumnName("mimeType")
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.Nome)
+                    .HasColumnName("nome")
+                    .HasColumnType("varchar(200)");
+
+                entity.HasOne(d => d.RascunhoProcesso)
+                    .WithMany(p => p.Anexos)
+                    .HasForeignKey(d => d.IdRascunhoProcesso)
+                    .HasConstraintName("FK_AnexoRascunhoProcesso");
+
+                entity.HasOne(d => d.TipoDocumental)
+                    .WithMany(p => p.AnexosRascunho)
+                    .HasForeignKey(d => d.IdTipoDocumental)
+                    .HasConstraintName("FK_AnexoRascunhoTipoDocumental");
             });
 
             modelBuilder.Entity<Atividade>(entity =>
@@ -154,10 +196,40 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasConstraintName("FK_Contato_InteressadoPessoaJuridica");
 
                 entity.HasOne(d => d.TipoContato)
-                    .WithMany(p => p.Contato)
+                    .WithMany(p => p.Contatos)
                     .HasForeignKey(d => d.IdTipoContato)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Contato_TipoContato");
+            });
+
+            modelBuilder.Entity<ContatoRascunho>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.IdInteressadoPessoaFisicaRascunho).HasColumnName("idInteressadoPessoaFisicaRascunho");
+
+                entity.Property(e => e.IdInteressadoPessoaJuridicaRascunho).HasColumnName("idInteressadoPessoaJuridicaRascunho");
+
+                entity.Property(e => e.IdTipoContato).HasColumnName("idTipoContato");
+
+                entity.Property(e => e.Telefone)
+                    .HasColumnName("telefone")
+                    .HasColumnType("varchar(255)");
+
+                entity.HasOne(d => d.InteressadoPessoaFisicaRascunho)
+                    .WithMany(p => p.ContatosRascunho)
+                    .HasForeignKey(d => d.IdInteressadoPessoaFisicaRascunho)
+                    .HasConstraintName("FK_Contato_InteressadoPessoaFisicaRascunho");
+
+                entity.HasOne(d => d.InteressadoPessoaJuridicaRascunho)
+                    .WithMany(p => p.ContatosRascunho)
+                    .HasForeignKey(d => d.IdInteressadoPessoaJuridicaRascunho)
+                    .HasConstraintName("FK_Contato_InteressadoPessoaJuridicaRascunho");
+
+                entity.HasOne(d => d.TipoContato)
+                    .WithMany(p => p.ContatosRascunho)
+                    .HasForeignKey(d => d.IdTipoContato)
+                    .HasConstraintName("FK_ContatoRascunho_TipoContato");
             });
 
             modelBuilder.Entity<Despacho>(entity =>
@@ -304,6 +376,29 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasConstraintName("FK_Email_InteressadoPessoaJuridica");
             });
 
+            modelBuilder.Entity<EmailRascunho>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Endereco)
+                    .HasColumnName("endereco")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.IdInteressadoPessoaFisicaRascunho).HasColumnName("idInteressadoPessoaFisicaRascunho");
+
+                entity.Property(e => e.IdInteressadoPessoaJuridicaRascunho).HasColumnName("idInteressadoPessoaJuridicaRascunho");
+
+                entity.HasOne(d => d.InteressadoPessoaFisicaRascunho)
+                    .WithMany(p => p.EmailsRascunho)
+                    .HasForeignKey(d => d.IdInteressadoPessoaFisicaRascunho)
+                    .HasConstraintName("FK_Email_InteressadoPessoaFisicaRascunho");
+
+                entity.HasOne(d => d.InteressadoPessoaJuridicaRascunho)
+                    .WithMany(p => p.EmailsRascunho)
+                    .HasForeignKey(d => d.IdInteressadoPessoaJuridicaRascunho)
+                    .HasConstraintName("FK_Email_InteressadoPessoaJuridicaRascunho");
+            });
+
             modelBuilder.Entity<Funcao>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -340,14 +435,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
             modelBuilder.Entity<InteressadoPessoaFisica>(entity =>
             {
-                entity.HasIndex(e => new { e.Cpf, e.IdProcesso })
-                    .HasName("UK_InteressadoPessoaFisicaCpf")
-                    .IsUnique();
-
-                entity.HasIndex(e => new { e.Nome, e.IdProcesso })
-                    .HasName("UK_InteressadoPessoaFisicaNome")
-                    .IsUnique();
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Cpf)
@@ -377,20 +464,41 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                 entity.HasOne(d => d.Processo)
                     .WithMany(p => p.InteressadosPessoaFisica)
                     .HasForeignKey(d => d.IdProcesso)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_InteressadoPessoaFisica_Processo");
+            });
+
+            modelBuilder.Entity<InteressadoPessoaFisicaRascunho>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Cpf)
+                    .HasColumnName("cpf")
+                    .HasColumnType("varchar(11)");
+
+                entity.Property(e => e.GuidMunicipio).HasColumnName("guidMunicipio");
+
+                entity.Property(e => e.IdRascunhoProcesso).HasColumnName("idRascunhoProcesso");
+
+                entity.Property(e => e.Nome)
+                    .HasColumnName("nome")
+                    .HasColumnType("varchar(500)");
+
+                entity.Property(e => e.NomeMunicipio)
+                    .HasColumnName("nomeMunicipio")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.UfMunicipio)
+                    .HasColumnName("ufMunicipio")
+                    .HasColumnType("varchar(2)");
+
+                entity.HasOne(d => d.RascunhoProcesso)
+                    .WithMany(p => p.InteressadosPessoaFisica)
+                    .HasForeignKey(d => d.IdRascunhoProcesso)
+                    .HasConstraintName("FK_InteressadoPessoaFisica_RascunhoProcesso");
             });
 
             modelBuilder.Entity<InteressadoPessoaJuridica>(entity =>
             {
-                entity.HasIndex(e => new { e.Cnpj, e.IdProcesso })
-                    .HasName("UK_InteressadoPessoaJuridicaCnpj")
-                    .IsUnique();
-
-                entity.HasIndex(e => new { e.RazaoSocial, e.IdProcesso })
-                    .HasName("UK_InteressadoPessoaJuridicaRazaoSocial")
-                    .IsUnique();
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Cnpj)
@@ -432,15 +540,56 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                 entity.HasOne(d => d.Processo)
                     .WithMany(p => p.InteressadosPessoaJuridica)
                     .HasForeignKey(d => d.IdProcesso)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_InteressadoPessoaJuridica_Processo");
+            });
+
+            modelBuilder.Entity<InteressadoPessoaJuridicaRascunho>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Cnpj)
+                    .HasColumnName("cnpj")
+                    .HasColumnType("varchar(14)");
+
+                entity.Property(e => e.GuidMunicipio).HasColumnName("guidMunicipio");
+
+                entity.Property(e => e.IdRascunhoProcesso).HasColumnName("idRascunhoProcesso");
+
+                entity.Property(e => e.NomeMunicipio)
+                    .HasColumnName("nomeMunicipio")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NomeUnidade)
+                    .HasColumnName("nomeUnidade")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.RazaoSocial)
+                    .HasColumnName("razaoSocial")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Sigla)
+                    .HasColumnName("sigla")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.SiglaUnidade)
+                    .HasColumnName("siglaUnidade")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.UfMunicipio)
+                    .HasColumnName("ufMunicipio")
+                    .HasColumnType("varchar(2)");
+
+                entity.HasOne(d => d.RascunhoProcesso)
+                    .WithMany(p => p.InteressadosPessoaJuridica)
+                    .HasForeignKey(d => d.IdRascunhoProcesso)
+                    .HasConstraintName("FK_InteressadoPessoaJuridica_RascunhoProcesso");
             });
 
             modelBuilder.Entity<MunicipioProcesso>(entity =>
             {
                 entity.HasIndex(e => new { e.IdProcesso, e.GuidMunicipio })
                     .HasName("UK_MunicipioProcesso")
-                .IsUnique();
+                    .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -463,6 +612,60 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_MunicipioProcesso_Processo");
+            });
+
+            modelBuilder.Entity<MunicipioRascunhoProcesso>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.GuidMunicipio).HasColumnName("guidMunicipio");
+
+                entity.Property(e => e.IdRascunhoProcesso).HasColumnName("idRascunhoProcesso");
+
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasColumnName("nome")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Uf)
+                    .IsRequired()
+                    .HasColumnName("uf")
+                    .HasColumnType("varchar(2)");
+
+                entity.HasOne(d => d.RascunhoProcesso)
+                    .WithMany(p => p.MunicipiosRascunhoProcesso)
+                    .HasForeignKey(d => d.IdRascunhoProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_MunicipioRascunhoProcesso_RascunhoProcesso");
+            });
+
+            modelBuilder.Entity<Notificacao>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.DataNotificacao)
+                    .HasColumnName("dataNotificacao")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnName("email")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.IdDespacho).HasColumnName("idDespacho");
+
+                entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
+
+                entity.HasOne(d => d.Despacho)
+                    .WithMany(p => p.Notificacoes)
+                    .HasForeignKey(d => d.IdDespacho)
+                    .HasConstraintName("FK__NotificacaoDespacho");
+
+                entity.HasOne(d => d.Processo)
+                    .WithMany(p => p.Notificacoes)
+                    .HasForeignKey(d => d.IdProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__NotificacaoProcesso");
             });
 
             modelBuilder.Entity<OrganizacaoProcesso>(entity =>
@@ -556,7 +759,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_PlanoClassificacao_OrganizacaoProcesso");
             });
-            
+
             modelBuilder.Entity<Processo>(entity =>
             {
                 entity.HasIndex(e => new { e.Sequencial, e.DigitoPoder, e.DigitoEsfera, e.DigitoOrganizacao, e.Ano })
@@ -625,7 +828,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnType("varchar(10)");
 
                 entity.HasOne(d => d.Atividade)
-                    .WithMany(p => p.Processo)
+                    .WithMany(p => p.Processos)
                     .HasForeignKey(d => d.IdAtividade)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Processo_Atividade");
@@ -635,6 +838,54 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Processo_OrganizacaoProcesso");
+            });
+
+            modelBuilder.Entity<RascunhoProcesso>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.GuidOrganizacao).HasColumnName("guidOrganizacao");
+
+                entity.Property(e => e.GuidUnidade).HasColumnName("guidUnidade");
+
+                entity.Property(e => e.IdAtividade).HasColumnName("idAtividade");
+
+                entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
+
+                entity.Property(e => e.NomeOrganizacao)
+                    .IsRequired()
+                    .HasColumnName("nomeOrganizacao")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NomeUnidade)
+                    .IsRequired()
+                    .HasColumnName("nomeUnidade")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Resumo)
+                    .HasColumnName("resumo")
+                    .HasColumnType("varchar(1000)");
+
+                entity.Property(e => e.SiglaOrganizacao)
+                    .IsRequired()
+                    .HasColumnName("siglaOrganizacao")
+                    .HasColumnType("varchar(20)");
+
+                entity.Property(e => e.SiglaUnidade)
+                    .IsRequired()
+                    .HasColumnName("siglaUnidade")
+                    .HasColumnType("varchar(100)");
+
+                entity.HasOne(d => d.Atividade)
+                    .WithMany(p => p.RascunhosProcesso)
+                    .HasForeignKey(d => d.IdAtividade)
+                    .HasConstraintName("FK_RascunhoProcesso_Atividade");
+
+                entity.HasOne(d => d.OrganizacaoRascunhoProcesso)
+                    .WithMany(p => p.RascunhosProcesso)
+                    .HasForeignKey(d => d.IdOrganizacaoProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_RascunhoProcesso_OrganizacaoProcesso");
             });
 
             modelBuilder.Entity<Sinalizacao>(entity =>
@@ -679,7 +930,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdSinalizacao).HasColumnName("idSinalizacao");
 
-                entity.HasOne(d => d.IdProcessoNavigation)
+                entity.HasOne(d => d.Processo)
                     .WithMany(p => p.SinalizacoesProcesso)
                     .HasForeignKey(d => d.IdProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
@@ -690,6 +941,27 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdSinalizacao)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_SinalizacaoProcesso_Sinalizacao");
+            });
+
+            modelBuilder.Entity<SinalizacaoRascunhoProcesso>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.IdRascunhoProcesso).HasColumnName("idRascunhoProcesso");
+
+                entity.Property(e => e.IdSinalizacao).HasColumnName("idSinalizacao");
+
+                entity.HasOne(d => d.RascunhoProcesso)
+                    .WithMany(p => p.SinalizacoesRascunhoProcesso)
+                    .HasForeignKey(d => d.IdRascunhoProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_SinalizacaoRascunhoProcesso_RascunhoProcesso");
+
+                entity.HasOne(d => d.Sinalizacao)
+                    .WithMany(p => p.SinalizacaoRascunhoProcesso)
+                    .HasForeignKey(d => d.IdSinalizacao)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_SinalizacaoRascunhoProcesso_Sinalizacao");
             });
 
             modelBuilder.Entity<TipoContato>(entity =>
@@ -726,10 +998,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdDestinacaoFinal).HasColumnName("idDestinacaoFinal");
 
-                entity.Property(e => e.PrazoGuardaSubjetivoCorrente).HasColumnName("prazoGuardaSubjetivoCorrente").HasColumnType("varchar(500)");
-
-                entity.Property(e => e.PrazoGuardaSubjetivoIntermediaria).HasColumnName("prazoGuardaSubjetivoIntermediaria").HasColumnType("varchar(500)");
-
                 entity.Property(e => e.Obrigatorio).HasColumnName("obrigatorio");
 
                 entity.Property(e => e.Observacao)
@@ -740,19 +1008,27 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.PrazoGuardaAnosIntermediaria).HasColumnName("prazoGuardaAnosIntermediaria");
 
+                entity.Property(e => e.PrazoGuardaSubjetivoCorrente)
+                    .HasColumnName("prazoGuardaSubjetivoCorrente")
+                    .HasColumnType("varchar(500)");
+
+                entity.Property(e => e.PrazoGuardaSubjetivoIntermediaria)
+                    .HasColumnName("prazoGuardaSubjetivoIntermediaria")
+                    .HasColumnType("varchar(500)");
+
                 entity.HasOne(d => d.Atividade)
-                    .WithMany(p => p.TipoDocumental)
+                    .WithMany(p => p.TiposDocumentais)
                     .HasForeignKey(d => d.IdAtividade)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_TipoDocumental_Atividade");
 
                 entity.HasOne(d => d.DestinacaoFinal)
-                    .WithMany(p => p.TipoDocumental)
+                    .WithMany(p => p.TiposDocumentais)
                     .HasForeignKey(d => d.IdDestinacaoFinal)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_TipoDocumental_DestinacaoFinal");
-                
             });
         }
+        
     }
 }

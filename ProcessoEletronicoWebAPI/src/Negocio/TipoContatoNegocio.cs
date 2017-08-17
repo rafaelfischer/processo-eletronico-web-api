@@ -14,20 +14,22 @@ namespace ProcessoEletronicoService.Negocio
 {
     public class TipoContatoNegocio : ITipoContatoNegocio
     {
-        private IUnitOfWork unitOfWork;
-        private IRepositorioGenerico<TipoContato> repositorioTiposContato;
+        private IUnitOfWork _unitOfWork;
+        private IMapper _mapper;
+        private IRepositorioGenerico<TipoContato> _repositorioTiposContato;
 
-        public TipoContatoNegocio(IProcessoEletronicoRepositorios repositorios)
+        public TipoContatoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper)
         {
-            unitOfWork = repositorios.UnitOfWork;
-            repositorioTiposContato = repositorios.TiposContato;
+            _unitOfWork = repositorios.UnitOfWork;
+            _mapper = mapper;
+            _repositorioTiposContato = repositorios.TiposContato;
         }
 
         public List<TipoContatoModeloNegocio> Listar()
         {
-            List<TipoContato> tiposContato = repositorioTiposContato.ToList();
+            List<TipoContato> tiposContato = _repositorioTiposContato.ToList();
 
-            return Mapper.Map<List<TipoContato>, List<TipoContatoModeloNegocio>>(tiposContato);
+            return _mapper.Map<List<TipoContatoModeloNegocio>>(tiposContato);
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProcessoEletronicoService.Dominio.Base;
+using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
 
 namespace ProcessoEletronicoService.Negocio.Validacao
 {
@@ -22,6 +24,14 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             this.cpfValidacao = new CpfValidacao();
         }
 
+
+        public void NaoEncontrado(InteressadoPessoaFisica interessadoPessoaFisica)
+        {
+            if (interessadoPessoaFisica == null)
+            {
+                throw new RecursoNaoEncontradoException("Interessado Pessoa Física não encontrado.");
+            }
+        }
         public void Preenchido(List<InteressadoPessoaFisicaModeloNegocio> interessados)
         {
             if (interessados != null)

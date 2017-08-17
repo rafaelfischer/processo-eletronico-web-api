@@ -1,9 +1,10 @@
-﻿using ProcessoEletronicoService.Negocio.Modelos;
+﻿using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using System.Collections.Generic;
 
 namespace ProcessoEletronicoService.Negocio.Base
 {
-    public interface IFuncaoNegocio : IBaseNegocio
+    public interface IFuncaoNegocio
     {
         List<FuncaoModeloNegocio> PesquisarPorPlanoClassificacao(int idPlanoClassificacao);
         FuncaoModeloNegocio Pesquisar(int id);

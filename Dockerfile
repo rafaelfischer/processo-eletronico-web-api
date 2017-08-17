@@ -1,10 +1,8 @@
-FROM microsoft/dotnet:1.1-sdk-projectjson
+FROM microsoft/dotnet:1.1.0-runtime-deps
 
-COPY ProcessoEletronicoWebAPI/src /home/src/
-WORKDIR /home/src/WebAPI
-
-RUN dotnet restore
+COPY ProcessoEletronicoWebAPI/src/WebAPI/publish /home/bin
+WORKDIR /home/bin
 
 EXPOSE 3308/tcp
 
-CMD ["dotnet", "run"]
+CMD ["./WebAPI"]

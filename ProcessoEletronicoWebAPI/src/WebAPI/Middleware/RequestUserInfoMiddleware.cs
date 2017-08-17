@@ -41,41 +41,53 @@ namespace ProcessoEletronicoService.WebAPI.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            UserInfoClient userInfoClient = new UserInfoClient(_options.UserInfoEndpoint);
-
-            string accessToken = await context.Authentication.GetTokenAsync("access_token");
-            if (!string.IsNullOrWhiteSpace(accessToken))
+            ClaimsPrincipal claimsPrincipal = context.User;
+            if (claimsPrincipal != null && claimsPrincipal.Claims != null)
             {
-                UserInfoResponse userInfoResponse = await userInfoClient.GetAsync(accessToken);
+                //Caso o access token seja de usuário (possuirá sub, subject identifier), obtém informações do usuário
+                //Caso o access token seja de aplicação, não faz sentido obter informações de usuário
+                Claim claim = claimsPrincipal.Claims.FirstOrDefault(x => x.Type.Equals("sub"));
 
-                var id = new ClaimsIdentity();
-                id.AddClaim(new Claim("accessToken", accessToken));
-
-                var userInfoList = userInfoResponse.Claims.ToList();
-                foreach (var ui in userInfoList)
+                if (claim != null)
                 {
-                    if (ui.Type != "permissao")
+                    UserInfoClient userInfoClient = new UserInfoClient(_options.UserInfoEndpoint);
+
+                    string accessToken = await context.Authentication.GetTokenAsync("access_token");
+
+                    if (!string.IsNullOrWhiteSpace(accessToken))
                     {
-                        id.AddClaim(new Claim(ui.Type, ui.Value));
+                        UserInfoResponse userInfoResponse = await userInfoClient.GetAsync(accessToken);
+
+                        var id = new ClaimsIdentity();
+                        id.AddClaim(new Claim("accessToken", accessToken));
+
+                        var userInfoList = userInfoResponse.Claims.ToList();
+                        foreach (var ui in userInfoList)
+                        {
+                            if (ui.Type != "permissao")
+                            {
+                                id.AddClaim(new Claim(ui.Type, ui.Value));
+                            }
+                        }
+
+                        var permissaoClaims = userInfoResponse.Claims.Where(x => x.Type == "permissao").ToList();
+                        foreach (var permissaoClaim in permissaoClaims)
+                        {
+                            dynamic objetoPermissao = JsonConvert.DeserializeObject(permissaoClaim.Value.ToString());
+                            string recurso = objetoPermissao.Recurso;
+                            id.AddClaim(new Claim("Recurso", recurso));
+                            var listaAcoes = ((JArray)objetoPermissao.Acoes).Select(x => x.ToString()).ToList();
+                            foreach (var acao in listaAcoes)
+                            {
+                                id.AddClaim(new Claim("Acao$" + recurso, acao));
+                            }
+                        }
+
+                        context.User.AddIdentity(id);
                     }
                 }
-
-                var permissaoClaims = userInfoResponse.Claims.Where(x => x.Type == "permissao").ToList();
-                foreach (var permissaoClaim in permissaoClaims)
-                {
-                    dynamic objetoPermissao = JsonConvert.DeserializeObject(permissaoClaim.Value.ToString());
-                    string recurso = objetoPermissao.Recurso;
-                    id.AddClaim(new Claim("Recurso", recurso));
-                    var listaAcoes = ((JArray)objetoPermissao.Acoes).Select(x => x.ToString()).ToList();
-                    foreach (var acao in listaAcoes)
-                    {
-                        id.AddClaim(new Claim("Acao$" + recurso, acao));
-                    }
-                }
-
-                context.User.AddIdentity(id);
             }
-
+            
             await _next.Invoke(context);
         }
     }

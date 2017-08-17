@@ -16,7 +16,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         [Required]
         public string MimeType { get; set; }
         public int? IdTipoDocumental { get; set; }
-        
+
     }
 
     public class AnexoModeloGet

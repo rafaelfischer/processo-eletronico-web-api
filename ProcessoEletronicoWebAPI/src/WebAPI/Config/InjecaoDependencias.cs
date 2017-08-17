@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using ProcessoEletronicoService.Apresentacao.Base;
 using Microsoft.Extensions.DependencyInjection;
 using ProcessoEletronicoService.Apresentacao;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
 
 namespace ProcessoEletronicoService.WebAPI.Config
 {
@@ -13,16 +15,6 @@ namespace ProcessoEletronicoService.WebAPI.Config
             Dictionary<Type, Type> dependencias = new Dictionary<Type, Type>();
 
             dependencias = Apresentacao.Configuracao.ConfiguracaoDepedencias.ObterDependencias();
-            dependencias.Add(typeof(IAnexoWorkService), typeof(AnexoWorkService));
-            dependencias.Add(typeof(IAtividadeWorkService), typeof(AtividadeWorkService));
-            dependencias.Add(typeof(IDespachoWorkService), typeof(DespachoWorkService));
-            dependencias.Add(typeof(IDestinacaoFinalWorkService), typeof(DestinacaoFinalWorkService));
-            dependencias.Add(typeof(IFuncaoWorkService), typeof(FuncaoWorkService));
-            dependencias.Add(typeof(IPlanoClassificacaoWorkService), typeof(PlanoClassificacaoWorkService));
-            dependencias.Add(typeof(IProcessoWorkService), typeof(ProcessoWorkService));
-            dependencias.Add(typeof(ITipoDocumentalWorkService), typeof(TipoDocumentalWorkService));
-            dependencias.Add(typeof(ITipoContatoWorkService), typeof(TipoContatoWorkService));
-            dependencias.Add(typeof(ISinalizacaoWorkService), typeof(SinalizacaoWorkService));
 
             return dependencias;
         }
@@ -34,11 +26,20 @@ namespace ProcessoEletronicoService.WebAPI.Config
 
             foreach (var dep in dependencias)
             {
-                services.AddTransient(dep.Key, dep.Value);
+                services.AddScoped(dep.Key, dep.Value);
             }
 
+            //Demais dependências da camada de negócio (que não possuem interfaces)
+            services.AddScoped(typeof(UsuarioValidacao));
+            services.AddScoped(typeof(AnexoValidacao));
+            services.AddScoped(typeof(RascunhoProcessoValidacao));
+            services.AddScoped(typeof(InteressadoPessoaFisicaValidacao));
+            services.AddScoped(typeof(InteressadoPessoaJuridicaValidacao));
+            services.AddScoped(typeof(ContatoValidacao));
+            services.AddScoped(typeof(EmailValidacao));
+            services.AddScoped(typeof(MunicipioValidacao));
+            services.AddScoped(typeof(SinalizacaoValidacao));
+            services.AddScoped(typeof(OrganogramaValidacao));
         }
-
-
     }
 }

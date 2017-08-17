@@ -10,30 +10,33 @@ using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
 using System;
 
-namespace ProcessoEletronicoService.Negocio.Restrito
+namespace ProcessoEletronicoService.Negocio
 {
     public class SinalizacaoNegocio : ISinalizacaoNegocio
     {
-        private IUnitOfWork unitOfWork;
-        private IRepositorioGenerico<Sinalizacao> repositorioSinalizacoes;
-        private SinalizacaoValidacao Validacao;
+        private IUnitOfWork _unitOfWork;
+        private IMapper _mapper;
+        private IRepositorioGenerico<Sinalizacao> _repositorioSinalizacoes;
+        private SinalizacaoValidacao _validacao;
 
-        public SinalizacaoNegocio(IProcessoEletronicoRepositorios repositorios)
+        public SinalizacaoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper)
         {
-            unitOfWork = repositorios.UnitOfWork;
-            repositorioSinalizacoes = repositorios.Sinalizacoes;
-            Validacao = new SinalizacaoValidacao(repositorios);
+            _unitOfWork = repositorios.UnitOfWork;
+            _mapper = mapper;
+            _repositorioSinalizacoes = repositorios.Sinalizacoes;
+            _validacao = new SinalizacaoValidacao(repositorios);
         }
 
         public List<SinalizacaoModeloNegocio> Pesquisar(string guidOrganizacaoPatriarca)
         {
-            Validacao.GuidValido(guidOrganizacaoPatriarca);
+            _validacao.GuidValido(guidOrganizacaoPatriarca);
+            Guid guid = new Guid(guidOrganizacaoPatriarca);
 
-            var sinalizacoes = repositorioSinalizacoes.Where(s => s.OrganizacaoProcesso.GuidOrganizacao.Equals(new Guid(guidOrganizacaoPatriarca)))
+            var sinalizacoes = _repositorioSinalizacoes.Where(s => s.OrganizacaoProcesso.GuidOrganizacao.Equals(guid))
                                                       .Include(pc => pc.OrganizacaoProcesso)
                                                       .ToList();
 
-            return Mapper.Map<List<Sinalizacao>, List<SinalizacaoModeloNegocio>>(sinalizacoes);
+            return _mapper.Map<List<SinalizacaoModeloNegocio>>(sinalizacoes);
         }
     }
 }

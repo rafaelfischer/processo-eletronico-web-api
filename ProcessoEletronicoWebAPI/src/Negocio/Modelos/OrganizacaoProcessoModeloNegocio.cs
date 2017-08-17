@@ -15,9 +15,6 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public Guid GuidOrganizacao { get; set; }
 
         public List<PlanoClassificacaoModeloNegocio> PlanoClassificacao { get; set; }
-        //public virtual ICollection<Processo> Processo { get; set; }
-        //public virtual ICollection<Sinalizacao> Sinalizacao { get; set; }
-        //public virtual DigitoEsfera IdDigitoEsferaNavigation { get; set; }
-        //public virtual DigitoPoder IdDigitoPoderNavigation { get; set; }
+
     }
 }

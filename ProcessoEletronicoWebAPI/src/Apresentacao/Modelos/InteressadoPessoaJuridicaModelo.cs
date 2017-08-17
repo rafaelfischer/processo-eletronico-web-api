@@ -21,7 +21,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<EmailModelo> Emails { get; set; }
         
     }
-
+    
     public class InteressadoPessoaJuridicaProcessoGetModelo
     {
         public int Id { get; set; }

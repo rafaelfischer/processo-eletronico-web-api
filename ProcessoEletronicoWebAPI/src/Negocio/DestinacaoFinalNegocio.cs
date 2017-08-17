@@ -9,49 +9,48 @@ using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
+using ProcessoEletronicoService.Negocio.Comum;
 
 namespace ProcessoEletronicoService.Negocio
 {
     public class DestinacaoFinalNegocio : BaseNegocio, IDestinacaoFinalNegocio
     {
-        private IUnitOfWork unitOfWork;
-        private IRepositorioGenerico<DestinacaoFinal> repositorioDestinacoesFinais;
-        private DestinacaoFinalValidacao destinacaoFinalValidacao;
-
-
-        public DestinacaoFinalNegocio(IProcessoEletronicoRepositorios repositorios)
+        private IUnitOfWork _unitOfWork;
+        private IMapper _mapper;
+        private IRepositorioGenerico<DestinacaoFinal> _repositorioDestinacoesFinais;
+        private DestinacaoFinalValidacao _validacao;
+        
+        public DestinacaoFinalNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper)
         {
-            unitOfWork = repositorios.UnitOfWork;
-            repositorioDestinacoesFinais = repositorios.DestinacoesFinais;
-            destinacaoFinalValidacao = new DestinacaoFinalValidacao(repositorios);
+            _unitOfWork = repositorios.UnitOfWork;
+            _mapper = mapper;
+            _repositorioDestinacoesFinais = repositorios.DestinacoesFinais;
+            _validacao = new DestinacaoFinalValidacao(repositorios);
         }
 
         public List<DestinacaoFinalModeloNegocio> Listar()
         {
-            List<DestinacaoFinal> destinacoesFinais = repositorioDestinacoesFinais.OrderBy(df => df.Descricao).ToList();
-
-            return Mapper.Map<List<DestinacaoFinal>, List<DestinacaoFinalModeloNegocio>>(destinacoesFinais);
+            List<DestinacaoFinal> destinacoesFinais = _repositorioDestinacoesFinais.OrderBy(df => df.Descricao).ToList();
+            return _mapper.Map<List<DestinacaoFinalModeloNegocio>>(destinacoesFinais);
         }
 
         public DestinacaoFinalModeloNegocio Pesquisar(int id)
         {
-            DestinacaoFinal destinacaoFinal = repositorioDestinacoesFinais.Where(df => df.Id.Equals(id)).SingleOrDefault();
-            destinacaoFinalValidacao.NaoEncontrado(destinacaoFinal);
-
-            return Mapper.Map<DestinacaoFinal, DestinacaoFinalModeloNegocio>(destinacaoFinal);
-
+            DestinacaoFinal destinacaoFinal = _repositorioDestinacoesFinais.Where(df => df.Id.Equals(id)).SingleOrDefault();
+            _validacao.NaoEncontrado(destinacaoFinal);
+            return _mapper.Map<DestinacaoFinalModeloNegocio>(destinacaoFinal);
         }
 
         public DestinacaoFinalModeloNegocio Inserir(DestinacaoFinalModeloNegocio destinacaoFinalModeloNegocio)
         {
-            destinacaoFinalValidacao.Preenchido(destinacaoFinalModeloNegocio);
-            destinacaoFinalValidacao.Valido(destinacaoFinalModeloNegocio);
+            _validacao.Preenchido(destinacaoFinalModeloNegocio);
+            _validacao.Valido(destinacaoFinalModeloNegocio);
 
             DestinacaoFinal destinacaoFinal = new DestinacaoFinal();
-            Mapper.Map(destinacaoFinalModeloNegocio, destinacaoFinal);
+            _mapper.Map(destinacaoFinalModeloNegocio, destinacaoFinal);
 
-            repositorioDestinacoesFinais.Add(destinacaoFinal);
-            unitOfWork.Save();
+            _repositorioDestinacoesFinais.Add(destinacaoFinal);
+            _unitOfWork.Save();
 
             return Pesquisar(destinacaoFinal.Id);
             
@@ -59,12 +58,12 @@ namespace ProcessoEletronicoService.Negocio
 
         public void Excluir(int id)
         {
-            destinacaoFinalValidacao.PossivelExcluir(id);
+            _validacao.PossivelExcluir(id);
 
-            DestinacaoFinal destinacaoFinal = repositorioDestinacoesFinais.Where(df => df.Id.Equals(id)).Single();
+            DestinacaoFinal destinacaoFinal = _repositorioDestinacoesFinais.Where(df => df.Id.Equals(id)).Single();
 
-            repositorioDestinacoesFinais.Remove(destinacaoFinal);
-            unitOfWork.Save();
+            _repositorioDestinacoesFinais.Remove(destinacaoFinal);
+            _unitOfWork.Save();
         }
     }
 }

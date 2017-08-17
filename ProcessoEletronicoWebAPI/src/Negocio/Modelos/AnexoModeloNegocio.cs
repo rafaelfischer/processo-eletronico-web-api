@@ -13,10 +13,6 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public byte[] Conteudo { get; set; }
         public string ConteudoString { get; set; }
         public string MimeType { get; set; }
-        public int IdProcesso { get; set; }
-        public int? IdDespacho { get; set; }
-
-        public ProcessoModeloNegocio Processo { get; set; }
         public TipoDocumentalModeloNegocio TipoDocumental { get; set; }
 
     }
