@@ -1,11 +1,6 @@
-﻿using ProcessoEletronicoService.Dominio.Base;
-using ProcessoEletronicoService.Dominio.Modelos;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+﻿using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ProcessoEletronicoService.Negocio.Comum.Validacao
 {
@@ -20,7 +15,6 @@ namespace ProcessoEletronicoService.Negocio.Comum.Validacao
         }
 
         public void PossuiOrganizaoPatriarca (Guid organizacaoPatriarca)
-            
         {
             if (organizacaoPatriarca.Equals(Guid.Empty))
             {

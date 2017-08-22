@@ -37,6 +37,7 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias.Add(typeof(ITipoContatoNegocio), typeof(TipoContatoNegocio));
             dependencias.Add(typeof(Negocio.Base.ISinalizacaoNegocio), typeof(Negocio.SinalizacaoNegocio));
             dependencias.Add(typeof(Negocio.Rascunho.Processo.Base.ISinalizacaoNegocio), typeof(Negocio.Rascunho.Processo.SinalizacaoNegocio));
+            dependencias.Add(typeof(Negocio.Sinalizacoes.Base.ISinalizacaoNegocio), typeof(Negocio.Sinalizacoes.SinalizacaoNegocio));
 
             return dependencias;
         }

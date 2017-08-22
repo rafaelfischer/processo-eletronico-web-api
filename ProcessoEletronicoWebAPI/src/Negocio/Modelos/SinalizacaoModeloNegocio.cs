@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ProcessoEletronicoService.Negocio.Modelos
+﻿namespace ProcessoEletronicoService.Negocio.Modelos
 {
     public class SinalizacaoModeloNegocio
     {
@@ -11,6 +6,8 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public string Descricao { get; set; }
         public string Cor { get; set; }
         public byte[] Imagem { get; set; }
+        public string ImagemBase64String { get; set; }
+        public string MimeType { get; set; }
         public OrganizacaoProcessoModeloNegocio OrganizacaoProcesso { get; set; }
     }
 }

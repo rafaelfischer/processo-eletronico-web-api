@@ -48,7 +48,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <response code="200">Sinalização de acordo com o identificador informado</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
-        [HttpGet("{id}", Name = "GetSinalizacao")]
+        [HttpGet("{id}", Name = "GetSinalizacaoRascunho")]
         [ProducesResponseType(typeof(GetSinalizacaoDto), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]

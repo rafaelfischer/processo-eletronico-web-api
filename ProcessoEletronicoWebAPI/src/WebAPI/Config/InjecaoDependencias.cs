@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProcessoEletronicoService.Apresentacao;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
+using Negocio.Comum.Validacao;
 
 namespace ProcessoEletronicoService.WebAPI.Config
 {
@@ -39,7 +40,9 @@ namespace ProcessoEletronicoService.WebAPI.Config
             services.AddScoped(typeof(EmailValidacao));
             services.AddScoped(typeof(MunicipioValidacao));
             services.AddScoped(typeof(SinalizacaoValidacao));
+            services.AddScoped(typeof(Negocio.Sinalizacoes.Validacao.SinalizacoesValidacao));
             services.AddScoped(typeof(OrganogramaValidacao));
+            services.AddScoped(typeof(GuidValidacao));
         }
     }
 }

@@ -911,6 +911,10 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnName("imagem")
                     .HasColumnType("image");
 
+                entity.Property(e => e.MimeType)
+                    .HasColumnName("mimeType")
+                    .HasColumnType("varchar(200)");
+                
                 entity.HasOne(d => d.OrganizacaoProcesso)
                     .WithMany(p => p.Sinalizacoes)
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)

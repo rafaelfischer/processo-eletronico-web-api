@@ -175,11 +175,8 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #endregion
 
-            #region Mapeamento de Sinalização
-            CreateMap<Sinalizacao, SinalizacaoModeloNegocio>()
-                .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem == null ? null : src.Imagem))
-                .MaxDepth(1);
-
+            #region Mapeamento de Sinalização de Processo
+            
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoProcesso>()
                 .ForMember(dest => dest.IdSinalizacao, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
