@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Negocio.Modelos;
@@ -81,6 +82,7 @@ namespace WebAPI.Sinalizacoes
         /// <response code="422">Objeto não processável</response>
         /// <response code="500">Erro inesperado</response>
         [HttpPost]
+        [Authorize(Policy = "Sinalizacao.Inserir")]
         [ProducesResponseType(typeof(GetSinalizacaoDto), 201)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 422)]
@@ -107,6 +109,7 @@ namespace WebAPI.Sinalizacoes
         /// <response code="422">Objeto não processável</response>
         /// <response code="500">Erro inesperado</response>
         [HttpPatch("{id}")]
+        [Authorize(Policy = "Sinalizacao.Inserir")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
@@ -138,6 +141,7 @@ namespace WebAPI.Sinalizacoes
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Erro inesperado</response>
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Sinalizacao.Excluir")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
