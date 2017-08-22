@@ -10,15 +10,13 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public int Id { get; set; }
         public string Descricao { get; set; }
         public string Cor { get; set; }
-        public byte[] Imagem { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
     }
-    
+
     public class SinalizacaoProcessoGetModelo
     {
         public int Id { get; set; }
         public string Descricao { get; set; }
         public string Cor { get; set; }
-        public byte[] Imagem { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ProcessoEletronicoService.WebAPI.Sinalizacoes.Modelos;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
@@ -18,7 +19,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
         public List<GetInteressadoPessoaFisicaDto> InteressadosPessoaFisica { get; set; }
         public List<GetInteressadoPessoaJuridicaDto> InteressadosPessoaJuridica { get; set; }
         public List<GetMunicipioDto> Municipios { get; set; }
-        public List<GetSinalizacaoDto> Sinalizacoes { get; set; }
+        public List<GetSinalizacaoNoImagemDto> Sinalizacoes { get; set; }
 
     }
 

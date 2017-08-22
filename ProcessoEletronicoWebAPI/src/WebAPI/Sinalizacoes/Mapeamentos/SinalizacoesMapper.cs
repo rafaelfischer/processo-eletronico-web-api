@@ -11,6 +11,8 @@ namespace WebAPI.Sinalizacoes.Mapeamentos
             CreateMap<SinalizacaoModeloNegocio, GetSinalizacaoDto>()
                 .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.ImagemBase64String));
 
+            CreateMap<SinalizacaoModeloNegocio, GetSinalizacaoNoImagemDto>();
+
             CreateMap<PostSinalizacaoDto, SinalizacaoModeloNegocio>()
                 .ForMember(dest => dest.ImagemBase64String, opt => opt.MapFrom(src => src.Imagem))
                 .ForMember(dest => dest.Imagem, opt => opt.Ignore());

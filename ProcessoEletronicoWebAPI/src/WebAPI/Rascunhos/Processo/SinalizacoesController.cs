@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
+using ProcessoEletronicoService.WebAPI.Sinalizacoes.Modelos;
 using System.Collections.Generic;
 using WebAPI.Config;
 
@@ -30,13 +31,13 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
         [HttpGet(Name = "GetSinalizacoes")]
-        [ProducesResponseType(typeof(List<GetSinalizacaoDto>), 200)]
+        [ProducesResponseType(typeof(List<GetSinalizacaoNoImagemDto>), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         public IActionResult Get(int idRascunhoProcesso)
         {
-            return Ok(_mapper.Map<List<GetSinalizacaoDto>>(_negocio.Get(idRascunhoProcesso)));
+            return Ok(_mapper.Map<List<GetSinalizacaoNoImagemDto>>(_negocio.Get(idRascunhoProcesso)));
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
         [HttpGet("{id}", Name = "GetSinalizacaoRascunho")]
-        [ProducesResponseType(typeof(GetSinalizacaoDto), 200)]
+        [ProducesResponseType(typeof(GetSinalizacaoNoImagemDto), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
@@ -74,7 +75,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <response code="500">Falha inesperada</response>
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
-        [ProducesResponseType(typeof(List<GetSinalizacaoDto>), 201)]
+        [ProducesResponseType(typeof(List<GetSinalizacaoNoImagemDto>), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 422)]
