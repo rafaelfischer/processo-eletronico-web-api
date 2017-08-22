@@ -29,12 +29,12 @@ namespace WebAPI.Sinalizacoes
         /// <response code="422">Objeto não processável</response>
         /// <response code="500">Erro inesperado</response>
         [HttpGet]
-        [ProducesResponseType(typeof(List<GetSinalizacaoDto>), 200)]
+        [ProducesResponseType(typeof(List<GetSinalizacaoNoImagemDto>), 200)]
         [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get()
         {
-            return Ok(_mapper.Map<IList<GetSinalizacaoDto>>(_negocio.Get()));
+            return Ok(_mapper.Map<IList<GetSinalizacaoNoImagemDto>>(_negocio.Get()));
         }
 
         /// <summary>
@@ -46,12 +46,12 @@ namespace WebAPI.Sinalizacoes
         /// <response code="422">Objeto não processável</response>
         /// <response code="500">Erro inesperado</response>
         [HttpGet("por-organizacao/{guidOrganizacaoPatriarca}")]
-        [ProducesResponseType(typeof(List<GetSinalizacaoDto>), 200)]
+        [ProducesResponseType(typeof(List<GetSinalizacaoNoImagemDto>), 200)]
         [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult Get(string guidOrganizacaoPatriarca)
         {
-            return Ok(_mapper.Map<IList<GetSinalizacaoDto>>(_negocio.Get(guidOrganizacaoPatriarca)));
+            return Ok(_mapper.Map<IList<GetSinalizacaoNoImagemDto>>(_negocio.Get(guidOrganizacaoPatriarca)));
         }
 
         /// <summary>

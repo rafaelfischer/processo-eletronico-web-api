@@ -49,13 +49,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes
         public IList<SinalizacaoModeloNegocio> Get()
         {
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
-            IList<Sinalizacao> sinalizacoes = _repositorioSinalizacoes.Select(s => new Sinalizacao
-            {
-                Id = s.Id,
-                Descricao = s.Descricao,
-                Cor = s.Cor,
-                OrganizacaoProcesso = s.OrganizacaoProcesso
-            }).Where(s => s.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)).ToList();
+            IList<Sinalizacao> sinalizacoes = _repositorioSinalizacoes.Where(s => s.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)).ToList();
             return _mapper.Map<IList<SinalizacaoModeloNegocio>>(sinalizacoes);
         }
 
@@ -63,13 +57,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes
         {
             Guid guid = _guidValidacao.ValidateAndReturnGuid(guidOrganizacaoPatriarca);
 
-            IList<Sinalizacao> sinalizacoes = _repositorioSinalizacoes.Select(s => new Sinalizacao
-            {
-                Id = s.Id,
-                Descricao = s.Descricao,
-                Cor = s.Cor,
-                OrganizacaoProcesso = s.OrganizacaoProcesso
-            }).Where(s => s.OrganizacaoProcesso.GuidOrganizacao.Equals(guid))
+            IList<Sinalizacao> sinalizacoes = _repositorioSinalizacoes.Where(s => s.OrganizacaoProcesso.GuidOrganizacao.Equals(guid))
                                                       .Include(pc => pc.OrganizacaoProcesso)
                                                       .ToList();
 
