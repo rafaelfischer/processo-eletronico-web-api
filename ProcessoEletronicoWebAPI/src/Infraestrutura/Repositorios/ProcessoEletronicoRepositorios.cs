@@ -35,6 +35,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
             RascunhosProcesso = UnitOfWork.MakeGenericRepository<RascunhoProcesso>();
             SinalizacoesRascunhoProcesso = UnitOfWork.MakeGenericRepository<SinalizacaoRascunhoProcesso>();
+            SinalizacoesProcesso = UnitOfWork.MakeGenericRepository<SinalizacaoProcesso>();
             TiposContato = UnitOfWork.MakeGenericRepository<TipoContato>();
             TiposDocumentais = UnitOfWork.MakeGenericRepository<TipoDocumental>();
             Sinalizacoes = UnitOfWork.MakeGenericRepository<Sinalizacao>();
@@ -63,11 +64,12 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }
         public IRepositorioGenerico<Processo> Processos { get; private set; }
         public IRepositorioGenerico<RascunhoProcesso> RascunhosProcesso { get; private set; }
+        public IRepositorioGenerico<SinalizacaoProcesso> SinalizacoesProcesso { get; private set; }
         public IRepositorioGenerico<SinalizacaoRascunhoProcesso> SinalizacoesRascunhoProcesso { get; private set; }
         public IRepositorioGenerico<TipoContato> TiposContato { get; private set; }
         public IRepositorioGenerico<TipoDocumental> TiposDocumentais { get; private set; }
         public IRepositorioGenerico<Sinalizacao> Sinalizacoes { get; private set; }
-        
+
         public void Dispose()
         {
             UnitOfWork.Dispose();

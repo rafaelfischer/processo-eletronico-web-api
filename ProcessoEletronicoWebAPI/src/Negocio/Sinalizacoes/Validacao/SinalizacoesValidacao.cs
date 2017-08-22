@@ -12,14 +12,17 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
 {
     public class SinalizacoesValidacao
     {
-        IRepositorioGenerico<Sinalizacao> repositorioSinalizacoes;
+        private IRepositorioGenerico<Sinalizacao> _repositorioSinalizacoes;
+        private IRepositorioGenerico<SinalizacaoProcesso> _repositorioSinalizacoesProcessos;
+        private IRepositorioGenerico<SinalizacaoRascunhoProcesso> _repositorioSinalizacoesRascunhosProcessos;
         private ICurrentUserProvider _user;
 
         private readonly string[] _validImageMimeTypes = { "image/gif", "image/png", "image/jpeg", "image/bmp", "image/webp" };
         private readonly string _colorPattern = @"^(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$";
         public SinalizacoesValidacao(IProcessoEletronicoRepositorios repositorios, ICurrentUserProvider user)
         {
-            repositorioSinalizacoes = repositorios.Sinalizacoes;
+            _repositorioSinalizacoes = repositorios.Sinalizacoes;
+            _repositorioSinalizacoesProcessos = repositorios.SinalizacoesProcesso;
             _user = user;
         }
 
@@ -71,7 +74,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
 
         private void DescricaoAlreadyExists(SinalizacaoModeloNegocio sinalizacaoModeloNegocio)
         {
-            if (repositorioSinalizacoes.Where(s => s.Id != sinalizacaoModeloNegocio.Id && s.Descricao.ToLower().Equals(sinalizacaoModeloNegocio.Descricao.ToLower())).SingleOrDefault() != null)
+            if (_repositorioSinalizacoes.Where(s => s.Id != sinalizacaoModeloNegocio.Id && s.Descricao.ToLower().Equals(sinalizacaoModeloNegocio.Descricao.ToLower())).SingleOrDefault() != null)
             {
                 throw new RequisicaoInvalidaException("Já existe uma sinalização com esta descrição");
             }
@@ -148,15 +151,31 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
 
         public void SinalizacaoExistente(SinalizacaoModeloNegocio sinalizacao)
         {
-            if (repositorioSinalizacoes.Where(s => s.Id == sinalizacao.Id).SingleOrDefault() == null)
+            if (_repositorioSinalizacoes.Where(s => s.Id == sinalizacao.Id).SingleOrDefault() == null)
             {
                 throw new RecursoNaoEncontradoException("Sinalização inexistente");
             }
         }
 
+        public void ExistsInProcesso(Sinalizacao sinalizacao)
+        {
+            if (_repositorioSinalizacoesProcessos.Where(sp => sp.IdSinalizacao == sinalizacao.Id).ToList().Count > 0)
+            {
+                throw new RequisicaoInvalidaException("A sinalização não pode ser excluída pois está associada a pelo menos um processo");
+            }
+        }
+
+        public void ExistsInRascunhoProcesso(Sinalizacao sinalizacao)
+        {
+            if (_repositorioSinalizacoesRascunhosProcessos.Where(sp => sp.IdSinalizacao == sinalizacao.Id).ToList().Count > 0)
+            {
+                throw new RequisicaoInvalidaException("A sinalização não pode ser excluída pois está associada a pelo menos um rascunho de processo");
+            }
+        }
+
         internal void SinalizacoesPertencemAOrganizacaoPatriarca(SinalizacaoModeloNegocio sinalizacaoNegocio, Guid usuarioGuidOrganizacaoPatriarca)
         {
-            Sinalizacao sinalizacao = repositorioSinalizacoes.Where(s => s.Id == sinalizacaoNegocio.Id
+            Sinalizacao sinalizacao = _repositorioSinalizacoes.Where(s => s.Id == sinalizacaoNegocio.Id
                                                                       && s.OrganizacaoProcesso.GuidOrganizacao.Equals(usuarioGuidOrganizacaoPatriarca))
                                                              .SingleOrDefault();
 

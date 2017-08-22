@@ -104,6 +104,9 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes
             Sinalizacao sinalizacao = _repositorioSinalizacoes.Where(s => s.Id == id && s.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)).SingleOrDefault();
             _validacao.Exists(sinalizacao);
 
+            _validacao.ExistsInProcesso(sinalizacao);
+            _validacao.ExistsInRascunhoProcesso(sinalizacao);
+
             _repositorioSinalizacoes.Remove(sinalizacao);
             _unitOfWork.Save();
         }
