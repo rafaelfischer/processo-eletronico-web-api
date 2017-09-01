@@ -9,6 +9,7 @@ namespace ProcessoEletronicoService.Negocio.Comum.Base
     {
         string UserCpf { get; }
         string UserNome { get; }
+        string UserSistema { get;  }
         Guid UserGuidOrganizacao { get; }
         Guid UserGuidOrganizacaoPatriarca { get; }
     }

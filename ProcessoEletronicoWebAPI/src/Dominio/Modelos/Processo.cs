@@ -8,6 +8,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public Processo()
         {
             Anexos = new HashSet<Anexo>();
+            Bloqueios = new HashSet<Bloqueio>();
             Despachos = new HashSet<Despacho>();
             InteressadosPessoaFisica = new HashSet<InteressadoPessoaFisica>();
             InteressadosPessoaJuridica = new HashSet<InteressadoPessoaJuridica>();
@@ -36,6 +37,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public Guid GuidUnidadeAutuadora { get; set; }
 
         public virtual ICollection<Anexo> Anexos { get; set; }
+        public virtual ICollection<Bloqueio> Bloqueios { get; set; }
         public virtual ICollection<Despacho> Despachos { get; set; }
         public virtual ICollection<InteressadoPessoaFisica> InteressadosPessoaFisica { get; set; }
         public virtual ICollection<InteressadoPessoaJuridica> InteressadosPessoaJuridica { get; set; }

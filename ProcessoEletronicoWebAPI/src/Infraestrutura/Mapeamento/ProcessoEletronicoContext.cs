@@ -13,6 +13,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
         public virtual DbSet<Anexo> Anexo { get; set; }
         public virtual DbSet<AnexoRascunho> AnexoRascunho { get; set; }
         public virtual DbSet<Atividade> Atividade { get; set; }
+        public virtual DbSet<Atividade> Bloqueio { get; set; }
         public virtual DbSet<Contato> Contato { get; set; }
         public virtual DbSet<ContatoRascunho> ContatoRascunho { get; set; }
         public virtual DbSet<Despacho> Despacho { get; set; }
@@ -158,6 +159,43 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdFuncao)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Atividade_Funcao");
+            });
+
+            modelBuilder.Entity<Bloqueio>(entity =>
+            {
+                entity.Property(e => e.CpfUsuario)
+                    .HasColumnName("cpfUsuario")
+                    .HasColumnType("varchar(15)");
+
+                entity.Property(e => e.DataFim)
+                    .HasColumnName("dataFim")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DataInicio)
+                    .HasColumnName("dataInicio")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.IdProcesso).HasColumnName("idProcesso");
+
+                entity.Property(e => e.Motivo)
+                    .IsRequired()
+                    .HasColumnName("motivo")
+                    .HasColumnType("varchar(500)");
+
+                entity.Property(e => e.NomeSistema)
+                    .IsRequired()
+                    .HasColumnName("nomeSistema")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NomeUsuario)
+                    .HasColumnName("nomeUsuario")
+                    .HasColumnType("varchar(200)");
+
+                entity.HasOne(d => d.Processo)
+                    .WithMany(p => p.Bloqueios)
+                    .HasForeignKey(d => d.IdProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Bloqueio_Processo");
             });
 
             modelBuilder.Entity<Contato>(entity =>

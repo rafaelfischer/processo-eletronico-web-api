@@ -6,6 +6,8 @@ using ProcessoEletronicoService.Negocio.Rascunho.Processo;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using Negocio.Notificacoes.Base;
 using Negocio.Notificacoes;
+using Negocio.Bloqueios.Base;
+using Negocio.Bloqueios;
 
 namespace ProcessoEletronicoService.Apresentacao.Configuracao
 {
@@ -18,6 +20,7 @@ namespace ProcessoEletronicoService.Apresentacao.Configuracao
             dependencias = Negocio.Config.ConfiguracaoDependencias.ObterDependencias();
             dependencias.Add(typeof(Negocio.Base.IAnexoNegocio), typeof(Negocio.AnexoNegocio));
             dependencias.Add(typeof(Negocio.Rascunho.Processo.Base.IAnexoNegocio), typeof(Negocio.Rascunho.Processo.AnexoNegocio));
+            dependencias.Add(typeof(IBloqueioCore), typeof(BloqueioCore));
             dependencias.Add(typeof(IAtividadeNegocio), typeof(AtividadeNegocio));
             dependencias.Add(typeof(IContatoInteressadoPessoaFisicaNegocio), typeof(ContatoInteressadoPessoaFisicaNegocio));
             dependencias.Add(typeof(IContatoInteressadoPessoaJuridicaNegocio), typeof(ContatoInteressadoPessoaJuridicaNegocio));

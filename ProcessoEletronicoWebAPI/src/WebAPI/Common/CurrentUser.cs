@@ -18,6 +18,7 @@ namespace ProcessoEletronicoService.WebAPI.Common
     {
         private string _userCpf;
         private string _userNome;
+        private string _userSistema;
         private Guid _userGuidOrganizacao;
         private Guid _userGuidOrganizacaoPatriarca;
 
@@ -42,6 +43,14 @@ namespace ProcessoEletronicoService.WebAPI.Common
             }
         }
 
+        public string UserSistema
+        {
+            get
+            {
+                return _userSistema;
+            }
+        }
+
         public Guid UserGuidOrganizacao
         {
             get
@@ -54,7 +63,7 @@ namespace ProcessoEletronicoService.WebAPI.Common
         {
             get
             {
-                return _userGuidOrganizacaoPatriarca; 
+                return _userGuidOrganizacaoPatriarca;
             }
         }
 
@@ -64,6 +73,10 @@ namespace ProcessoEletronicoService.WebAPI.Common
             {
                 Claim claimCpf = user.FindFirst("cpf");
                 Claim claimNome = user.FindFirst("nome");
+
+                Claim claimSystem = user.FindFirst("client_id");
+                _userSistema = FormatClientIdValue(claimSystem.Value);
+
                 if (claimCpf != null && claimNome != null)
                 {
                     _userCpf = claimCpf.Value;
@@ -85,7 +98,7 @@ namespace ProcessoEletronicoService.WebAPI.Common
                         {
                             throw new ProcessoEletronicoException($"Não foi possível obter informações da organização do usuário (Sigla: {siglaOrganizacao})");
                         }
-                        
+
                         Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/{_userGuidOrganizacao}/patriarca", accessToken);
                         if (!Guid.TryParse(organizacaoPatriarca.guid, out _userGuidOrganizacaoPatriarca))
                         {
@@ -95,6 +108,21 @@ namespace ProcessoEletronicoService.WebAPI.Common
                 }
             }
         }
+
+
+        //Essa função será utilizada enquanto o token do acesso cidadão não contiver o guid do sistema
+        private string FormatClientIdValue(string clientIdValue)
+        {
+            string processoEletronicoCliendIdDefaultValue = "processoeletronico";
+
+            if (clientIdValue.ToLower().Contains(processoEletronicoCliendIdDefaultValue))
+            {
+                return processoEletronicoCliendIdDefaultValue;
+            }
+
+            return clientIdValue;
+        }
+
 
         private T DownloadJsonData<T>(string url, string acessToken) where T : new()
         {
@@ -126,5 +154,6 @@ namespace ProcessoEletronicoService.WebAPI.Common
             public string razaoSocial { get; set; }
             public string sigla { get; set; }
         }
+
     }
 }

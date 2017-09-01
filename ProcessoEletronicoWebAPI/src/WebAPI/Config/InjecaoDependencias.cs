@@ -6,6 +6,7 @@ using ProcessoEletronicoService.Apresentacao;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using Negocio.Comum.Validacao;
+using Negocio.Bloqueios;
 
 namespace ProcessoEletronicoService.WebAPI.Config
 {
@@ -33,12 +34,14 @@ namespace ProcessoEletronicoService.WebAPI.Config
             //Demais dependências da camada de negócio (que não possuem interfaces)
             services.AddScoped(typeof(UsuarioValidacao));
             services.AddScoped(typeof(AnexoValidacao));
+            services.AddScoped(typeof(BloqueioValidation));
             services.AddScoped(typeof(RascunhoProcessoValidacao));
             services.AddScoped(typeof(InteressadoPessoaFisicaValidacao));
             services.AddScoped(typeof(InteressadoPessoaJuridicaValidacao));
             services.AddScoped(typeof(ContatoValidacao));
             services.AddScoped(typeof(EmailValidacao));
             services.AddScoped(typeof(MunicipioValidacao));
+            services.AddScoped(typeof(Negocio.Validacao.ProcessoValidacao));
             services.AddScoped(typeof(SinalizacaoValidacao));
             services.AddScoped(typeof(Negocio.Sinalizacoes.Validacao.SinalizacoesValidacao));
             services.AddScoped(typeof(OrganogramaValidacao));

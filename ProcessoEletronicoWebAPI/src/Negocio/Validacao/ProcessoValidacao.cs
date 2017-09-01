@@ -284,7 +284,6 @@ namespace ProcessoEletronicoService.Negocio.Validacao
                 throw new RequisicaoInvalidaException("A unidade autuadora informada não pertence à organização autuadora.");
         }
 
-
         #endregion
 
     }
