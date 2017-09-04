@@ -70,7 +70,7 @@ namespace Negocio.Bloqueios
             _validation.Exists(bloqueio);
             _validation.IsRemoveBloqueioPossible(bloqueio);
 
-            bloqueio.DataFim = DateTime.Now;
+            DeleteBloqueio(bloqueio);
             _unitOfWork.Save();
         }
 
@@ -80,6 +80,20 @@ namespace Negocio.Bloqueios
             bloqueioModel.CpfUsuario = _user.UserCpf;
             bloqueioModel.NomeUsuario = _user.UserNome;
             bloqueioModel.NomeSistema = _user.UserSistema;
+        }
+
+        public void DeleteBloqueioOfProcessoIfExists(int idProcesso)
+        {
+            Bloqueio bloqueio = _repositorioBloqueios.Where(b => b.IdProcesso == idProcesso && b.DataFim == null).SingleOrDefault();
+            DeleteBloqueio(bloqueio);
+        }
+
+        private void DeleteBloqueio(Bloqueio bloqueio)
+        {
+            if (bloqueio != null)
+            {
+                bloqueio.DataFim = DateTime.Now;
+            }
         }
     }
 }

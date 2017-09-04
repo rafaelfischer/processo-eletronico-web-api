@@ -13,6 +13,8 @@ using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 using Negocio.Notificacoes.Base;
+using Negocio.Bloqueios;
+using Negocio.Bloqueios.Base;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -26,13 +28,15 @@ namespace ProcessoEletronicoService.Negocio
         private IRepositorioGenerico<Despacho> _repositorioDespachos;
         private IRepositorioGenerico<Processo> _repositorioProcessos;
         private INotificacoesService _notificacoesService;
+        private IBloqueioCore _bloqueioCore;
 
         private DespachoValidacao _validacao;
         private AnexoValidacao _anexoValidacao;
         private UsuarioValidacao _usuarioValidacao;
         private OrganogramaValidacao _organogramaValidacao;
+        private BloqueioValidation _bloqueioValidation;
 
-        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, IProcessoNegocio processoNegocio, INotificacoesService notificacoesService, ICurrentUserProvider user, OrganogramaValidacao organogramaValidacao)
+        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, IProcessoNegocio processoNegocio, INotificacoesService notificacoesService, ICurrentUserProvider user, OrganogramaValidacao organogramaValidacao, BloqueioValidation bloqueioValidation, IBloqueioCore bloqueioCore)
         {
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
@@ -46,6 +50,8 @@ namespace ProcessoEletronicoService.Negocio
             _anexoValidacao = new AnexoValidacao(repositorios);
             _usuarioValidacao = new UsuarioValidacao();
             _organogramaValidacao = organogramaValidacao;
+            _bloqueioCore = bloqueioCore;
+            _bloqueioValidation = bloqueioValidation;
         }
         
         public List<DespachoModeloNegocio> PesquisarDespachosUsuario()
@@ -109,13 +115,15 @@ namespace ProcessoEletronicoService.Negocio
 
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
+            _bloqueioValidation.IsProcessoBlockedByAnotherUsuarioOrSistema(despachoNegocio.IdProcesso);
             InformacoesOrganizacao(despacho);
             InformacoesUnidade(despacho);
             InformacoesUsuario(despacho);
 
             _repositorioDespachos.Add(despacho);
-            _unitOfWork.Save();
+            _bloqueioCore.DeleteBloqueioOfProcessoIfExists(despachoNegocio.IdProcesso);
             _notificacoesService.Insert(despacho);
+            _unitOfWork.Save();
 
             return Pesquisar(despacho.Id);
         }

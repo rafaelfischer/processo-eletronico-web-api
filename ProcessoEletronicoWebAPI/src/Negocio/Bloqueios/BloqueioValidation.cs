@@ -62,7 +62,7 @@ namespace Negocio.Bloqueios
             if (bloqueio != null && (bloqueio.CpfUsuario != _user.UserCpf || bloqueio.NomeSistema != _user.UserSistema))
 
             {
-                throw new RequisicaoInvalidaException($"O processo encontra-se bloqueado pelo usuário {_user.UserNome} através do sistema {_user.UserSistema}");
+                throw new RequisicaoInvalidaException($"O processo encontra-se bloqueado pelo usuário {bloqueio.NomeUsuario} através do sistema {bloqueio.NomeSistema}");
             }
         }
 

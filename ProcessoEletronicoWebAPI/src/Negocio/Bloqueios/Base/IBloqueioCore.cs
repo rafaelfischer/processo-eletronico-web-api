@@ -8,5 +8,6 @@ namespace Negocio.Bloqueios.Base
         BloqueioModel GetSingleBloqueio(int idProcesso, int id);
         BloqueioModel InsertBloqueioIntoProcesso(int idProcesso, BloqueioModel bloqueioModel);
         void DeleteBloqueioOfProcesso(int idProcesso, int id);
+        void DeleteBloqueioOfProcessoIfExists(int idProcesso);
     }
 }
