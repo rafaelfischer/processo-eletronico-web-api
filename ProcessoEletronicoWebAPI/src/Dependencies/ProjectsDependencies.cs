@@ -76,9 +76,9 @@ namespace ProcessoEletronicoService.Dependencies
             dependenciesCollection.Add(typeof(ContatoValidacao));
             dependenciesCollection.Add(typeof(EmailValidacao));
             dependenciesCollection.Add(typeof(MunicipioValidacao));
-            dependenciesCollection.Add(typeof(ProcessoEletronicoService.Negocio.Validacao.ProcessoValidacao));
+            dependenciesCollection.Add(typeof(Negocio.Validacao.ProcessoValidacao));
             dependenciesCollection.Add(typeof(SinalizacaoValidacao));
-            dependenciesCollection.Add(typeof(ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao.SinalizacoesValidacao));
+            dependenciesCollection.Add(typeof(Negocio.Sinalizacoes.Validacao.SinalizacoesValidacao));
             dependenciesCollection.Add(typeof(OrganogramaValidacao));
             dependenciesCollection.Add(typeof(GuidValidacao));
 
