@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6D335080-5952-48DE-B0C3-89B3CD25C459}"
 EndProject
@@ -16,6 +16,17 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apresentacao", "src\Apresentacao\Apresentacao.csproj", "{B7DDE990-0C2A-46AA-A662-22D6523C6EC1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\WebAPI\WebAPI.csproj", "{4556CC15-B443-426F-99B8-92F7AD916E2F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{81A5D886-9C56-46E7-98D3-91D5C1868211} = {81A5D886-9C56-46E7-98D3-91D5C1868211}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies", "Dependencies\Dependencies.csproj", "{81A5D886-9C56-46E7-98D3-91D5C1868211}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C3B7DB17-4814-4D50-A245-89ECBA40E7E2} = {C3B7DB17-4814-4D50-A245-89ECBA40E7E2}
+		{7AE89C5D-F960-417C-95CA-5CDEF4782B1B} = {7AE89C5D-F960-417C-95CA-5CDEF4782B1B}
+		{9889EE7B-CA7A-41E1-9875-75319EFF6184} = {9889EE7B-CA7A-41E1-9875-75319EFF6184}
+		{B7DDE990-0C2A-46AA-A662-22D6523C6EC1} = {B7DDE990-0C2A-46AA-A662-22D6523C6EC1}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +54,10 @@ Global
 		{4556CC15-B443-426F-99B8-92F7AD916E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4556CC15-B443-426F-99B8-92F7AD916E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4556CC15-B443-426F-99B8-92F7AD916E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81A5D886-9C56-46E7-98D3-91D5C1868211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81A5D886-9C56-46E7-98D3-91D5C1868211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81A5D886-9C56-46E7-98D3-91D5C1868211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81A5D886-9C56-46E7-98D3-91D5C1868211}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +68,8 @@ Global
 		{7AE89C5D-F960-417C-95CA-5CDEF4782B1B} = {6D335080-5952-48DE-B0C3-89B3CD25C459}
 		{B7DDE990-0C2A-46AA-A662-22D6523C6EC1} = {6D335080-5952-48DE-B0C3-89B3CD25C459}
 		{4556CC15-B443-426F-99B8-92F7AD916E2F} = {6D335080-5952-48DE-B0C3-89B3CD25C459}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BD7D175-D31D-48B3-8DA4-B77F4138AFF9}
 	EndGlobalSection
 EndGlobal

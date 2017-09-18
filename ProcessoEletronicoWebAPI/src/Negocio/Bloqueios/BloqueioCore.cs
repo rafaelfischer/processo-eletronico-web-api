@@ -52,6 +52,8 @@ namespace Negocio.Bloqueios
             _processoValidation.NaoEncontrado(processo);
 
             _validation.IsProcessoWithBloqueio(idProcesso);
+            _validation.IsFilled(bloqueioModel);
+            _validation.IsValid(bloqueioModel);
 
             FillDateAndUserInformation(bloqueioModel);
             Bloqueio bloqueio = new Bloqueio();

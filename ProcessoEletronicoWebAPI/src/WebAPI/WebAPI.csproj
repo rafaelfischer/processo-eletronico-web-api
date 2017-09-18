@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>WebAPI</PackageId>
     <RuntimeIdentifiers>win10-x64;debian.8-x64</RuntimeIdentifiers>
-    <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Dependencies\Dependencies.csproj" />
     <ProjectReference Include="..\Apresentacao\Apresentacao.csproj" />
     <ProjectReference Include="..\Infraestrutura\Infraestrutura.csproj" />
   </ItemGroup>
