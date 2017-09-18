@@ -14,7 +14,7 @@ using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using System;
 using System.Collections.Generic;
 
-namespace Dependency
+namespace ProcessoEletronicoService.Dependencies
 {
     public static class ProjectsDependencies
     {
@@ -29,8 +29,8 @@ namespace Dependency
             #region Negocio
 
             //Classes de Negócio envolvidas nas operações CRUD
-            dependencies.Add(typeof(ProcessoEletronicoService.Negocio.Base.IAnexoNegocio), typeof(ProcessoEletronicoService.Negocio.AnexoNegocio));
-            dependencies.Add(typeof(ProcessoEletronicoService.Negocio.Rascunho.Processo.Base.IAnexoNegocio), typeof(ProcessoEletronicoService.Negocio.Rascunho.Processo.AnexoNegocio));
+            dependencies.Add(typeof(Negocio.Base.IAnexoNegocio), typeof(Negocio.AnexoNegocio));
+            dependencies.Add(typeof(Negocio.Rascunho.Processo.Base.IAnexoNegocio), typeof(Negocio.Rascunho.Processo.AnexoNegocio));
             dependencies.Add(typeof(IBloqueioCore), typeof(BloqueioCore));
             dependencies.Add(typeof(IAtividadeNegocio), typeof(AtividadeNegocio));
             dependencies.Add(typeof(IContatoInteressadoPessoaFisicaNegocio), typeof(ContatoInteressadoPessoaFisicaNegocio));
@@ -49,9 +49,9 @@ namespace Dependency
             dependencies.Add(typeof(IProcessoNegocio), typeof(ProcessoNegocio));
             dependencies.Add(typeof(ITipoDocumentalNegocio), typeof(TipoDocumentalNegocio));
             dependencies.Add(typeof(ITipoContatoNegocio), typeof(TipoContatoNegocio));
-            dependencies.Add(typeof(ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio), typeof(ProcessoEletronicoService.Negocio.SinalizacaoNegocio));
-            dependencies.Add(typeof(ProcessoEletronicoService.Negocio.Rascunho.Processo.Base.ISinalizacaoNegocio), typeof(ProcessoEletronicoService.Negocio.Rascunho.Processo.SinalizacaoNegocio));
-            dependencies.Add(typeof(ProcessoEletronicoService.Negocio.Sinalizacoes.Base.ISinalizacaoNegocio), typeof(ProcessoEletronicoService.Negocio.Sinalizacoes.SinalizacaoNegocio));
+            dependencies.Add(typeof(Negocio.Base.ISinalizacaoNegocio), typeof(Negocio.SinalizacaoNegocio));
+            dependencies.Add(typeof(Negocio.Rascunho.Processo.Base.ISinalizacaoNegocio), typeof(Negocio.Rascunho.Processo.SinalizacaoNegocio));
+            dependencies.Add(typeof(Negocio.Sinalizacoes.Base.ISinalizacaoNegocio), typeof(Negocio.Sinalizacoes.SinalizacaoNegocio));
 
             #endregion
 

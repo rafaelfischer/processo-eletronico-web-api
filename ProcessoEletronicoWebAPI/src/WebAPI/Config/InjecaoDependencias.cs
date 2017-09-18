@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using ProcessoEletronicoService.Apresentacao.Base;
-using Microsoft.Extensions.DependencyInjection;
-using ProcessoEletronicoService.Apresentacao;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
-using ProcessoEletronicoService.Negocio.Comum.Validacao;
-using Negocio.Comum.Validacao;
-using Negocio.Bloqueios;
-using Dependency;
-using System.Linq;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ProcessoEletronicoService.Dependencies;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.WebAPI.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProcessoEletronicoService.WebAPI.Config
 {
