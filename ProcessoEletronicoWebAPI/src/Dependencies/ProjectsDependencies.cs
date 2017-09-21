@@ -1,4 +1,6 @@
-﻿using Negocio.Bloqueios;
+﻿using Apresentacao.APP.WorkServices;
+using Apresentacao.APP.WorkServices.Base;
+using Negocio.Bloqueios;
 using Negocio.Bloqueios.Base;
 using Negocio.Comum.Validacao;
 using Negocio.Notificacoes;
@@ -7,6 +9,7 @@ using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Infraestrutura.Repositorios;
 using ProcessoEletronicoService.Negocio;
 using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
@@ -56,8 +59,8 @@ namespace ProcessoEletronicoService.Dependencies
             #endregion
 
             #region Apresentacao
+            dependencies.Add(typeof(IProcessoService), typeof(ProcessoService));
             #endregion
-
 
             return dependencies;
         }

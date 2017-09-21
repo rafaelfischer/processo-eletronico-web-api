@@ -29,8 +29,6 @@ namespace ProcessoEletronicoService.WebAPI.Config
                 services.AddScoped(dep);
             }
 
-            services.AddScoped<ICurrentUserProvider, CurrentUser>();
-
         }
     }
 }

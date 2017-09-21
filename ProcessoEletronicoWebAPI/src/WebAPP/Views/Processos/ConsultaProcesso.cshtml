@@ -1,0 +1,53 @@
+﻿@model Apresentacao.APP.ViewModels.GetProcessoViewModel
+
+@{
+    ViewBag.Title = "Consultar Processo";
+}
+<div class="col-md-6">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Consultar Processo</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form method="post">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="numeroProcesso" class="control-label">Número do Processo</label>
+                    <input type="text" class="form-control" name="numeroProcesso" id="numeroProcesso" placeholder="00-00.0000.0.0.0000">
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="submit"asp-controller="Processos" asp-action="ConsultaProcessoPorNumero" class="btn btn-info pull-right">Consultar</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+
+        <hr />
+
+        <div class="box-header with-border">
+            <h3 class="box-title">Resultado da Consulta</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">Número</th>
+                        <th>Data de Autuação</th>
+                        <th>Resumo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model?.Numero</td>
+                        <td>@Model?.DataAutuacao</td>
+                        <td>@Model?.Resumo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
