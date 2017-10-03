@@ -14,15 +14,16 @@ namespace WebAPP
     {
         public static void Main(string[] args)
         {
-            var port = Environment.GetEnvironmentVariable("PORT") ?? "4000";
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "5970";
             var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH");
             var url = $"http://*:{port}{requestPath}";
+                       
 
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseUrls(url)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
+                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 

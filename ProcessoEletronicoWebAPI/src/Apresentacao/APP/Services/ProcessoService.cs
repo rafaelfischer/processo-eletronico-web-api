@@ -5,6 +5,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using Apresentacao.APP.ViewModels;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using System;
+using System.Collections.Generic;
 
 namespace Apresentacao.APP.WorkServices
 {
@@ -33,5 +34,20 @@ namespace Apresentacao.APP.WorkServices
             }
         
         }
+
+        public IEnumerable<GetProcessoViewModel> GetProcessosOrganizacao(string guidOrganizacao)
+        {
+            try
+            {
+                IEnumerable<ProcessoModeloNegocio> processos = _negocio.PesquisarProcessosNaOrganizacao(guidOrganizacao);
+                IEnumerable<GetProcessoViewModel> getProcessosViewModel = _mapper.Map<List<GetProcessoViewModel>>(processos);
+                return getProcessosViewModel;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }            
+        }
+            
     }
 }

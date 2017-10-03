@@ -1,0 +1,41 @@
+﻿@model IEnumerable<GetProcessoViewModel>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Caixa de Entrada</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>                    
+                    <th class="col-md-2">NÚMERO</th>
+                    <th>RESPONSÁVEL</th>
+                    <th>ATIVIDADE</th>
+                    <th>RESUMO</th>
+                    <th>AUTUAÇÃO</th>
+                    <th>AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pc in Model)
+                {
+                    <tr>                    
+                        <td>@pc.Numero</td>
+                        <td>@pc.SiglasOrganizacaoUnidade</td>
+                        <td>@pc.Atividade.Descricao</td>
+                        <td>@pc.Resumo</td>
+                        <td>@pc.DataAutuacao</td>                      
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
+                                <button class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>

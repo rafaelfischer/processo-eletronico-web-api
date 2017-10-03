@@ -12,6 +12,7 @@ namespace Apresentacao.APP.Mappings
         public ProcessoMapper()
         {
             CreateMap<ProcessoModeloNegocio, GetProcessoViewModel>();
+            CreateMap<AtividadeModeloNegocio, AtividadeViewModel>();
         }
     }
 }
