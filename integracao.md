@@ -1,9 +1,9 @@
 # Documento de Integração do Processo Eletrônico
 
-Este documento tem como objetivo detalhar como deve ser feita a integração de outros sistemas com a API do processo eletrônico.
-Por integração, entende-se como o passo-a-passo para o envio de processos para autuação bem como a realização de despachos. Além disso, também prevê a leitura de todas as informações relacionadas a autuações e despachos de processos no processo eletrônico.
+Este documento tem como objetivo detalhar como deve ser feita a integração de outros sistemas com esta API do processo eletrônico.
+Por integração, entende-se como o passo-a-passo para o envio de processos para os recursos de (i) autuação de processos e de (ii) despachos de processos. Além disso, também prevê a leitura de todas as informações relacionadas a autuações e despachos de processos no processo eletrônico.
 
-## Autenticação
+## 1. Autenticação
 
 Todas as requisições à API do processo eletrônico necessitam de autenticação. Em outras palavras, todas as requisições devem ser acompanhadas de um Access Token.
 Para obtenção do Access Token, há um sistema chamado **Acesso Cidadão**, que gerencia o cadastro de pessoas e sistemas e também o envio de access tokens para integração com outros sistemas como o Processo Eletrônico.
@@ -13,7 +13,7 @@ A documentação informando detalhes dos procedimentos que devem ser realizados 
 **Toda requisição** feita às APIs do Processo Eletrônico e do Organograma **deve ser acompanhada de um Access Token** (enviado no `request.header.Authorization` no formato `Bearer {access-token}`), seguindo o [RFC 6750](https://tools.ietf.org/html/rfc6750#section-6.1.1)
 
 
-## Integração com o Sistema de Organograma
+## 2. Integração com o Sistema de Organograma
 
 Além do sistema Acesso Cidadão, utilizado para controle de autenticação e autorização de sistemas e usuários, o Processo Eletrônico é integrado ao sistema Organograma, que realiza o controle de organizações, setores (ou unidades) e municípios. Essa integração é feita seguinte forma: qualquer informação enviada à API do Processo Eletrônico relacionado a organização, unidade ou município deve ser enviado como um GUID (Global Unique IDentifier). O formato do GUID é avaliado (exemplo: `3ca6ea0e-ca14-46fa-a911-22e616303722`) e, caso o formato seja válido, esse GUID será enviado ao Organograma para avaliar se de fato a informação existe.
 
