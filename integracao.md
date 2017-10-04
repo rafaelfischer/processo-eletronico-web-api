@@ -8,7 +8,7 @@ Por integração, entende-se como o passo-a-passo para o envio de processos para
 Todas as requisições à API do processo eletrônico necessitam de autenticação. Em outras palavras, todas as requisições devem ser acompanhadas de um Access Token.
 Para obtenção do Access Token, há um sistema chamado **Acesso Cidadão**, que gerencia o cadastro de pessoas e sistemas e também o envio de access tokens para integração com outros sistemas como o Processo Eletrônico.
 
-A documentação informando detalhes dos procedimentos que devem ser realizados para cadastro e obtenção de Access Tokens no Acesso cidadão está *em construção*. Enquanto esta documentação não estiver disponível, é necessário enviar um e-mail para o setor responsável informando da intenção de utilizar o Acesso Cidadão para integração com outros sistemas (como é caso do Processo Eletrônico). No caso, deve ser enviado para o e-mail é [caio.barbosa@prodest.es.gov.br]().
+A documentação informando detalhes dos procedimentos que devem ser realizados para cadastro e obtenção de Access Tokens no Acesso cidadão está *em construção*. Enquanto esta documentação não estiver disponível, é necessário enviar um e-mail para o setor responsável informando da intenção de utilizar o Acesso Cidadão para integração com outros sistemas (como é caso do Processo Eletrônico). No caso, deve ser enviado para o e-mail [caio.barbosa@prodest.es.gov.br]().
 
 **Toda requisição** feita às APIs do Processo Eletrônico e do Organograma **deve ser acompanhada de um Access Token** (enviado no `request.header.Authorization` no formato `Bearer {access-token}`), seguindo o [RFC 6750](https://tools.ietf.org/html/rfc6750#section-6.1.1)
 
@@ -202,7 +202,7 @@ Como observação final, o processo eletrônico **aceita** que sejam realizados 
 
 Ao final da gravação do despacho de um processo, será enviado um documento JSON no corpo da resposta contendo detalhes do despacho. A estrutura desse documento JSON também pode ser encontrada na documentação do Processo Eletrônico em [https://sistemas.es.gov.br/prodest/processoeletronico/api/documentation]() na seção **DESPACHOS**.
 
-Para consultar um despacho ou uma lista de despacho de um processo, há consultas disponíveis. Todas elas podem ser encontradas na documentação do Processo Eletrônico.
+Para consultar um despacho ou uma lista de despachos de um processo, há consultas disponíveis. Todas elas podem ser encontradas na documentação do Processo Eletrônico.
 
 ### 7.1 Consulta por identificador
 
@@ -210,7 +210,7 @@ Essa consulta obtém apenas um despacho ou retorna um erro http com status code 
 
 ### 7.2 Consulta de despachos por processo.
 
-Essa consulta traz a lista de despachos de um determinado processo. Caso não haja qualquer despacho, é retornada uma lista vazia. Para realizar essa consulta, envie uma requisição HTTP GET pra `/api/processos/{idProcesso}`. Dentro do documento JSON há a lista de despachos (em `despachos`), caso existam despachos, realizados no processo. 
+Essa consulta traz a lista de despachos de um determinado processo. Caso não haja qualquer despacho, é retornada uma lista vazia. Para realizar essa consulta, envie uma requisição HTTP GET pra `/api/processos/{idProcesso}`. Dentro do documento JSON há a lista de despachos (em `despachos`), caso haja despachos, realizados no processo. 
 
 ## 8. Observações finais
 
