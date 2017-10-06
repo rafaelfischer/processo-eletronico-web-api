@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WebAPP.Controllers
 {
@@ -16,8 +17,7 @@ namespace WebAPP.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet]        
         public IActionResult Index()
         {   
             return View();
@@ -36,7 +36,7 @@ namespace WebAPP.Controllers
             return View("ConsultaProcesso", getProcesso);
         }
 
-        [Authorize]
+        [HttpGet]
         public IActionResult Profile()
         {
             var token = HttpContext.Authentication.GetTokenAsync("access_token").Result;
@@ -49,24 +49,26 @@ namespace WebAPP.Controllers
         [HttpGet]
         [Authorize]
         public IActionResult CaixaEntrada()
-        {   
-            IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao("3ca6ea0e-ca14-46fa-a911-22e616303722");
+        {
+            //IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao(User.Claims.First(a => a.Type ==""));
+            IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
             return View("processosPorOrganizacao", processosPorOrganizacao);
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult CaixaRascunho()
+        public IActionResult CaixaRascunhos()
         {
-            IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao("3ca6ea0e-ca14-46fa-a911-22e616303722");
-            return View("processosPorOrganizacao", processosPorOrganizacao);
+            IEnumerable<GetRascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosOrganizacao();
+            return View("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
         }
 
         [HttpGet]
         [Authorize]
         public IActionResult CaixaSaida()
         {
-            IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao("3ca6ea0e-ca14-46fa-a911-22e616303722");
+            
+            IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
             return View("processosPorOrganizacao", processosPorOrganizacao);
         }
     }

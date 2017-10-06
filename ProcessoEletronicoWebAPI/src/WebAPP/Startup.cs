@@ -16,6 +16,9 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using WebAPP.Config;
 using System.Threading.Tasks;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace WebAPP
 {
@@ -80,7 +83,7 @@ namespace WebAPP
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 LoginPath = "/home/login",
-                AccessDeniedPath = "/home/AcessoNegado",                
+                AccessDeniedPath = "/home/AcessoNegado",
                 ExpireTimeSpan = TimeSpan.FromMinutes(30),
                 SlidingExpiration = true,
                 LogoutPath = "/home/logout",
@@ -118,20 +121,62 @@ namespace WebAPP
                     RoleClaimType = "role"
                 },
 
-                GetClaimsFromUserInfoEndpoint = true,
+                GetClaimsFromUserInfoEndpoint = false,
 
                 SaveTokens = true,
-                
+
                 // Adiciona token a Claims
                 Events = new OpenIdConnectEvents()
                 {
-                    OnTokenValidated = async c => 
-                    {   
-                        c.Ticket.Principal.Identities.First().AddClaim(new Claim("id_token", c.ProtocolMessage.IdToken));
-                        c.Ticket.Principal.Identities.First().AddClaim(new Claim("access_token", c.ProtocolMessage.AccessToken));                        
-                        c.Ticket.Principal.Identities.First().AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(int.Parse(c.ProtocolMessage.ExpiresIn)).ToLocalTime().ToString()));
-                        c.Ticket.Principal.Identities.First().AddClaim(new Claim("client_id", c.Ticket.Principal.FindFirst("aud").Value));
+                    OnTokenValidated = async c =>
+                    {
+                        // use the access token to retrieve claims from userinfo
+                        var userInfoClient = new UserInfoClient("https://acessocidadao.es.gov.br/is/connect/userinfo");
+                        var access_token = c.ProtocolMessage.AccessToken;
 
+                        var userInfoResponse = await userInfoClient.GetAsync(access_token);
+
+
+                        // create new identity
+                        var id = new ClaimsIdentity(c.Ticket.Principal.Identity.AuthenticationType);
+
+                        var userInfoList = userInfoResponse.Claims.ToList();
+                        foreach (var ui in userInfoList)
+                        {
+                            if (ui.Type != "permissao")
+                            {
+                                id.AddClaim(new Claim(ui.Type, ui.Value));
+                            }
+                        }
+
+                        var permissaoClaims = userInfoResponse.Claims.Where(x => x.Type == "permissao").ToList();
+                        foreach (var permissaoClaim in permissaoClaims)
+                        {
+                            dynamic objetoPermissao = JsonConvert.DeserializeObject(permissaoClaim.Value.ToString());
+                            string recurso = objetoPermissao.Recurso;
+                            id.AddClaim(new Claim("Recurso", recurso));
+                            var listaAcoes = ((JArray)objetoPermissao.Acoes).Select(x => x.ToString()).ToList();
+                            foreach (var acao in listaAcoes)
+                            {
+                                id.AddClaim(new Claim("Acao$" + recurso, acao));
+                            }
+                        }
+
+                        id.AddClaims(userInfoResponse.Claims);
+
+                        id.AddClaim(new Claim("access_token", access_token));
+                        id.AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(int.Parse(c.ProtocolMessage.ExpiresIn)).ToLocalTime().ToString()));
+                        id.AddClaim(new Claim("id_token", c.ProtocolMessage.IdToken));
+                        id.AddClaim(new Claim("client_id", c.Ticket.Principal.FindFirst("aud").Value));
+
+                        //Adiciona dados do orgao e patriarca
+                        FillOrgaoEPatriarca(id, access_token);
+
+                        c.Ticket = new AuthenticationTicket(
+                            new ClaimsPrincipal(id),
+                            c.Ticket.Properties,
+                            c.Ticket.AuthenticationScheme
+                            );
 
                         await Task.FromResult(0);
                     }
@@ -150,6 +195,32 @@ namespace WebAPP
                     name: "default",
                     template: "{controller=Inicio}/{action=Index}/{id?}");
             });
+        }
+
+        private void FillOrgaoEPatriarca(ClaimsIdentity id, string token)
+        {
+            if (id.HasClaim(a => a.Type == "orgao"))
+            {
+                string siglaOrganizacao = string.Empty;
+                siglaOrganizacao = id.FindFirst("orgao").Value;
+
+                string guidOrganizacao = "";
+                string guidPatriarca = "";
+                string nomeOrganizacao = "";                
+
+                DownloadJson downloadJson = new DownloadJson();
+                string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
+
+                Organizacao organizacao = downloadJson.DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/sigla/{siglaOrganizacao}?guidPatriarca=true", token);
+
+                guidOrganizacao = organizacao.guid;
+                nomeOrganizacao = organizacao.razaoSocial;
+                guidPatriarca = organizacao.guidPatriarca;                
+
+                id.AddClaim(new Claim("guidorganizacao", guidOrganizacao));
+                id.AddClaim(new Claim("nomeorganizacao", nomeOrganizacao));
+                id.AddClaim(new Claim("guidpatriarca", guidPatriarca));
+            }
         }
     }
 }
