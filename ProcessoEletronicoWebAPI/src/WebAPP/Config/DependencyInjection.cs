@@ -31,7 +31,7 @@ namespace WebAPP.Config
             }
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICurrentUserProvider, CurrentUser>();
+            services.AddScoped<ICurrentUserProvider, CurrentUser>();            
             services.AddScoped<IClientAccessTokenProvider, AccessTokenProvider>();
         }
     }

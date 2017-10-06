@@ -1,37 +1,36 @@
-﻿@model IEnumerable<GetProcessoViewModel>
+﻿@model IEnumerable<GetRascunhoProcessoViewModel>
 @{
-    ViewBag.Title = "Caixa de Entrada";
-    ViewBag.SubTitle = "Meus Processos";
+    ViewBag.Title = "Rascunhos";
+    ViewBag.SubTitle = "Meus Rascunhos";
 }
+
 <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">@ViewBag.SubTitle</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>                    
-                    <th class="col-md-2">NÚMERO</th>
+                    <th>ID</th>
                     <th>RESPONSÁVEL</th>
                     <th>ATIVIDADE</th>
-                    <th>RESUMO</th>
-                    <th>AUTUAÇÃO</th>
+                    <th>RESUMO</th>                    
                     <th>AÇÕES</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var pc in Model)
+                @foreach (var r in Model)
                 {
                     <tr>                    
-                        <td>@pc.Numero</td>
-                        <td>@pc.SiglasOrganizacaoUnidade</td>
-                        <td>@pc.Atividade.Descricao</td>
-                        <td>@pc.Resumo</td>
-                        <td>@pc.DataAutuacao</td>                      
+                        <td>@r.Id</td>
+                        <td>@r.NomeUnidade</td>                        
+                        <td>@r.Atividade?.Descricao</td>
+                        <td>@r.Resumo</td>                        
                         <td class="text-center">
                             <div class="btn-group">
-                                <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                 <button class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
                             </div>
                         </td>

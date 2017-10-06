@@ -13,6 +13,7 @@ namespace Apresentacao.APP.Mappings
         {
             CreateMap<ProcessoModeloNegocio, GetProcessoViewModel>();
             CreateMap<AtividadeModeloNegocio, AtividadeViewModel>();
+            CreateMap<RascunhoProcessoModeloNegocio, GetRascunhoProcessoViewModel>();
         }
     }
 }
