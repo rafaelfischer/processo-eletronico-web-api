@@ -1,4 +1,6 @@
-﻿using Apresentacao.APP.WorkServices;
+﻿using Apresentacao.APP.Services;
+using Apresentacao.APP.Services.Base;
+using Apresentacao.APP.WorkServices;
 using Apresentacao.APP.WorkServices.Base;
 using Negocio.Bloqueios;
 using Negocio.Bloqueios.Base;
@@ -60,6 +62,8 @@ namespace ProcessoEletronicoService.Dependencies
 
             #region Apresentacao
             dependencies.Add(typeof(IProcessoService), typeof(ProcessoService));
+            dependencies.Add(typeof(IRascunhoService), typeof(RascunhoService));
+            dependencies.Add(typeof(IAutuacaoService), typeof(AutuacaoService));
             #endregion
 
             return dependencies;

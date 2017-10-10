@@ -1,13 +1,12 @@
-﻿using AutoMapper;
+﻿using Apresentacao.APP.ViewModels;
 using Apresentacao.APP.WorkServices.Base;
+using AutoMapper;
 using ProcessoEletronicoService.Negocio.Base;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
-using Apresentacao.APP.ViewModels;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using System;
 using System.Collections.Generic;
-using ProcessoEletronicoService.Negocio.Comum.Base;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 
 namespace Apresentacao.APP.WorkServices
 {
@@ -54,21 +53,5 @@ namespace Apresentacao.APP.WorkServices
                 return null;
             }            
         }
-
-        public IEnumerable<GetRascunhoProcessoViewModel> GetRascunhosOrganizacao()
-        {
-            try
-            {
-                IEnumerable<RascunhoProcessoModeloNegocio> rascunhos = _rascunho.Get(_user.UserGuidOrganizacao);
-                IEnumerable<GetRascunhoProcessoViewModel> getRascunhosViewModel = _mapper.Map<List<GetRascunhoProcessoViewModel>>(rascunhos);
-
-                return getRascunhosViewModel;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
     }
 }
