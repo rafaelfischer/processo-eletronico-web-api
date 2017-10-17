@@ -13,6 +13,7 @@ using ProcessoEletronicoService.WebAPI.Base;
 using ProcessoEletronicoService.WebAPI.Common;
 using ProcessoEletronicoService.WebAPI.Config;
 using ProcessoEletronicoService.WebAPI.Middleware;
+using Prodest.ProcessoEletronico.Integration.Common.Base;
 using Swashbuckle.Swagger.Model;
 using System;
 using System.IdentityModel.Tokens.Jwt;

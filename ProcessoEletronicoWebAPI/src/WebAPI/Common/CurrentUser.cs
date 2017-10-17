@@ -3,6 +3,10 @@ using Newtonsoft.Json;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.WebAPI.Base;
+using Prodest.ProcessoEletronico.Integration.Common;
+using Prodest.ProcessoEletronico.Integration.Common.Base;
+using Prodest.ProcessoEletronico.Integration.Models;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +25,11 @@ namespace ProcessoEletronicoService.WebAPI.Common
         private string _userSistema;
         private Guid _userGuidOrganizacao;
         private Guid _userGuidOrganizacaoPatriarca;
+        private IOrganizacaoService _organizacaoService;
 
-        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken)
+        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken, IOrganizacaoService organizacaoService)
         {
+            _organizacaoService = organizacaoService;
             FillUser(httpContextAccessor.HttpContext.User, clientAccessToken);
         }
 
@@ -92,24 +98,31 @@ namespace ProcessoEletronicoService.WebAPI.Common
 
                         //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
                         string siglaOrganizacao = claimOrganizacao.Value;
-
-                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/sigla/{siglaOrganizacao}", accessToken);
-                        if (!Guid.TryParse(organizacaoUsuario.guid, out _userGuidOrganizacao))
+                        
+                        ApiCallResponse<Organizacao> organizacaoUsuario = _organizacaoService.Search(siglaOrganizacao);
+                        if (organizacaoUsuario.ResponseObject == null)
                         {
                             throw new ProcessoEletronicoException($"Não foi possível obter informações da organização do usuário (Sigla: {siglaOrganizacao})");
                         }
+                        else
+                        {
+                            _userGuidOrganizacao = Guid.Parse(organizacaoUsuario.ResponseObject.Guid);
+                        }
 
-                        Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/{_userGuidOrganizacao}/patriarca", accessToken);
-                        if (!Guid.TryParse(organizacaoPatriarca.guid, out _userGuidOrganizacaoPatriarca))
+                        ApiCallResponse<Organizacao> organizacaoPatriarca = _organizacaoService.SearchPatriarca(_userGuidOrganizacao);
+                        if (organizacaoPatriarca.ResponseObject == null)
                         {
                             throw new ProcessoEletronicoException($"Não foi possível obter informações da organização patriarca do usuário (Guid: {_userGuidOrganizacao})");
+                        }
+                        else
+                        {
+                            _userGuidOrganizacaoPatriarca = Guid.Parse(organizacaoPatriarca.ResponseObject.Guid);
                         }
                     }
                 }
             }
         }
-
-
+        
         //Essa função será utilizada enquanto o token do acesso cidadão não contiver o guid do sistema
         private string FormatClientIdValue(string clientIdValue)
         {
@@ -147,13 +160,6 @@ namespace ProcessoEletronicoService.WebAPI.Common
                 }
             }
         }
-
-        private class Organizacao
-        {
-            public string guid { get; set; }
-            public string razaoSocial { get; set; }
-            public string sigla { get; set; }
-        }
-
+        
     }
 }

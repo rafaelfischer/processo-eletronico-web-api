@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Apresentacao\Apresentacao.csproj" />
     <ProjectReference Include="..\Dependencies\Dependencies.csproj" />
     <ProjectReference Include="..\Infraestrutura\Infraestrutura.csproj" />
+    <ProjectReference Include="..\Integration\Integration.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,6 @@
 ﻿using IdentityModel.Client;
 using Microsoft.Extensions.Options;
-using ProcessoEletronicoService.Negocio.Comum.Base;
-using ProcessoEletronicoService.WebAPI.Base;
+using Prodest.ProcessoEletronico.Integration.Common.Base;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

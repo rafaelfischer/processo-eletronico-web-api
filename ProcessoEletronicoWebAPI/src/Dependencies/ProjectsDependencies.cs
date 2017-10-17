@@ -2,6 +2,8 @@
 using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.WorkServices;
 using Apresentacao.APP.WorkServices.Base;
+using Infraestrutura.Integrations;
+using Infraestrutura.Integrations.Organograma;
 using Negocio.Bloqueios;
 using Negocio.Bloqueios.Base;
 using Negocio.Comum.Validacao;
@@ -16,6 +18,8 @@ using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using Prodest.ProcessoEletronico.Integration.Common.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
 using System;
 using System.Collections.Generic;
 
@@ -29,6 +33,11 @@ namespace ProcessoEletronicoService.Dependencies
 
             #region Infraestrutura
             dependencies.Add(typeof(IProcessoEletronicoRepositorios), typeof(ProcessoEletronicoRepositorios));
+            #endregion
+
+            #region Integration
+            dependencies.Add(typeof(IOrganizacaoService), typeof(OrganizacaoService));
+            dependencies.Add(typeof(IApiHandler), typeof(ApiHandler));
             #endregion
 
             #region Negocio
@@ -65,6 +74,8 @@ namespace ProcessoEletronicoService.Dependencies
             dependencies.Add(typeof(IRascunhoService), typeof(RascunhoService));
             dependencies.Add(typeof(IAutuacaoService), typeof(AutuacaoService));
             #endregion
+
+
 
             return dependencies;
         }

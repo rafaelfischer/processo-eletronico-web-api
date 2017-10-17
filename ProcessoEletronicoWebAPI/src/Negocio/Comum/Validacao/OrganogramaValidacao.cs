@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Base;
+using Prodest.ProcessoEletronico.Integration.Common.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
