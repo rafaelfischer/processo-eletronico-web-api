@@ -26,12 +26,10 @@ namespace ProcessoEletronicoService.WebAPI.Common
         private Guid _userGuidOrganizacao;
         private Guid _userGuidOrganizacaoPatriarca;
         private IOrganizacaoService _organizacaoService;
-        private IUnidadeService _unidadeService;
 
-        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken, IOrganizacaoService organizacaoService, IUnidadeService unidadeService)
+        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken, IOrganizacaoService organizacaoService )
         {
             _organizacaoService = organizacaoService;
-            _unidadeService = unidadeService;
             FillUser(httpContextAccessor.HttpContext.User, clientAccessToken);
         }
 
@@ -96,8 +94,6 @@ namespace ProcessoEletronicoService.WebAPI.Common
 
                     if (claimOrganizacao != null)
                     {
-                        string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
-
                         //TODO:Após o Acesso Cidadão implementar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
                         string siglaOrganizacao = claimOrganizacao.Value;
                         
@@ -137,31 +133,5 @@ namespace ProcessoEletronicoService.WebAPI.Common
 
             return clientIdValue;
         }
-
-
-        private T DownloadJsonData<T>(string url, string acessToken) where T : new()
-        {
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
-
-            using (var client = new HttpClient(handler))
-            {
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                if (!string.IsNullOrWhiteSpace(acessToken))
-                    client.SetBearerToken(acessToken);
-
-                var result = client.GetAsync(url).Result;
-
-                if (result.IsSuccessStatusCode)
-                {
-                    return JsonConvert.DeserializeObject<T>(result.Content.ReadAsStringAsync().Result);
-                }
-                else
-                {
-                    return new T();
-                }
-            }
-        }
-        
     }
 }

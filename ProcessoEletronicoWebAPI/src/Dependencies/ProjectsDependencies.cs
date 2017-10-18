@@ -38,6 +38,7 @@ namespace ProcessoEletronicoService.Dependencies
             #region Integration
             dependencies.Add(typeof(IOrganizacaoService), typeof(OrganizacaoService));
             dependencies.Add(typeof(IUnidadeService), typeof(UnidadeService));
+            dependencies.Add(typeof(IMunicipioService), typeof(MunicipioService));
             dependencies.Add(typeof(IApiHandler), typeof(ApiHandler));
             #endregion
 

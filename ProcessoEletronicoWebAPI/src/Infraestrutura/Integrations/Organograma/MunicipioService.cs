@@ -8,26 +8,26 @@ using Prodest.ProcessoEletronico.Integration.Common.Base;
 
 namespace Infraestrutura.Integrations.Organograma
 {
-    public class UnidadeService : IUnidadeService
+    public class MunicipioService : IMunicipioService
     {
         private readonly string UrlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
         private IApiHandler _apiHandler;
 
-        public UnidadeService(IApiHandler apiHandler)
+        public MunicipioService(IApiHandler apiHandler)
         {
             _apiHandler = apiHandler;
         }
 
-        public ApiCallResponse<Unidade> Search(Guid guid)
+        public ApiCallResponse<Municipio> Search(Guid guid)
         {
-            ApiCallResponse<Unidade> unidade = _apiHandler.DownloadJsonDataFromApi<Unidade>($"{UrlApiOrganograma}/unidades/{guid}");
-            return unidade;
+            ApiCallResponse<Municipio> municipio = _apiHandler.DownloadJsonDataFromApi<Municipio>($"{UrlApiOrganograma}/municipios/{guid}");
+            return municipio;
         }
 
-        public ApiCallResponse<IEnumerable<Unidade>> SearchByOrganizacao(Guid guidOrganizacao)
+        public ApiCallResponse<IEnumerable<Municipio>> SearchByEstado(string uf)
         {
-            ApiCallResponse<IEnumerable<Unidade>> unidades = _apiHandler.DownloadJsonDataFromApi<IEnumerable<Unidade>>($"{UrlApiOrganograma}/unidades/organizacao/{guidOrganizacao}");
-            return unidades;
+            ApiCallResponse<IEnumerable<Municipio>> municipios = _apiHandler.DownloadJsonDataFromApi<IEnumerable<Municipio>>($"{UrlApiOrganograma}/municipios?uf={uf}");
+            return municipios;
         }
     }
 }
