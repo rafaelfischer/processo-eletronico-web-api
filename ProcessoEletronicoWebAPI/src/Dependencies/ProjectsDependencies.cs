@@ -99,7 +99,6 @@ namespace ProcessoEletronicoService.Dependencies
             dependenciesCollection.Add(typeof(Negocio.Validacao.ProcessoValidacao));
             dependenciesCollection.Add(typeof(SinalizacaoValidacao));
             dependenciesCollection.Add(typeof(Negocio.Sinalizacoes.Validacao.SinalizacoesValidacao));
-            dependenciesCollection.Add(typeof(OrganogramaValidacao));
             dependenciesCollection.Add(typeof(GuidValidacao));
 
             return dependenciesCollection;
