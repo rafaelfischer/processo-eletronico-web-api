@@ -10,7 +10,7 @@ namespace WebAPP.Controllers
 {
     public class RascunhoController : BaseController
     {   
-        private IRascunhoService _service;
+        private IRascunhoService _service;        
 
         public RascunhoController(IRascunhoService service)
         {
@@ -20,9 +20,16 @@ namespace WebAPP.Controllers
         [HttpGet]
         [Authorize]
         public IActionResult Index()
-        {
+        {            
             IEnumerable<GetRascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosOrganizacao();
             return View("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
+        }
+
+        public IActionResult Create()
+        {
+            AutuacaoInicioViewModel formularioInicial = _service.GetFormularioInicioAutuacao();
+
+            return View(formularioInicial);
         }
     }
 }

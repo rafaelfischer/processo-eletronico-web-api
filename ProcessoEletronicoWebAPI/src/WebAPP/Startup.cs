@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 
 namespace WebAPP
 {
@@ -213,9 +214,9 @@ namespace WebAPP
 
                 Organizacao organizacao = downloadJson.DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/sigla/{siglaOrganizacao}?guidPatriarca=true", token);
 
-                guidOrganizacao = organizacao.guid;
-                nomeOrganizacao = organizacao.razaoSocial;
-                guidPatriarca = organizacao.guidPatriarca;                
+                guidOrganizacao = organizacao.Guid;
+                nomeOrganizacao = organizacao.RazaoSocial;
+                guidPatriarca = organizacao.GuidPatriarca;                
 
                 id.AddClaim(new Claim("guidorganizacao", guidOrganizacao));
                 id.AddClaim(new Claim("nomeorganizacao", nomeOrganizacao));
