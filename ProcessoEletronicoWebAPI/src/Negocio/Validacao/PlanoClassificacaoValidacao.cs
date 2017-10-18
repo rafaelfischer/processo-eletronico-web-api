@@ -1,13 +1,11 @@
 ﻿using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
-using ProcessoEletronicoService.Negocio.Comum;
 using ProcessoEletronicoService.Negocio.Modelos;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
+
 
 namespace ProcessoEletronicoService.Negocio.Validacao
 {
@@ -39,7 +37,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
         }
 
-        internal void OrganizacaoPatriarcaExistente(OrganizacaoOrganogramaModelo organizacaoPatriarca)
+        internal void OrganizacaoPatriarcaExistente(Organizacao organizacaoPatriarca)
         {
             if (organizacaoPatriarca == null)
                 throw new RecursoNaoEncontradoException("Organização patriarca não encontrada.");

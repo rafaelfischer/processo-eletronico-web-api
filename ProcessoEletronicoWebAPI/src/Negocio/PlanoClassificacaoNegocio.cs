@@ -8,9 +8,9 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Negocio.Validacao;
-using ProcessoEletronicoService.Negocio.Comum.Validacao;
-using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 using ProcessoEletronicoService.Negocio.Comum.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -22,9 +22,9 @@ namespace ProcessoEletronicoService.Negocio
         private IRepositorioGenerico<PlanoClassificacao> _repositorioPlanosClassificacao;
         private IRepositorioGenerico<OrganizacaoProcesso> _repositorioOrganizacoesProcesso;
         private PlanoClassificacaoValidacao _validacao;
-        private OrganogramaValidacao _organogramaValidacao;
+        private IOrganizacaoService _organizacaoService;
 
-        public PlanoClassificacaoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, OrganogramaValidacao organogramaValidacao, ICurrentUserProvider user)
+        public PlanoClassificacaoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, IOrganizacaoService organizacaoService, ICurrentUserProvider user)
         {
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
@@ -32,7 +32,7 @@ namespace ProcessoEletronicoService.Negocio
             _repositorioPlanosClassificacao = repositorios.PlanosClassificacao;
             _repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             _validacao = new PlanoClassificacaoValidacao(repositorios);
-            _organogramaValidacao = organogramaValidacao;
+            _organizacaoService = organizacaoService;
         }
         
         public List<PlanoClassificacaoModeloNegocio> Pesquisar(string guidOrganizacao)
@@ -40,13 +40,12 @@ namespace ProcessoEletronicoService.Negocio
             _validacao.GuidValido(guidOrganizacao);
 
             Guid gOrganizacao = new Guid(guidOrganizacao);
-
-            OrganizacaoOrganogramaModelo organizacaoPatriarca = _organogramaValidacao.PesquisarOrganizacaoPatriarca(gOrganizacao);
+            Organizacao organizacaoPatriarca = _organizacaoService.SearchPatriarca(gOrganizacao).ResponseObject;
 
             _validacao.OrganizacaoPatriarcaExistente(organizacaoPatriarca);
-            _validacao.GuidValido(organizacaoPatriarca.guid);
+            _validacao.GuidValido(organizacaoPatriarca.Guid);
 
-            var planosClassificacao = _repositorioPlanosClassificacao.Where(pc => pc.OrganizacaoProcesso.GuidOrganizacao.Equals(new Guid(organizacaoPatriarca.guid))
+            var planosClassificacao = _repositorioPlanosClassificacao.Where(pc => pc.OrganizacaoProcesso.GuidOrganizacao.Equals(new Guid(organizacaoPatriarca.Guid))
                                                                               && (pc.GuidOrganizacao.Equals(gOrganizacao)
                                                                               ||  !pc.AreaFim))
                                                                     .Include(pc => pc.OrganizacaoProcesso)
