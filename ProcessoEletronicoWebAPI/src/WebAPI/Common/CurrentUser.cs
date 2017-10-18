@@ -5,7 +5,7 @@ using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.WebAPI.Base;
 using Prodest.ProcessoEletronico.Integration.Common;
 using Prodest.ProcessoEletronico.Integration.Common.Base;
-using Prodest.ProcessoEletronico.Integration.Models;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using Prodest.ProcessoEletronico.Integration.Organograma.Base;
 using System;
 using System.Collections.Generic;
@@ -26,10 +26,12 @@ namespace ProcessoEletronicoService.WebAPI.Common
         private Guid _userGuidOrganizacao;
         private Guid _userGuidOrganizacaoPatriarca;
         private IOrganizacaoService _organizacaoService;
+        private IUnidadeService _unidadeService;
 
-        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken, IOrganizacaoService organizacaoService)
+        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken, IOrganizacaoService organizacaoService, IUnidadeService unidadeService)
         {
             _organizacaoService = organizacaoService;
+            _unidadeService = unidadeService;
             FillUser(httpContextAccessor.HttpContext.User, clientAccessToken);
         }
 
@@ -96,7 +98,7 @@ namespace ProcessoEletronicoService.WebAPI.Common
                     {
                         string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
 
-                        //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
+                        //TODO:Após o Acesso Cidadão implementar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
                         string siglaOrganizacao = claimOrganizacao.Value;
                         
                         ApiCallResponse<Organizacao> organizacaoUsuario = _organizacaoService.Search(siglaOrganizacao);

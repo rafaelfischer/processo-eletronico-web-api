@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.WebAPP.Config;
+using Prodest.ProcessoEletronico.Integration.Common.Base;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;

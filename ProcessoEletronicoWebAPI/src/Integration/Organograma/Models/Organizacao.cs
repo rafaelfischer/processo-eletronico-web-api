@@ -1,4 +1,4 @@
-﻿namespace Prodest.ProcessoEletronico.Integration.Models
+﻿namespace Prodest.ProcessoEletronico.Integration.Organograma.Models
 {
     public class Organizacao
     {

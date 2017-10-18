@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Prodest.ProcessoEletronico.Integration.Common;
-using Prodest.ProcessoEletronico.Integration.Models;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using Prodest.ProcessoEletronico.Integration.Common.Base;
 
 namespace Infraestrutura.Integrations.Organograma

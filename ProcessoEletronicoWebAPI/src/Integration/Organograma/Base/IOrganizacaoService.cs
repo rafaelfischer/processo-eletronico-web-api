@@ -1,5 +1,5 @@
 ﻿using Prodest.ProcessoEletronico.Integration.Common;
-using Prodest.ProcessoEletronico.Integration.Models;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
