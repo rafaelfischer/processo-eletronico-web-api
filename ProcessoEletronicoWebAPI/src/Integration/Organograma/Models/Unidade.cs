@@ -9,5 +9,7 @@ namespace Prodest.ProcessoEletronico.Integration.Organograma.Models
         public string Guid { get; set; }
         public string Nome { get; set; }
         public string Sigla { get; set; }
+        public Organizacao Organizacao { get; set; }
+    
     }
 }

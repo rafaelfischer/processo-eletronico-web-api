@@ -21,8 +21,8 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         public ProcessoValidacao(IProcessoEletronicoRepositorios repositorios)
         {
-            this.repositorioProcessos = repositorios.Processos;
-            this.repositorioAtividades = repositorios.Atividades;
+            repositorioProcessos = repositorios.Processos;
+            repositorioAtividades = repositorios.Atividades;
             interessadoPessoaFisicaValidacao = new InteressadoPessoaFisicaValidacao(repositorios);
             interessadoPessoaJuridicaValidacao = new InteressadoPessoaJuridicaValidacao(repositorios);
             municipioValidacao = new MunicipioValidacao();
