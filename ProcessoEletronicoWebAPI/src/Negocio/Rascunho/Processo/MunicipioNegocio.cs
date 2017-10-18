@@ -1,15 +1,15 @@
-﻿using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+﻿using AutoMapper;
+using ProcessoEletronicoService.Dominio.Base;
+using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ProcessoEletronicoService.Dominio.Modelos;
-using ProcessoEletronicoService.Negocio.Modelos;
-using ProcessoEletronicoService.Dominio.Base;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
-using AutoMapper;
-using ProcessoEletronicoService.Negocio.Comum.Validacao;
-using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
@@ -19,17 +19,17 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private IRepositorioGenerico<RascunhoProcesso> _repositorioRascunhos;
         private MunicipioValidacao _validacao;
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
-        private OrganogramaValidacao _organogramaValidacao;
+        private IMunicipioService _municipioService;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
 
-        public MunicipioNegocio(IProcessoEletronicoRepositorios repositorios, MunicipioValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, OrganogramaValidacao organogramaValidacao, IMapper mapper)
+        public MunicipioNegocio(IProcessoEletronicoRepositorios repositorios, MunicipioValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, IMunicipioService municipioService, IMapper mapper)
         {
             _repositorioMunicipiosRascunhoProcesso = repositorios.MunicipiosRascunhoProcesso;
             _repositorioRascunhos = repositorios.RascunhosProcesso;
             _validacao = validacao;
             _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
-            _organogramaValidacao = organogramaValidacao;
+            _municipioService = municipioService;
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
         }
@@ -134,19 +134,19 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         }
 
-        private void InformacoesMunicipio(MunicipioRascunhoProcesso municipio)
+        private void InformacoesMunicipio(MunicipioRascunhoProcesso municipioRascunhoProcesso)
         {
-            if (municipio.GuidMunicipio.HasValue)
+            if (municipioRascunhoProcesso.GuidMunicipio.HasValue)
             {
-                MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(municipio.GuidMunicipio.Value);
+                Municipio municipio = _municipioService.Search(municipioRascunhoProcesso.GuidMunicipio.Value).ResponseObject;
 
-                if (municipioOrganograma == null)
+                if (municipio == null)
                 {
-                    throw new RequisicaoInvalidaException($"Município informado não encontrado no Organograma (Guid : {municipio.GuidMunicipio.Value})");
+                    throw new RequisicaoInvalidaException($"Município informado não encontrado no Organograma (Guid : {municipioRascunhoProcesso.GuidMunicipio.Value})");
                 }
 
-                municipio.Nome = municipioOrganograma.nome;
-                municipio.Uf = municipioOrganograma.uf;
+                municipioRascunhoProcesso.Nome = municipio.Nome;
+                municipioRascunhoProcesso.Uf = municipio.Uf;
             }
         }
 

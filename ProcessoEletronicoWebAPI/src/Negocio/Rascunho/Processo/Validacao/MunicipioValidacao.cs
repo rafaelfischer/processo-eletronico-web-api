@@ -3,6 +3,7 @@ using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Modelos;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,11 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 {
     public class MunicipioValidacao : IBaseValidation<MunicipioProcessoModeloNegocio, MunicipioRascunhoProcesso>, IBaseCollectionValidation<MunicipioProcessoModeloNegocio>
     {
-        private OrganogramaValidacao _organogramaValidacao;
+        private IMunicipioService _municipioService;
 
-        public MunicipioValidacao(OrganogramaValidacao organogramaValidacao)
+        public MunicipioValidacao(IMunicipioService municipioService)
         {
-            _organogramaValidacao = organogramaValidacao;
+            _municipioService = municipioService;
         }
         public void Exists(MunicipioRascunhoProcesso municipioRascunhoProcesso)
         {
@@ -66,7 +67,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
                     }
 
                     //Verificar se o município existe no Organograma
-                    if (_organogramaValidacao.PesquisarMunicipio(guidMunicipio) == null)
+                    if (_municipioService.Search(guidMunicipio).ResponseObject == null)
                     {
                         throw new RequisicaoInvalidaException($"Município informado não encontrado no Organograma (Guid : {guidMunicipio})");
                     }
