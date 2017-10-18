@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ProcessoEletronicoService.Dominio.Base;
+using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
+using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ProcessoEletronicoService.Dominio.Base;
-using ProcessoEletronicoService.Dominio.Modelos;
-using Microsoft.EntityFrameworkCore;
-using ProcessoEletronicoService.Negocio.Modelos;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
-using ProcessoEletronicoService.Negocio.Comum.Validacao;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
-using ProcessoEletronicoService.Negocio.Comum.Base;
-using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
@@ -32,7 +33,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private InteressadoPessoaFisicaValidacao _interessadoPessoaFisicaValidacao;
         private InteressadoPessoaJuridicaValidacao _interessadoPessoaJuridicaValidacao;
         private MunicipioValidacao _municipioValidacao;
-        private OrganogramaValidacao _organogramaValidacao;
+        private IOrganizacaoService _organizacaoService;
+        private IUnidadeService _unidadeService;
+        private IMunicipioService _municipioService;
         private SinalizacaoValidacao _sinalizacaoValidacao;
         private UsuarioValidacao _usuarioValidacao;
 
@@ -48,12 +51,12 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private ICurrentUserProvider _user;
 
         public RascunhoProcessoNegocio(IProcessoEletronicoRepositorios repositorios, RascunhoProcessoValidacao validacao,
-                                       AnexoValidacao anexoValidacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao, 
-                                       InteressadoPessoaJuridicaValidacao interessadoPessoaJuridicaValidacao, MunicipioValidacao municipioValidacao, 
-                                       OrganogramaValidacao organogramaValidacao, SinalizacaoValidacao sinalizacaoValidacao, 
-                                       UsuarioValidacao usuarioValidacao, IAnexoNegocio anexoNegocio, 
-                                       IInteressadoPessoaFisicaNegocio interessadoPessoaFisicaNegocio, IInteressadoPessoaJuridicaNegocio interessadoPessoaJuridicaNegocio, 
-                                       ISinalizacaoNegocio sinalizacaoNegocio, IMunicipioNegocio municipioNegocio, 
+                                       AnexoValidacao anexoValidacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao,
+                                       InteressadoPessoaJuridicaValidacao interessadoPessoaJuridicaValidacao, MunicipioValidacao municipioValidacao,
+                                       IOrganizacaoService organizacaoService, IUnidadeService unidadeService, IMunicipioService municipioService,
+                                       SinalizacaoValidacao sinalizacaoValidacao,  UsuarioValidacao usuarioValidacao, IAnexoNegocio anexoNegocio,
+                                       IInteressadoPessoaFisicaNegocio interessadoPessoaFisicaNegocio, IInteressadoPessoaJuridicaNegocio interessadoPessoaJuridicaNegocio,
+                                       ISinalizacaoNegocio sinalizacaoNegocio, IMunicipioNegocio municipioNegocio,
                                        IMapper mapper, ICurrentUserProvider user)
         {
             _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
@@ -70,7 +73,9 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _interessadoPessoaFisicaValidacao = interessadoPessoaFisicaValidacao;
             _interessadoPessoaJuridicaValidacao = interessadoPessoaJuridicaValidacao;
             _municipioValidacao = municipioValidacao;
-            _organogramaValidacao = organogramaValidacao;
+            _organizacaoService = organizacaoService;
+            _unidadeService = unidadeService;
+            _municipioService = municipioService;
             _sinalizacaoValidacao = sinalizacaoValidacao;
             _usuarioValidacao = usuarioValidacao;
 
@@ -117,7 +122,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
-            
+
             //Preechimento de campos obrigatórios
             _validacao.IsFilled(rascunhoProcessoNegocio);
             _anexoValidacao.IsFilled(rascunhoProcessoNegocio.Anexos);
@@ -128,12 +133,12 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             //Preenchimento correto dos campos
             _validacao.IsValid(rascunhoProcessoNegocio);
-            _anexoValidacao.IsValid(rascunhoProcessoNegocio.Anexos, rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?) null);
+            _anexoValidacao.IsValid(rascunhoProcessoNegocio.Anexos, rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null);
             _interessadoPessoaFisicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaFisica);
             _interessadoPessoaJuridicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
             _municipioValidacao.IsValid(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
             _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
-            
+
             /*Mapeamento para inserção*/
             RascunhoProcesso rascunhoProcesso = new RascunhoProcesso();
             rascunhoProcesso = _mapper.Map<RascunhoProcessoModeloNegocio, RascunhoProcesso>(rascunhoProcessoNegocio);
@@ -163,7 +168,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
-            
+
             _validacao.IsFilled(rascunhoProcessoNegocio);
             _anexoValidacao.IsFilled(rascunhoProcessoNegocio.Anexos);
             _interessadoPessoaFisicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaFisica);
@@ -178,7 +183,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _interessadoPessoaJuridicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
             _municipioValidacao.IsValid(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
             _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
-            
+
             MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
             _unitOfWork.Save();
         }
@@ -209,30 +214,30 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         #region Preenchimento de Informações relacionadas com GUID
         private void InformacoesOrganizacao(RascunhoProcesso rascunhoProcesso)
         {
-            OrganizacaoOrganogramaModelo organizacao = _organogramaValidacao.PesquisarOrganizacao(rascunhoProcesso.GuidOrganizacao);
+            Organizacao organizacao = _organizacaoService.Search(rascunhoProcesso.GuidOrganizacao).ResponseObject;
 
             if (organizacao == null)
             {
                 throw new RequisicaoInvalidaException("Organização não encontrada no Organograma.");
             }
 
-            rascunhoProcesso.GuidOrganizacao = new Guid(organizacao.guid);
-            rascunhoProcesso.NomeOrganizacao = organizacao.razaoSocial;
-            rascunhoProcesso.SiglaOrganizacao = organizacao.sigla;
+            rascunhoProcesso.GuidOrganizacao = new Guid(organizacao.Guid);
+            rascunhoProcesso.NomeOrganizacao = organizacao.RazaoSocial;
+            rascunhoProcesso.SiglaOrganizacao = organizacao.Sigla;
         }
 
         private void InformacoesUnidade(RascunhoProcesso rascunhoProcesso)
         {
-            UnidadeOrganogramaModelo unidade = _organogramaValidacao.PesquisarUnidade(rascunhoProcesso.GuidUnidade);
+            Unidade unidade = _unidadeService.Search(rascunhoProcesso.GuidUnidade).ResponseObject;
 
             if (unidade == null)
             {
                 throw new RequisicaoInvalidaException("Unidade não encontrada no Organograma.");
             }
 
-            rascunhoProcesso.GuidUnidade = new Guid(unidade.guid);
-            rascunhoProcesso.NomeUnidade = unidade.nome;
-            rascunhoProcesso.SiglaUnidade = unidade.sigla;
+            rascunhoProcesso.GuidUnidade = new Guid(unidade.Guid);
+            rascunhoProcesso.NomeUnidade = unidade.Nome;
+            rascunhoProcesso.SiglaUnidade = unidade.Sigla;
         }
 
         private void InformacoesMunicipio(RascunhoProcesso rascunhoProcesso)
@@ -240,19 +245,19 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             if (rascunhoProcesso.MunicipiosRascunhoProcesso != null && rascunhoProcesso.MunicipiosRascunhoProcesso.Count > 0)
             {
 
-                foreach (MunicipioRascunhoProcesso municipio in rascunhoProcesso.MunicipiosRascunhoProcesso)
+                foreach (MunicipioRascunhoProcesso municipioRascunhoProcesso in rascunhoProcesso.MunicipiosRascunhoProcesso)
                 {
-                    if (municipio.GuidMunicipio.HasValue)
+                    if (municipioRascunhoProcesso.GuidMunicipio.HasValue)
                     {
-                        MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(municipio.GuidMunicipio.Value);
+                        Municipio municipio = _municipioService.Search(municipioRascunhoProcesso.GuidMunicipio.Value).ResponseObject;
 
-                        if (municipioOrganograma == null)
+                        if (municipio == null)
                         {
                             throw new RequisicaoInvalidaException("Municipio não encontrado no Organograma.");
                         }
 
-                        municipio.Nome = municipioOrganograma.nome;
-                        municipio.Uf = municipioOrganograma.uf;
+                        municipioRascunhoProcesso.Nome = municipio.Nome;
+                        municipioRascunhoProcesso.Uf = municipio.Uf;
                     }
                 }
             }
@@ -264,15 +269,15 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             {
                 foreach (InteressadoPessoaFisicaRascunho interessado in rascunhoProcesso.InteressadosPessoaFisica)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessado.GuidMunicipio.Value);
+                    Municipio municipio = _municipioService.Search(interessado.GuidMunicipio.Value).ResponseObject;
 
-                    if (municipioOrganograma == null)
+                    if (municipio == null)
                     {
                         throw new RequisicaoInvalidaException("Municipio do interessado pessoa física não encontrado no Organograma.");
                     }
 
-                    interessado.NomeMunicipio = municipioOrganograma.nome;
-                    interessado.UfMunicipio = municipioOrganograma.uf;
+                    interessado.NomeMunicipio = municipio.Nome;
+                    interessado.UfMunicipio = municipio.Uf;
                 }
             }
         }
@@ -283,15 +288,15 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             {
                 foreach (InteressadoPessoaJuridicaRascunho interessado in rascunhoProcesso.InteressadosPessoaJuridica)
                 {
-                    MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessado.GuidMunicipio.Value);
+                    Municipio municipio = _municipioService.Search(interessado.GuidMunicipio.Value).ResponseObject;
 
-                    if (municipioOrganograma == null)
+                    if (municipio == null)
                     {
                         throw new RequisicaoInvalidaException("Municipio do interessado pessoa jurídica não encontrado no Organograma.");
                     }
 
-                    interessado.NomeMunicipio = municipioOrganograma.nome;
-                    interessado.UfMunicipio = municipioOrganograma.uf;
+                    interessado.NomeMunicipio = municipio.Nome;
+                    interessado.UfMunicipio = municipio.Uf;
                 }
             }
         }

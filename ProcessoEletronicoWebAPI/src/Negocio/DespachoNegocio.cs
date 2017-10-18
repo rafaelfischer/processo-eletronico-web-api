@@ -11,10 +11,11 @@ using ProcessoEletronicoService.Negocio.Validacao;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Base;
-using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 using Negocio.Notificacoes.Base;
 using Negocio.Bloqueios;
 using Negocio.Bloqueios.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -29,14 +30,18 @@ namespace ProcessoEletronicoService.Negocio
         private IRepositorioGenerico<Processo> _repositorioProcessos;
         private INotificacoesService _notificacoesService;
         private IBloqueioCore _bloqueioCore;
+        private IOrganizacaoService _organizacaoService;
+        private IUnidadeService _unidadeService;
 
         private DespachoValidacao _validacao;
         private AnexoValidacao _anexoValidacao;
         private UsuarioValidacao _usuarioValidacao;
-        private OrganogramaValidacao _organogramaValidacao;
         private BloqueioValidation _bloqueioValidation;
 
-        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, IProcessoNegocio processoNegocio, INotificacoesService notificacoesService, ICurrentUserProvider user, OrganogramaValidacao organogramaValidacao, BloqueioValidation bloqueioValidation, IBloqueioCore bloqueioCore)
+        public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, 
+            IMapper mapper, IProcessoNegocio processoNegocio, INotificacoesService notificacoesService, 
+            ICurrentUserProvider user, IOrganizacaoService organizacaoService, IUnidadeService unidadeService, 
+            BloqueioValidation bloqueioValidation, IBloqueioCore bloqueioCore)
         {
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
@@ -49,7 +54,8 @@ namespace ProcessoEletronicoService.Negocio
             _validacao = new DespachoValidacao(repositorios);
             _anexoValidacao = new AnexoValidacao(repositorios);
             _usuarioValidacao = new UsuarioValidacao();
-            _organogramaValidacao = organogramaValidacao;
+            _organizacaoService = organizacaoService;
+            _unidadeService = unidadeService;
             _bloqueioCore = bloqueioCore;
             _bloqueioValidation = bloqueioValidation;
         }
@@ -156,30 +162,30 @@ namespace ProcessoEletronicoService.Negocio
 
         private void InformacoesOrganizacao(Despacho despacho)
         {
-            OrganizacaoOrganogramaModelo organizacao = _organogramaValidacao.PesquisarOrganizacao(despacho.GuidOrganizacaoDestino);
+            Organizacao organizacao =  _organizacaoService.Search(despacho.GuidOrganizacaoDestino).ResponseObject;
 
             if (organizacao == null)
             {
                 throw new RequisicaoInvalidaException("Organização autuadora não encontrada no Organograma");
             }
 
-            despacho.GuidOrganizacaoDestino = new Guid(organizacao.guid);
-            despacho.NomeOrganizacaoDestino = organizacao.razaoSocial;
-            despacho.SiglaOrganizacaoDestino = organizacao.sigla;
+            despacho.GuidOrganizacaoDestino = new Guid(organizacao.Guid);
+            despacho.NomeOrganizacaoDestino = organizacao.RazaoSocial;
+            despacho.SiglaOrganizacaoDestino = organizacao.Sigla;
 
         }
         private void InformacoesUnidade(Despacho despacho)
         {
-            UnidadeOrganogramaModelo unidade = _organogramaValidacao.PesquisarUnidade(despacho.GuidUnidadeDestino);
+            Unidade unidade = _unidadeService.Search(despacho.GuidUnidadeDestino).ResponseObject;
 
             if (unidade == null)
             {
                 throw new RequisicaoInvalidaException("Unidade autudora não encontrada no Organograma");
             }
 
-            despacho.GuidUnidadeDestino = new Guid(unidade.guid);
-            despacho.NomeUnidadeDestino = unidade.nome;
-            despacho.SiglaUnidadeDestino = unidade.sigla;
+            despacho.GuidUnidadeDestino = new Guid(unidade.Guid);
+            despacho.NomeUnidadeDestino = unidade.Nome;
+            despacho.SiglaUnidadeDestino = unidade.Sigla;
         }
 
         private void InformacoesUsuario(Despacho despacho)

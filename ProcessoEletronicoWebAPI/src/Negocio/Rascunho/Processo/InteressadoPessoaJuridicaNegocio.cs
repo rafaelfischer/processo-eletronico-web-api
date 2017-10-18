@@ -1,18 +1,18 @@
-﻿using ProcessoEletronicoService.Dominio.Base;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
+using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using System;
 using System.Collections.Generic;
-using ProcessoEletronicoService.Negocio.Modelos;
-using AutoMapper;
 using System.Linq;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
-using ProcessoEletronicoService.Negocio.Comum;
-using ProcessoEletronicoService.Negocio.Comum.Validacao;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
-using Microsoft.EntityFrameworkCore;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
-using ProcessoEletronicoService.Negocio.Comum.Base;
-using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
@@ -23,7 +23,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private InteressadoPessoaJuridicaValidacao _validacao;
         private RascunhoProcessoValidacao _rascunhoProcessoValidacao;
         private UsuarioValidacao _usuarioValidacao;
-        private OrganogramaValidacao _organogramaValidacao;
+        private IMunicipioService _municipioService;
         private IContatoInteressadoPessoaJuridicaNegocio _contatoNegocio;
         private IEmailInteressadoPessoaJuridicaNegocio _emailNegocio;
         private IMapper _mapper;
@@ -31,14 +31,14 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         private ICurrentUserProvider _user;
 
 
-        public InteressadoPessoaJuridicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user, IContatoInteressadoPessoaJuridicaNegocio contatoNegocio, IEmailInteressadoPessoaJuridicaNegocio emailNegocio, InteressadoPessoaJuridicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, OrganogramaValidacao organogramaValidacao)
+        public InteressadoPessoaJuridicaNegocio(IProcessoEletronicoRepositorios repositorios, IMapper mapper, ICurrentUserProvider user, IContatoInteressadoPessoaJuridicaNegocio contatoNegocio, IEmailInteressadoPessoaJuridicaNegocio emailNegocio, InteressadoPessoaJuridicaValidacao validacao, RascunhoProcessoValidacao rascunhoProcessoValidacao, UsuarioValidacao usuarioValidacao, IMunicipioService municipioService)
         {
             _repositorioInteressadosPessoaJuridicaRascunho = repositorios.InteressadosPessoaJuridicaRascunho;
             _repositorioRascunhosProcesso = repositorios.RascunhosProcesso;
             _validacao = validacao;
             _rascunhoProcessoValidacao = rascunhoProcessoValidacao;
             _usuarioValidacao = usuarioValidacao;
-            _organogramaValidacao = organogramaValidacao;
+            _municipioService = municipioService;
             _contatoNegocio = contatoNegocio;
             _emailNegocio = emailNegocio;
             _mapper = mapper;
@@ -140,15 +140,15 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             if (interessadoPessoaJuridica.GuidMunicipio.HasValue)
             {
-                MunicipioOrganogramaModelo municipioOrganograma = _organogramaValidacao.PesquisarMunicipio(interessadoPessoaJuridica.GuidMunicipio.Value);
+                Municipio municipio = _municipioService.Search(interessadoPessoaJuridica.GuidMunicipio.Value).ResponseObject;
 
-                if (municipioOrganograma == null)
+                if (municipio == null)
                 {
                     throw new RequisicaoInvalidaException($"Municipio do interessado pessoa jurídica {interessadoPessoaJuridica.RazaoSocial} não encontrado no Organograma.");
                 }
 
-                interessadoPessoaJuridica.NomeMunicipio = municipioOrganograma.nome;
-                interessadoPessoaJuridica.UfMunicipio = municipioOrganograma.uf;
+                interessadoPessoaJuridica.NomeMunicipio = municipio.Nome;
+                interessadoPessoaJuridica.UfMunicipio = municipio.Uf;
             }
         }
 

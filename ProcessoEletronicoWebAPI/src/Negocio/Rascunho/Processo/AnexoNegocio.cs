@@ -1,16 +1,13 @@
-﻿using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ProcessoEletronicoService.Dominio.Base;
+using ProcessoEletronicoService.Dominio.Modelos;
+using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ProcessoEletronicoService.Dominio.Modelos;
-using ProcessoEletronicoService.Negocio.Modelos;
-using ProcessoEletronicoService.Dominio.Base;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
-using AutoMapper;
-using ProcessoEletronicoService.Negocio.Comum.Validacao;
-using static ProcessoEletronicoService.Negocio.Comum.Validacao.OrganogramaValidacao;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 {
