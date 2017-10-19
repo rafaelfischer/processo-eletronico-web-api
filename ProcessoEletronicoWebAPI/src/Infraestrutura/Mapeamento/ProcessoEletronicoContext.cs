@@ -33,6 +33,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
         public virtual DbSet<OrganizacaoProcesso> OrganizacaoProcesso { get; set; }
         public virtual DbSet<PlanoClassificacao> PlanoClassificacao { get; set; }
         public virtual DbSet<Processo> Processo { get; set; }
+        public virtual DbSet<RascunhoDespacho> RascunhoDespacho { get; set; }
         public virtual DbSet<RascunhoProcesso> RascunhoProcesso { get; set; }
         public virtual DbSet<Sinalizacao> Sinalizacao { get; set; }
         public virtual DbSet<SinalizacaoProcesso> SinalizacaoProcesso { get; set; }
@@ -118,6 +119,11 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                 entity.Property(e => e.Nome)
                     .HasColumnName("nome")
                     .HasColumnType("varchar(200)");
+
+                entity.HasOne(d => d.RascunhoDespacho)
+                    .WithMany(p => p.AnexosRascunho)
+                    .HasForeignKey(d => d.IdRascunhoDespacho)
+                    .HasConstraintName("FK_AnexoRascunho_DespachoRascunho");
 
                 entity.HasOne(d => d.RascunhoProcesso)
                     .WithMany(p => p.Anexos)
@@ -325,7 +331,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Despacho_Processo");
             });
-
+            
             modelBuilder.Entity<DestinacaoFinal>(entity =>
             {
                 entity.HasIndex(e => e.Descricao)
@@ -876,6 +882,57 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasForeignKey(d => d.IdOrganizacaoProcesso)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Processo_OrganizacaoProcesso");
+            });
+
+            modelBuilder.Entity<RascunhoDespacho>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.DataHora)
+                    .HasColumnName("dataHora")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GuidOrganizacaoDestino).HasColumnName("guidOrganizacaoDestino");
+
+                entity.Property(e => e.GuidUnidadeDestino).HasColumnName("guidUnidadeDestino");
+
+                entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
+
+                entity.Property(e => e.IdUsuario)
+                    .IsRequired()
+                    .HasColumnName("idUsuario")
+                    .HasColumnType("varchar(50)");
+
+                entity.Property(e => e.NomeOrganizacaoDestino)
+                    .HasColumnName("nomeOrganizacaoDestino")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NomeUnidadeDestino)
+                    .HasColumnName("nomeUnidadeDestino")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.NomeUsuario)
+                    .IsRequired()
+                    .HasColumnName("nomeUsuario")
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.SiglaOrganizacaoDestino)
+                    .HasColumnName("siglaOrganizacaoDestino")
+                    .HasColumnType("varchar(20)");
+
+                entity.Property(e => e.SiglaUnidadeDestino)
+                    .HasColumnName("siglaUnidadeDestino")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Texto)
+                    .HasColumnName("texto")
+                    .HasColumnType("varchar(max)");
+
+                entity.HasOne(d => d.OrganizacaoProcesso)
+                    .WithMany(p => p.RascunhosDespacho)
+                    .HasForeignKey(d => d.IdOrganizacaoProcesso)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_RascunhoDespacho_OrganizacaoProcesso");
             });
 
             modelBuilder.Entity<RascunhoProcesso>(entity =>

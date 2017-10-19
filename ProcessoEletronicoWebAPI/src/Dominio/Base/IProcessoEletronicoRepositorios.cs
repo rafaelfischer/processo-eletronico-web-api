@@ -30,6 +30,7 @@ namespace ProcessoEletronicoService.Dominio.Base
         IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; }
         IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; }
         IRepositorioGenerico<Processo> Processos { get; }
+        IRepositorioGenerico<RascunhoDespacho> RascunhosDespacho { get; }
         IRepositorioGenerico<RascunhoProcesso> RascunhosProcesso { get; }
         IRepositorioGenerico<SinalizacaoProcesso> SinalizacoesProcesso { get; }
         IRepositorioGenerico<SinalizacaoRascunhoProcesso> SinalizacoesRascunhoProcesso { get; }
