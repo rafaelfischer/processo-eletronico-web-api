@@ -19,7 +19,8 @@ namespace Apresentacao.APP.Mappings
             CreateMap<Unidade, UnidadeViewModel>();
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoViewModel>();
             CreateMap<Organizacao, OrganizacaoViewModel>();
-            
+            CreateMap<Municipio, MunicipioViewModel>();
+
         }
     }
 }

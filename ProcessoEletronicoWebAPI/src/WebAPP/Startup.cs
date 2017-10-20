@@ -20,11 +20,14 @@ using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
 using Prodest.ProcessoEletronico.Integration.Organograma.Models;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
 
 namespace WebAPP
 {
     public class Startup
     {
+        private IHostingEnvironment _hostingEnvironment;
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -33,6 +36,8 @@ namespace WebAPP
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            _hostingEnvironment = env;
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -52,6 +57,10 @@ namespace WebAPP
 
             // Add the Auth0 Settings object so it can be injected
             services.Configure<Settings>(Configuration.GetSection("oidc"));
+
+            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;            
+
+            services.AddSingleton<IFileProvider>(physicalProvider);            
 
             DependencyInjection.InjectDependencies(services);
         }

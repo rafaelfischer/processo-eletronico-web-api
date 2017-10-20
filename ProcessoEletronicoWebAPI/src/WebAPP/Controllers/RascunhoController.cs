@@ -25,6 +25,8 @@ namespace WebAPP.Controllers
             return View("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
         }
 
+        [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             AutuacaoInicioViewModel formularioInicial = _service.GetFormularioInicioAutuacao();

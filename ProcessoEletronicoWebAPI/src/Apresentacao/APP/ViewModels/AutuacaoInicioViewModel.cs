@@ -11,10 +11,14 @@ namespace Apresentacao.APP.ViewModels
         public string IdAtividade { get; set; }
         public string GuidUnidade { get; set; }
         public string Resumo { get; set; }
-        public List<int> IdsSinalizacoes { get; set; }
+        public IEnumerable<int> IdsSinalizacoes { get; set; }
         public OrganizacaoViewModel OrganizacaoUsuario { get; set; }
-        public List<AtividadeViewModel> Atividades { get; set; }
-        public List<SinalizacaoViewModel> Sinalizacoes { get; set; }
-        public List<UnidadeViewModel> Unidades { get; set; }
+        public IEnumerable<AtividadeViewModel> Atividades { get; set; }
+        public IEnumerable<SinalizacaoViewModel> Sinalizacoes { get; set; }
+        public IEnumerable<UnidadeViewModel> Unidades { get; set; }
+        public string IdMunicipio { get; set; }
+        public IEnumerable<UfViewModel> ListaUfs { get; set; }
+        public IEnumerable<MunicipioViewModel> ListaMunicipios { get; set; }
+        public string IdUf { get; set; }
     }
 }

@@ -10,5 +10,8 @@ namespace Apresentacao.APP.ViewModels
         public int codigoIbge { get; set; }
         public string nome { get; set; }
         public string uf { get; set; }
+
+        public string id { get { return this.guid; } }
+        public string text{ get { return this.nome; } }
     }
 }

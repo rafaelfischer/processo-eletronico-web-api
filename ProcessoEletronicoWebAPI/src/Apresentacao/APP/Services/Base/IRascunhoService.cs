@@ -8,6 +8,6 @@ namespace Apresentacao.APP.Services.Base
     public interface IRascunhoService
     {
         IEnumerable<GetRascunhoProcessoViewModel> GetRascunhosOrganizacao();
-        AutuacaoInicioViewModel GetFormularioInicioAutuacao();
+        AutuacaoInicioViewModel GetFormularioInicioAutuacao();        
     }
 }

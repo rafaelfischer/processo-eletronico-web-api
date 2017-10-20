@@ -4,6 +4,7 @@ using Apresentacao.APP.WorkServices;
 using Apresentacao.APP.WorkServices.Base;
 using Infraestrutura.Integrations;
 using Infraestrutura.Integrations.Organograma;
+using Microsoft.Extensions.FileProviders;
 using Negocio.Bloqueios;
 using Negocio.Bloqueios.Base;
 using Negocio.Comum.Validacao;
@@ -75,6 +76,8 @@ namespace ProcessoEletronicoService.Dependencies
             dependencies.Add(typeof(IProcessoService), typeof(ProcessoService));
             dependencies.Add(typeof(IRascunhoService), typeof(RascunhoService));
             dependencies.Add(typeof(IAutuacaoService), typeof(AutuacaoService));
+            dependencies.Add(typeof(IMunicipioAppService), typeof(MunicipioAppService));
+
             #endregion
 
 

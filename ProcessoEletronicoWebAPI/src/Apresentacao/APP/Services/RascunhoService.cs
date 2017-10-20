@@ -17,8 +17,7 @@ namespace Apresentacao.APP.Services
         private IMapper _mapper;        
         private ICurrentUserProvider _user;
         private IRascunhoProcessoNegocio _rascunhoService;
-        private IOrganizacaoService _organizacaoService;
-        private IMunicipioService _municipioService;
+        private IOrganizacaoService _organizacaoService;        
         private IUnidadeService _unidadeService;
         private IAtividadeNegocio _atividadeService;
         private ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio _sinalizacaoNegocio;
@@ -27,8 +26,7 @@ namespace Apresentacao.APP.Services
             IMapper mapper, 
             ICurrentUserProvider user, 
             IRascunhoProcessoNegocio rascunho, 
-            IOrganizacaoService organizacaoService, 
-            IMunicipioService municipioService, 
+            IOrganizacaoService organizacaoService,             
             IUnidadeService unidadeService, 
             IAtividadeNegocio atividadeNegocio,
             ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio sinalizacaoNegocio
@@ -37,8 +35,7 @@ namespace Apresentacao.APP.Services
             _mapper = mapper;            
             _user = user;
             _rascunhoService = rascunho;
-            _organizacaoService = organizacaoService;
-            _municipioService = municipioService;
+            _organizacaoService = organizacaoService;            
             _unidadeService = unidadeService;
             _atividadeService = atividadeNegocio;
             _sinalizacaoNegocio = sinalizacaoNegocio;
@@ -63,12 +60,12 @@ namespace Apresentacao.APP.Services
             formularioInicio.NomeUsuario = _user.UserNome;
             formularioInicio.Cpf = _user.UserCpf;
 
+            formularioInicio.ListaUfs = new UfViewModel().GetUFs();
 
             //var organizacao = _organizacaoService.Search(_user.UserGuidOrganizacao);
             //var organizacoes = _organizacaoService.SearchFilhas(_user.UserGuidOrganizacaoPatriarca);
             //var patriarca = _organizacaoService.SearchPatriarca(_user.UserGuidOrganizacaoPatriarca);
-            //var organizacoSigla = _organizacaoService.Search("PRODEST");
-            //var municipios = _municipioService.SearchByEstado("ES");
+            //var organizacoSigla = _organizacaoService.Search("PRODEST");            
             //var municipio = _municipioService.Search(new Guid("7017bf17-07e0-4c40-b453-8d7c123dfc53"));
             //var unidades = _unidadeService.SearchByOrganizacao(_user.UserGuidOrganizacao);
 

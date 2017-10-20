@@ -4,51 +4,90 @@
     ViewBag.SubTitle = "Autuação de Processo - Rascunho";
 }
 
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">@ViewBag.SubTitle</h3>
-    </div>
-    <!-- /.box-header -->
 
-    <div class="box-body">
-        <form role="form">
-            <div class="form-group">
-                <label asp-for="Atividades"></label>
-                <select class="form-control" asp-items="@(new SelectList(Model.Atividades,"Codigo","Descricao"))">
-                    <option>Selecione uma Atividade</option>
-                </select>
 
-            </div>
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Dados Básicos</h3></a></li>
+        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Interessados</h3></a></li>
+        <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Abrangência</h3></a></li>
+        <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Anexos</h3></a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <form id="basico">
+                <div class="form-group">
+                    <label asp-for="Atividades"></label>
+                    <select class="form-control" asp-for="IdAtividade" asp-items="@(new SelectList(Model.Atividades,"Codigo","Descricao"))">
+                        <option value="-1">Selecione uma Atividade</option>
+                    </select>
 
-            <div class="form-group">
-                <label asp-for="NomeUsuario"></label>
-                <input disabled asp-for="NomeUsuario" class="form-control" />
-                <input type="hidden" asp-for="Cpf" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Unidades"></label>
-                <select class="form-control" asp-items="@(new SelectList(Model.Unidades,"guid","nome"))">
-                    <option>Selecione uma Unidade</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Resumo"></label>
-                <textarea class="form-control" asp-for="Resumo" rows="5" cols="80"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Sinalizacoes"></label>
-                @foreach (var item in Model.Sinalizacoes)
-                {
-                <div class="checkbox">
-                    <label><input type="checkbox" name="IdsSinalizacoes" value="@item.id" /> @item.descricao</label>
                 </div>
-                }
-            </div>
-        </form>
-    </div>
 
-    <!-- /.box-body -->
+                <div class="form-group">
+                    <label asp-for="NomeUsuario"></label>
+                    <input disabled asp-for="NomeUsuario" class="form-control" />
+                    <input type="hidden" asp-for="Cpf" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Unidades"></label>
+                    <select class="form-control" asp-for="GuidUnidade" asp-items="@(new SelectList(Model.Unidades,"guid","nome"))">
+                        <option value="-1">Selecione uma Unidade</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Resumo"></label>
+                    <textarea class="form-control" asp-for="Resumo" rows="5" cols="80"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Sinalizacoes"></label>
+                    @foreach (var item in Model.Sinalizacoes)
+                    {
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="IdsSinalizacoes" value="@item.id" /> @item.descricao</label>
+                        </div>
+                    }
+                </div>
+            </form>
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2">
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_3">
+            <form role="form">
+                <div class="form-group">
+                    <label asp-for="IdUf"></label>
+                    <select asp-for="IdUf" class="form-control" id="ufajax" asp-items="@(new SelectList(Model.ListaUfs,"Sigla","Nome"))">                        
+                        <option value="0">Selecione um Estado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdMunicipio"></label>
+                    <select class="form-control" asp-for="IdMunicipio" id="municipiosajax" data-placehoder="Selecione um município">                        
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ListaMunicipios"></label>
+                    <select multiple="multiple" class="form-control" asp-for="ListaMunicipios" id="municipiosselecionados">                        
+                    </select>
+                    <hr />
+                    <button type="button" class="btn btn-sm btn-default" id="btnLimparAbrangencia">Limpar</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_4">
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
 </div>
+
+
+@section scripts{    
+    <script src="~/js/rascunhoCreate.js"></script>
+}
