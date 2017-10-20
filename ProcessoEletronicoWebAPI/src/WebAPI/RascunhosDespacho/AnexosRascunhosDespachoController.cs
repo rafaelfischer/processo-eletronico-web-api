@@ -9,7 +9,7 @@ using ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos;
 using System.Collections.Generic;
 using WebAPI.Config;
 
-namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
+namespace Prodest.ProcessoEletronico.WebAPI.RascunhosDespacho
 {
     [Route("api/rascunhos-processo/{idRascunhoProcesso}/anexos")]
     public class AnexosRascunhosDespachoController : BaseController

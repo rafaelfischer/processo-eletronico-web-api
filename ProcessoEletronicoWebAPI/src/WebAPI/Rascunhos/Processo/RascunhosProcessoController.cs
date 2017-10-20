@@ -13,12 +13,12 @@ using WebAPI.Config;
 namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
 {
     [Route("api/rascunhos-processo")]
-    public class RascunhosProcessoController : BaseController
+    public class RascunhosDespachoController : BaseController
     {
         IRascunhoProcessoNegocio _negocio;
         IMapper _mapper;
 
-        public RascunhosProcessoController(IRascunhoProcessoNegocio negocio, IMapper mapper)
+        public RascunhosDespachoController(IRascunhoProcessoNegocio negocio, IMapper mapper)
         {
             _negocio = negocio;
             _mapper = mapper;

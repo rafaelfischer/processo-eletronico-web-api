@@ -9,5 +9,6 @@ namespace WebAPI.Config
     {
         //Grupos na documentação da API (Swagger)
         public const string RascunhosDocumentationGroup = "Rascunhos de Processos";
+        public const string RascunhosDespachoGroup = "Rascunhos de Despacho";
     }
 }

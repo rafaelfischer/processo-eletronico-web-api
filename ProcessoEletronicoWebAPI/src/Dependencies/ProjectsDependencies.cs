@@ -2,6 +2,8 @@
 using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.WorkServices;
 using Apresentacao.APP.WorkServices.Base;
+using Apresentacao.WebAPI;
+using Apresentacao.WebAPI.Base;
 using Infraestrutura.Integrations;
 using Infraestrutura.Integrations.Organograma;
 using Negocio.Bloqueios;
@@ -9,6 +11,10 @@ using Negocio.Bloqueios.Base;
 using Negocio.Comum.Validacao;
 using Negocio.Notificacoes;
 using Negocio.Notificacoes.Base;
+using Negocio.RascunhosDespacho;
+using Negocio.RascunhosDespacho.Base;
+using Negocio.RascunhosDespacho.Validations;
+using Negocio.RascunhosDespacho.Validations.Base;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Infraestrutura.Repositorios;
 using ProcessoEletronicoService.Negocio;
@@ -54,6 +60,7 @@ namespace ProcessoEletronicoService.Dependencies
             dependencies.Add(typeof(IEmailInteressadoPessoaFisicaNegocio), typeof(EmailInteressadoPessoaFisicaNegocio));
             dependencies.Add(typeof(IEmailInteressadoPessoaJuridicaNegocio), typeof(EmailInteressadoPessoaJuridicaNegocio));
             dependencies.Add(typeof(IDespachoNegocio), typeof(DespachoNegocio));
+            dependencies.Add(typeof(IRascunhoDespachoCore), typeof(RascunhoDespachoCore));
             dependencies.Add(typeof(IDestinacaoFinalNegocio), typeof(DestinacaoFinalNegocio));
             dependencies.Add(typeof(IInteressadoPessoaFisicaNegocio), typeof(InteressadoPessoaFisicaNegocio));
             dependencies.Add(typeof(IInteressadoPessoaJuridicaNegocio), typeof(InteressadoPessoaJuridicaNegocio));
@@ -69,12 +76,21 @@ namespace ProcessoEletronicoService.Dependencies
             dependencies.Add(typeof(Negocio.Rascunho.Processo.Base.ISinalizacaoNegocio), typeof(Negocio.Rascunho.Processo.SinalizacaoNegocio));
             dependencies.Add(typeof(Negocio.Sinalizacoes.Base.ISinalizacaoNegocio), typeof(Negocio.Sinalizacoes.SinalizacaoNegocio));
 
+            //Validations
+            dependencies.Add(typeof(IRascunhoDespachoValidation), typeof(RascunhoDespachoValidation));
+
             #endregion
 
             #region Apresentacao
+
+            //WebAPP
             dependencies.Add(typeof(IProcessoService), typeof(ProcessoService));
             dependencies.Add(typeof(IRascunhoService), typeof(RascunhoService));
             dependencies.Add(typeof(IAutuacaoService), typeof(AutuacaoService));
+
+            //WebAPI
+            dependencies.Add(typeof(IRascunhoDespachoService), typeof(RascunhoDespachoService));
+            
             #endregion
 
 

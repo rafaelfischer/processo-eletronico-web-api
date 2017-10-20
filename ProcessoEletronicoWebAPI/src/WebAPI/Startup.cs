@@ -64,6 +64,7 @@ namespace WebAPI
                 options.AddPolicy("Processo.Autuar", policy => policy.RequireClaim("Acao$Processo", "Autuar"));
                 options.AddPolicy("RascunhoProcesso.Rascunhar", policy => policy.RequireClaim("Acao$RascunhoProcesso", "Rascunhar"));
                 options.AddPolicy("Despacho.Inserir", policy => policy.RequireClaim("Acao$Despacho", "Inserir"));
+                options.AddPolicy("RascunhosDespacho.Elaborar", policy => policy.RequireClaim("Acao$RascunhosDespacho", "Elaborar"));
                 options.AddPolicy("PlanoClassificacao.Inserir", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Inserir"));
                 options.AddPolicy("PlanoClassificacao.Excluir", policy => policy.RequireClaim("Acao$PlanoClassificacao", "Excluir"));
                 options.AddPolicy("Funcao.Inserir", policy => policy.RequireClaim("Acao$Funcao", "Inserir"));
