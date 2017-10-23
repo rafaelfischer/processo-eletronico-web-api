@@ -137,7 +137,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _interessadoPessoaFisicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaFisica);
             _interessadoPessoaJuridicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
             _municipioValidacao.IsValid(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
-            _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
+            _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes?.Select(s => s.Id).ToList());
 
             /*Mapeamento para inserção*/
             RascunhoProcesso rascunhoProcesso = new RascunhoProcesso();
