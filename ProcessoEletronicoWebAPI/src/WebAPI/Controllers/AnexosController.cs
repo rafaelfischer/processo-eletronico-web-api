@@ -1,15 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProcessoEletronicoService.Apresentacao.Base;
 using ProcessoEletronicoService.Apresentacao.Modelos;
-using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.WebAPI.Base;
-using ProcessoEletronicoService.WebAPI.Config;
-using System;
-using System.Collections.Generic;
-using System.Net;
 
 namespace ProcessoEletronicoService.WebAPI.Controllers
 {

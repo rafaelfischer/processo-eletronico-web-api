@@ -34,13 +34,13 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
             PlanosClassificacao = UnitOfWork.MakeGenericRepository<PlanoClassificacao>();
             OrganizacoesProcesso = UnitOfWork.MakeGenericRepository<OrganizacaoProcesso>();
             Processos = UnitOfWork.MakeGenericRepository<Processo>();
+            RascunhosDespacho = UnitOfWork.MakeGenericRepository<RascunhoDespacho>();
             RascunhosProcesso = UnitOfWork.MakeGenericRepository<RascunhoProcesso>();
             SinalizacoesRascunhoProcesso = UnitOfWork.MakeGenericRepository<SinalizacaoRascunhoProcesso>();
             SinalizacoesProcesso = UnitOfWork.MakeGenericRepository<SinalizacaoProcesso>();
             TiposContato = UnitOfWork.MakeGenericRepository<TipoContato>();
             TiposDocumentais = UnitOfWork.MakeGenericRepository<TipoDocumental>();
             Sinalizacoes = UnitOfWork.MakeGenericRepository<Sinalizacao>();
-
         }
 
         public IUnitOfWork UnitOfWork { get; private set; }
@@ -65,6 +65,7 @@ namespace ProcessoEletronicoService.Infraestrutura.Repositorios
         public IRepositorioGenerico<OrganizacaoProcesso> OrganizacoesProcesso { get; private set; }
         public IRepositorioGenerico<PlanoClassificacao> PlanosClassificacao { get; private set; }
         public IRepositorioGenerico<Processo> Processos { get; private set; }
+        public IRepositorioGenerico<RascunhoDespacho> RascunhosDespacho { get; private set; }
         public IRepositorioGenerico<RascunhoProcesso> RascunhosProcesso { get; private set; }
         public IRepositorioGenerico<SinalizacaoProcesso> SinalizacoesProcesso { get; private set; }
         public IRepositorioGenerico<SinalizacaoRascunhoProcesso> SinalizacoesRascunhoProcesso { get; private set; }

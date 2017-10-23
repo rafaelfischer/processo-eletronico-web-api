@@ -9,6 +9,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         {
             PlanosClassificacao = new HashSet<PlanoClassificacao>();
             Processos = new HashSet<Processo>();
+            RascunhosDespacho = new HashSet<RascunhoDespacho>();
             Sinalizacoes = new HashSet<Sinalizacao>();
         }
 
@@ -22,6 +23,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public short DigitoOrganizacao { get; set; }
         public Guid GuidOrganizacao { get; set; }
 
+        public virtual ICollection<RascunhoDespacho> RascunhosDespacho { get; set; }
         public virtual ICollection<PlanoClassificacao> PlanosClassificacao { get; set; }
         public virtual ICollection<RascunhoProcesso> RascunhosProcesso { get; set; }
         public virtual ICollection<Processo> Processos { get; set; }

@@ -32,7 +32,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Mapeamentos
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
                 .ForMember(dest => dest.MunicipiosRascunhoProcesso, opt => opt.MapFrom(src => src.MunicipiosRascunhoProcesso))
                 .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => src.GuidOrganizacao.ToString("D")))
-                .ForMember(dest => dest.GuidUnidade, opt => opt.MapFrom(src => src.GuidUnidade.ToString("D")))
+                .ForMember(dest => dest.GuidUnidade, opt => opt.MapFrom(src => src.GuidUnidade.HasValue ? src.GuidUnidade.Value.ToString("D") : null))
                 .MaxDepth(1);
 
 

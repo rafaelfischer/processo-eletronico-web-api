@@ -54,7 +54,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                                        AnexoValidacao anexoValidacao, InteressadoPessoaFisicaValidacao interessadoPessoaFisicaValidacao,
                                        InteressadoPessoaJuridicaValidacao interessadoPessoaJuridicaValidacao, MunicipioValidacao municipioValidacao,
                                        IOrganizacaoService organizacaoService, IUnidadeService unidadeService, IMunicipioService municipioService,
-                                       SinalizacaoValidacao sinalizacaoValidacao,  UsuarioValidacao usuarioValidacao, IAnexoNegocio anexoNegocio,
+                                       SinalizacaoValidacao sinalizacaoValidacao, UsuarioValidacao usuarioValidacao, IAnexoNegocio anexoNegocio,
                                        IInteressadoPessoaFisicaNegocio interessadoPessoaFisicaNegocio, IInteressadoPessoaJuridicaNegocio interessadoPessoaJuridicaNegocio,
                                        ISinalizacaoNegocio sinalizacaoNegocio, IMunicipioNegocio municipioNegocio,
                                        IMapper mapper, ICurrentUserProvider user)
@@ -228,16 +228,18 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         private void InformacoesUnidade(RascunhoProcesso rascunhoProcesso)
         {
-            Unidade unidade = _unidadeService.Search(rascunhoProcesso.GuidUnidade).ResponseObject;
+            if (rascunhoProcesso.GuidUnidade.HasValue) {
+                Unidade unidade = _unidadeService.Search(rascunhoProcesso.GuidUnidade.Value).ResponseObject;
 
-            if (unidade == null)
-            {
-                throw new RequisicaoInvalidaException("Unidade não encontrada no Organograma.");
+                if (unidade == null)
+                {
+                    throw new RequisicaoInvalidaException("Unidade não encontrada no Organograma.");
+                }
+
+                rascunhoProcesso.GuidUnidade = new Guid(unidade.Guid);
+                rascunhoProcesso.NomeUnidade = unidade.Nome;
+                rascunhoProcesso.SiglaUnidade = unidade.Sigla;
             }
-
-            rascunhoProcesso.GuidUnidade = new Guid(unidade.Guid);
-            rascunhoProcesso.NomeUnidade = unidade.Nome;
-            rascunhoProcesso.SiglaUnidade = unidade.Sigla;
         }
 
         private void InformacoesMunicipio(RascunhoProcesso rascunhoProcesso)
