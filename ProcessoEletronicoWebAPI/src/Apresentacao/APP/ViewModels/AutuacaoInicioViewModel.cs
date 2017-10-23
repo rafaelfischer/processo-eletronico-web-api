@@ -6,6 +6,7 @@ namespace Apresentacao.APP.ViewModels
 {
     public class AutuacaoInicioViewModel
     {
+        public int IdRascunho { get; set; }
         public string NomeUsuario { get; set; }
         public string Cpf { get; set; }
         public string IdAtividade { get; set; }

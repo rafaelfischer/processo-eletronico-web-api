@@ -17,6 +17,7 @@
         <div class="tab-pane active" id="tab_1">
             <form id="basico">
                 <div class="form-group">
+                    <h1>@Model.IdRascunho</h1>
                     <label asp-for="Atividades"></label>
                     <select class="form-control" asp-for="IdAtividade" asp-items="@(new SelectList(Model.Atividades,"Codigo","Descricao"))">
                         <option value="-1">Selecione uma Atividade</option>

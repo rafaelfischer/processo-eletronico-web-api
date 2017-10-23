@@ -41,6 +41,14 @@ namespace Apresentacao.APP.Services
             _sinalizacaoNegocio = sinalizacaoNegocio;
         }
 
+        public RascunhoProcessoModeloNegocio PostRascunho()
+        {
+            RascunhoProcessoModeloNegocio rascunho = new RascunhoProcessoModeloNegocio();
+            rascunho.GuidOrganizacao = _user.UserGuidOrganizacao.ToString();
+            _rascunhoService.Post(rascunho);
+            return rascunho;
+        }
+
         public AutuacaoInicioViewModel GetFormularioInicioAutuacao()
         {
             AutuacaoInicioViewModel formularioInicio = new AutuacaoInicioViewModel();
@@ -60,14 +68,7 @@ namespace Apresentacao.APP.Services
             formularioInicio.NomeUsuario = _user.UserNome;
             formularioInicio.Cpf = _user.UserCpf;
 
-            formularioInicio.ListaUfs = new UfViewModel().GetUFs();
-
-            //var organizacao = _organizacaoService.Search(_user.UserGuidOrganizacao);
-            //var organizacoes = _organizacaoService.SearchFilhas(_user.UserGuidOrganizacaoPatriarca);
-            //var patriarca = _organizacaoService.SearchPatriarca(_user.UserGuidOrganizacaoPatriarca);
-            //var organizacoSigla = _organizacaoService.Search("PRODEST");            
-            //var municipio = _municipioService.Search(new Guid("7017bf17-07e0-4c40-b453-8d7c123dfc53"));
-            //var unidades = _unidadeService.SearchByOrganizacao(_user.UserGuidOrganizacao);
+            formularioInicio.ListaUfs = new UfViewModel().GetUFs();            
 
             return formularioInicio;
         }
