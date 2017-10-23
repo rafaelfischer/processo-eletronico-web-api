@@ -953,7 +953,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnType("varchar(100)");
 
                 entity.Property(e => e.NomeUnidade)
-                    .IsRequired()
                     .HasColumnName("nomeUnidade")
                     .HasColumnType("varchar(100)");
 
@@ -967,7 +966,6 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
                     .HasColumnType("varchar(20)");
 
                 entity.Property(e => e.SiglaUnidade)
-                    .IsRequired()
                     .HasColumnName("siglaUnidade")
                     .HasColumnType("varchar(100)");
 
