@@ -34,7 +34,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
                 throw new RecursoNaoEncontradoException("Interessado Pessoa Física não encontrado.");
             }
         }
-        
+
         public void IsFilled(IEnumerable<InteressadoPessoaFisicaModeloNegocio> interessadosPessoaFisicaNegocio)
         {
             if (interessadosPessoaFisicaNegocio != null)
@@ -52,9 +52,12 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 
         public void IsValid(IEnumerable<InteressadoPessoaFisicaModeloNegocio> interessadosPessoaFisicaNegocio)
         {
-            foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessadosPessoaFisicaNegocio)
+            if (interessadosPessoaFisicaNegocio != null)
             {
-                IsValid(interessado);
+                foreach (InteressadoPessoaFisicaModeloNegocio interessado in interessadosPessoaFisicaNegocio)
+                {
+                    IsValid(interessado);
+                }
             }
         }
 
