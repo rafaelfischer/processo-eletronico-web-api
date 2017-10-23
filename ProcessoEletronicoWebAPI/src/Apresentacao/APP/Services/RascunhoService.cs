@@ -45,7 +45,7 @@ namespace Apresentacao.APP.Services
         {
             RascunhoProcessoModeloNegocio rascunho = new RascunhoProcessoModeloNegocio();
             rascunho.GuidOrganizacao = _user.UserGuidOrganizacao.ToString();
-            _rascunhoService.Post(rascunho);
+            rascunho =_rascunhoService.Post(rascunho);
             return rascunho;
         }
 
