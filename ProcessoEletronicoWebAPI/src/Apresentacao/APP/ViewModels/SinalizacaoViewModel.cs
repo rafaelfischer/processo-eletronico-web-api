@@ -6,10 +6,7 @@ namespace Apresentacao.APP.ViewModels
 {
     public class SinalizacaoViewModel
     {
-        public int id { get; set; }
-        public string descricao { get; set; }
-        public string cor { get; set; }
-        public string imagem { get; set; }
-        public int idOrganizacaoProcesso { get; set; }
-    }
+        public int Id { get; set; }
+        public string Descricao { get; set; }        
+    }    
 }

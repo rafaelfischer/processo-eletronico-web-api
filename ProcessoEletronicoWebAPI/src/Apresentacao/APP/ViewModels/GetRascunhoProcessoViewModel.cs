@@ -17,6 +17,6 @@ namespace Apresentacao.APP.ViewModels
         public string SiglaUnidade { get; set; }
         public string IdUsuarioAutuador { get; set; }
         public string NomeUsuarioAutuador { get; set; }
-        public AtividadeModeloNegocio Atividade { get; set; }
+        public AtividadeViewModel Atividade { get; set; }
     }
 }

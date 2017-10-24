@@ -8,8 +8,9 @@ namespace Apresentacao.APP.Services.Base
 {
     public interface IRascunhoService
     {
-        RascunhoProcessoModeloNegocio PostRascunho();
-        IEnumerable<GetRascunhoProcessoViewModel> GetRascunhosOrganizacao();
-        AutuacaoInicioViewModel GetFormularioInicioAutuacao();        
+        IEnumerable<RascunhoProcessoViewModel> GetRascunhosProcessoPorOrganizacao();        
+        RascunhoProcessoViewModel EditRascunhoProcesso(int? id);        
+        void UpdateRascunhoProcesso(int id, RascunhoProcessoViewModel rascunhoProcessoAlterado);
+        void DeleteRascunhoProcesso(int id);
     }
 }

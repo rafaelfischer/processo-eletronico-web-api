@@ -22,19 +22,36 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Index()
         {            
-            IEnumerable<GetRascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosOrganizacao();
+            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosProcessoPorOrganizacao();
             return View("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Create()
+        public IActionResult Editar(int? id)
         {
-            RascunhoProcessoModeloNegocio rascunho =  _service.PostRascunho();
-            AutuacaoInicioViewModel formularioInicial = _service.GetFormularioInicioAutuacao();
-            formularioInicial.IdRascunho = rascunho.Id;
+            RascunhoProcessoViewModel rascunho = _service.EditRascunhoProcesso(id);
+            return View("Editar", rascunho);
+        }
 
-            return View(formularioInicial);
+        [HttpPost]
+        [Authorize]
+        public IActionResult Editar(RascunhoProcessoViewModel rascunho)
+        {
+            _service.UpdateRascunhoProcesso(rascunho.Id, rascunho);
+            return RedirectToAction("/Editar/"+ rascunho.Id);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Excluir(int id)
+        {
+            _service.DeleteRascunhoProcesso(id);
+
+            return RedirectToAction("Index");
+
+            //IEnumerable<GetRascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosOrganizacao();
+            //return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
         }
     }
 }

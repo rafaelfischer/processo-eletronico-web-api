@@ -40,52 +40,92 @@ namespace Apresentacao.APP.Services
             _atividadeService = atividadeNegocio;
             _sinalizacaoNegocio = sinalizacaoNegocio;
         }
-
-        public RascunhoProcessoModeloNegocio PostRascunho()
-        {
-            RascunhoProcessoModeloNegocio rascunho = new RascunhoProcessoModeloNegocio();
-            rascunho.GuidOrganizacao = _user.UserGuidOrganizacao.ToString();
-            rascunho =_rascunhoService.Post(rascunho);
-            return rascunho;
-        }
-
-        public AutuacaoInicioViewModel GetFormularioInicioAutuacao()
-        {
-            AutuacaoInicioViewModel formularioInicio = new AutuacaoInicioViewModel();
-
-            IEnumerable<AtividadeModeloNegocio> atividades = _atividadeService.Pesquisar();            
-            formularioInicio.Atividades = _mapper.Map<List<AtividadeViewModel>>(atividades);
-
-            IEnumerable<Unidade> unidades = _unidadeService.SearchByOrganizacao(_user.UserGuidOrganizacao).ResponseObject;
-            formularioInicio.Unidades = _mapper.Map<List<UnidadeViewModel>>(unidades);
-
-            IEnumerable<SinalizacaoModeloNegocio> sinalizacoes = _sinalizacaoNegocio.Pesquisar(_user.UserGuidOrganizacaoPatriarca.ToString());
-            formularioInicio.Sinalizacoes = _mapper.Map<List<SinalizacaoViewModel>>(sinalizacoes);
-
-            Organizacao organizacao = _organizacaoService.Search(_user.UserGuidOrganizacao).ResponseObject;            
-            formularioInicio.OrganizacaoUsuario = _mapper.Map<OrganizacaoViewModel>(organizacao);
-
-            formularioInicio.NomeUsuario = _user.UserNome;
-            formularioInicio.Cpf = _user.UserCpf;
-
-            formularioInicio.ListaUfs = new UfViewModel().GetUFs();            
-
-            return formularioInicio;
-        }
-
-        public IEnumerable<GetRascunhoProcessoViewModel> GetRascunhosOrganizacao()
+        public IEnumerable<RascunhoProcessoViewModel> GetRascunhosProcessoPorOrganizacao()
         {
             try
             {
                 IEnumerable<RascunhoProcessoModeloNegocio> rascunhos = _rascunhoService.Get(_user.UserGuidOrganizacao);
-                IEnumerable<GetRascunhoProcessoViewModel> getRascunhosViewModel = _mapper.Map<List<GetRascunhoProcessoViewModel>>(rascunhos);
+                IEnumerable<RascunhoProcessoViewModel> getRascunhosViewModel = _mapper.Map<List<RascunhoProcessoViewModel>>(rascunhos);
 
                 return getRascunhosViewModel;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return null;
+                throw;
             }
         }
+
+        public GetRascunhoProcessoViewModel GetRascunhoProcesso(int id)
+        {
+            try
+            {
+                RascunhoProcessoModeloNegocio rascunhos = _rascunhoService.Get(id);
+                GetRascunhoProcessoViewModel getRascunhosViewModel = _mapper.Map<GetRascunhoProcessoViewModel>(rascunhos);
+
+                return getRascunhosViewModel;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }        
+
+        public void DeleteRascunhoProcesso(int id)
+        {
+            try
+            {
+                _rascunhoService.Delete(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }            
+        }
+
+        public RascunhoProcessoViewModel EditRascunhoProcesso(int? id)
+        {            
+            RascunhoProcessoViewModel RascunhoProcesso = new RascunhoProcessoViewModel();
+
+            if (id.HasValue) { 
+                RascunhoProcessoModeloNegocio rascunho = _rascunhoService.Get(id.Value);
+                RascunhoProcesso = _mapper.Map<RascunhoProcessoViewModel>(rascunho);
+            }
+            else
+            {
+                RascunhoProcesso.Id = _rascunhoService.Post(new RascunhoProcessoModeloNegocio { GuidOrganizacao = _user.UserGuidOrganizacao.ToString() }).Id;
+            }
+
+            IEnumerable<AtividadeModeloNegocio> atividades = _atividadeService.Pesquisar();            
+            RascunhoProcesso.AtividadesLista = _mapper.Map<List<AtividadeViewModel>>(atividades);
+
+            IEnumerable<Unidade> unidades = _unidadeService.SearchByOrganizacao(_user.UserGuidOrganizacao).ResponseObject;
+            RascunhoProcesso.UnidadesLista = _mapper.Map<List<UnidadeViewModel>>(unidades);
+
+            IEnumerable<SinalizacaoModeloNegocio> sinalizacoes = _sinalizacaoNegocio.Pesquisar(_user.UserGuidOrganizacaoPatriarca.ToString());
+            RascunhoProcesso.SinalizacoesLista = _mapper.Map<List<SinalizacaoViewModel>>(sinalizacoes);
+
+            Organizacao organizacao = _organizacaoService.Search(_user.UserGuidOrganizacao).ResponseObject;            
+            RascunhoProcesso.OrganizacaoProcesso = _mapper.Map<OrganizacaoViewModel>(organizacao);
+
+            RascunhoProcesso.NomeUsuarioAutuador = _user.UserNome;            
+
+            RascunhoProcesso.UfLista = new UfViewModel().GetUFs();            
+
+            return RascunhoProcesso;
+        }        
+
+        public void UpdateRascunhoProcesso(int id, RascunhoProcessoViewModel rascunhoProcessoViewModel)
+        {   
+            try
+            {    
+                RascunhoProcessoModeloNegocio rascunhoProcessoNegocio = _mapper.Map<RascunhoProcessoModeloNegocio>(rascunhoProcessoViewModel);
+                _rascunhoService.Patch(id, rascunhoProcessoNegocio);
+            }
+            catch (MemberAccessException)
+            {
+                throw;
+            }            
+        }
+        
     }    
 }

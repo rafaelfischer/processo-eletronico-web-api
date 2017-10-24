@@ -13,7 +13,7 @@ namespace Apresentacao.APP.ViewModels
         public string Id { get { return this.Sigla; } }
         public string Text { get { return this.Nome; } }
 
-        public IEnumerable<UfViewModel> GetUFs()
+        public List<UfViewModel> GetUFs()
         {
             string ufs = string.Empty;
             FileStream fileStream = new FileStream("Json/uf.json", FileMode.Open);
@@ -23,7 +23,7 @@ namespace Apresentacao.APP.ViewModels
                 ufs = reader.ReadToEnd();
             }
 
-            IEnumerable<UfViewModel> listaUfs = JsonConvert.DeserializeObject<List<UfViewModel>>(ufs);
+            List<UfViewModel> listaUfs = JsonConvert.DeserializeObject<List<UfViewModel>>(ufs);
 
             return listaUfs;
         }
