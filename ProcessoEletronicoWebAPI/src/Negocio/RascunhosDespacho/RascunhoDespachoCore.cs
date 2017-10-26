@@ -51,14 +51,16 @@ namespace Negocio.RascunhosDespacho
             return _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho);
         }
 
-        public IEnumerable<RascunhoDespachoModel> SearchByOrganizacao(int id)
+        public IEnumerable<RascunhoDespachoModel> SearchByOrganizacao()
         {
-            throw new NotImplementedException();
+            IEnumerable<RascunhoDespacho> rascunhosDespachoByOrganizacao = _repositorioRascunhosDespacho.Where(rascunho => rascunho.GuidOrganizacao.Equals(_user.UserGuidOrganizacao)).ToList();
+            return _mapper.Map<IEnumerable<RascunhoDespachoModel>>(rascunhosDespachoByOrganizacao);
         }
 
-        public IEnumerable<RascunhoDespachoModel> SearchByUsuario(int id)
+        public IEnumerable<RascunhoDespachoModel> SearchByUsuario()
         {
-            throw new NotImplementedException();
+            IEnumerable<RascunhoDespacho> rascunhosDespachoByUsuario = _repositorioRascunhosDespacho.Where(rascunho => rascunho.IdUsuario.Equals(_user.UserCpf)).ToList();
+            return _mapper.Map<IEnumerable<RascunhoDespachoModel>>(rascunhosDespachoByUsuario);
         }
 
         public RascunhoDespachoModel Add(RascunhoDespachoModel rascunhoDespachoModel)
@@ -72,19 +74,20 @@ namespace Negocio.RascunhosDespacho
             FillOrganizacaoDestino(rascunhoDespacho);
             FillUnidadeDestino(rascunhoDespacho);
             FillUserAndDataHora(rascunhoDespacho);
-            FillOrganizacao(rascunhoDespacho);
-            
+             FillOrganizacao(rascunhoDespacho);
+            FillOrganizacaoProcesso(rascunhoDespacho);
+
             _repositorioRascunhosDespacho.Add(rascunhoDespacho);
             _unitOfWork.Save();
 
             return Search(rascunhoDespacho.Id);
         }
-        
+
         public void Delete(int id)
         {
             throw new NotImplementedException();
         }
-        
+
         public void Update(int id, RascunhoDespachoModel rascunhoDespachoModel)
         {
             RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).SingleOrDefault();
@@ -102,12 +105,11 @@ namespace Negocio.RascunhosDespacho
             FillOrganizacaoDestino(rascunhoDespacho);
             FillUnidadeDestino(rascunhoDespacho);
             FillUserAndDataHora(rascunhoDespacho);
-            FillOrganizacao(rascunhoDespacho);
-            
+
             _unitOfWork.Save();
 
         }
-        
+
         private void FillOrganizacaoDestino(RascunhoDespacho rascunhoDespacho)
         {
             if (rascunhoDespacho.GuidOrganizacaoDestino.HasValue)
@@ -115,7 +117,8 @@ namespace Negocio.RascunhosDespacho
                 Organizacao organizacao = _organizacaoService.Search(rascunhoDespacho.GuidOrganizacaoDestino.Value).ResponseObject;
                 rascunhoDespacho.NomeOrganizacaoDestino = organizacao.RazaoSocial;
                 rascunhoDespacho.SiglaOrganizacaoDestino = organizacao.Sigla;
-            } else
+            }
+            else
             {
                 rascunhoDespacho.NomeOrganizacaoDestino = null;
                 rascunhoDespacho.SiglaOrganizacaoDestino = null;
@@ -129,7 +132,8 @@ namespace Negocio.RascunhosDespacho
                 Unidade unidade = _unidadeService.Search(rascunhoDespacho.GuidUnidadeDestino.Value).ResponseObject;
                 rascunhoDespacho.NomeUnidadeDestino = unidade.Nome;
                 rascunhoDespacho.SiglaUnidadeDestino = unidade.Sigla;
-            } else
+            }
+            else
             {
                 rascunhoDespacho.NomeUnidadeDestino = null;
                 rascunhoDespacho.SiglaUnidadeDestino = null;
@@ -143,18 +147,23 @@ namespace Negocio.RascunhosDespacho
             rascunhoDespacho.DataHora = DateTime.Now;
         }
 
-        private void FillOrganizacao(RascunhoDespacho rascunhoDespacho)
+        private void FillOrganizacaoProcesso(RascunhoDespacho rascunhoDespacho)
         {
             rascunhoDespacho.IdOrganizacaoProcesso = _repositorioOrganizacoesProcesso
                                                    .Where(o => o.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca))
                                                    .Single().Id;
         }
 
+        private void FillOrganizacao(RascunhoDespacho rascunhoDespacho)
+        {
+            rascunhoDespacho.GuidOrganizacao = _user.UserGuidOrganizacao;
+        }
+
         private void MapAlteracaoDespacho(RascunhoDespachoModel rascunhoDespachoModel, RascunhoDespacho rascunhoDespacho)
         {
             rascunhoDespacho.Texto = rascunhoDespachoModel.Texto;
-            rascunhoDespacho.GuidOrganizacaoDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino) ? (Guid?) new Guid(rascunhoDespachoModel.GuidOrganizacaoDestino) : null;
-            rascunhoDespacho.GuidUnidadeDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino) ? (Guid?) new Guid(rascunhoDespachoModel.GuidUnidadeDestino) : null;
+            rascunhoDespacho.GuidOrganizacaoDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino) ? (Guid?)new Guid(rascunhoDespachoModel.GuidOrganizacaoDestino) : null;
+            rascunhoDespacho.GuidUnidadeDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino) ? (Guid?)new Guid(rascunhoDespachoModel.GuidUnidadeDestino) : null;
         }
     }
 }

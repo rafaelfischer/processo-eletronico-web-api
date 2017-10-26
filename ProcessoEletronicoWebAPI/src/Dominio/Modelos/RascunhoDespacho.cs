@@ -22,6 +22,8 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public Guid? GuidOrganizacaoDestino { get; set; }
         public Guid? GuidUnidadeDestino { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
+        public Guid GuidOrganizacao { get; set; }
+
 
         public virtual ICollection<AnexoRascunho> AnexosRascunho { get; set; }
         public virtual OrganizacaoProcesso OrganizacaoProcesso { get; set; }

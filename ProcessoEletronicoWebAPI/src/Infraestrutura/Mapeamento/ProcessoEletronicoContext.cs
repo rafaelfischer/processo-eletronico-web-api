@@ -898,6 +898,10 @@ namespace ProcessoEletronicoService.Infraestrutura.Mapeamento
 
                 entity.Property(e => e.IdOrganizacaoProcesso).HasColumnName("idOrganizacaoProcesso");
 
+                entity.Property(e => e.GuidOrganizacao)
+                    .HasColumnName("guidOrganizacao")
+                    .IsRequired();
+
                 entity.Property(e => e.IdUsuario)
                     .IsRequired()
                     .HasColumnName("idUsuario")

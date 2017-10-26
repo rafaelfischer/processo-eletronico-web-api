@@ -8,8 +8,8 @@ namespace Negocio.RascunhosDespacho.Base
     public interface IRascunhoDespachoCore
     {
         RascunhoDespachoModel Search(int id);
-        IEnumerable<RascunhoDespachoModel> SearchByOrganizacao(int id);
-        IEnumerable<RascunhoDespachoModel> SearchByUsuario(int id);
+        IEnumerable<RascunhoDespachoModel> SearchByOrganizacao();
+        IEnumerable<RascunhoDespachoModel> SearchByUsuario();
         RascunhoDespachoModel Add(RascunhoDespachoModel rascunhoDespacho);
         void Update(int id, RascunhoDespachoModel rascunhoDespacho);
         void Delete(int id);

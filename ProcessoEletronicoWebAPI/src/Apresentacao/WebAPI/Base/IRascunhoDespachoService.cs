@@ -8,8 +8,8 @@ namespace Apresentacao.WebAPI.Base
     {
         GetRascunhoDespachoDto Add(PostRascunhoDespachoDto postRascunhoDespachoDto);
         GetRascunhoDespachoDto Search(int id);
-        IEnumerable<GetRascunhoDespachoDto> SearchByUsuario(string idUsuario);
-        IEnumerable<GetRascunhoDespachoDto> SearchByOrganizacao(string guidOrganizacao);
+        IEnumerable<GetRascunhoDespachoDto> SearchByUsuario();
+        IEnumerable<GetRascunhoDespachoDto> SearchByOrganizacao();
         void Patch(int id, JsonPatchDocument<PatchRascunhoDespachoDto> jsonPatchRascunhoDespachoDto);
         void Delete(int id);
     }

@@ -25,6 +25,7 @@ namespace Negocio.RascunhosDespacho.Models
         public string GuidOrganizacaoDestino { get; set; }
         public string GuidUnidadeDestino { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
+        public string GuidOrganizacao { get; set; }
 
         public IList<AnexoModeloNegocio> Anexos { get; set; }
     }

@@ -53,14 +53,14 @@ namespace Apresentacao.WebAPI
             return _mapper.Map<GetRascunhoDespachoDto>(_core.Search(id));
         }
 
-        public IEnumerable<GetRascunhoDespachoDto> SearchByOrganizacao(string guidOrganizacao)
+        public IEnumerable<GetRascunhoDespachoDto> SearchByOrganizacao()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<GetRascunhoDespachoDto>>(_core.SearchByOrganizacao());
         }
 
-        public IEnumerable<GetRascunhoDespachoDto> SearchByUsuario(string idUsuario)
+        public IEnumerable<GetRascunhoDespachoDto> SearchByUsuario()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<GetRascunhoDespachoDto>>(_core.SearchByUsuario());
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.WebAPI.Base;
-
+using System.Collections.Generic;
 using WebAPI.Config;
 
 namespace Prodest.ProcessoEletronico.WebAPI.RascunhosDespacho
@@ -40,6 +40,37 @@ namespace Prodest.ProcessoEletronico.WebAPI.RascunhosDespacho
         public IActionResult Search(int id)
         {
             return Ok(_mapper.Map<GetRascunhoDespachoDto>(_service.Search(id)));
+        }
+
+
+        /// <summary>
+        /// Retorna os rascunhos de despacho do usuário informado (obtido do access token)
+        /// </summary>
+        /// <returns>Rascunhos de despacho do usuário informado</returns>
+        /// <response code="200">Rascunhos de despacho da organização do usuário</response>
+        /// <response code="500">Falha inesperada</response>
+        [HttpGet("por-usuario")]
+        [ProducesResponseType(typeof(IEnumerable<GetRascunhoDespachoDto>), 200)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDespachoGroup)]
+        public IActionResult SearchByUsuario()
+        {
+            return Ok(_mapper.Map<IEnumerable<GetRascunhoDespachoDto>>(_service.SearchByUsuario()));
+        }
+
+        /// <summary>
+        /// Retorna os rascunhos de despacho da organização do usuário (obtido do access token)
+        /// </summary>
+        /// <returns>Rascunhos de despacho da organização do usuário</returns>
+        /// <response code="200">Rascunhos de despacho da organização do usuário</response>
+        /// <response code="500">Falha inesperada</response>
+        [HttpGet("por-organizacao")]
+        [ProducesResponseType(typeof(IEnumerable<GetRascunhoDespachoDto>), 200)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDespachoGroup)]
+        public IActionResult SearchByOrganizacao()
+        {
+            return Ok(_mapper.Map<IEnumerable<GetRascunhoDespachoDto>>(_service.SearchByOrganizacao()));
         }
 
         #endregion
