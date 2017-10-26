@@ -7,6 +7,7 @@ using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using Negocio.Comum.Validacao;
 using Prodest.ProcessoEletronico.Integration.Organograma.Base;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 
 namespace Negocio.RascunhosDespacho.Validations
 {
@@ -15,12 +16,14 @@ namespace Negocio.RascunhosDespacho.Validations
         private GuidValidacao _guidValidacao;
         private IOrganizacaoService _organizacaoService;
         private IUnidadeService _unidadeService;
+        private ICurrentUserProvider _user;
 
-        public RascunhoDespachoValidation(GuidValidacao guidValidacao, IOrganizacaoService organizacaoService, IUnidadeService unidadeService)
+        public RascunhoDespachoValidation(GuidValidacao guidValidacao, IOrganizacaoService organizacaoService, IUnidadeService unidadeService, ICurrentUserProvider user)
         {
             _guidValidacao = guidValidacao;
             _organizacaoService = organizacaoService;
             _unidadeService = unidadeService;
+            _user = user;
         }
 
         public void Exists(RascunhoDespacho rascunhoDespacho)
@@ -93,6 +96,14 @@ namespace Negocio.RascunhosDespacho.Validations
                 {
                     throw new RequisicaoInvalidaException("Unidade de destino não encontrada no Organograma");
                 }
+            }
+        }
+
+        public void IsRascunhoDespachoOfUser(RascunhoDespachoModel rascunhoDespachoModel)
+        {
+            if (!rascunhoDespachoModel.IdUsuario.Equals(_user.UserCpf))
+            {
+                throw new RequisicaoInvalidaException("Você não possui permissão para alterar este rascunho de despacho");
             }
         }
     }

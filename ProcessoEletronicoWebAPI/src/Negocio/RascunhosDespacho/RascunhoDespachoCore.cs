@@ -94,6 +94,7 @@ namespace Negocio.RascunhosDespacho
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
 
+            _validation.IsRascunhoDespachoOfUser(rascunhoDespachoModel);
             _validation.IsFilled(rascunhoDespachoModel);
             _validation.IsValid(rascunhoDespachoModel);
             MapAlteracaoDespacho(rascunhoDespachoModel, rascunhoDespacho);
