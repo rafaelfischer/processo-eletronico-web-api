@@ -12,6 +12,7 @@ using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Dominio.Base;
 using System.Linq;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
+using ProcessoEletronicoService.Negocio.Comum.Validacao;
 
 namespace Negocio.RascunhosDespacho
 {
@@ -27,8 +28,9 @@ namespace Negocio.RascunhosDespacho
         private IUnitOfWork _unitOfWork;
 
         private AnexoValidacao _anexoValidacao;
+        private UsuarioValidacao _usuarioValidacao;
 
-        public RascunhoDespachoCore(ICurrentUserProvider user, IMapper mapper, IOrganizacaoService organizacaoService, IRascunhoDespachoValidation validation, IUnidadeService unidadeService, IProcessoEletronicoRepositorios repositorios, AnexoValidacao anexoValidacao)
+        public RascunhoDespachoCore(ICurrentUserProvider user, IMapper mapper, IOrganizacaoService organizacaoService, IRascunhoDespachoValidation validation, IUnidadeService unidadeService, IProcessoEletronicoRepositorios repositorios, AnexoValidacao anexoValidacao, UsuarioValidacao usuarioValidacao)
         {
             _user = user;
             _mapper = mapper;
@@ -40,6 +42,7 @@ namespace Negocio.RascunhosDespacho
             _unitOfWork = repositorios.UnitOfWork;
 
             _anexoValidacao = anexoValidacao;
+            _usuarioValidacao = usuarioValidacao;
         }
 
         public RascunhoDespachoModel Search(int id)
@@ -63,13 +66,14 @@ namespace Negocio.RascunhosDespacho
             _validation.IsFilled(rascunhoDespachoModel);
             _validation.IsValid(rascunhoDespachoModel);
 
-            FillOrganizacaoDestino(rascunhoDespachoModel);
-            FillUnidadeDestino(rascunhoDespachoModel);
-            FillUserAndDataHora(rascunhoDespachoModel);
-            FillOrganizacao(rascunhoDespachoModel);
-            
             RascunhoDespacho rascunhoDespacho = new RascunhoDespacho();
             _mapper.Map(rascunhoDespachoModel, rascunhoDespacho);
+
+            FillOrganizacaoDestino(rascunhoDespacho);
+            FillUnidadeDestino(rascunhoDespacho);
+            FillUserAndDataHora(rascunhoDespacho);
+            FillOrganizacao(rascunhoDespacho);
+            
             _repositorioRascunhosDespacho.Add(rascunhoDespacho);
             _unitOfWork.Save();
 
@@ -81,43 +85,75 @@ namespace Negocio.RascunhosDespacho
             throw new NotImplementedException();
         }
         
-        public void Update(int id, RascunhoDespachoModel rascunhoDespacho)
+        public void Update(int id, RascunhoDespachoModel rascunhoDespachoModel)
         {
-            throw new NotImplementedException();
-        }
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).SingleOrDefault();
+            _validation.Exists(rascunhoDespacho);
 
-        private void FillOrganizacaoDestino(RascunhoDespachoModel rascunhoDespachoModel)
+            //Autenticação do usuário
+            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
+            _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
+
+            _validation.IsFilled(rascunhoDespachoModel);
+            _validation.IsValid(rascunhoDespachoModel);
+            MapAlteracaoDespacho(rascunhoDespachoModel, rascunhoDespacho);
+
+            FillOrganizacaoDestino(rascunhoDespacho);
+            FillUnidadeDestino(rascunhoDespacho);
+            FillUserAndDataHora(rascunhoDespacho);
+            FillOrganizacao(rascunhoDespacho);
+            
+            _unitOfWork.Save();
+
+        }
+        
+        private void FillOrganizacaoDestino(RascunhoDespacho rascunhoDespacho)
         {
-            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino))
+            if (rascunhoDespacho.GuidOrganizacaoDestino.HasValue)
             {
-                Organizacao organizacao = _organizacaoService.Search(new Guid(rascunhoDespachoModel.GuidOrganizacaoDestino)).ResponseObject;
-                rascunhoDespachoModel.NomeOrganizacaoDestino = organizacao.RazaoSocial;
-                rascunhoDespachoModel.SiglaOrganizacaoDestino = organizacao.Sigla;
+                Organizacao organizacao = _organizacaoService.Search(rascunhoDespacho.GuidOrganizacaoDestino.Value).ResponseObject;
+                rascunhoDespacho.NomeOrganizacaoDestino = organizacao.RazaoSocial;
+                rascunhoDespacho.SiglaOrganizacaoDestino = organizacao.Sigla;
+            } else
+            {
+                rascunhoDespacho.NomeOrganizacaoDestino = null;
+                rascunhoDespacho.SiglaOrganizacaoDestino = null;
             }
         }
 
-        private void FillUnidadeDestino(RascunhoDespachoModel rascunhoDespachoModel)
+        private void FillUnidadeDestino(RascunhoDespacho rascunhoDespacho)
         {
-            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino))
+            if (rascunhoDespacho.GuidUnidadeDestino.HasValue)
             {
-                Unidade unidade = _unidadeService.Search(new Guid(rascunhoDespachoModel.GuidUnidadeDestino)).ResponseObject;
-                rascunhoDespachoModel.NomeUnidadeDestino = unidade.Nome;
-                rascunhoDespachoModel.SiglaUnidadeDestino = unidade.Sigla;
+                Unidade unidade = _unidadeService.Search(rascunhoDespacho.GuidUnidadeDestino.Value).ResponseObject;
+                rascunhoDespacho.NomeUnidadeDestino = unidade.Nome;
+                rascunhoDespacho.SiglaUnidadeDestino = unidade.Sigla;
+            } else
+            {
+                rascunhoDespacho.NomeUnidadeDestino = null;
+                rascunhoDespacho.SiglaUnidadeDestino = null;
             }
         }
 
-        private void FillUserAndDataHora(RascunhoDespachoModel rascunhoDespachoModel)
+        private void FillUserAndDataHora(RascunhoDespacho rascunhoDespacho)
         {
-            rascunhoDespachoModel.IdUsuario = _user.UserCpf;
-            rascunhoDespachoModel.NomeUsuario = _user.UserNome;
-            rascunhoDespachoModel.DataHora = DateTime.Now;
+            rascunhoDespacho.IdUsuario = _user.UserCpf;
+            rascunhoDespacho.NomeUsuario = _user.UserNome;
+            rascunhoDespacho.DataHora = DateTime.Now;
         }
 
-        private void FillOrganizacao(RascunhoDespachoModel rascunhoDespachoModel)
+        private void FillOrganizacao(RascunhoDespacho rascunhoDespacho)
         {
-            rascunhoDespachoModel.IdOrganizacaoProcesso = _repositorioOrganizacoesProcesso
+            rascunhoDespacho.IdOrganizacaoProcesso = _repositorioOrganizacoesProcesso
                                                    .Where(o => o.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca))
                                                    .Single().Id;
+        }
+
+        private void MapAlteracaoDespacho(RascunhoDespachoModel rascunhoDespachoModel, RascunhoDespacho rascunhoDespacho)
+        {
+            rascunhoDespacho.Texto = rascunhoDespachoModel.Texto;
+            rascunhoDespacho.GuidOrganizacaoDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino) ? (Guid?) new Guid(rascunhoDespachoModel.GuidOrganizacaoDestino) : null;
+            rascunhoDespacho.GuidUnidadeDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino) ? (Guid?) new Guid(rascunhoDespachoModel.GuidUnidadeDestino) : null;
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using Apresentacao.WebAPI.Models;
 using AutoMapper;
 using Negocio.RascunhosDespacho.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Apresentacao.WebAPI.Mappings
 {
@@ -16,6 +13,8 @@ namespace Apresentacao.WebAPI.Mappings
 
             CreateMap<RascunhoDespachoModel, GetRascunhoDespachoDto>()
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
+
+            CreateMap<RascunhoDespachoModel, PatchRascunhoDespachoDto>().ReverseMap();
         }
     }
 }

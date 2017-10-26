@@ -1,7 +1,6 @@
 ﻿using Apresentacao.WebAPI.Models;
-using System;
+using Microsoft.AspNetCore.JsonPatch;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Apresentacao.WebAPI.Base
 {
@@ -11,7 +10,7 @@ namespace Apresentacao.WebAPI.Base
         GetRascunhoDespachoDto Search(int id);
         IEnumerable<GetRascunhoDespachoDto> SearchByUsuario(string idUsuario);
         IEnumerable<GetRascunhoDespachoDto> SearchByOrganizacao(string guidOrganizacao);
-        void Patch(int id, PatchRascunhoDespachoDto patchRascunhoDespachoDto);
+        void Patch(int id, JsonPatchDocument<PatchRascunhoDespachoDto> jsonPatchRascunhoDespachoDto);
         void Delete(int id);
     }
 }

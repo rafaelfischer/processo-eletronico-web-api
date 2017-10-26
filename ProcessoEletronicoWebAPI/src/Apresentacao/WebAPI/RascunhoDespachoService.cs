@@ -6,6 +6,8 @@ using Apresentacao.WebAPI.Models;
 using Negocio.RascunhosDespacho.Base;
 using AutoMapper;
 using Negocio.RascunhosDespacho.Models;
+using Microsoft.AspNetCore.JsonPatch;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 
 namespace Apresentacao.WebAPI
 {
@@ -31,9 +33,19 @@ namespace Apresentacao.WebAPI
             throw new NotImplementedException();
         }
 
-        public void Patch(int id, PatchRascunhoDespachoDto patchRascunhoDespachoDto)
+        public void Patch(int id, JsonPatchDocument<PatchRascunhoDespachoDto> jsonPatchRascunhoDespachoDto)
         {
-            throw new NotImplementedException();
+            RascunhoDespachoModel rascunhoDespachoModel = _core.Search(id);
+            if (rascunhoDespachoModel == null)
+            {
+                throw new RecursoNaoEncontradoException("Rascunho de Despacho não encontrado");
+            }
+
+            PatchRascunhoDespachoDto patchRascunhoDespachoDto = _mapper.Map<PatchRascunhoDespachoDto>(rascunhoDespachoModel);
+            jsonPatchRascunhoDespachoDto.ApplyTo(patchRascunhoDespachoDto);
+            _mapper.Map(patchRascunhoDespachoDto, rascunhoDespachoModel);
+
+            _core.Update(id, rascunhoDespachoModel);
         }
 
         public GetRascunhoDespachoDto Search(int id)

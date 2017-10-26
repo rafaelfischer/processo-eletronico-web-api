@@ -2,6 +2,7 @@
 using Apresentacao.WebAPI.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProcessoEletronicoService.WebAPI.Base;
 
@@ -42,7 +43,7 @@ namespace Prodest.ProcessoEletronico.WebAPI.RascunhosDespacho
         }
 
         #endregion
-        
+
         #region POST
 
         /// <summary>
@@ -74,6 +75,38 @@ namespace Prodest.ProcessoEletronico.WebAPI.RascunhosDespacho
             return CreatedAtRoute("GetRascunhodespacho", new { id = getRascunhoDespachoDto.Id }, getRascunhoDespachoDto);
         }
         #endregion
-        
+
+        #region PATCH
+
+        /// <summary>
+        /// Alteração de Rascunhos de despachos
+        /// </summary>
+        /// <param name="id">Identificador do rascunho de despacho<param>
+        /// <param name="jsonPatchRascunhoDespacho">Informações a serem alteradas (JSON Patch Document) no rascunho de despacho<param>
+        /// <response code="204">Alteração realizada com sucesso</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="422">Informa o motivo do objeto estar inválido</response>
+        /// <response code="500">Retorna a descrição do erro</response>
+        [HttpPatch("{id}")]
+        [Authorize(Policy = "RascunhosDespacho.Elaborar")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 422)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDespachoGroup)]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<PatchRascunhoDespachoDto> jsonPatchRascunhoDespacho)
+        {
+            if (jsonPatchRascunhoDespacho == null)
+            {
+                return BadRequest();
+            }
+
+            _service.Patch(id, jsonPatchRascunhoDespacho);
+            return NoContent();
+        }
+        #endregion
+
     }
 }
