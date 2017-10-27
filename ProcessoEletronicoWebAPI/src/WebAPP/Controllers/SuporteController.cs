@@ -14,15 +14,13 @@ using Newtonsoft.Json;
 
 namespace WebAPP.Controllers
 {
-    public class MunicipioUfController : Controller
-    {
-        private readonly IFileProvider _fileProvider;        
+    public class SuporteController : Controller
+    {        
         private IMunicipioAppService _service;
 
-        public MunicipioUfController(IMunicipioAppService service, IFileProvider fileProvider)
+        public SuporteController(IMunicipioAppService service)
         {
-            _service = service;
-            _fileProvider = fileProvider;
+            _service = service;            
         }
 
         [HttpGet]

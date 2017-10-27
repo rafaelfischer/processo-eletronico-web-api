@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -25,7 +26,7 @@ namespace Apresentacao.APP.ViewModels
 
         public OrganizacaoViewModel OrganizacaoProcesso { get; set; }
         [Display(Name = "Municípios Selecionados")]
-        public List<MunicipioViewModel> MunicipiosRascunhoProcesso { get; set; }
+        public IEnumerable<MunicipioViewModel> MunicipiosRascunhoProcesso { get; set; }
         public List<AtividadeViewModel> AtividadesLista { get; set; }
         public List<UnidadeViewModel> UnidadesLista { get; set; }
         [Display(Name = "UF")]
@@ -36,7 +37,9 @@ namespace Apresentacao.APP.ViewModels
         public List<SinalizacaoViewModel> Sinalizacoes { get; set; }
         public List<SinalizacaoViewModel> SinalizacoesLista { get; set; }
 
-        //public List<AnexoModeloNegocio> Anexos { get; set; }
+        [Display(Name = "Anexos")]
+        public List<AnexoViewModel> Anexos { get; set; }
+        public List<IFormFile> files { get; set; }         
         //public List<InteressadoPessoaFisicaModeloNegocio> InteressadosPessoaFisica { get; set; }
         //public List<InteressadoPessoaJuridicaModeloNegocio> InteressadosPessoaJuridica { get; set; }
     }

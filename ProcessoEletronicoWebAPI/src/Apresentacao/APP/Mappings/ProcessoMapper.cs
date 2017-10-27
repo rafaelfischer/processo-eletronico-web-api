@@ -21,14 +21,18 @@ namespace Apresentacao.APP.Mappings
             CreateMap<Organizacao, OrganizacaoViewModel>();
 
             CreateMap<MunicipioProcessoModeloNegocio, MunicipioViewModel>();
+            CreateMap<MunicipioViewModel, MunicipioProcessoModeloNegocio>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
             CreateMap<Municipio, MunicipioViewModel>()
-                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.Guid));
+                .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.Guid))
+                .ReverseMap();
+            
+            CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcessoViewModel>().ReverseMap();
 
-
-            CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcessoViewModel>().ReverseMap();                        
-                
-
-
+            CreateMap<AnexoModeloNegocio, AnexoViewModel>().ReverseMap();
+            CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalViewModel>().ReverseMap();
+            
         }
     }
 }

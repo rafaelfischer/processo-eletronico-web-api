@@ -58,3 +58,28 @@ input[type="checkbox"].input-validation-error {
     margin: 0;
     line-height: 1;
 }
+
+.checkbox + .checkbox, .radio + .radio {
+    margin-top: 0;
+}
+
+.checkbox, .radio {
+    position: relative;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.border {
+    border: 1px solid #ddd;
+    position: relative;
+    min-height: 1px;
+    margin-right: 15px;
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 15px;    
+    padding-left: 0;
+    float: left;
+    display: block;
+}

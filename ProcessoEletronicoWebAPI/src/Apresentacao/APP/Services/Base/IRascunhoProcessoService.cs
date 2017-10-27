@@ -6,8 +6,9 @@ using System.Text;
 
 namespace Apresentacao.APP.Services.Base
 {
-    public interface IRascunhoService
+    public interface IRascunhoProcessoService
     {
+        RascunhoProcessoViewModel PostRascunhoProcesso(RascunhoProcessoViewModel rascunhoViewModel);
         IEnumerable<RascunhoProcessoViewModel> GetRascunhosProcessoPorOrganizacao();        
         RascunhoProcessoViewModel EditRascunhoProcesso(int? id);        
         void UpdateRascunhoProcesso(int id, RascunhoProcessoViewModel rascunhoProcessoAlterado);
