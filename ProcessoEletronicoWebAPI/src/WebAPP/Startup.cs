@@ -19,11 +19,15 @@ using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
 
 namespace WebAPP
 {
     public class Startup
     {
+        private IHostingEnvironment _hostingEnvironment;
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -32,6 +36,8 @@ namespace WebAPP
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            _hostingEnvironment = env;
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -51,6 +57,10 @@ namespace WebAPP
 
             // Add the Auth0 Settings object so it can be injected
             services.Configure<Settings>(Configuration.GetSection("oidc"));
+
+            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;            
+
+            services.AddSingleton<IFileProvider>(physicalProvider);            
 
             DependencyInjection.InjectDependencies(services);
         }
@@ -213,9 +223,9 @@ namespace WebAPP
 
                 Organizacao organizacao = downloadJson.DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/sigla/{siglaOrganizacao}?guidPatriarca=true", token);
 
-                guidOrganizacao = organizacao.guid;
-                nomeOrganizacao = organizacao.razaoSocial;
-                guidPatriarca = organizacao.guidPatriarca;                
+                guidOrganizacao = organizacao.Guid;
+                nomeOrganizacao = organizacao.RazaoSocial;
+                guidPatriarca = organizacao.GuidPatriarca;                
 
                 id.AddClaim(new Claim("guidorganizacao", guidOrganizacao));
                 id.AddClaim(new Claim("nomeorganizacao", nomeOrganizacao));

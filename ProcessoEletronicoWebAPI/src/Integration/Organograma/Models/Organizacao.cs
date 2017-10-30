@@ -6,5 +6,6 @@
         public string RazaoSocial { get; set; }
         public string Cnpj { get; set; }
         public string Sigla { get; set; }
+        public string GuidPatriarca { get; set; }
     }
 }

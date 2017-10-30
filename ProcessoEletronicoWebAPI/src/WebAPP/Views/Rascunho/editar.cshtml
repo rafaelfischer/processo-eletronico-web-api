@@ -1,0 +1,51 @@
+﻿@model RascunhoProcessoViewModel
+@{
+    ViewBag.Title = "Rascunhos";
+    ViewBag.SubTitle = "Autuação de Processo - Rascunho";
+}
+
+
+
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Dados Básicos</h3></a></li>
+        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Interessados</h3></a></li>
+        <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Abrangência</h3></a></li>
+        <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Anexos</h3></a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">            
+            @Html.Partial("RascunhoBasico", Model)
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2">
+            
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_3">            
+            @Html.Partial("RascunhoMunicipio", Model)
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_4">
+            @Html.Partial("RascunhoAnexo", Model)
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
+</div>
+
+<div class="modal fade" id="modalDescartarRascunho" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default">Descartar Rascunho</button>
+                <button type="button" class="btn btn-primary">Salvar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+@section scripts{
+    <script src="~/js/rascunhoCreate.js"></script>
+}

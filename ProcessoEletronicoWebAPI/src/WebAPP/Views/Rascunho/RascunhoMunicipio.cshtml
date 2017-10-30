@@ -1,0 +1,29 @@
+﻿@model RascunhoProcessoViewModel
+
+<form name="formabrangencia" asp-action="EditarMunicipio" asp-controller="rascunho" data-ajax-complete="ResetMunicipioLista" id="formabrangencia" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#grupomunicipios">
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="GuidOrganizacao" />
+        <label asp-for="UfLista"></label>
+        <select class="form-control" id="ufajax" asp-items="@(new SelectList(Model.UfLista,"Sigla","Nome"))">
+            <option value="0">Selecione um Estado</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="MunicipiosLista"></label>
+        <select class="form-control" id="municipiosajax" data-placehoder="Selecione um município"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="MunicipiosRascunhoProcesso"></label>
+
+        <div id="grupomunicipios" class="row">
+            @Html.Partial("RascunhoMunicipioLista", Model.MunicipiosRascunhoProcesso)
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default" onclick="LimparAbrangencia()"><i class="fa fa-trash"></i> Limpar</button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+        </div>
+    </div>
+</form>

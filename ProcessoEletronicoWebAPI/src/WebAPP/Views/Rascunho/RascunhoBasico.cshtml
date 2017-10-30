@@ -1,0 +1,71 @@
+﻿@model RascunhoProcessoViewModel
+
+@{
+    var cont = 0;
+}
+
+<div id="divformbasico">
+    <form asp-action="EditarBasico"
+          asp-controller="rascunho"
+          name="formbasico"
+          id="formbasico"
+          data-ajax-complete="ResetSinalizacoesLista"
+          data-ajax="true"
+          data-ajax-method="POST"
+          data-ajax-mode="replace"
+          data-ajax-update="#divformbasico">
+
+        <div class="form-group">
+            <strong>Id</strong><br /> @Model.Id
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GuidOrganizacao" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Atividade"></label>
+            <select class="form-control" asp-for="Atividade.Id" asp-items="@(new SelectList(Model.AtividadesLista,"Id","CodigoDescricao"))">
+                <option>Selecione uma Atividade</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NomeUsuarioAutuador"></label>
+            <input disabled asp-for="NomeUsuarioAutuador" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UnidadesLista"></label>
+            <select class="form-control" asp-for="GuidUnidade" asp-items="@(new SelectList(Model.UnidadesLista,"Guid","Nome"))">
+                <option>Selecione uma Unidade</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Resumo"></label>
+            <textarea class="form-control" asp-for="Resumo" rows="5" cols="80"></textarea>
+        </div>
+
+        <div class="form-group" id="gruposinalizacao">
+            <label asp-for="Sinalizacoes"></label>
+            @foreach (var item in Model.SinalizacoesLista)
+            {
+                <div class="checkbox">
+                    @if (Model.Sinalizacoes.Where(s => s.Id == item.Id).Count() > 0)
+                {
+                        <label><input type="checkbox" checked name="Sinalizacoes[@(cont++)].Id" value="@item.Id" /> @item.Descricao</label>
+                    }
+                    else
+                    {
+                        <label><input type="checkbox" name="Sinalizacoes[@(cont++)].Id" value="@item.Id" /> @item.Descricao</label>
+                    }
+                </div>
+            }
+        </div>
+        <div class="box-footer">
+            <div class="btn-group pull-right">
+                <button type="reset" class="btn btn-default" onclick="LimparFormBasico()"><i class="fa fa-trash"></i> Limpar</button>
+                <button class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            </div>
+        </div>
+    </form>
+</div>

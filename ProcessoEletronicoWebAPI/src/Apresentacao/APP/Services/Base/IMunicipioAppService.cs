@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Apresentacao.APP.Services.Base
 {
-    public interface IRascunhoService
+    public interface IMunicipioAppService
     {
-        IEnumerable<GetRascunhoProcessoViewModel> GetRascunhosOrganizacao();
+        IEnumerable<MunicipioViewModel> GetMunicipios(string uf);
     }
 }

@@ -1,0 +1,40 @@
+﻿@model IList<AnexoViewModel>
+
+@if (Model.Count > 0 && Model != null)
+{
+
+    <label>Anexos</label>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ARQUIVO</th>
+                <th>CLASSIFICAÇÃO</th>
+                <th class="col-md-2">AÇÕES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Select((value, i) => new { i, value }))
+            {
+                <tr>
+                    <td>@item.value.Nome</td>
+                    @if (item.value.TipoDocumental != null)
+                    {
+                        <td>@item.value.TipoDocumental.Codigo - @item.value.TipoDocumental.Descricao</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button type="button" data-id="@item.value.Id" class="btn btn-info btn-sm btnEditarAnexo"><i class="fa fa-edit"></i></button>
+                            <a data-id="@item.value.Id" class="btn btn-warning btn-sm btnDownloadAnexo"><i class="fa fa-download"></i></a>
+                            <button type="button" data-id="@item.value.Id" class="btn btn-danger btn-sm btnExcluirAnexo"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

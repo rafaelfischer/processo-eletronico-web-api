@@ -4,6 +4,9 @@
   "dependencies": {
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.6",
-    "jquery-mask-plugin": "1.14.12"
+    "jquery-ajax-unobtrusive": "3.2.4",
+    "jquery-mask-plugin": "1.14.12",
+    "icheck": "*",
+    "select2": "*"
   }
 }
