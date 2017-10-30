@@ -112,7 +112,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public List<RascunhoProcessoModeloNegocio> Get(Guid guidOrganizacao)
         {
-            List<RascunhoProcesso> rascunhos = _repositorioRascunhosProcesso.Where(rp => rp.GuidOrganizacao.Equals(guidOrganizacao)).ToList();
+            List<RascunhoProcesso> rascunhos = _repositorioRascunhosProcesso.Where(rp => rp.GuidOrganizacao.Equals(guidOrganizacao)).Include(a => a.Atividade).ToList();
             return Mapper.Map<List<RascunhoProcesso>, List<RascunhoProcessoModeloNegocio>>(rascunhos);
 
         }
