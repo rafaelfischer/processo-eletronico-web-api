@@ -9,5 +9,12 @@ namespace Apresentacao.APP.ViewModels
         public string Guid { get; set; }
         public string Nome { get; set; }
         public string Sigla { get; set; }
-    }
+        public string NomeSigla
+        {
+            get
+            {
+                return this.Sigla + " - " + this.Nome;
+            }
+        }
+    }    
 }

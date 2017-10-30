@@ -21,7 +21,7 @@ namespace Apresentacao.APP.ViewModels
         //public Tipoorganizacao tipoOrganizacao { get; set; }
         public string NomeSigla { get
             {
-                return this.nomeFantasia +" - "+ this.sigla;
+                return this.sigla + " - "+ this.razaoSocial;
             }
         }
     }

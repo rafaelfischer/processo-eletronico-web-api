@@ -204,4 +204,96 @@ $("#grupoanexos").on("click", ".btnExcluirAnexo", function () {
     );
 });
 
+//CARREGAR ORGANIZACOES
+$("#interessadoTipo").on("change", function () {
+
+    var formData = new FormData();
+    var tipoInteressado = $(this).val();
+    var url = "";
+    formData.append("tipoInteressado", tipoInteressado);
+    
+    if (tipoInteressado > 0) {
+        url = "/rascunho/FormInteressado";
+    } else {
+        return false;
+    }
+    
+    $.ajax(
+        {
+            url: url, 
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#formInteressado").html(data)
+                $('#formInteressado select').select2({ width: '100%' })
+            }
+        }
+    );
+});
+
+//CARREGAR UNIDADES POR ORGANIZACAO
+$("#forminteressados").on("select2:select", "#interessadoOrgao", function () {
+
+    var formData = new FormData();
+    var orgao = $(this).val();
+    var url = "/rascunho/GetUnidadesPorOrganizacao";
+    formData.append("guidOrganizacao", orgao);    
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#interessadoUnidade").html(data)
+                $('#interessadoUnidade select').select2({ width: '100%' })
+            }
+        }
+    );
+});
+
+//SALVAR INTERESSADO ORGANIZACAO/UNIDADE
+$("#forminteressados").on("submit", function () {
+
+    var tipoInteressado = $(this).val();
+    var formData = new FormData();
+    var url = "/rascunho/GetUnidadesPorOrganizacao";
+
+    switch (tipoInteressado) {
+        case 1:
+            formData.append("guidOrganizacao", orgao);
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        default:
+            return false;
+    }
+
+    if ($("#interessadoOrgao").val() == "") {
+        return false
+    }
+
+    
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#interessadoUnidade").html(data)
+                $('#interessadoUnidade select').select2({ width: '100%' })
+            }
+        }
+    );
+});
+
 //btnEditarAnexo

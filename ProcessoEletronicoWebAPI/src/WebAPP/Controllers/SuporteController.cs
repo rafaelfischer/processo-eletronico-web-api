@@ -16,11 +16,11 @@ namespace WebAPP.Controllers
 {
     public class SuporteController : Controller
     {        
-        private IMunicipioAppService _service;
+        private IOrganogramaAppService _organogramaService;
 
-        public SuporteController(IMunicipioAppService service)
+        public SuporteController(IOrganogramaAppService municipioService)
         {
-            _service = service;            
+            _organogramaService = municipioService;            
         }
 
         [HttpGet]
@@ -42,8 +42,24 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult GetMunicipiosPorUF(string uf)
         {
-            IEnumerable<MunicipioViewModel> municipios = _service.GetMunicipios(uf);
+            IEnumerable<MunicipioViewModel> municipios = _organogramaService.GetMunicipios(uf);
             return Json(municipios);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetOrganizacoesPorPatriarca()
+        {
+            IEnumerable<OrganizacaoViewModel> organizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
+            return Json(organizacoes);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetUnidadesPorOrganizacao(string guidOrganizacao)
+        {
+            IEnumerable<UnidadeViewModel> unidades = _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao);
+            return Json(unidades);
         }
     }    
 }

@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Apresentacao.APP.Services.Base
 {
-    public interface IMunicipioAppService
+    public interface IOrganogramaAppService
     {
         IEnumerable<MunicipioViewModel> GetMunicipios(string uf);
+        IEnumerable<OrganizacaoViewModel> GetOrganizacoesPorPatriarca();
+        IEnumerable<UnidadeViewModel> GetUniadesPorOrganizacao(string guidOrganizacao);
     }
 }

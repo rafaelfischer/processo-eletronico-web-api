@@ -22,17 +22,20 @@ namespace WebAPP.Controllers
         private IRascunhoProcessoMunicipioService _municipioService;
         private IRascunhoProcessoSinalizacaoService _sinalizacaoService;
         private IRascunhoProcessoAnexoService _anexoService;
+        private IOrganogramaAppService _organogramaService;
 
         public RascunhoController(
             IRascunhoProcessoService service, 
             IRascunhoProcessoMunicipioService municipio, 
             IRascunhoProcessoSinalizacaoService sinalizacao,
-            IRascunhoProcessoAnexoService anexoService)
+            IRascunhoProcessoAnexoService anexoService,
+            IOrganogramaAppService organogramaService)
         {
             _service = service;
             _municipioService = municipio;
             _sinalizacaoService = sinalizacao;
             _anexoService = anexoService;
+            _organogramaService = organogramaService;
         }
 
         [HttpGet]
@@ -146,6 +149,52 @@ namespace WebAPP.Controllers
             _anexoService.DeleteAnexo(idRascunho, idAnexo);
 
             return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));            
+        }
+        
+        [HttpPost]
+        [Authorize]
+        public IActionResult FormInteressado(int tipoInteressado)
+        {
+            switch (tipoInteressado)
+            {
+                case 1:
+                    return PartialView("RascunhoInteressadoOrgaos", GetOrganizacoesPorPatriarca());                    
+                case 2:
+                    return PartialView("RascunhoInteressadoPJ");
+                case 3:
+                    return PartialView("RascunhoInteressadoPF");
+                default:
+                    return Content("Informe um tipo válido de interessado."); 
+            }            
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult GetUnidadesPorOrganizacao(string guidOrganizacao)
+        {
+            IEnumerable<UnidadeViewModel> unidades = _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao);
+            return PartialView("RascunhoInteressadoOrgaoUnidades", unidades);
+        }
+
+        [NonAction]        
+        private IEnumerable<OrganizacaoViewModel>  GetOrganizacoesPorPatriarca()
+        {
+            IEnumerable<OrganizacaoViewModel> organiozacoes = _organogramaService.GetOrganizacoesPorPatriarca();
+            return organiozacoes;
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult IncluirInteressado()
+        {
+            return PartialView("RascunhoInteressadoPJ");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult FormInteressadoPF()
+        {
+            return PartialView("RascunhoInteressadoPF");
         }
     }
 }
