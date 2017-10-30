@@ -99,11 +99,11 @@ namespace Negocio.RascunhosDespacho.Validations
             }
         }
 
-        public void IsRascunhoDespachoOfUser(RascunhoDespachoModel rascunhoDespachoModel)
+        public void IsRascunhoDespachoOfUser(RascunhoDespacho rascunhoDespacho)
         {
-            if (!rascunhoDespachoModel.IdUsuario.Equals(_user.UserCpf))
+            if (!rascunhoDespacho.IdUsuario.Equals(_user.UserCpf))
             {
-                throw new RequisicaoInvalidaException("Você não possui permissão para alterar este rascunho de despacho");
+                throw new RequisicaoInvalidaException("Você não possui permissão para manipular este rascunho de despacho, pois pertence a outro usuário");
             }
         }
     }
