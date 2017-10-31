@@ -9,6 +9,6 @@ namespace Negocio.RascunhosDespacho.Validations.Base
 {
     public interface IRascunhoDespachoValidation : IBaseValidation<RascunhoDespachoModel, RascunhoDespacho>
     {
-        void IsRascunhoDespachoOfUser(RascunhoDespachoModel rascunhoDespachoModel);
+        void IsRascunhoDespachoOfUser(RascunhoDespacho rascunhoDespacho);
     }
 }

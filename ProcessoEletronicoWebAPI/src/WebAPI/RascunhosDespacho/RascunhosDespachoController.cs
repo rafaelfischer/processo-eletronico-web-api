@@ -139,5 +139,26 @@ namespace Prodest.ProcessoEletronico.WebAPI.RascunhosDespacho
         }
         #endregion
 
+        #region DELETE
+        /// <summary>
+        /// Exclusão de Rascunhos de despachos
+        /// </summary>
+        /// <param name="id">Identificador do rascunho de despacho<param>
+        /// <response code="204">Exclusão realizada com sucesso</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="500">Retorna a descrição do erro</response>
+        [HttpDelete("{id}")]
+        [Authorize(Policy = "RascunhosDespacho.Elaborar")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDespachoGroup)]
+        public IActionResult Delete(int id)
+        {
+            _service.Delete(id);
+            return NoContent();
+        }
+        #endregion
+
     }
 }

@@ -85,7 +85,12 @@ namespace Negocio.RascunhosDespacho
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).SingleOrDefault();
+            _validation.Exists(rascunhoDespacho);
+            _validation.IsRascunhoDespachoOfUser(rascunhoDespacho);
+
+            _repositorioRascunhosDespacho.Remove(rascunhoDespacho);
+            _unitOfWork.Save();
         }
 
         public void Update(int id, RascunhoDespachoModel rascunhoDespachoModel)
@@ -97,7 +102,7 @@ namespace Negocio.RascunhosDespacho
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
 
-            _validation.IsRascunhoDespachoOfUser(rascunhoDespachoModel);
+            _validation.IsRascunhoDespachoOfUser(rascunhoDespacho);
             _validation.IsFilled(rascunhoDespachoModel);
             _validation.IsValid(rascunhoDespachoModel);
             MapAlteracaoDespacho(rascunhoDespachoModel, rascunhoDespacho);

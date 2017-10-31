@@ -27,7 +27,6 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
     {
         public int Id { get; set; }
         public string Resumo { get; set; }
-        public int IdAtividade { get; set; }
         public string GuidOrganizacao { get; set; }
         public string NomeOrganizacao { get; set; }
         public string SiglaOrganizacao { get; set; }
@@ -35,6 +34,9 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Modelos
         public string NomeUnidade { get; set; }
         public string SiglaUnidade { get; set; }
         public int IdOrganizacaoProcesso { get; set; }
+
+        public GetAtividadeDto Atividade { get; set; }
+
     }
 
     public class PostRascunhoProcessoDto

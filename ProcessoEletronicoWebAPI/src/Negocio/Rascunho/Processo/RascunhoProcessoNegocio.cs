@@ -93,7 +93,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
 
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(p => p.Id == id)
-                                               .Include(p => p.Anexos)
+                                               .Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.EmailsRascunho)
                                                .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
@@ -112,7 +112,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public List<RascunhoProcessoModeloNegocio> Get(Guid guidOrganizacao)
         {
-            List<RascunhoProcesso> rascunhos = _repositorioRascunhosProcesso.Where(rp => rp.GuidOrganizacao.Equals(guidOrganizacao)).ToList();
+            List<RascunhoProcesso> rascunhos = _repositorioRascunhosProcesso.Where(rp => rp.GuidOrganizacao.Equals(guidOrganizacao)).Include(a => a.Atividade).ToList();
             return Mapper.Map<List<RascunhoProcesso>, List<RascunhoProcessoModeloNegocio>>(rascunhos);
 
         }
@@ -185,6 +185,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
 
             MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
+            InformacoesUnidade(rascunhoProcesso);
             _unitOfWork.Save();
         }
 
@@ -319,6 +320,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             rascunhoProcesso.IdAtividade = rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null;
             rascunhoProcesso.Resumo = rascunhoProcessoNegocio.Resumo;
+            rascunhoProcesso.GuidUnidade = new Guid(rascunhoProcessoNegocio.GuidUnidade);
         }
 
         private void DeleteConteudoAnexos(RascunhoProcesso rascunhoProcesso)

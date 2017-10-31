@@ -30,7 +30,7 @@ namespace Apresentacao.WebAPI
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _core.Delete(id);
         }
 
         public void Patch(int id, JsonPatchDocument<PatchRascunhoDespachoDto> jsonPatchRascunhoDespachoDto)
@@ -50,7 +50,13 @@ namespace Apresentacao.WebAPI
 
         public GetRascunhoDespachoDto Search(int id)
         {
-            return _mapper.Map<GetRascunhoDespachoDto>(_core.Search(id));
+            GetRascunhoDespachoDto getRascunhoDespachoDto = _mapper.Map<GetRascunhoDespachoDto>(_core.Search(id));
+            if (getRascunhoDespachoDto == null)
+            {
+                throw new RecursoNaoEncontradoException("Rascunho de despacho não encontrado");
+            }
+
+            return getRascunhoDespachoDto;
         }
 
         public IEnumerable<GetRascunhoDespachoDto> SearchByOrganizacao()
