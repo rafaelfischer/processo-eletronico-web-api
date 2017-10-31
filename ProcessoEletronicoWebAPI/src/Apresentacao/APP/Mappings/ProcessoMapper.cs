@@ -13,11 +13,16 @@ namespace Apresentacao.APP.Mappings
     {
         public ProcessoMapper()
         {
+            /*Processo*/
             CreateMap<ProcessoModeloNegocio, GetProcessoViewModel>();
-            CreateMap<AtividadeModeloNegocio, AtividadeViewModel>().ReverseMap();            
+            CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcessoViewModel>().ReverseMap();
             CreateMap<RascunhoProcessoModeloNegocio, GetRascunhoProcessoViewModel>().ReverseMap();
-            CreateMap<Unidade, UnidadeViewModel>().ReverseMap();
+
+            CreateMap<AtividadeModeloNegocio, AtividadeViewModel>().ReverseMap();
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoViewModel>().ReverseMap();
+
+            /*Organograma*/
+            CreateMap<Unidade, UnidadeViewModel>().ReverseMap();            
             CreateMap<Organizacao, OrganizacaoViewModel>();
 
             CreateMap<MunicipioProcessoModeloNegocio, MunicipioViewModel>();
@@ -27,12 +32,20 @@ namespace Apresentacao.APP.Mappings
             CreateMap<Municipio, MunicipioViewModel>()
                 .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.Guid))
                 .ReverseMap();
-            
-            CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcessoViewModel>().ReverseMap();
 
+            /*Anexos*/
             CreateMap<AnexoModeloNegocio, AnexoViewModel>().ReverseMap();
             CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalViewModel>().ReverseMap();
-            
+
+            /*Interessados*/
+            CreateMap<InteressadoPessoaFisicaModeloNegocio, InteressadoPessoaFisicaViewModel>().ReverseMap();
+            CreateMap<InteressadoPessoaJuridicaModeloNegocio, InteressadoPessoaJuridicaViewModel>().ReverseMap();
+            CreateMap<OrganizacaoViewModel, InteressadoPessoaJuridicaViewModel>().ReverseMap();
+
+
+            CreateMap<TipoContatoModeloNegocio, TipoContatoViewModel>().ReverseMap();
+            CreateMap<EmailModeloNegocio, EmailViewModel>().ReverseMap();
+            CreateMap<ContatoModeloNegocio, ContatoViewModel>().ReverseMap();
         }
     }
 }

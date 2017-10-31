@@ -11,9 +11,9 @@ namespace Apresentacao.APP.ViewModels
         public string razaoSocial { get; set; }
         public string nomeFantasia { get; set; }
         public string sigla { get; set; }
-        //public List<Contato> contatos { get; set; }
-        //public List<Email> emails { get; set; }
-        //public Endereco endereco { get; set; }
+        public List<ContatoViewModel> contatos { get; set; }
+        public List<EmailViewModel> emails { get; set; }
+        public EnderecoViewModel endereco { get; set; }
         //public Esfera esfera { get; set; }
         //public Poder poder { get; set; }
         //public Organizacaopai organizacaoPai { get; set; }
@@ -24,17 +24,7 @@ namespace Apresentacao.APP.ViewModels
                 return this.sigla + " - "+ this.razaoSocial;
             }
         }
-    }
-
-    public class Endereco
-    {
-        public string logradouro { get; set; }
-        public string numero { get; set; }
-        public string complemento { get; set; }
-        public string bairro { get; set; }
-        public string cep { get; set; }
-        public MunicipioViewModel municipio { get; set; }
-    }    
+    }   
 
     public class Esfera
     {

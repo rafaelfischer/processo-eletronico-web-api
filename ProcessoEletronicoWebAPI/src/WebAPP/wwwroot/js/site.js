@@ -1,1 +1,3 @@
-﻿// Write your Javascript code.
+﻿function isNullOrEmpty(s) {
+    return (s == null || s === "");
+}

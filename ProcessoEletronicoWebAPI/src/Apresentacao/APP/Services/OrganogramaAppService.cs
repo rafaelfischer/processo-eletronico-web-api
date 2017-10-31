@@ -61,5 +61,25 @@ namespace Apresentacao.APP.Services
 
             return unidades;
         }
+
+        public OrganizacaoViewModel GetOrganizacao(string guidOrganizacao)
+        {
+            OrganizacaoViewModel organizacao = null;
+
+            Organizacao organizacaoViewModel = _organizacaoService.Search(new Guid(guidOrganizacao)).ResponseObject;
+            organizacao = _mapper.Map<OrganizacaoViewModel>(organizacaoViewModel);
+
+            return organizacao;
+        }
+
+        public UnidadeViewModel GetUnidade(string guidUnidade)
+        {
+            UnidadeViewModel unidade = null;
+
+            Unidade unidadeViewModel = _unidadeService.Search(new Guid(guidUnidade)).ResponseObject;
+            unidade = _mapper.Map<UnidadeViewModel>(unidadeViewModel);
+
+            return unidade;
+        }
     }
 }

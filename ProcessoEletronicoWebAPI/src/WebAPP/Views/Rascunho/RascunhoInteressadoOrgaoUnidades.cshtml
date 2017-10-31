@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<UnidadeViewModel>
 <div class="form-group">
     <select class="form-control" id="interessadoOrgaoUnidade" asp-items="@(new SelectList(Model,"Guid","NomeSigla"))">
-        <option>Selecione uma Unidade</option>
+        <option value="">Selecione uma Unidade</option>
     </select>
 </div>

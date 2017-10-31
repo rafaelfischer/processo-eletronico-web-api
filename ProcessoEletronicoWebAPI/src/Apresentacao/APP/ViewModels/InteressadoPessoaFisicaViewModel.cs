@@ -12,13 +12,11 @@ namespace Apresentacao.APP.ViewModels
         public string GuidMunicipio { get; set; }
         public string NomeMunicipio { get; set; }
         public string UfMunicipio { get; set; }
-        
-        public List<TipoContatoViewModel> TiposContato { get; set; }
-
-        public List<UfViewModel> Ufs { get; set; }
-        public List<MunicipioViewModel> Municipios { get; set; }
-
         public List<ContatoViewModel> Contatos { get; set; }
         public List<EmailViewModel> Emails { get; set; }
+
+        public List<TipoContatoViewModel> TiposContato { get; set; }
+        public List<UfViewModel> Ufs { get; set; }
+        public List<MunicipioViewModel> Municipios { get; set; }
     }
 }

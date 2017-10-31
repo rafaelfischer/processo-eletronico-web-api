@@ -10,5 +10,7 @@ namespace Apresentacao.APP.Services.Base
         IEnumerable<MunicipioViewModel> GetMunicipios(string uf);
         IEnumerable<OrganizacaoViewModel> GetOrganizacoesPorPatriarca();
         IEnumerable<UnidadeViewModel> GetUniadesPorOrganizacao(string guidOrganizacao);
+        OrganizacaoViewModel GetOrganizacao(string guidOrganizacao);
+        UnidadeViewModel GetUnidade(string guidUnidade);
     }
 }

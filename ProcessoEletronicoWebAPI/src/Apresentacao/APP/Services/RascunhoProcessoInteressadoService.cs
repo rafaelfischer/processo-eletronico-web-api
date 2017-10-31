@@ -1,6 +1,8 @@
 ﻿using Apresentacao.APP.Services.Base;
+using Apresentacao.APP.ViewModels;
 using AutoMapper;
 using ProcessoEletronicoService.Negocio.Comum.Base;
+using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 
 namespace Apresentacao.APP.Services
@@ -29,6 +31,18 @@ namespace Apresentacao.APP.Services
             _interessadoPessoaFisica = interessadoPessoaFisica;
             _emailNegocio = emailNegocio;
             _contatoNegocio = contatoNegocio;
+        }
+
+        public InteressadoPessoaFisicaViewModel PostInteressadoPF(int idRascunho, InteressadoPessoaFisicaViewModel interessado)
+        {
+            InteressadoPessoaFisicaModeloNegocio interessadoNegocio = _interessadoPessoaFisica.Post(idRascunho, _mapper.Map<InteressadoPessoaFisicaModeloNegocio>(interessado));
+            return _mapper.Map<InteressadoPessoaFisicaViewModel>(interessadoNegocio);
+        }
+
+        public InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, InteressadoPessoaJuridicaViewModel interessado)
+        {
+            InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _interessadoPessoaJuridica.Post(idRascunho, _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(interessado));
+            return _mapper.Map<InteressadoPessoaJuridicaViewModel>(interessadoNegocio);
         }
     }
 }

@@ -185,10 +185,19 @@ namespace WebAPP.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult IncluirInteressado()
+        public IActionResult IncluirInteressado(string guidOrganizacao, string guidUnidade)
         {
-            return PartialView("RascunhoInteressadoPJ");
-        }
+            if (string.IsNullOrEmpty(guidUnidade))
+            {
+                var organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
+                return Json(organizacao);
+            }
+            else
+            {
+                var unidade = _organogramaService.GetUnidade(guidUnidade);
+                return Json(unidade);
+            }            
+        }        
 
         [HttpPost]
         [Authorize]

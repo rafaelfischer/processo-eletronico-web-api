@@ -259,28 +259,29 @@ $("#forminteressados").on("select2:select", "#interessadoOrgao", function () {
 //SALVAR INTERESSADO ORGANIZACAO/UNIDADE
 $("#forminteressados").on("submit", function () {
 
-    var tipoInteressado = $(this).val();
+    var tipoInteressado = $("#interessadoTipo").val();
     var formData = new FormData();
-    var url = "/rascunho/GetUnidadesPorOrganizacao";
+    var url = "/rascunho/IncluirInteressado";
+    var guidOrganizacao = $("#interessadoOrgao").val();
+    var guidUnidade = $("#interessadoOrgaoUnidade").val();
 
     switch (tipoInteressado) {
-        case 1:
-            formData.append("guidOrganizacao", orgao);
+        case "1":
+            if (isNullOrEmpty(guidUnidade)) {
+                formData.append("guidOrganizacao", guidOrganizacao);                
+            }   
+            else {
+                formData.append("guidUnidade", guidUnidade);
+            }
             break;
-        case 2:
+        case "2":
             break;
-        case 3:
+        case "3":
             break;
         default:
             return false;
     }
-
-    if ($("#interessadoOrgao").val() == "") {
-        return false
-    }
-
     
-
     $.ajax(
         {
             url: url,
@@ -294,6 +295,8 @@ $("#forminteressados").on("submit", function () {
             }
         }
     );
+
+    return false;
 });
 
 //btnEditarAnexo
