@@ -93,7 +93,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
 
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(p => p.Id == id)
-                                               .Include(p => p.Anexos)
+                                               .Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
                                                .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.EmailsRascunho)
                                                .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato)
