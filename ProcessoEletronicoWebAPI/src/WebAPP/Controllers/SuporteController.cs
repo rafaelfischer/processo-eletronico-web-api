@@ -9,6 +9,7 @@ using Apresentacao.APP.ViewModels;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Newtonsoft.Json;
+using Apresentacao.APP.WorkServices.Base;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,10 +18,14 @@ namespace WebAPP.Controllers
     public class SuporteController : Controller
     {        
         private IOrganogramaAppService _organogramaService;
+        private IProcessoService _processoService;
 
-        public SuporteController(IOrganogramaAppService municipioService)
+        public SuporteController(
+            IOrganogramaAppService municipioService,
+            IProcessoService processoService)
         {
-            _organogramaService = municipioService;            
+            _organogramaService = municipioService;
+            _processoService = processoService;
         }
 
         [HttpGet]
@@ -44,6 +49,14 @@ namespace WebAPP.Controllers
         {
             IEnumerable<MunicipioViewModel> municipios = _organogramaService.GetMunicipios(uf);
             return Json(municipios);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetTiposDocumentais(int idAtividade)
+        {
+            IEnumerable<TipoDocumentalViewModel> tiposDocumentais = _processoService.GetTiposDocumentais(idAtividade);
+            return Json(tiposDocumentais);
         }
 
         [HttpGet]

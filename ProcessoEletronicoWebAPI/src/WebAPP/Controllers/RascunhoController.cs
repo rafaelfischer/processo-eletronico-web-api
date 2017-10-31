@@ -116,7 +116,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadAnexo(IList<IFormFile> files, int idRascunho)
+        public async Task<IActionResult> UploadAnexo(IList<IFormFile> files, int idRascunho, int idTipoDocumental)
         {
             long totalBytes = files.Sum(f => f.Length);
             
@@ -132,7 +132,8 @@ namespace WebAPP.Controllers
                         AnexoViewModel anexo = new AnexoViewModel() {
                             ConteudoString = s,
                             Nome = file.FileName,
-                            MimeType = file.ContentType
+                            MimeType = file.ContentType,
+                            TipoDocumental = new TipoDocumentalViewModel { Id = idTipoDocumental}
                         };
                         _anexoService.PostAnexo(idRascunho, anexo);
                     }

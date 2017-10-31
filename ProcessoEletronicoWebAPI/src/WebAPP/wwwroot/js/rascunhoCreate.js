@@ -1,11 +1,101 @@
-﻿$(document).ready(function () {
+﻿/*Incialização da página*/
+$(document).ready(function () {
     ResetSinalizacoesLista();
     ResetMunicipioLista();
+    $('#formbasico select').select2({ width: '100%' });
 });
 
+/**
+ * Variáveis globais
+ */
+var index = 0;
 var $eSUf = $("#ufajax");
 var $eSMunicipio = $("#municipiosajax");
+var $eSTipoDocumental = $("#idTipoDocumental");
+var $eSAtividade = $('#Atividade_Id');
+var idAtividade = 0;
 
+/*Inicialização do componente tipo documental*/
+$eSTipoDocumental.select2(
+    {
+        width: '100%',
+        placeholder: 'Selecione um tipo documental',
+        language: {
+            noResults: function () {
+                return "Informe uma atividade para o processo.";
+            }
+        }
+    }
+);
+
+/*Evento change do componente select para carregamento dos dados da consulta de tipo documental*/
+$eSAtividade.on('change', function (e) {
+    idAtividade = $('#Atividade_Id').val();
+    $.get(
+        "/Suporte/GetTiposDocumentais?idAtividade=" + idAtividade, function (data) {
+            $eSTipoDocumental.empty();
+            if (data.length > 0) {
+                data.unshift({ id: '-1', text: 'Selecione um tipo documental' });
+            }
+            $eSTipoDocumental.select2({
+                width: '100%',
+                data: data
+            });
+        }).fail(function () {
+            $eSTipoDocumental.select2({
+                width: '100%',
+                language: {
+                    noResults: function () {
+                        return "Não foi possível carregar tipos documentais.";
+                    }
+                }
+            });
+        });
+});
+
+/*Evento abrindo do componente tipo documental para carregamento dos dados da consulta de tipo documental*/
+$eSTipoDocumental.on('select2:opening', function (e) {
+    if (idAtividade == 0) {
+        idAtividade = $('#Atividade_Id').val();
+        $.get(
+            "/Suporte/GetTiposDocumentais?idAtividade=" + idAtividade, function (data) {
+                CarregaTiposDocumentais(data);
+            }).fail(function () {
+                ErrorTiposDocumentais();
+            });
+    }
+});
+
+/**
+ * Carrega dados da consulta ajax para o componente select Tipo Documental
+ * @param {any} data
+ */
+function CarregaTiposDocumentais(data) {
+    $eSTipoDocumental.empty();
+    if (data.length > 0) {
+        data.unshift({ id: '-1', text: 'Selecione um tipo documental' });
+    }
+    $eSTipoDocumental.select2({
+        width: '100%',
+        data: data
+    });
+}
+
+/**
+ * Carrega mensagem de erro para o componente select Tipo Documental
+ */
+function ErrorTiposDocumentais() {
+    $eSTipoDocumental.select2({
+        width: '100%',
+        language: {
+            noResults: function () {
+                return "Não foi possível carregar tipos documentais.";
+            }
+        }
+    });
+}
+
+/*Inicialização do selectbox de municipio e uf com o plugin select2*/
 $eSUf.select2({ width: '100%' });
 $eSMunicipio.select2(
     {
@@ -19,24 +109,20 @@ $eSMunicipio.select2(
     }
 );
 
-var abrangencia = [];
-var objetoSelecionado = {};
-var selecionados = [];
-var index = 0;
-
+/*Evento Change para o campo UF que dispara a consulta de municípios por UF*/
 $eSUf.on('change', function (e) {
     $.get(
         "/Suporte/GetMunicipiosPorUF?uf=" + $eSUf.val(), function (data) {
             $eSMunicipio.empty();
-            if(data.length > 0){
+            if (data.length > 0) {
                 data.unshift({ id: 'all', text: 'Todos' });
-                data.unshift({ id: '-1', text: 'Selecione um Município' });            
+                data.unshift({ id: '-1', text: 'Selecione um Município' });
                 $eSMunicipio.select2({ width: '100%', data: data });
             }
         });
 });
 
-/*Cria checkbox a partir da seleção de municípos*/
+/*Evento select para o campo municipio que cria checkbox a partir da seleção*/
 $eSMunicipio.on('select2:select', function (e) {
     var idSelecionado = $('#municipiosajax').val();
     var exist = false;
@@ -56,8 +142,8 @@ $eSMunicipio.on('select2:select', function (e) {
         if (JaExiste(idSelecionado))
             return false;
 
-        /*Cria novo checkbox*/        
-        IncluirSelecionado($("#municipiosajax option:selected").text(), $('#municipiosajax').val());        
+        /*Cria novo checkbox*/
+        IncluirSelecionado($("#municipiosajax option:selected").text(), $('#municipiosajax').val());
     }
 
     $('input').iCheck({
@@ -69,15 +155,25 @@ $eSMunicipio.on('select2:select', function (e) {
     $eSMunicipio.val(-1).trigger("change");
 });
 
-$('form').on('ifUnchecked', 'input[type="checkbox"]', function (event) {    
+/*Evento de uncheck para os checkbox que utilizam o plugin iCheck*/
+$('form').on('ifUnchecked', 'input[type="checkbox"]', function (event) {
     $('#' + this.value).remove();
 });
 
-function IncluirSelecionado(text, val) {    
+/**
+ * Inclui municipio selecionado passando como parâmetros text e val
+ * @param {any} text
+ * @param {any} val
+ */
+function IncluirSelecionado(text, val) {
     $('#grupomunicipios').append('<div class="checkbox municipio col-lg-3 col-md-4 col-xs-6" id="' + val + '"><label><input type="checkbox" checked name="MunicipiosRascunhoProcesso[' + index + '].GuidMunicipio" value="' + val + '" /> ' + text + '</label></div>');
     index++;
 }
 
+/**
+ * Verifica se ID seletor existe no DOM
+ * @param {any} idSelecionado
+ */
 function JaExiste(idSelecionado) {
     var exist = false;
     if ($('#' + idSelecionado).length > 0)
@@ -85,6 +181,9 @@ function JaExiste(idSelecionado) {
     return exist;
 }
 
+/**
+ * Reseta o formulário de abrangência
+ */
 function LimparAbrangencia() {
     $("#grupomunicipios div.municipio").remove();
     $('form#formabrangencia')[0].reset();
@@ -93,13 +192,18 @@ function LimparAbrangencia() {
     index = 0;
 }
 
-function LimparFormBasico() {    
+/**
+ * Reseta o formulário de informações básica de rascunho
+ */
+function LimparFormBasico() {
     $('#Atividade_Id').val($('#Atividade_Id option:first').val()).trigger('change')
-    
     $('#GuidUnidade').index[0].trigger("change");
-    $('form#formbasico')[0].reset();    
+    $('form#formbasico')[0].reset();
 }
 
+/**
+ * Reseta os campos de municipio com o plugin iCheck
+ */
 function ResetMunicipioLista() {
     $('#formabrangencia input').iCheck({
         checkboxClass: 'icheckbox_square-red',
@@ -108,6 +212,9 @@ function ResetMunicipioLista() {
     });
 }
 
+/**
+ * Inicializa os campos de sinalização com o plugin iCheck
+ */
 function ResetSinalizacoesLista() {
     $('#formbasico input').iCheck({
         checkboxClass: 'icheckbox_square-red',
@@ -116,32 +223,10 @@ function ResetSinalizacoesLista() {
     });
 }
 
-function uploadFiles(inputId) {
-    var input = document.getElementById(inputId);
-    var files = input.files;
-    var formData = new FormData();
-
-    for (var i = 0; i != files.length; i++) {
-        formData.append("files", files[i]);
-        formData.append("GuidOrganizacao", $("#formanexo").find("#GuidOrganizacao").val());
-        formData.append("Id", $("#formanexo").find("#Id").val());
-    }
-
-    //startUpdatingProgressIndicator();
-    $.ajax(
-        {
-            url: "/rascunho/UploadAnexo",
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                $("#grupoanexos").html(data)
-            }
-        }
-    );
-}
-
+/**
+ * Upload de Anexos
+ * @param {any} inputId
+ */
 function uploadFiles(inputId) {
     var input = document.getElementById(inputId);
     var files = input.files;
@@ -151,8 +236,10 @@ function uploadFiles(inputId) {
         return false;
 
     for (var i = 0; i != files.length; i++) {
-        formData.append("files", files[i]);        
+        formData.append("files", files[i]);
         formData.append("idRascunho", $("#formanexo").find("#Id").val());
+        if (!isNullOrEmpty($("#idTipoDocumental").val()))
+            formData.append("idTipoDocumental", $("#formanexo").find("#idTipoDocumental").val());
     }
 
     $('#textLoad').toggleClass('disabled');
@@ -166,7 +253,7 @@ function uploadFiles(inputId) {
             processData: false,
             contentType: false,
             type: "POST",
-            success: function (data) {                     
+            success: function (data) {
                 $("#textLoad").text('Selecionar arquivos');
                 $('#textLoad').toggleClass('disabled');
                 $("#progressAnexo").toggleClass('hide');
@@ -180,16 +267,14 @@ function uploadFiles(inputId) {
     );
 }
 
+/*Evento click para o botão excluir da lista de anexos*/
 $("#grupoanexos").on("click", ".btnExcluirAnexo", function () {
 
-    
-    $(this).parent('div').find('.btn').toggleClass('disabled')
-
+    $(this).parent('div').find('.btn').toggleClass('disabled');
     var formData = new FormData();
-    
     formData.append("idRascunho", $("#formanexo").find("#Id").val());
     formData.append("idAnexo", $(this).attr("data-id"));
-    
+
     $.ajax(
         {
             url: "/rascunho/ExcluirAnexo",
@@ -211,16 +296,16 @@ $("#interessadoTipo").on("change", function () {
     var tipoInteressado = $(this).val();
     var url = "";
     formData.append("tipoInteressado", tipoInteressado);
-    
+
     if (tipoInteressado > 0) {
         url = "/rascunho/FormInteressado";
     } else {
         return false;
     }
-    
+
     $.ajax(
         {
-            url: url, 
+            url: url,
             data: formData,
             processData: false,
             contentType: false,
@@ -239,7 +324,7 @@ $("#forminteressados").on("select2:select", "#interessadoOrgao", function () {
     var formData = new FormData();
     var orgao = $(this).val();
     var url = "/rascunho/GetUnidadesPorOrganizacao";
-    formData.append("guidOrganizacao", orgao);    
+    formData.append("guidOrganizacao", orgao);
 
     $.ajax(
         {
@@ -268,8 +353,8 @@ $("#forminteressados").on("submit", function () {
     switch (tipoInteressado) {
         case "1":
             if (isNullOrEmpty(guidUnidade)) {
-                formData.append("guidOrganizacao", guidOrganizacao);                
-            }   
+                formData.append("guidOrganizacao", guidOrganizacao);
+            }
             else {
                 formData.append("guidUnidade", guidUnidade);
             }
@@ -281,7 +366,7 @@ $("#forminteressados").on("submit", function () {
         default:
             return false;
     }
-    
+
     $.ajax(
         {
             url: url,

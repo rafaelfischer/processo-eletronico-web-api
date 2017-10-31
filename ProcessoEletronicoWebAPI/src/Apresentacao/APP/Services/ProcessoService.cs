@@ -16,13 +16,20 @@ namespace Apresentacao.APP.WorkServices
         private IProcessoNegocio _negocio;
         private ICurrentUserProvider _user;
         private IRascunhoProcessoNegocio _rascunho;
+        private ITipoDocumentalNegocio _tipoDocumental;
 
-        public ProcessoService(IMapper mapper, IProcessoNegocio negocio, ICurrentUserProvider user, IRascunhoProcessoNegocio rascunho)
+        public ProcessoService(
+            IMapper mapper, 
+            IProcessoNegocio negocio, 
+            ICurrentUserProvider user, 
+            IRascunhoProcessoNegocio rascunho,
+            ITipoDocumentalNegocio tipoDocumental)
         {
             _mapper = mapper;
             _negocio = negocio;
             _user = user;
             _rascunho = rascunho;
+            _tipoDocumental = tipoDocumental;
         }
 
         public GetProcessoViewModel GetProcessoPorNumero(string numero)
@@ -38,6 +45,21 @@ namespace Apresentacao.APP.WorkServices
                 return null;
             }
         
+        }
+
+        public IEnumerable<TipoDocumentalViewModel> GetTiposDocumentais(int idAtividade)
+        {
+            try
+            {
+                IEnumerable<TipoDocumentalModeloNegocio> tiposDocumentaisNegocio = _tipoDocumental.PesquisarPorAtividade(idAtividade);
+                IEnumerable<TipoDocumentalViewModel> tiposDocumentaisViewModel = _mapper.Map<List<TipoDocumentalViewModel>>(tiposDocumentaisNegocio);
+                return tiposDocumentaisViewModel;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
         }
 
         public IEnumerable<GetProcessoViewModel> GetProcessosOrganizacao()

@@ -6,6 +6,7 @@ namespace Apresentacao.APP.WorkServices.Base
     public interface IProcessoService
     {
         GetProcessoViewModel GetProcessoPorNumero(string numero);
-        IEnumerable<GetProcessoViewModel> GetProcessosOrganizacao();        
+        IEnumerable<GetProcessoViewModel> GetProcessosOrganizacao();
+        IEnumerable<TipoDocumentalViewModel> GetTiposDocumentais(int idAtividade);
     }
 }
