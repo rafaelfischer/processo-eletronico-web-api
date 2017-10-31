@@ -21,7 +21,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo.Mapeamentos
                 .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.IdAtividade.HasValue ? new AtividadeModeloNegocio { Id = src.IdAtividade.Value } : null));
                 
             CreateMap<RascunhoProcessoModeloNegocio, GetRascunhoProcessoPorOrganizacaoDto>()
-                .ForMember(dest => dest.IdAtividade, opt => opt.MapFrom(src => src.Atividade.Id))
+                .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade))
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id));
 
             CreateMap<RascunhoProcessoModeloNegocio, GetRascunhoProcessoDto>()
