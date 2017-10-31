@@ -185,6 +185,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
 
             MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
+            InformacoesUnidade(rascunhoProcesso);
             _unitOfWork.Save();
         }
 
@@ -319,6 +320,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             rascunhoProcesso.IdAtividade = rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null;
             rascunhoProcesso.Resumo = rascunhoProcessoNegocio.Resumo;
+            rascunhoProcesso.GuidUnidade = new Guid(rascunhoProcessoNegocio.GuidUnidade);
         }
 
         private void DeleteConteudoAnexos(RascunhoProcesso rascunhoProcesso)
