@@ -7,7 +7,9 @@ namespace Apresentacao.APP.Services.Base
 {
     public interface IRascunhoProcessoInteressadoService
     {
-        InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, InteressadoPessoaJuridicaViewModel interessado);
+        InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, OrganizacaoViewModel organizacaoInteressada);
         InteressadoPessoaFisicaViewModel PostInteressadoPF(int idRascunho, InteressadoPessoaFisicaViewModel interessado);
+        List<InteressadoPessoaFisicaViewModel> GetInteressadosPF(int idRascunho);
+        List<InteressadoPessoaJuridicaViewModel> GetInteressadosPJ(int idRascunho);
     }
 }

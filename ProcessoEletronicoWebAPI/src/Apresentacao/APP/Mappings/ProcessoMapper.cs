@@ -41,7 +41,7 @@ namespace Apresentacao.APP.Mappings
             CreateMap<InteressadoPessoaFisicaModeloNegocio, InteressadoPessoaFisicaViewModel>().ReverseMap();
             CreateMap<InteressadoPessoaJuridicaModeloNegocio, InteressadoPessoaJuridicaViewModel>().ReverseMap();
             CreateMap<OrganizacaoViewModel, InteressadoPessoaJuridicaViewModel>().ReverseMap();
-
+            CreateMap<OrganizacaoViewModel, InteressadoPessoaJuridicaModeloNegocio>().ReverseMap();
 
             CreateMap<TipoContatoModeloNegocio, TipoContatoViewModel>().ReverseMap();
             CreateMap<EmailModeloNegocio, EmailViewModel>().ReverseMap();

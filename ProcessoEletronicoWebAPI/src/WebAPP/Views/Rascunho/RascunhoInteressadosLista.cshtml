@@ -1,0 +1,59 @@
+﻿@model ListaInteressadosPJPF
+
+<h4>Interessados</h4>
+@if ((Model.InteressadosPJ != null && Model.InteressadosPJ.Count > 0) ||
+   (Model.InteressadosPF != null && Model.InteressadosPF.Count > 0))
+{ 
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-md-2">CNPJ/CPF</th>
+            <th class="col-md-5">RAZÃO SOCIAL/NOME</th>
+            <th class="col-md-2">MUNICÍPIO</th>
+            <th class="col-md-1">UF</th>
+            <th class="col-md-2 text-center">AÇÕES</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.InteressadosPJ != null && Model.InteressadosPJ.Count > 0)
+        {
+            @foreach (var pj in Model.InteressadosPJ)
+            {
+                <tr>
+                    <td class="text-right">@Convert.ToUInt64(pj.Cnpj).ToString(@"00\.000\.000\/0000\-00")</td>
+                    <td>@pj.Sigla - @pj.RazaoSocial</td>
+                    <td>@pj.NomeMunicipio</td>
+                    <td>@pj.UfMunicipio</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></button>
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        @if (Model.InteressadosPF != null && Model.InteressadosPF.Count > 0)
+        {
+            @foreach (var pf in Model.InteressadosPF)
+            {
+                <tr>
+                    <td class="text-right">@Convert.ToUInt64(pf.Cpf).ToString(@"000\.000\.000\-00")</td>
+                    <td>@pf.Nome</td>
+                    <td>@pf.NomeMunicipio</td>
+                    <td>@pf.UfMunicipio</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></button>
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+}
+else{
+    <div class="alert alert-warning">Não há interessado cadastrados.</div>
+}

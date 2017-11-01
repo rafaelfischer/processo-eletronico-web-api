@@ -40,7 +40,22 @@ namespace Apresentacao.APP.ViewModels
         [Display(Name = "Anexos")]
         public List<AnexoViewModel> Anexos { get; set; }
         public List<IFormFile> files { get; set; }         
-        //public List<InteressadoPessoaFisicaModeloNegocio> InteressadosPessoaFisica { get; set; }
-        //public List<InteressadoPessoaJuridicaModeloNegocio> InteressadosPessoaJuridica { get; set; }
+        public List<InteressadoPessoaFisicaViewModel> InteressadosPessoaFisica { get; set; }
+        public List<InteressadoPessoaJuridicaViewModel> InteressadosPessoaJuridica { get; set; }
+
+        public ListaInteressadosPJPF interessadosRascunho {
+            get {
+                return new ListaInteressadosPJPF
+                {
+                    InteressadosPF = this.InteressadosPessoaFisica,
+                    InteressadosPJ = this.InteressadosPessoaJuridica
+                };
+            }
+        }        
+    }
+    public class ListaInteressadosPJPF
+    {
+        public List<InteressadoPessoaJuridicaViewModel> InteressadosPJ { get; set; }
+        public List<InteressadoPessoaFisicaViewModel> InteressadosPF { get; set; }
     }
 }

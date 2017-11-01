@@ -23,19 +23,22 @@ namespace WebAPP.Controllers
         private IRascunhoProcessoSinalizacaoService _sinalizacaoService;
         private IRascunhoProcessoAnexoService _anexoService;
         private IOrganogramaAppService _organogramaService;
+        private IRascunhoProcessoInteressadoService _interessadoService;
 
         public RascunhoController(
             IRascunhoProcessoService service, 
             IRascunhoProcessoMunicipioService municipio, 
             IRascunhoProcessoSinalizacaoService sinalizacao,
             IRascunhoProcessoAnexoService anexoService,
-            IOrganogramaAppService organogramaService)
+            IOrganogramaAppService organogramaService,
+            IRascunhoProcessoInteressadoService interessadoService)
         {
             _service = service;
             _municipioService = municipio;
             _sinalizacaoService = sinalizacao;
             _anexoService = anexoService;
             _organogramaService = organogramaService;
+            _interessadoService = interessadoService;
         }
 
         [HttpGet]
@@ -59,7 +62,9 @@ namespace WebAPP.Controllers
         public IActionResult EditarBasico(RascunhoProcessoViewModel rascunho)
         {
             _service.UpdateRascunhoProcesso(rascunho.Id, rascunho);
-            _sinalizacaoService.PostSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
+
+            if(rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0)
+                _sinalizacaoService.PostSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
 
             RascunhoProcessoViewModel rascunhoAtualizado = _service.EditRascunhoProcesso(rascunho.Id);
             return PartialView("RascunhoBasico", rascunhoAtualizado);
@@ -186,12 +191,19 @@ namespace WebAPP.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult IncluirInteressado(string guidOrganizacao, string guidUnidade)
+        public IActionResult IncluirInteressadoPJ(int idRascunho, string guidOrganizacao, string guidUnidade)
         {
             if (string.IsNullOrEmpty(guidUnidade))
             {
-                var organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
-                return Json(organizacao);
+                OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
+                _interessadoService.PostInteressadoPJ(idRascunho, organizacao);
+                ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+                {
+                    InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+                    InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+                };
+
+                return PartialView("RascunhoInteressadosLista", interessados);
             }
             else
             {
