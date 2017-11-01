@@ -1,9 +1,11 @@
-﻿using ProcessoEletronicoService.Dominio.Modelos;
+﻿using Negocio.Comum.Validacao;
+using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Modelos;
 using Prodest.ProcessoEletronico.Integration.Organograma.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,12 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
     public class MunicipioValidacao : IBaseValidation<MunicipioProcessoModeloNegocio, MunicipioRascunhoProcesso>, IBaseCollectionValidation<MunicipioProcessoModeloNegocio>
     {
         private IMunicipioService _municipioService;
+        private GuidValidacao _guidValidacao;
 
-        public MunicipioValidacao(IMunicipioService municipioService)
+        public MunicipioValidacao(IMunicipioService municipioService, GuidValidacao guidValidacao)
         {
             _municipioService = municipioService;
+            _guidValidacao = guidValidacao;
         }
         public void Exists(MunicipioRascunhoProcesso municipioRascunhoProcesso)
         {
@@ -71,6 +75,21 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
                     {
                         throw new RequisicaoInvalidaException($"Município informado não encontrado no Organograma (Guid : {guidMunicipio})");
                     }
+                }
+            }
+        }
+
+        public void IsGuidMunicipiosValidAndExistInOrganograma(IEnumerable<string> guidMunicipios)
+        {
+            IEnumerable<Municipio> municipiosES = _municipioService.SearchByEstado("ES").ResponseObject;
+            IEnumerable<string> guidMunicipiosES = municipiosES.Select(m => m.Guid).ToList();
+
+            foreach (string guidMunicipio in guidMunicipios)
+            {
+                _guidValidacao.IsValid(guidMunicipio);
+                if (!guidMunicipiosES.Contains(guidMunicipio))
+                {
+                    throw new RecursoNaoEncontradoException($"Município de identificador {guidMunicipio} não encontrado no Organograma");
                 }
             }
         }

@@ -31,7 +31,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         /// <response code="200">Retorna a lista de municípios</response>
         /// <response code="404">Recurso não encontrado</response>
         /// <response code="500">Falha inesperada</response>
-        [HttpGet]
+        [HttpGet(Name = "GetMunicipios")]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
         [ProducesResponseType(typeof(List<GetMunicipioDto>), 200)]
         [ProducesResponseType(typeof(string), 404)]
@@ -79,7 +79,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         [ProducesResponseType(typeof(string), 422)]
         [ProducesResponseType(typeof(string), 500)]
         [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
-        public IActionResult Post (int idRascunhoProcesso, [FromBody] PostMunicipioDto postMunicipioDto)
+        public IActionResult Post(int idRascunhoProcesso, [FromBody] PostMunicipioDto postMunicipioDto)
         {
             if (postMunicipioDto == null)
             {
@@ -90,6 +90,36 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             GetMunicipioDto getMunicipioDto = _mapper.Map<GetMunicipioDto>(municipioNegocio);
 
             return CreatedAtRoute("GetMunicipio", new { Id = getMunicipioDto.Id }, getMunicipioDto);
+        }
+
+        /// <summary>
+        /// Inserção de municípios (em lote) no rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
+        /// <param name="guidMunicipios">Identificadores dos municípios</param>
+        /// <returns>Municípios recém inseridos</returns>
+        /// <response code="201">Município recém inserido</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="422">Objeto não processável</response>
+        /// <response code="500">Falha inesperada</response>
+        [HttpPut]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ProducesResponseType(typeof(IEnumerable<GetMunicipioDto>), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 422)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
+        public IActionResult Post(int idRascunhoProcesso, [FromBody] IEnumerable<string> guidMunicipios)
+        {
+            if (guidMunicipios == null)
+            {
+                return BadRequest();
+            }
+
+            IEnumerable<GetMunicipioDto> municipiosRascunhoProcesso = _mapper.Map<IEnumerable<GetMunicipioDto>>(_negocio.PostCollection(idRascunhoProcesso, guidMunicipios));
+            return CreatedAtRoute("GetMunicipios", new { IdRascunhoProcesso = idRascunhoProcesso }, municipiosRascunhoProcesso);
         }
 
         /// <summary>

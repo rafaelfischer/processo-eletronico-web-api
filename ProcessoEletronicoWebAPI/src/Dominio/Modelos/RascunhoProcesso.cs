@@ -30,7 +30,7 @@ namespace ProcessoEletronicoService.Dominio.Modelos
         public virtual Atividade Atividade { get; set; }
         public virtual ICollection<InteressadoPessoaFisicaRascunho> InteressadosPessoaFisica { get; set; }
         public virtual ICollection<InteressadoPessoaJuridicaRascunho> InteressadosPessoaJuridica { get; set; }
-        public virtual ICollection<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; set; }
+        public virtual List<MunicipioRascunhoProcesso> MunicipiosRascunhoProcesso { get; set; }
         public virtual OrganizacaoProcesso OrganizacaoRascunhoProcesso { get; set; }
         public virtual ICollection<SinalizacaoRascunhoProcesso> SinalizacoesRascunhoProcesso { get; set; }
     }

@@ -10,6 +10,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Base
         IList<MunicipioProcessoModeloNegocio> Get(int idRascunhoProcesso);
         MunicipioProcessoModeloNegocio Get(int idRascunhoProcesso, int id);
         MunicipioProcessoModeloNegocio Post(int idRascunhoProcesso, MunicipioProcessoModeloNegocio MunicipioRascunhoProcessoNegocio);
+        IEnumerable<MunicipioProcessoModeloNegocio> PostCollection(int idRascunhoProcesso, IEnumerable<string> guidMunicipios);
         void Patch(int idRascunhoProcesso, int id, MunicipioProcessoModeloNegocio MunicipioRascunhoProcessoNegocio);
         void Delete(int idRascunhoProcesso, int id);
         void DeleteAll(int idRascunhoProcesso);

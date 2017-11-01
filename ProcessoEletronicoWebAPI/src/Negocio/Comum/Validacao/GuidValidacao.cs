@@ -16,7 +16,7 @@ namespace Negocio.Comum.Validacao
             }
             catch (FormatException)
             {
-                throw new RequisicaoInvalidaException(mensagemErro);
+                throw new RequisicaoInvalidaException($"{mensagemErro} : {guidString}");
             }
         }
 
