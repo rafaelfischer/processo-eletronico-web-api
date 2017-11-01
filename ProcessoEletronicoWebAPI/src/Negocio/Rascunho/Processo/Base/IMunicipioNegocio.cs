@@ -12,6 +12,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Base
         MunicipioProcessoModeloNegocio Post(int idRascunhoProcesso, MunicipioProcessoModeloNegocio MunicipioRascunhoProcessoNegocio);
         void Patch(int idRascunhoProcesso, int id, MunicipioProcessoModeloNegocio MunicipioRascunhoProcessoNegocio);
         void Delete(int idRascunhoProcesso, int id);
+        void DeleteAll(int idRascunhoProcesso);
         void Delete(ICollection<MunicipioRascunhoProcesso> municipiosRascunhoProcesso);
         void Delete(MunicipioRascunhoProcesso municipiosRascunhoProcesso);
     }

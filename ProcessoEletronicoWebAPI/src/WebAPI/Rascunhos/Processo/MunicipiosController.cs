@@ -148,5 +148,24 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
             _negocio.Delete(idRascunhoProcesso, id);
             return NoContent();
         }
+
+        /// <summary>
+        /// Exclusão dos municípios do rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
+        /// <response code="204">Operação feita com sucesso</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="500">Falha inesperada</response>
+        [HttpDelete]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ProducesResponseType(typeof(void), 204)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
+        public IActionResult DeleteAll(int idRascunhoProcesso)
+        {
+            _negocio.DeleteAll(idRascunhoProcesso);
+            return NoContent();
+        }
     }
 }

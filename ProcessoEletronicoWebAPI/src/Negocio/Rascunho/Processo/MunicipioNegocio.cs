@@ -101,6 +101,18 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             _unitOfWork.Save();
         }
 
+        public void DeleteAll(int idRascunhoProcesso)
+        {
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+
+            IEnumerable<MunicipioRascunhoProcesso> municipios = _repositorioMunicipiosRascunhoProcesso
+                            .Where(m => m.IdRascunhoProcesso == idRascunhoProcesso)
+                                     .ToList();
+
+            _repositorioMunicipiosRascunhoProcesso.RemoveRange(municipios);
+            _unitOfWork.Save();
+        }
+
         public void Delete(MunicipioRascunhoProcesso municipio)
         {
             if (municipio != null)
