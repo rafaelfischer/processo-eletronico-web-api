@@ -118,7 +118,7 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
                 return BadRequest();
             }
 
-            IList<GetSinalizacaoDto> sinalizacoes = _mapper.Map<IList<GetSinalizacaoDto>>(_negocio.Put(idRascunhoProcesso, idsSinalizacoes));
+            IList<GetSinalizacaoNoImagemDto> sinalizacoes = _mapper.Map<IList<GetSinalizacaoNoImagemDto>>(_negocio.Put(idRascunhoProcesso, idsSinalizacoes));
             return CreatedAtRoute("GetSinalizacoes", sinalizacoes);
         }
 
