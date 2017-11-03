@@ -64,6 +64,29 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             return Get(idRascunhoProcesso);
         }
 
+        public IList<SinalizacaoModeloNegocio> Put(int idRascunhoProcesso, IList<int> idsSinalizacoes)
+        {
+            DeleteAll(idRascunhoProcesso);
+            _validacao.IsValid(idsSinalizacoes);
+
+            foreach (int idSinalizacao in idsSinalizacoes)
+            {
+               _repositorioSinalizacoesRascunhoProcesso.Add(new SinalizacaoRascunhoProcesso { IdRascunhoProcesso = idRascunhoProcesso, IdSinalizacao = idSinalizacao });
+            }
+
+            _unitOfWork.Save();
+            return Get(idRascunhoProcesso);
+        }
+
+        public void DeleteAll(int idRascunhoProcesso)
+        {
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+
+            IEnumerable<SinalizacaoRascunhoProcesso> sinalizacoesRascunho = _repositorioSinalizacoesRascunhoProcesso.Where(r => r.IdRascunhoProcesso == idRascunhoProcesso).ToList();
+            _repositorioSinalizacoesRascunhoProcesso.RemoveRange(sinalizacoesRascunho);
+            _unitOfWork.Save();
+        }
+
         public void Delete(int idRascunhoProcesso, int idSinalizacao)
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
