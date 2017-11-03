@@ -178,7 +178,8 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             //Preenchimento correto dos campos
             _validacao.IsValid(rascunhoProcessoNegocio);
-            _anexoValidacao.IsValid(rascunhoProcessoNegocio.Anexos, rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null);
+            ClearTiposDocumentaisAnexos(rascunhoProcessoNegocio, rascunhoProcesso);
+            _anexoValidacao.IsValid(rascunhoProcessoNegocio.Anexos, rascunhoProcessoNegocio.Atividade?.Id);
             _interessadoPessoaFisicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaFisica);
             _interessadoPessoaJuridicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
             _municipioValidacao.IsValid(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
@@ -188,7 +189,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             InformacoesUnidade(rascunhoProcesso);
             _unitOfWork.Save();
         }
-
+        
         public void Delete(int id)
         {
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).Include(p => p.Anexos)
@@ -330,6 +331,36 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                 foreach (AnexoRascunho anexo in rascunhoProcesso.Anexos)
                 {
                     anexo.Conteudo = null;
+                }
+            }
+        }
+
+        private void ClearTiposDocumentaisAnexos(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio, RascunhoProcesso rascunhoProcesso)
+        {
+            if ((rascunhoProcessoNegocio.Atividade?.Id != rascunhoProcesso.IdAtividade) || rascunhoProcessoNegocio.Atividade == null)
+            {
+                ClearTiposDocumentaisAnexosModeloNegocio(rascunhoProcessoNegocio);
+                ClearTiposDocumentaisAnexosRepositorio(rascunhoProcesso);
+            }
+        }
+        private void ClearTiposDocumentaisAnexosModeloNegocio(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
+        {
+            if (rascunhoProcessoNegocio.Anexos != null)
+            {
+                foreach (AnexoModeloNegocio anexo in rascunhoProcessoNegocio.Anexos)
+                {
+                    anexo.TipoDocumental = null;
+                }
+            }
+        }
+
+        private void ClearTiposDocumentaisAnexosRepositorio(RascunhoProcesso rascunhoProcesso)
+        {
+            if (rascunhoProcesso.Anexos != null)
+            {
+                foreach (AnexoRascunho anexo in rascunhoProcesso.Anexos)
+                {
+                    anexo.TipoDocumental = null;
                 }
             }
         }
