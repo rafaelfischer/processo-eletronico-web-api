@@ -17,7 +17,7 @@
         <label asp-for="MunicipiosRascunhoProcesso"></label>
 
         <div id="grupomunicipios" class="row">
-            @Html.Partial("RascunhoMunicipioLista", Model.MunicipiosRascunhoProcesso)
+            @Html.Partial("~/Views/RascunhoAbrangencia/RascunhoMunicipioLista.cshtml", Model.MunicipiosRascunhoProcesso)
         </div>
     </div>
     <div class="box-footer">
