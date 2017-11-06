@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
@@ -69,6 +70,21 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             return Get(idRascunhoProcesso, municipioRascunho.Id);
         }
 
+        public IEnumerable<MunicipioProcessoModeloNegocio> PostCollection(int idRascunhoProcesso, IEnumerable<string> guidMunicipios)
+        {
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhos.Where(r => r.Id == idRascunhoProcesso).Include(m => m.MunicipiosRascunhoProcesso).SingleOrDefault();
+            _rascunhoProcessoValidacao.Exists(rascunhoProcesso);
+            
+            _validacao.IsGuidMunicipiosValidAndExistInOrganograma(guidMunicipios);
+            IEnumerable<MunicipioRascunhoProcesso> municipiosRascunho = FillMunicipioInformation(guidMunicipios);
+
+            DeleteAll(idRascunhoProcesso);
+            rascunhoProcesso.MunicipiosRascunhoProcesso.AddRange(municipiosRascunho);
+
+            _unitOfWork.Save();
+            return Get(idRascunhoProcesso);
+        }
+        
         public void Patch(int idRascunhoProcesso, int id, MunicipioProcessoModeloNegocio MunicipioProcessoModeloNegocio)
         {
             _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
@@ -98,6 +114,18 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             _validacao.Exists(municipio);
             _repositorioMunicipiosRascunhoProcesso.Remove(municipio);
+            _unitOfWork.Save();
+        }
+
+        public void DeleteAll(int idRascunhoProcesso)
+        {
+            _rascunhoProcessoValidacao.Exists(idRascunhoProcesso);
+
+            IEnumerable<MunicipioRascunhoProcesso> municipios = _repositorioMunicipiosRascunhoProcesso
+                            .Where(m => m.IdRascunhoProcesso == idRascunhoProcesso)
+                                     .ToList();
+
+            _repositorioMunicipiosRascunhoProcesso.RemoveRange(municipios);
             _unitOfWork.Save();
         }
 
@@ -157,6 +185,20 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                 municipio.Nome = null;
                 municipio.Uf = null;
             }
+        }
+
+        private IEnumerable<MunicipioRascunhoProcesso> FillMunicipioInformation(IEnumerable<string> guidMunicipios)
+        {
+            ICollection<MunicipioRascunhoProcesso> municipiosRascunhoProcesso = new List<MunicipioRascunhoProcesso>();
+            IEnumerable<Municipio> municipiosES = _municipioService.SearchByEstado("ES").ResponseObject;
+
+            foreach(string guidMunicipio in guidMunicipios)
+            {
+                Municipio municipio = municipiosES.Where(m => m.Guid.Equals(guidMunicipio)).Single();
+                municipiosRascunhoProcesso.Add(_mapper.Map<MunicipioRascunhoProcesso>(municipio));
+            }
+
+            return municipiosRascunhoProcesso;
         }
     }
 }

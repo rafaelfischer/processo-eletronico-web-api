@@ -93,6 +93,55 @@ namespace ProcessoEletronicoService.WebAPI.Rascunhos.Processo
         }
 
         /// <summary>
+        /// Atualização (substituição total) de sinalizações no rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
+        /// <param name="idsSinalizacoes">Lista de IDs de sinalizações</param>
+        /// <returns>Todas as sinalizações recém inseridas no rascunho de processos</returns>
+        /// <response code="201">Todas as sinalizações recém inseridas no rascunho de processos</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="422">Objeto não processável</response>
+        /// <response code="500">Falha inesperada</response>
+        [HttpPut]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ProducesResponseType(typeof(List<GetSinalizacaoNoImagemDto>), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 422)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
+        public IActionResult Put(int idRascunhoProcesso, [FromBody] IList<int> idsSinalizacoes)
+        {
+            if (idsSinalizacoes == null)
+            {
+                return BadRequest();
+            }
+
+            IList<GetSinalizacaoNoImagemDto> sinalizacoes = _mapper.Map<IList<GetSinalizacaoNoImagemDto>>(_negocio.Put(idRascunhoProcesso, idsSinalizacoes));
+            return CreatedAtRoute("GetSinalizacoes", sinalizacoes);
+        }
+
+        /// <summary>
+        /// Exclusão de todas sinalizações do rascunho de processos
+        /// </summary>
+        /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
+        /// <response code="204">Operação feita com sucesso</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="500">Falha inesperada</response>
+        [HttpDelete]
+        [Authorize(Policy = "RascunhoProcesso.Rascunhar")]
+        [ProducesResponseType(typeof(void), 204)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDocumentationGroup)]
+        public IActionResult Delete(int idRascunhoProcesso)
+        {
+            _negocio.DeleteAll(idRascunhoProcesso);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Exclusão de uma sinalização do rascunho de processos
         /// </summary>
         /// <param name="idRascunhoProcesso">Identificador do Rascunho de processos</param>
