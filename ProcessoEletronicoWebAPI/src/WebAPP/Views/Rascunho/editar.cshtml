@@ -9,10 +9,11 @@
 <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Dados Básicos</h3></a></li>
-        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Interessados</h3></a></li>
-        <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Abrangência</h3></a></li>
-        <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Anexos</h3></a></li>
-        <li class=""><a href="#tab_5" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Visualizar</h3></a></li>
+        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Sinalizações</h3></a></li>
+        <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Interessados</h3></a></li>
+        <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Abrangência</h3></a></li>
+        <li class=""><a href="#tab_5" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Anexos</h3></a></li>
+        <li class=""><a href="#tab_6" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Visualizar</h3></a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_1">            
@@ -20,18 +21,22 @@
         </div>
         <!-- /.tab-pane -->
         <div class="tab-pane" id="tab_2">
+            @Html.Partial("RascunhoSinalizacoes", Model)
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_3">
             @Html.Partial("RascunhoInteressados", Model)
         </div>
         <!-- /.tab-pane -->
-        <div class="tab-pane" id="tab_3">            
+        <div class="tab-pane" id="tab_4">            
             @Html.Partial("RascunhoMunicipio", Model)
         </div>
         <!-- /.tab-pane -->
-        <div class="tab-pane" id="tab_4">
+        <div class="tab-pane" id="tab_5">
             @Html.Partial("RascunhoAnexo", Model)
         </div>
         <!-- /.tab-pane -->
-        <div class="tab-pane" id="tab_5">            
+        <div class="tab-pane" id="tab_6">            
         </div>
         <!-- /.tab-pane -->
     </div>

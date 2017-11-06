@@ -22,7 +22,7 @@ namespace Apresentacao.APP.Services
             _sinalizacaoNegocio = sinalizacaoNegocio;
         }
 
-        public IEnumerable<SinalizacaoViewModel> GetSinalizacoes(int idRascunho)
+        public List<SinalizacaoViewModel> GetSinalizacoes(int idRascunho)
         {
             return _mapper.Map<List<SinalizacaoViewModel>>(_sinalizacaoNegocio.Get(idRascunho));
         }

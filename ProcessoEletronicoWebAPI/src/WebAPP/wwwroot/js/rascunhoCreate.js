@@ -16,105 +16,156 @@ var $eSAtividade = $('#Atividade_Id');
 var $idAtividade = 0;
 var $atividadeDefault = $('#Atividade_Id').val();
 
-/*Inicialização do componente tipo documental*/
-$eSTipoDocumental.select2(
-    {
-        width: '100%',
-        placeholder: 'Selecione um tipo documental',
-        language: {
-            noResults: function () {
-                return "Informe uma atividade para o processo.";
+/************************************************DADOS BASICOS************************************************/
+/**
+ * Reseta o formulário de informações básica de rascunho
+ */
+function LimparFormBasico() {
+    $('#Atividade_Id').val($('#Atividade_Id option:first').val()).trigger('change')
+    $('#GuidUnidade').index[0].trigger("change");
+    $('form#formbasico')[0].reset();
+}
+
+/************************************************SINALIZACOES************************************************/
+/**
+ * Inicializa os campos de sinalização com o plugin iCheck
+ */
+function ResetSinalizacoesLista() {    
+    $('#formsinalizacoes input[type="checkbox"]').iCheck({
+        checkboxClass: 'icheckbox_square-red',
+        radioClass: 'iradio_square-red',
+        increaseArea: '5%' // optional
+    });
+}
+
+/************************************************INTERESSADOS************************************************/
+//CARREGAR ORGANIZACOES
+$("#interessadoTipo").on("change", function () {
+
+    var formData = new FormData();
+    var tipoInteressado = $(this).val();
+    var url = "";
+    formData.append("tipoInteressado", tipoInteressado);
+
+    if (tipoInteressado > 0) {
+        url = "/rascunho/FormInteressado";
+    } else {
+        return false;
+    }
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#formInteressado").html(data)
+                $('#formInteressado select').select2({ width: '100%' })
             }
         }
-    }
-);
-
-/*Evento change do componente select para carregamento dos dados da consulta de tipo documental*/
-$eSAtividade.on('select2:selecting', function (e) {    
-    carregaModalDefault(        
-        "Alterar Atividade",
-        "Os tipos documentais dos anexos serão removidos caso confirme esta alteração. Deseja alterar a atividade do processo?",
-        "",
-        "",
-        "alterarAtividade",
-        "manterAtividade"        
     );
 });
 
-$('body').on('click', '.alterarAtividade', function (e) {
-    alert('Confirmou!');
-});
+//CARREGAR UNIDADES POR ORGANIZACAO
+$("#forminteressados").on("select2:select", "#interessadoOrgao", function () {
 
-$('body').on('click', '.manterAtividade', function (e) {    
-    $eSAtividade.val($atividadeDefault).trigger("change");
-});
+    var formData = new FormData();
+    var orgao = $(this).val();
+    var url = "/rascunho/GetUnidadesPorOrganizacao";
+    formData.append("guidOrganizacao", orgao);
 
-/*Carrega tipos documentais com base no idAtividade */
-function getTiposDocumentais() {
-    $idAtividade = $('#Atividade_Id').val();
-    $.get(
-        "/Suporte/GetTiposDocumentais?idAtividade=" + $idAtividade, function (data) {
-            $eSTipoDocumental.empty();
-            if (data.length > 0) {
-                data.unshift({ id: '-1', text: 'Selecione um tipo documental' });
-            }
-            $eSTipoDocumental.select2({
-                width: '100%',
-                data: data
-            });
-        }).fail(function () {
-            $eSTipoDocumental.select2({
-                width: '100%',
-                language: {
-                    noResults: function () {
-                        return "Não foi possível carregar tipos documentais.";
-                    }
-                }
-            });
-        });
-}
-
-/*Evento abrindo do componente tipo documental para carregamento dos dados da consulta de tipo documental*/
-$eSTipoDocumental.on('select2:opening', function (e) {
-    if ($idAtividade == 0) {
-        $idAtividade = $('#Atividade_Id').val();
-        $.get(
-            "/Suporte/GetTiposDocumentais?idAtividade=" + $idAtividade, function (data) {
-                CarregaTiposDocumentais(data);
-            }).fail(function () {
-                ErrorTiposDocumentais();
-            });
-    }
-});
-
-/**
- * Carrega dados da consulta ajax para o componente select Tipo Documental
- * @param {any} data
- */
-function CarregaTiposDocumentais(data) {
-    $eSTipoDocumental.empty();
-    if (data.length > 0) {
-        data.unshift({ id: '-1', text: 'Selecione um tipo documental' });
-    }
-    $eSTipoDocumental.select2({
-        width: '100%',
-        data: data
-    });
-}
-
-/**
- * Carrega mensagem de erro para o componente select Tipo Documental
- */
-function ErrorTiposDocumentais() {
-    $eSTipoDocumental.select2({
-        width: '100%',
-        language: {
-            noResults: function () {
-                return "Não foi possível carregar tipos documentais.";
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#interessadoUnidade").html(data)
+                $('#interessadoUnidade select').select2({ width: '100%' })
             }
         }
-    });
-}
+    );
+});
+
+//SALVAR INTERESSADO ORGANIZACAO/UNIDADE
+$("#forminteressados").on("click", "#btnAddInteressado", function () {
+
+    var tipoInteressado = $("#interessadoTipo").val();
+    var formData = new FormData();
+    var url = "/rascunho/IncluirInteressadoPJ";
+    var guidOrganizacao = $("#interessadoOrgao").val();
+    var guidUnidade = $("#interessadoOrgaoUnidade").val();
+
+    formData.append("idRascunho", $("#formanexo").find("#Id").val());
+
+    switch (tipoInteressado) {
+        case "1":
+            if (isNullOrEmpty(guidUnidade)) {
+                formData.append("guidOrganizacao", guidOrganizacao);
+            }
+            else {
+                formData.append("guidOrganizacao", guidOrganizacao);
+                formData.append("guidUnidade", guidUnidade);
+            }
+            break;
+        case "2":
+            break;
+        case "3":
+            break;
+        default:
+            return false;
+    }
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#listainteressados").html(data)
+                //$('#interessadoUnidade select').select2({ width: '100%' })
+            }
+        }
+    );
+
+    return false;
+});
+
+//EXCLUIR INTERESSADO PESSOA JURÍDICA
+$("#listainteressados").on("click", ".btn-excluir-interessado-pj", function () {
+
+    var idRascunho = $("#forminteressados").find("#Id").val();
+    var formData = new FormData();
+    var url = "/rascunho/ExcluirInteressadoPJ";    
+
+    formData.append("idRascunho", idRascunho);
+    formData.append("idInteressadoPJ", $(this).attr('data-id'));
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#listainteressados").html(data)
+                //$('#interessadoUnidade select').select2({ width: '100%' })
+            }
+        }
+    );
+
+    return false;
+});
+
+
+/************************************************ABRANGENCIA************************************************/
 
 /*Inicialização do selectbox de municipio e uf com o plugin select2*/
 $eSUf.select2({ width: '100%' });
@@ -212,16 +263,6 @@ function LimparAbrangencia() {
     $eSUf.val(0).trigger("change");
     index = 0;
 }
-
-/**
- * Reseta o formulário de informações básica de rascunho
- */
-function LimparFormBasico() {
-    $('#Atividade_Id').val($('#Atividade_Id option:first').val()).trigger('change')
-    $('#GuidUnidade').index[0].trigger("change");
-    $('form#formbasico')[0].reset();
-}
-
 /**
  * Reseta os campos de municipio com o plugin iCheck
  */
@@ -233,14 +274,105 @@ function ResetMunicipioLista() {
     });
 }
 
+/******ANEXOS*******/
+
+/*Inicialização do componente tipo documental*/
+$eSTipoDocumental.select2(
+    {
+        width: '100%',
+        placeholder: 'Selecione um tipo documental',
+        language: {
+            noResults: function () {
+                return "Informe uma atividade para o processo.";
+            }
+        }
+    }
+);
+
+/*Evento change do componente select para carregamento dos dados da consulta de tipo documental*/
+$eSAtividade.on('select2:selecting', function (e) {
+    carregaModalDefault(
+        "Alterar Atividade",
+        "Os tipos documentais dos anexos serão removidos caso confirme esta alteração. Deseja alterar a atividade do processo?",
+        "",
+        "",
+        "alterarAtividade",
+        "manterAtividade"
+    );
+});
+
+$('body').on('click', '.alterarAtividade', function (e) {
+    alert('Confirmou!');
+});
+
+$('body').on('click', '.manterAtividade', function (e) {
+    $eSAtividade.val($atividadeDefault).trigger("change");
+});
+
+/*Carrega tipos documentais com base no idAtividade */
+function getTiposDocumentais() {
+    $idAtividade = $('#Atividade_Id').val();
+    $.get(
+        "/Suporte/GetTiposDocumentais?idAtividade=" + $idAtividade, function (data) {
+            $eSTipoDocumental.empty();
+            if (data.length > 0) {
+                data.unshift({ id: '-1', text: 'Selecione um tipo documental' });
+            }
+            $eSTipoDocumental.select2({
+                width: '100%',
+                data: data
+            });
+        }).fail(function () {
+            $eSTipoDocumental.select2({
+                width: '100%',
+                language: {
+                    noResults: function () {
+                        return "Não foi possível carregar tipos documentais.";
+                    }
+                }
+            });
+        });
+}
+
+/*Evento abrindo do componente tipo documental para carregamento dos dados da consulta de tipo documental*/
+$eSTipoDocumental.on('select2:opening', function (e) {
+    if ($idAtividade == 0) {
+        $idAtividade = $('#Atividade_Id').val();
+        $.get(
+            "/Suporte/GetTiposDocumentais?idAtividade=" + $idAtividade, function (data) {
+                CarregaTiposDocumentais(data);
+            }).fail(function () {
+                ErrorTiposDocumentais();
+            });
+    }
+});
+
 /**
- * Inicializa os campos de sinalização com o plugin iCheck
+ * Carrega dados da consulta ajax para o componente select Tipo Documental
+ * @param {any} data
  */
-function ResetSinalizacoesLista() {
-    $('#formbasico input').iCheck({
-        checkboxClass: 'icheckbox_square-red',
-        radioClass: 'iradio_square-red',
-        increaseArea: '5%' // optional
+function CarregaTiposDocumentais(data) {
+    $eSTipoDocumental.empty();
+    if (data.length > 0) {
+        data.unshift({ id: '-1', text: 'Selecione um tipo documental' });
+    }
+    $eSTipoDocumental.select2({
+        width: '100%',
+        data: data
+    });
+}
+
+/**
+ * Carrega mensagem de erro para o componente select Tipo Documental
+ */
+function ErrorTiposDocumentais() {
+    $eSTipoDocumental.select2({
+        width: '100%',
+        language: {
+            noResults: function () {
+                return "Não foi possível carregar tipos documentais.";
+            }
+        }
     });
 }
 
@@ -310,101 +442,4 @@ $("#grupoanexos").on("click", ".btnExcluirAnexo", function () {
     );
 });
 
-//CARREGAR ORGANIZACOES
-$("#interessadoTipo").on("change", function () {
-
-    var formData = new FormData();
-    var tipoInteressado = $(this).val();
-    var url = "";
-    formData.append("tipoInteressado", tipoInteressado);
-
-    if (tipoInteressado > 0) {
-        url = "/rascunho/FormInteressado";
-    } else {
-        return false;
-    }
-
-    $.ajax(
-        {
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                $("#formInteressado").html(data)
-                $('#formInteressado select').select2({ width: '100%' })
-            }
-        }
-    );
-});
-
-//CARREGAR UNIDADES POR ORGANIZACAO
-$("#forminteressados").on("select2:select", "#interessadoOrgao", function () {
-
-    var formData = new FormData();
-    var orgao = $(this).val();
-    var url = "/rascunho/GetUnidadesPorOrganizacao";
-    formData.append("guidOrganizacao", orgao);
-
-    $.ajax(
-        {
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                $("#interessadoUnidade").html(data)
-                $('#interessadoUnidade select').select2({ width: '100%' })
-            }
-        }
-    );
-});
-
-//SALVAR INTERESSADO ORGANIZACAO/UNIDADE
-$("#forminteressados").on("click", "#btnAddInteressado", function () {
-
-    var tipoInteressado = $("#interessadoTipo").val();
-    var formData = new FormData();
-    var url = "/rascunho/IncluirInteressadoPJ";
-    var guidOrganizacao = $("#interessadoOrgao").val();
-    var guidUnidade = $("#interessadoOrgaoUnidade").val();
-
-    formData.append("idRascunho", $("#formanexo").find("#Id").val());
-
-    switch (tipoInteressado) {
-        case "1":
-            if (isNullOrEmpty(guidUnidade)) {
-                formData.append("guidOrganizacao", guidOrganizacao);
-            }
-            else {
-                formData.append("guidUnidade", guidUnidade);
-            }
-            break;
-        case "2":
-            break;
-        case "3":
-            break;
-        default:
-            return false;
-    }
-        
-    $.ajax(
-        {
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                $("#interessadoUnidade").html(data)
-                $('#interessadoUnidade select').select2({ width: '100%' })
-            }
-        }
-    );
-
-    return false;
-});
-
-//btnEditarAnexo
+/************************************************VISUALIZACAO************************************************/

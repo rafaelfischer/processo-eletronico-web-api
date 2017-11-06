@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<OrganizacaoViewModel>
 
 <div class="form-group">
-    <select class="form-control" id="interessadoOrgao" asp-items="@(new SelectList(Model,"guid","NomeSigla"))">
+    <select class="form-control" id="interessadoOrgao" asp-items="@(new SelectList(Model,"Guid","NomeSigla"))">
         <option>Selecione um Órgão</option>
     </select>
 </div>

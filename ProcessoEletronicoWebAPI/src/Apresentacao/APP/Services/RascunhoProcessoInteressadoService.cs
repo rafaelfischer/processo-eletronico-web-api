@@ -44,8 +44,16 @@ namespace Apresentacao.APP.Services
 
         public InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, OrganizacaoViewModel organizacaoInteressada)
         {
-            InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _interessadoPessoaJuridica.Post(idRascunho, _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(organizacaoInteressada));            
+            InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _interessadoPessoaJuridica.Post(idRascunho, _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(organizacaoInteressada));
             return _mapper.Map<InteressadoPessoaJuridicaViewModel>(interessadoNegocio);
+        }
+
+        public InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, OrganizacaoViewModel organizacaoInteressada, UnidadeViewModel unidadeInteressada)
+        {
+            InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(organizacaoInteressada);
+            interessadoNegocio.NomeUnidade = unidadeInteressada.Nome;
+            interessadoNegocio.SiglaUnidade = unidadeInteressada.Sigla;
+            return _mapper.Map<InteressadoPessoaJuridicaViewModel>(_interessadoPessoaJuridica.Post(idRascunho,interessadoNegocio));
         }
 
         public List<InteressadoPessoaFisicaViewModel> GetInteressadosPF(int idRascunho)
@@ -74,6 +82,11 @@ namespace Apresentacao.APP.Services
                 return null;
             }
 
+        }
+
+        public void ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
+        {
+            _interessadoPessoaJuridica.Delete(idRascunho, idInteressadoPJ);
         }
     }
 }

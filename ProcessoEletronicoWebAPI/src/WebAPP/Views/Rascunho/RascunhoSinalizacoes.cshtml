@@ -1,0 +1,43 @@
+﻿@model RascunhoProcessoViewModel
+
+@{
+    var cont = 0;
+}
+
+<div id="divformsinalizacoes">
+    <form asp-action="EditarSinalizacoes"
+          asp-controller="rascunho"
+          name="formsinalizacoes"
+          id="formsinalizacoes"
+          data-ajax-complete="ResetSinalizacoesLista"
+          data-ajax="true"
+          data-ajax-method="POST"
+          data-ajax-mode="replace"
+          data-ajax-update="#divformsinalizacoes">
+
+        <div class="form-group" id="gruposinalizacao">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GuidOrganizacao" />
+            <label asp-for="Sinalizacoes"></label>
+            @foreach (var item in Model.SinalizacoesLista)
+            {
+                <div class="checkbox">
+                    @if (Model.Sinalizacoes.Where(s => s.Id == item.Id).Count() > 0)
+                {
+                        <label><input type="checkbox" checked name="Sinalizacoes[@(cont++)].Id" value="@item.Id" /> @item.Descricao</label>
+                    }
+                    else
+                    {
+                        <label><input type="checkbox" name="Sinalizacoes[@(cont++)].Id" value="@item.Id" /> @item.Descricao</label>
+                    }
+                </div>
+            }
+        </div>
+        <div class="box-footer">
+            <div class="btn-group pull-right">
+                <button type="reset" class="btn btn-default" onclick="ResetSinalizacoesLista()"><i class="fa fa-trash"></i> Limpar</button>
+                <button class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            </div>
+        </div>
+    </form>
+</div>

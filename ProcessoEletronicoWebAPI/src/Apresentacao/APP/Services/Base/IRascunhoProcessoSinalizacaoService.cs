@@ -7,7 +7,7 @@ namespace Apresentacao.APP.Services.Base
 {
     public interface IRascunhoProcessoSinalizacaoService
     {
-        IEnumerable<SinalizacaoViewModel> GetSinalizacoes(int idRascunho);
+        List<SinalizacaoViewModel> GetSinalizacoes(int idRascunho);
         void PostSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes);
     }
 }

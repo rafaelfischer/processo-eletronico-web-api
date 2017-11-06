@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace WebAPP.Controllers
 {
     public class RascunhoController : BaseController
-    {   
+    {
         private IRascunhoProcessoService _service;
         private IRascunhoProcessoMunicipioService _municipioService;
         private IRascunhoProcessoSinalizacaoService _sinalizacaoService;
@@ -26,8 +26,8 @@ namespace WebAPP.Controllers
         private IRascunhoProcessoInteressadoService _interessadoService;
 
         public RascunhoController(
-            IRascunhoProcessoService service, 
-            IRascunhoProcessoMunicipioService municipio, 
+            IRascunhoProcessoService service,
+            IRascunhoProcessoMunicipioService municipio,
             IRascunhoProcessoSinalizacaoService sinalizacao,
             IRascunhoProcessoAnexoService anexoService,
             IOrganogramaAppService organogramaService,
@@ -63,11 +63,22 @@ namespace WebAPP.Controllers
         {
             _service.UpdateRascunhoProcesso(rascunho.Id, rascunho);
 
-            if(rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0)
+            if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0)
                 _sinalizacaoService.PostSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
 
             RascunhoProcessoViewModel rascunhoAtualizado = _service.EditRascunhoProcesso(rascunho.Id);
             return PartialView("RascunhoBasico", rascunhoAtualizado);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditarSinalizacoes(RascunhoProcessoViewModel rascunho)
+        {
+            if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0)
+                _sinalizacaoService.PostSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
+
+            RascunhoProcessoViewModel rascunhoAtualizado = new RascunhoProcessoViewModel { Sinalizacoes = _sinalizacaoService.GetSinalizacoes(rascunho.Id) };
+            return PartialView("RascunhoSinalizacoes", rascunhoAtualizado);
         }
 
         [HttpPost]
@@ -103,7 +114,7 @@ namespace WebAPP.Controllers
                         formFile.CopyToAsync(stream);
                     }
                 }
-            }            
+            }
 
             return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(rascunho.Id));
         }
@@ -124,7 +135,7 @@ namespace WebAPP.Controllers
         public async Task<IActionResult> UploadAnexo(IList<IFormFile> files, int idRascunho, int idTipoDocumental)
         {
             long totalBytes = files.Sum(f => f.Length);
-            
+
             foreach (var file in files)
             {
                 if (file.Length > 0)
@@ -134,18 +145,19 @@ namespace WebAPP.Controllers
                         await file.CopyToAsync(ms);
                         var fileBytes = ms.ToArray();
                         string s = Convert.ToBase64String(fileBytes);
-                        AnexoViewModel anexo = new AnexoViewModel() {
+                        AnexoViewModel anexo = new AnexoViewModel()
+                        {
                             ConteudoString = s,
                             Nome = file.FileName,
                             MimeType = file.ContentType,
-                            TipoDocumental = new TipoDocumentalViewModel { Id = idTipoDocumental}
+                            TipoDocumental = new TipoDocumentalViewModel { Id = idTipoDocumental }
                         };
                         _anexoService.PostAnexo(idRascunho, anexo);
                     }
                 }
             }
 
-            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));            
+            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));
         }
 
         [HttpPost]
@@ -154,9 +166,9 @@ namespace WebAPP.Controllers
         {
             _anexoService.DeleteAnexo(idRascunho, idAnexo);
 
-            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));            
+            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));
         }
-        
+
         [HttpPost]
         [Authorize]
         public IActionResult FormInteressado(int tipoInteressado)
@@ -164,14 +176,14 @@ namespace WebAPP.Controllers
             switch (tipoInteressado)
             {
                 case 1:
-                    return PartialView("RascunhoInteressadoOrgaos", GetOrganizacoesPorPatriarca());                    
+                    return PartialView("RascunhoInteressadoOrgaos", GetOrganizacoesPorPatriarca());
                 case 2:
                     return PartialView("RascunhoInteressadoPJ");
                 case 3:
                     return PartialView("RascunhoInteressadoPF");
                 default:
-                    return Content("Informe um tipo válido de interessado."); 
-            }            
+                    return Content("Informe um tipo válido de interessado.");
+            }
         }
 
         [HttpPost]
@@ -182,8 +194,8 @@ namespace WebAPP.Controllers
             return PartialView("RascunhoInteressadoOrgaoUnidades", unidades);
         }
 
-        [NonAction]        
-        private IEnumerable<OrganizacaoViewModel>  GetOrganizacoesPorPatriarca()
+        [NonAction]
+        private IEnumerable<OrganizacaoViewModel> GetOrganizacoesPorPatriarca()
         {
             IEnumerable<OrganizacaoViewModel> organiozacoes = _organogramaService.GetOrganizacoesPorPatriarca();
             return organiozacoes;
@@ -197,20 +209,38 @@ namespace WebAPP.Controllers
             {
                 OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
                 _interessadoService.PostInteressadoPJ(idRascunho, organizacao);
-                ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
-                {
-                    InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
-                    InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
-                };
-
-                return PartialView("RascunhoInteressadosLista", interessados);
             }
             else
             {
-                var unidade = _organogramaService.GetUnidade(guidUnidade);
-                return Json(unidade);
-            }            
-        }        
+                OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
+                UnidadeViewModel unidade = _organogramaService.GetUnidade(guidUnidade);
+
+                _interessadoService.PostInteressadoPJ(idRascunho, organizacao, unidade);
+            }
+
+            ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            {
+                InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+                InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+            };
+
+            return PartialView("RascunhoInteressadosLista", interessados);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
+        {
+            _interessadoService.ExcluirInteressadoPJ(idRascunho, idInteressadoPJ);
+
+            ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            {
+                InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+                InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+            };
+
+            return PartialView("RascunhoInteressadosLista", interessados);
+        }
 
         [HttpPost]
         [Authorize]

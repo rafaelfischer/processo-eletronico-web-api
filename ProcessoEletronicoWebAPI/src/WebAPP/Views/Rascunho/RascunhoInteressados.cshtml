@@ -2,6 +2,8 @@
 
 <form id="forminteressados">
     <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="GuidOrganizacao" />
         <label>Tipo de Interessado</label>
         <select id="interessadoTipo" class="form-control">
             <option>Selecione um tipo de interessado</option>
@@ -11,7 +13,10 @@
         </select>
     </div>
     <div id="formInteressado">
-        @Html.Partial("RascunhoInteressadosLista",Model.interessadosRascunho)
+        
+    </div>
+    <div id="listainteressados">
+        @Html.Partial("RascunhoInteressadosLista", Model.InteressadosRascunho)
     </div>
     <div class="box-footer">
         <div class="btn-group pull-right">
