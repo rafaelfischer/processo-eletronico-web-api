@@ -10,7 +10,6 @@ namespace Apresentacao.WebAPI.Models
         public string Descricao { get; set; }
         public string Conteudo { get; set; }
         public string MimeType { get; set; }
-        public int IdTipoDocumental { get; set; }
     }
 
     public class PatchRascunhoAnexoDto : PostRascunhoAnexoDto
@@ -24,6 +23,5 @@ namespace Apresentacao.WebAPI.Models
         public string Descricao { get; set; }
         public string Conteudo { get; set; }
         public string MimeType { get; set; }
-        public int IdTipoDocumental { get; set; }
     }
 }

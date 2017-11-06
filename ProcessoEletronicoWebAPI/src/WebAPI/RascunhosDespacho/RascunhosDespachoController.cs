@@ -105,6 +105,7 @@ namespace Prodest.ProcessoEletronico.WebAPI.RascunhosDespacho
             GetRascunhoDespachoDto getRascunhoDespachoDto = _mapper.Map<GetRascunhoDespachoDto>(_service.Add(rascunhoDespachoPost));
             return CreatedAtRoute("GetRascunhodespacho", new { id = getRascunhoDespachoDto.Id }, getRascunhoDespachoDto);
         }
+
         #endregion
 
         #region PATCH

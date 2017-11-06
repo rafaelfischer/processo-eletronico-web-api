@@ -53,6 +53,7 @@ namespace ProcessoEletronicoService.Dependencies
             //Classes de Negócio envolvidas nas operações CRUD
             dependencies.Add(typeof(Negocio.Base.IAnexoNegocio), typeof(Negocio.AnexoNegocio));
             dependencies.Add(typeof(Negocio.Rascunho.Processo.Base.IAnexoNegocio), typeof(Negocio.Rascunho.Processo.AnexoNegocio));
+            dependencies.Add(typeof(IAnexoRascunhoDespachoCore), typeof(AnexoRascunhoDespachoCore));
             dependencies.Add(typeof(IBloqueioCore), typeof(BloqueioCore));
             dependencies.Add(typeof(IAtividadeNegocio), typeof(AtividadeNegocio));
             dependencies.Add(typeof(IContatoInteressadoPessoaFisicaNegocio), typeof(ContatoInteressadoPessoaFisicaNegocio));
@@ -78,6 +79,7 @@ namespace ProcessoEletronicoService.Dependencies
 
             //Validations
             dependencies.Add(typeof(IRascunhoDespachoValidation), typeof(RascunhoDespachoValidation));
+            dependencies.Add(typeof(IAnexoRascunhoDespachoValidation), typeof(AnexoRascunhoDespachoValidation));
 
             #endregion
 
@@ -90,7 +92,8 @@ namespace ProcessoEletronicoService.Dependencies
 
             //WebAPI
             dependencies.Add(typeof(IRascunhoDespachoService), typeof(RascunhoDespachoService));
-            
+            dependencies.Add(typeof(IAnexoRascunhoDespachoService), typeof(AnexoRascunhoDespachoService));
+
             #endregion
 
 
