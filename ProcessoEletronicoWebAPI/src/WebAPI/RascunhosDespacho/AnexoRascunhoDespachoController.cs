@@ -93,8 +93,27 @@ namespace WebAPI.RascunhosDespacho
             GetRascunhoAnexoDto getRascunhoAnexoDto = _mapper.Map<GetRascunhoAnexoDto>(_service.Add(idRascunhoDespacho, postRascunhoAnexoDto));
             return CreatedAtRoute("GetAnexoRascunhoDespacho", new { id = getRascunhoAnexoDto.Id, IdRascunhoDespacho = idRascunhoDespacho }, getRascunhoAnexoDto);
         }
+        #endregion
 
-
+        #region DELETE
+        /// <summary>
+        /// Exclusão de anexos de rascunho de despacho
+        /// </summary>
+        /// <param name="idRascunhoDespacho">Identificador rascunho de despacho.</param>
+        /// <param name="id">Identificador do anexo do rascunho de despacho.</param>
+        /// <response code="204">Operação realizada com sucesso</response>
+        /// <response code="404">Recurso não encontrado</response>
+        /// <response code="500">Falha inesperada</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
+        [ApiExplorerSettings(GroupName = Constants.RascunhosDespachoGroup)]
+        public IActionResult Delete(int idRascunhoDespacho, int id)
+        {
+            _service.Delete(idRascunhoDespacho, id);
+            return NoContent();
+        }
         #endregion
     }
 }

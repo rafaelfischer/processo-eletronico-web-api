@@ -30,7 +30,7 @@ namespace Apresentacao.WebAPI
 
         public void Delete(int idRascunhoDespacho, int id)
         {
-            throw new NotImplementedException();
+            _core.Delete(idRascunhoDespacho, id);
         }
 
         public GetRascunhoAnexoDto Search(int idRascunhoDespacho, int id)
