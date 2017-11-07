@@ -13,11 +13,11 @@ namespace WebAPP.Controllers
 {
     public class RascunhoAbrangenciaController : BaseController
     {   
-        private IRascunhoProcessoMunicipioService _municipioService;        
+        private IRascunhoProcessoAbrangenciaService _municipioService;        
         private IOrganogramaAppService _organogramaService;        
 
         public RascunhoAbrangenciaController(            
-            IRascunhoProcessoMunicipioService municipio,
+            IRascunhoProcessoAbrangenciaService municipio,
             IOrganogramaAppService organogramaService
             )
         {            
@@ -29,13 +29,18 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult EditarMunicipio(RascunhoProcessoViewModel rascunho)
         {
+            List<string> municipios = new List<string>();
+
             if (rascunho.MunicipiosRascunhoProcesso != null)
             {
                 foreach (var municipio in rascunho.MunicipiosRascunhoProcesso)
                 {
-                    _municipioService.PostMunicipioPorIdRascunho(rascunho.Id, municipio);
+                    municipios.Add(municipio.GuidMunicipio);
                 }
             }
+
+            _municipioService.DeleteAllMunicipio(rascunho.Id);
+            _municipioService.UpdateMunicipioPorIdRascunho(rascunho.Id, municipios);
 
             return PartialView("RascunhoMunicipioLista", _municipioService.GetMunicipiosPorIdRascunho(rascunho.Id));
         }

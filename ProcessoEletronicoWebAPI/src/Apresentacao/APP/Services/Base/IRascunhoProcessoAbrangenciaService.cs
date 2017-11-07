@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Apresentacao.APP.Services.Base
 {
-    public interface IRascunhoProcessoMunicipioService
+    public interface IRascunhoProcessoAbrangenciaService
     {
         IEnumerable<MunicipioViewModel> GetMunicipiosPorIdRascunho(int idRascunho);
         MunicipioViewModel PostMunicipioPorIdRascunho(int idRascunho, MunicipioViewModel municipioViewModel);
+        List<MunicipioViewModel> UpdateMunicipioPorIdRascunho(int idRascunho, List<string> municipios);
+        void DeleteAllMunicipio(int idRascunho);
     }
 }

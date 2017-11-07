@@ -10,14 +10,14 @@ using System.Text;
 
 namespace Apresentacao.APP.Services
 {
-    public class RascunhoProcessoMunicipioService: IRascunhoProcessoMunicipioService
+    public class RascunhoProcessoAbrangenciaService : IRascunhoProcessoAbrangenciaService
     {
         private IMapper _mapper;
         private ICurrentUserProvider _user;        
         private IMunicipioNegocio _municipioNegocio;
         
 
-        public RascunhoProcessoMunicipioService(
+        public RascunhoProcessoAbrangenciaService(
             IMapper mapper,
             ICurrentUserProvider user,
             IRascunhoProcessoNegocio rascunho,
@@ -50,6 +50,30 @@ namespace Apresentacao.APP.Services
             {   
                 MunicipioProcessoModeloNegocio municipioNegocio = _mapper.Map<MunicipioProcessoModeloNegocio>(municipioViewModel);
                 return _mapper.Map<MunicipioViewModel>(_municipioNegocio.Post(idRascunho, municipioNegocio));                
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<MunicipioViewModel> UpdateMunicipioPorIdRascunho(int idRascunho, List<string> municipios)
+        {
+            try
+            {   
+                return _mapper.Map<List<MunicipioViewModel>>(_municipioNegocio.PostCollection(idRascunho, municipios));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void DeleteAllMunicipio(int idRascunho)
+        {
+            try
+            {
+                _municipioNegocio.DeleteAll(idRascunho);
             }
             catch (Exception)
             {

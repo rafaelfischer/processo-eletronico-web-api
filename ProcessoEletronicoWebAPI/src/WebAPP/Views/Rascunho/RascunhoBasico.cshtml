@@ -24,7 +24,7 @@
         <div class="form-group">
             <label asp-for="Atividade"></label>
             <select class="form-control" asp-for="Atividade.Id" asp-items="@(new SelectList(Model.AtividadesLista,"Id","CodigoDescricao"))">
-                <option>Selecione uma Atividade</option>
+                <option value="">Selecione uma Atividade</option>
             </select>
         </div>
 
@@ -36,7 +36,7 @@
         <div class="form-group">
             <label asp-for="UnidadesLista"></label>
             <select class="form-control" asp-for="GuidUnidade" asp-items="@(new SelectList(Model.UnidadesLista,"Guid","Nome"))">
-                <option>Selecione uma Unidade</option>
+                <option value="">Selecione uma Unidade</option>
             </select>
         </div>
 

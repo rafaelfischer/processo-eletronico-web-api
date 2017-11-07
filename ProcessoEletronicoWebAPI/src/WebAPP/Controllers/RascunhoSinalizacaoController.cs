@@ -26,11 +26,17 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult EditarSinalizacoes(RascunhoProcessoViewModel rascunho)
         {
-            if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0)
-                _sinalizacaoService.PostSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
-
-            RascunhoProcessoViewModel rascunhoAtualizado = new RascunhoProcessoViewModel { Sinalizacoes = _sinalizacaoService.GetSinalizacoes(rascunho.Id) };
-            return PartialView("RascunhoSinalizacoes", rascunhoAtualizado);
+            if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0) { 
+                List<SinalizacaoViewModel> sinalizacoes = new List<SinalizacaoViewModel>();
+                sinalizacoes = _sinalizacaoService.UpdateSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
+                return Json(sinalizacoes);
+            }
+            else
+            {
+                _sinalizacaoService.DeleteAllSinalizacao(rascunho.Id);
+                return Json(rascunho.Sinalizacoes);
+            }
+            
         }
     }
 }

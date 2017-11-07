@@ -27,6 +27,23 @@ namespace Apresentacao.APP.Services
             return _mapper.Map<List<SinalizacaoViewModel>>(_sinalizacaoNegocio.Get(idRascunho));
         }
 
+        public List<SinalizacaoViewModel> UpdateSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes)
+        {
+            List<int> sinalizacoesListaInt = new List<int>();
+
+            foreach (var sinalizacao in sinalizacoes)
+            {
+                sinalizacoesListaInt.Add(sinalizacao.Id);
+            }
+
+            return _mapper.Map<List<SinalizacaoViewModel>>(_sinalizacaoNegocio.Put(idRascunho, sinalizacoesListaInt));
+        }
+
+        public void DeleteAllSinalizacao(int idRascunho)
+        {   
+            _sinalizacaoNegocio.DeleteAll(idRascunho);
+        }
+
 
         public void PostSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes)
         {

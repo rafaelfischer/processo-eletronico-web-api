@@ -19,7 +19,7 @@ namespace WebAPP.Controllers
     public class RascunhoController : BaseController
     {
         private IRascunhoProcessoService _service;
-        private IRascunhoProcessoMunicipioService _municipioService;
+        private IRascunhoProcessoAbrangenciaService _municipioService;
         private IRascunhoProcessoSinalizacaoService _sinalizacaoService;
         private IRascunhoProcessoAnexoService _anexoService;
         private IOrganogramaAppService _organogramaService;
@@ -27,7 +27,7 @@ namespace WebAPP.Controllers
 
         public RascunhoController(
             IRascunhoProcessoService service,
-            IRascunhoProcessoMunicipioService municipio,
+            IRascunhoProcessoAbrangenciaService municipio,
             IRascunhoProcessoSinalizacaoService sinalizacao,
             IRascunhoProcessoAnexoService anexoService,
             IOrganogramaAppService organogramaService,
