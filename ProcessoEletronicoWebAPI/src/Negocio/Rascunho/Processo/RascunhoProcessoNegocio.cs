@@ -319,7 +319,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         private void MapAlteracaoRascunhoProcesso(RascunhoProcessoModeloNegocio rascunhoProcessoNegocio, RascunhoProcesso rascunhoProcesso)
         {
-            rascunhoProcesso.IdAtividade = rascunhoProcessoNegocio.Atividade != null ? rascunhoProcessoNegocio.Atividade.Id : (int?)null;
+            rascunhoProcesso.IdAtividade = rascunhoProcessoNegocio.Atividade != null && rascunhoProcessoNegocio.Atividade?.Id > 0 ? rascunhoProcessoNegocio.Atividade.Id : (int?)null;
             rascunhoProcesso.Resumo = rascunhoProcessoNegocio.Resumo;
             rascunhoProcesso.GuidUnidade = new Guid(rascunhoProcessoNegocio.GuidUnidade);
         }
