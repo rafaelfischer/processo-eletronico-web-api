@@ -13,6 +13,7 @@ using ProcessoEletronicoService.Dominio.Base;
 using System.Linq;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
+using Microsoft.EntityFrameworkCore;
 
 namespace Negocio.RascunhosDespacho
 {
@@ -22,15 +23,17 @@ namespace Negocio.RascunhosDespacho
         private IMapper _mapper;
         private IOrganizacaoService _organizacaoService;
         private IRascunhoDespachoValidation _validation;
+        private IAnexoRascunhoDespachoValidation _anexoRascunhoDespachoValidation;
         private IUnidadeService _unidadeService;
         private IRepositorioGenerico<OrganizacaoProcesso> _repositorioOrganizacoesProcesso;
         private IRepositorioGenerico<RascunhoDespacho> _repositorioRascunhosDespacho;
+        private IRepositorioGenerico<AnexoRascunho> _repositorioRascunhosAnexo;
         private IUnitOfWork _unitOfWork;
 
         private AnexoValidacao _anexoValidacao;
         private UsuarioValidacao _usuarioValidacao;
 
-        public RascunhoDespachoCore(ICurrentUserProvider user, IMapper mapper, IOrganizacaoService organizacaoService, IRascunhoDespachoValidation validation, IUnidadeService unidadeService, IProcessoEletronicoRepositorios repositorios, AnexoValidacao anexoValidacao, UsuarioValidacao usuarioValidacao)
+        public RascunhoDespachoCore(ICurrentUserProvider user, IMapper mapper, IOrganizacaoService organizacaoService, IRascunhoDespachoValidation validation, IAnexoRascunhoDespachoValidation anexoRascunhoDespachoValidation, IUnidadeService unidadeService, IProcessoEletronicoRepositorios repositorios, AnexoValidacao anexoValidacao, UsuarioValidacao usuarioValidacao)
         {
             _user = user;
             _mapper = mapper;
@@ -39,15 +42,16 @@ namespace Negocio.RascunhosDespacho
             _unidadeService = unidadeService;
             _repositorioOrganizacoesProcesso = repositorios.OrganizacoesProcesso;
             _repositorioRascunhosDespacho = repositorios.RascunhosDespacho;
+            _repositorioRascunhosAnexo = repositorios.AnexosRascunho;
             _unitOfWork = repositorios.UnitOfWork;
 
-            _anexoValidacao = anexoValidacao;
+            _anexoRascunhoDespachoValidation = anexoRascunhoDespachoValidation;
             _usuarioValidacao = usuarioValidacao;
         }
 
         public RascunhoDespachoModel Search(int id)
         {
-            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(rascunho => rascunho.Id == id).SingleOrDefault();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(rascunho => rascunho.Id == id).Include(rascunho => rascunho.AnexosRascunho).SingleOrDefault();
             return _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho);
         }
 
@@ -67,6 +71,7 @@ namespace Negocio.RascunhosDespacho
         {
             _validation.IsFilled(rascunhoDespachoModel);
             _validation.IsValid(rascunhoDespachoModel);
+            _anexoRascunhoDespachoValidation.IsValid(rascunhoDespachoModel.Anexos);
 
             RascunhoDespacho rascunhoDespacho = new RascunhoDespacho();
             _mapper.Map(rascunhoDespachoModel, rascunhoDespacho);
@@ -85,7 +90,7 @@ namespace Negocio.RascunhosDespacho
 
         public void Delete(int id)
         {
-            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).SingleOrDefault();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).Include(r => r.AnexosRascunho).SingleOrDefault();
             _validation.Exists(rascunhoDespacho);
             _validation.IsRascunhoDespachoOfUser(rascunhoDespacho);
 

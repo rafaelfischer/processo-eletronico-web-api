@@ -10,7 +10,7 @@ namespace Negocio.RascunhosDespacho.Models
 
         public RascunhoDespachoModel()
         {
-            Anexos = new List<AnexoModeloNegocio>();
+            Anexos = new List<AnexoRascunhoDespachoModel>();
         }
 
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace Negocio.RascunhosDespacho.Models
         public int IdOrganizacaoProcesso { get; set; }
         public string GuidOrganizacao { get; set; }
 
-        public IList<AnexoModeloNegocio> Anexos { get; set; }
+        public IList<AnexoRascunhoDespachoModel> Anexos { get; set; }
     }
 }
