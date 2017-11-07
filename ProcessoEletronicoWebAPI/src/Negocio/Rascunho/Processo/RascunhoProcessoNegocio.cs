@@ -189,7 +189,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             InformacoesUnidade(rascunhoProcesso);
             _unitOfWork.Save();
         }
-        
+
         public void Delete(int id)
         {
             RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id == id).Include(p => p.Anexos)
@@ -230,7 +230,8 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         private void InformacoesUnidade(RascunhoProcesso rascunhoProcesso)
         {
-            if (rascunhoProcesso.GuidUnidade.HasValue) {
+            if (rascunhoProcesso.GuidUnidade.HasValue)
+            {
                 Unidade unidade = _unidadeService.Search(rascunhoProcesso.GuidUnidade.Value).ResponseObject;
 
                 if (unidade == null)
@@ -238,9 +239,13 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
                     throw new RequisicaoInvalidaException("Unidade não encontrada no Organograma.");
                 }
 
-                rascunhoProcesso.GuidUnidade = new Guid(unidade.Guid);
                 rascunhoProcesso.NomeUnidade = unidade.Nome;
                 rascunhoProcesso.SiglaUnidade = unidade.Sigla;
+            }
+            else
+            {
+                rascunhoProcesso.NomeUnidade = null;
+                rascunhoProcesso.SiglaUnidade = null;
             }
         }
 
@@ -321,7 +326,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         {
             rascunhoProcesso.IdAtividade = rascunhoProcessoNegocio.Atividade != null && rascunhoProcessoNegocio.Atividade?.Id > 0 ? rascunhoProcessoNegocio.Atividade.Id : (int?)null;
             rascunhoProcesso.Resumo = rascunhoProcessoNegocio.Resumo;
-            rascunhoProcesso.GuidUnidade = new Guid(rascunhoProcessoNegocio.GuidUnidade);
+            rascunhoProcesso.GuidUnidade = !string.IsNullOrWhiteSpace(rascunhoProcessoNegocio.GuidUnidade) ? new Guid(rascunhoProcessoNegocio.GuidUnidade) : (Guid?)null;
         }
 
         private void DeleteConteudoAnexos(RascunhoProcesso rascunhoProcesso)
