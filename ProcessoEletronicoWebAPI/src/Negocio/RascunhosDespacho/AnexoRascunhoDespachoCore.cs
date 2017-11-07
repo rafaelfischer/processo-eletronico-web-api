@@ -1,14 +1,12 @@
-﻿using Negocio.RascunhosDespacho.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoMapper;
+using Negocio.RascunhosDespacho.Base;
 using Negocio.RascunhosDespacho.Models;
-using ProcessoEletronicoService.Dominio.Modelos;
-using AutoMapper;
 using Negocio.RascunhosDespacho.Validations.Base;
 using ProcessoEletronicoService.Dominio.Base;
+using ProcessoEletronicoService.Dominio.Modelos;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao;
 
 namespace Negocio.RascunhosDespacho
 {
@@ -50,7 +48,15 @@ namespace Negocio.RascunhosDespacho
 
         public void Delete(int idRascunhoDespacho, int id)
         {
-            throw new NotImplementedException();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id == idRascunhoDespacho).SingleOrDefault();
+            _rascunhoDespachovalidation.Exists(rascunhoDespacho);
+            _rascunhoDespachovalidation.IsRascunhoDespachoOfUser(rascunhoDespacho);
+
+            AnexoRascunho anexoRascunho = _repositorioAnexosRascunho.Where(a => a.Id == id && a.IdRascunhoDespacho == idRascunhoDespacho).SingleOrDefault();
+            _validation.Exists(anexoRascunho);
+
+            _repositorioAnexosRascunho.Remove(anexoRascunho);
+            _unitOfWork.Save();
         }
 
         public AnexoRascunhoDespachoModel Search(int idRascunhoDespacho, int id)
@@ -71,5 +77,6 @@ namespace Negocio.RascunhosDespacho
         {
             throw new NotImplementedException();
         }
+
     }
 }
