@@ -73,10 +73,28 @@ namespace Negocio.RascunhosDespacho
             return _mapper.Map<IEnumerable<AnexoRascunhoDespachoModel>>(anexosRascunho);
         }
 
-        public void Update(int idRascunhoDespacho, int id, AnexoRascunhoDespachoModel rascunhoDespacho)
+        public void Update(int idRascunhoDespacho, int id, AnexoRascunhoDespachoModel anexoRascunhoDespachoModel)
         {
-            throw new NotImplementedException();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id == idRascunhoDespacho).SingleOrDefault();
+            _rascunhoDespachovalidation.Exists(rascunhoDespacho);
+            _rascunhoDespachovalidation.IsRascunhoDespachoOfUser(rascunhoDespacho);
+
+            AnexoRascunho anexoRascunho = _repositorioAnexosRascunho.Where(a => a.Id == id && a.IdRascunhoDespacho == idRascunhoDespacho).SingleOrDefault();
+            _validation.Exists(anexoRascunho);
+
+            _validation.IsFilled(anexoRascunhoDespachoModel);
+            _validation.IsValid(anexoRascunhoDespachoModel);
+            MapAlteracaoAnexo(anexoRascunhoDespachoModel, anexoRascunho);
+
+            _unitOfWork.Save();
         }
 
+        private void MapAlteracaoAnexo(AnexoRascunhoDespachoModel anexoRascunhoDespachoModel, AnexoRascunho anexoRascunho)
+        {
+            anexoRascunho.Nome = anexoRascunhoDespachoModel.Nome;
+            anexoRascunho.Descricao = anexoRascunhoDespachoModel.Descricao;
+            anexoRascunho.Conteudo = !string.IsNullOrWhiteSpace(anexoRascunhoDespachoModel.ConteudoString) ? Convert.FromBase64String(anexoRascunhoDespachoModel.ConteudoString) : null;
+            anexoRascunho.MimeType = anexoRascunhoDespachoModel.MimeType;
+        }
     }
 }

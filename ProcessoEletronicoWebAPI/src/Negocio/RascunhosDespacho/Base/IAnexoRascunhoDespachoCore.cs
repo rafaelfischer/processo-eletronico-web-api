@@ -9,8 +9,8 @@ namespace Negocio.RascunhosDespacho.Base
     {
         AnexoRascunhoDespachoModel Search(int idRascunhoDespacho, int id);
         IEnumerable<AnexoRascunhoDespachoModel> Search(int idRascunhoDespacho);
-        AnexoRascunhoDespachoModel Add(int idRascunhoDespacho, AnexoRascunhoDespachoModel anexoRascunhoDespacho);
-        void Update(int idRascunhoDespacho, int id, AnexoRascunhoDespachoModel rascunhoDespacho);
+        AnexoRascunhoDespachoModel Add(int idRascunhoDespacho, AnexoRascunhoDespachoModel anexoRascunhoDespachoModel);
+        void Update(int idRascunhoDespacho, int id, AnexoRascunhoDespachoModel anexoRascunhoDespachoModel);
         void Delete(int idRascunhoDespacho, int id);
     }
 }
