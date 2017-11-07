@@ -43,9 +43,19 @@ namespace Apresentacao.WebAPI
             return _mapper.Map<IEnumerable<GetRascunhoAnexoDto>>(_core.Search(idRascunhoDespacho));
         }
 
-        public void Update(int idRascunhoDespacho, int id, PatchRascunhoAnexoDto patchRascunhoAnexoDto)
+        public void Patch(int idRascunhoDespacho, int id, JsonPatchDocument<PatchRascunhoAnexoDto> jsonPatchRascunhoAnexoDto)
         {
-            throw new NotImplementedException();
+            AnexoRascunhoDespachoModel anexoRascunhoDespachoModel = _core.Search(idRascunhoDespacho, id);
+            if (anexoRascunhoDespachoModel == null)
+            {
+                throw new RecursoNaoEncontradoException("Rascunho de Despacho não encontrado");
+            }
+
+            PatchRascunhoAnexoDto patchRascunhoAnexoDto = _mapper.Map<PatchRascunhoAnexoDto>(anexoRascunhoDespachoModel);
+            jsonPatchRascunhoAnexoDto.ApplyTo(patchRascunhoAnexoDto);
+            _mapper.Map(patchRascunhoAnexoDto, anexoRascunhoDespachoModel);
+
+            _core.Update(idRascunhoDespacho, id, anexoRascunhoDespachoModel);
         }
     }
 }

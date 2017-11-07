@@ -12,7 +12,8 @@ namespace Negocio.RascunhosDespacho.Mapping
             CreateMap<AnexoRascunhoDespachoModel, AnexoRascunho>()
                 .ForMember(dest => dest.Conteudo, opt => opt.MapFrom(src => Convert.FromBase64String(src.ConteudoString)));
 
-            CreateMap<AnexoRascunho, AnexoRascunhoDespachoModel>();
+            CreateMap<AnexoRascunho, AnexoRascunhoDespachoModel>()
+                .ForMember(dest => dest.ConteudoString, opt => opt.MapFrom(src => Convert.ToBase64String(src.Conteudo)));
         }
     }
 }
