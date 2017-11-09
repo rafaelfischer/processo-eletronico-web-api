@@ -1,0 +1,8 @@
+FROM microsoft/dotnet:1.1.0-runtime-deps
+
+COPY ProcessoEletronicoWebAPI/src/WebAPP/publish /home/bin
+WORKDIR /home/bin
+
+EXPOSE 5970/tcp
+
+CMD ["./WebAPP"]

@@ -7,22 +7,42 @@ services:
 install:
   - nvm install 6.10
 script: 
-  - . ./scripts/.travis.sh
+  - scripts/travis.sh
 deploy:
   - provider: script
-    script: . ./scripts/.develop.sh
+    script: scripts/deploy.sh api dev ${TRAVIS_COMMIT:0:7} && scripts/deploy.sh app dev ${TRAVIS_COMMIT:0:7}
     on:
       branch: develop
+
   - provider: script
-    script: . ./scripts/.release.sh
+    script: scripts/deploy.sh api hmg $TRAVIS_TAG
     on:
+      tags: true
       all_branches: true
-      condition: "$TRAVIS_BRANCH =~ ^release.*$"
+      condition: $TRAVIS_TAG =~ ^api-v\d+\.\d+\.\d+-rc\d+$
+
   - provider: script
-    script: . ./scripts/.master.sh
+    script: scripts/deploy.sh app hmg $TRAVIS_TAG
     on:
-      branch: master
+      tags: true
+      all_branches: true
+      condition: $TRAVIS_TAG =~ ^app-v\d+\.\d+\.\d+-rc\d+$
+
   - provider: script
-    script: . ./scripts/.demo.sh
+    script: scripts/deploy.sh api prd $TRAVIS_TAG
+    on:
+      tags: true
+      all_branches: true
+      condition: $TRAVIS_TAG =~ ^api-v\d+\.\d+\.\d+$
+
+  - provider: script
+    script: scripts/deploy.sh app prd $TRAVIS_TAG
+    on:
+      tags: true
+      all_branches: true
+      condition: $TRAVIS_TAG =~ ^app-v\d+\.\d+\.\d+$
+
+  - provider: script
+    script: scripts/deploy.sh api demo ${TRAVIS_COMMIT:0:7}
     on:
       branch: demo
