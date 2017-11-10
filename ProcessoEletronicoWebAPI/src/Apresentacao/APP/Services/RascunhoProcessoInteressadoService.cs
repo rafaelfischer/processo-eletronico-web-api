@@ -72,8 +72,7 @@ namespace Apresentacao.APP.Services
             catch (Exception e)
             {
                 return null;
-            }
-            
+            }            
         }
 
         public List<InteressadoPessoaJuridicaViewModel> GetInteressadosPJ(int idRascunho)
@@ -87,12 +86,42 @@ namespace Apresentacao.APP.Services
             {
                 return null;
             }
+        }
 
+        public InteressadoPessoaJuridicaViewModel GetInteressadoPJ(int idRascunho, int idInteressadoPJ)
+        {
+            try
+            {
+                InteressadoPessoaJuridicaViewModel interessadoPJ = _mapper.Map<InteressadoPessoaJuridicaViewModel>(_interessadoPessoaJuridica.Get(idRascunho, idInteressadoPJ));
+                return interessadoPJ;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public InteressadoPessoaFisicaViewModel GetInteressadoPF(int idRascunho, int idInteressadoPJ)
+        {
+            try
+            {
+                InteressadoPessoaFisicaViewModel interessadoPF = _mapper.Map<InteressadoPessoaFisicaViewModel>(_interessadoPessoaFisica.Get(idRascunho, idInteressadoPJ));
+                return interessadoPF;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public void ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
         {
             _interessadoPessoaJuridica.Delete(idRascunho, idInteressadoPJ);
+        }
+
+        public void ExcluirInteressadoPF(int idRascunho, int idInteressadoPF)
+        {
+            _interessadoPessoaFisica.Delete(idRascunho, idInteressadoPF);
         }
     }
 }

@@ -61,13 +61,14 @@ $("body").on("click", ".btnCarregarOrganizacao", function () {
         return false;
     }
 
+    var idRascunho = $("#formTipoInteressados").find("#Id").val();
     var tipoInteressado = $("#interessadoTipo").val();
     var formData = new FormData();
     var url = "/RascunhoInteressado/IncluirInteressadoPJOrganograma";
     var guidOrganizacao = $("#interessadoOrgao").val();
     var guidUnidade = $("#interessadoOrgaoUnidade").val();
 
-    formData.append("idRascunho", $("#formanexo").find("#Id").val());
+    formData.append("idRascunho", idRascunho);
 
     switch (tipoInteressado) {
         case "1":
@@ -107,7 +108,7 @@ $("body").on("click", ".btnCarregarOrganizacao", function () {
 //EXCLUIR INTERESSADO PESSOA JURÍDICA
 $("#listainteressados").on("click", ".btn-excluir-interessado-pj", function () {
 
-    var idRascunho = $("#forminteressados").find("#Id").val();
+    var idRascunho = $("#formTipoInteressados").find("#Id").val();
     var formData = new FormData();
     var url = "/RascunhoInteressado/ExcluirInteressadoPJ";
 
@@ -131,6 +132,88 @@ $("#listainteressados").on("click", ".btn-excluir-interessado-pj", function () {
     return false;
 });
 
+//EXCLUIR INTERESSADO PESSOA FISICA
+$("#listainteressados").on("click", ".btn-excluir-interessado-pf", function () {
+
+    var idRascunho = $("#formTipoInteressados").find("#Id").val();
+    var formData = new FormData();
+    var url = "/RascunhoInteressado/ExcluirInteressadoPF";
+
+    formData.append("idRascunho", idRascunho);
+    formData.append("idInteressadoPF", $(this).attr('data-id'));
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#listainteressados").html(data)
+                //$('#interessadoUnidade select').select2({ width: '100%' })
+            }
+        }
+    );
+
+    return false;
+});
+
+//CARREGAR INTERESSADO PESSOA JURÍDICA PARA FORMULARIO DE EDICAO
+$("#listainteressados").on("click", ".btn-editar-interessado-pj", function () {
+
+    var idRascunho = $("#formTipoInteressados").find("#Id").val();
+    var formData = new FormData();
+    var url = "/RascunhoInteressado/FormInteressadoPJPreenchido";
+
+    formData.append("idRascunho", idRascunho);
+    formData.append("idInteressadoPJ", $(this).attr('data-id'));
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#formInteressado").html(data)
+                $('#forminteressados select').select2({ width: '100%' })
+            }
+        }
+    );
+
+    return false;
+});
+
+//CARREGAR INTERESSADO PESSOA FISICA PARA FORMULARIO DE EDICAO
+$("#listainteressados").on("click", ".btn-editar-interessado-pf", function () {
+
+    var idRascunho = $("#formTipoInteressados").find("#Id").val();
+    var formData = new FormData();
+    var url = "/RascunhoInteressado/FormInteressadoPFPreenchido";
+
+    formData.append("idRascunho", idRascunho);
+    formData.append("idInteressadoPF", $(this).attr('data-id'));
+
+    $.ajax(
+        {
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                $("#formInteressado").html(data)
+                $('#forminteressados select').select2({ width: '100%' })
+            }
+        }
+    );
+
+    return false;
+});
+
+//CARREGAR MUNICIPOS POR UF
 $("#formInteressado").on("select2:select", "#uf", function () {
     $.get(
         "/Suporte/GetMunicipiosPorUF?uf=" + $(this).val(), function (data) {

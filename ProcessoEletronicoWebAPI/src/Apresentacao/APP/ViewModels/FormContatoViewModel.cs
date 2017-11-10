@@ -6,7 +6,7 @@ namespace Apresentacao.APP.ViewModels
 {
     public class FormContatoViewModel
     {
-        public ContatoViewModel contato { get; set; }
+        public List<ContatoViewModel> Contatos { get; set; }
         public List<TipoContatoViewModel> TiposContato { get; set; }
     }
 }

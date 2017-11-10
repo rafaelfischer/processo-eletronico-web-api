@@ -32,12 +32,27 @@
     </div>
 
     <div id="contatos">
-        @Html.Partial("RascunhoInteressadoContato", new FormContatoViewModel { TiposContato = Model.TiposContato })
+        @if (Model.Contatos != null && Model.Contatos.Count() > 0)
+        {
+
+            @Html.Partial("RascunhoInteressadoContato", new FormContatoViewModel { TiposContato = Model.TiposContato, Contatos = Model.Contatos })
+
+        }
+        else
+        {
+            @Html.Partial("RascunhoInteressadoContato", new FormContatoViewModel { TiposContato = Model.TiposContato })
+        }
     </div>
 
-
     <div id="emails">
-        @Html.Partial("RascunhoInteressadoEmail", new EmailViewModel())
+        @if (Model.Emails != null && Model.Emails.Count() > 0)
+        {
+            @Html.Partial("RascunhoInteressadoEmail", Model.Emails)
+        }
+        else
+        {
+            @Html.Partial("RascunhoInteressadoEmail", new List<EmailViewModel>())
+        }
     </div>
 
     <div class="form-group">

@@ -13,6 +13,9 @@ namespace Apresentacao.APP.Services.Base
         InteressadoPessoaFisicaViewModel PostInteressadoPF(int idRascunho, InteressadoPessoaFisicaViewModel interessado);
         List<InteressadoPessoaFisicaViewModel> GetInteressadosPF(int idRascunho);
         List<InteressadoPessoaJuridicaViewModel> GetInteressadosPJ(int idRascunho);
+        InteressadoPessoaFisicaViewModel GetInteressadoPF(int idRascunho, int idInteressadoPJ);
+        InteressadoPessoaJuridicaViewModel GetInteressadoPJ(int idRascunho, int idInteressadoPJ);
         void ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ);
+        void ExcluirInteressadoPF(int idRascunho, int idInteressadoPF);
     }
 }

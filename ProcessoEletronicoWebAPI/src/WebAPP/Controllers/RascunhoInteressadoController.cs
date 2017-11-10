@@ -130,7 +130,7 @@ namespace WebAPP.Controllers
                 InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
             };
 
-            return PartialView("RascunhoInteressadosLista", interessados);           
+            return PartialView("RascunhoInteressadosLista", interessados);
         }
 
         [HttpPost]
@@ -173,9 +173,48 @@ namespace WebAPP.Controllers
 
         [HttpPost]
         [Authorize]
+        public IActionResult ExcluirInteressadoPF(int idRascunho, int idInteressadoPF)
+        {
+            _interessadoService.ExcluirInteressadoPF(idRascunho, idInteressadoPF);
+
+            ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            {
+                InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+                InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+            };
+
+            return PartialView("RascunhoInteressadosLista", interessados);
+        }
+
+        [HttpPost]
+        [Authorize]
         public IActionResult FormInteressadoPF()
         {
             return PartialView("RascunhoInteressadoPF");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult FormInteressadoPJPreenchido(int idRascunho, int idInteressadoPJ)
+        {
+            InteressadoPessoaJuridicaViewModel interessado = _interessadoService.GetInteressadoPJ(idRascunho, idInteressadoPJ);
+            interessado.Ufs = new UfViewModel().GetUFs();
+            interessado.TiposContato = _contato.GetTiposContato();
+            interessado.IdRascunho = idRascunho;
+
+            return PartialView("RascunhoInteressadoPJ", interessado);            
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult FormInteressadoPFPreenchido(int idRascunho, int idInteressadoPF)
+        {
+            InteressadoPessoaFisicaViewModel interessado = _interessadoService.GetInteressadoPF(idRascunho, idInteressadoPF);
+            interessado.Ufs = new UfViewModel().GetUFs();
+            interessado.TiposContato = _contato.GetTiposContato();
+            interessado.IdRascunho = idRascunho;
+
+            return PartialView("RascunhoInteressadoPF", interessado);
         }
     }
 }
