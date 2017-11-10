@@ -7,6 +7,7 @@ namespace Apresentacao.APP.ViewModels
     public class InteressadoPessoaFisicaViewModel
     {
         public int Id { get; set; }
+        public int IdRascunho { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }
         public string GuidMunicipio { get; set; }

@@ -1,9 +1,16 @@
 ﻿@model IEnumerable<OrganizacaoViewModel>
 
 <div class="form-group">
-    <select class="form-control" id="interessadoOrgao" asp-items="@(new SelectList(Model,"Guid","NomeSigla"))">
-        <option>Selecione um Órgão</option>
-    </select>
+    <div class="input-group">        
+        <select class="form-control" id="interessadoOrgao" asp-items="@(new SelectList(Model,"Guid","NomeSigla"))">
+            <option value="">Selecione um Órgão</option>
+        </select>
+        <span class="input-group-btn">
+            <button class="btnCarregarOrganizacao btn btn-info" type="button"><i class="fa fa-check" aria-hidden="true"></i></button>
+        </span>
+    </div><!-- /input-group -->
+
+    
 </div>
 <div class="form-group" id="interessadoUnidade">
 </div>

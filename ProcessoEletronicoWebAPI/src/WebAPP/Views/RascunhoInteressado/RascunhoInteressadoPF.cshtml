@@ -1,21 +1,53 @@
 ﻿@model InteressadoPessoaFisicaViewModel
+<form id="formPF"
+      asp-action="IncluirInteressadoPF"
+      asp-controller="RascunhoInteressado"
+      data-ajax-mode="replace"
+      data-ajax-update="#listainteressados"
+      data-ajax-complete="ResetSinalizacoesLista"
+      data-ajax-confirm="Confirm"
+      data-ajax="true"
+      data-ajax-method="POST">
+    <div class="form-group">
+        <input type="hidden" asp-for="IdRascunho" />
+        <label asp-for="Cpf"></label>
+        <input data-mask="999.999.999-99" placeholder="000.000.000-00" class="form-control" asp-for="Cpf" />
+    </div>
 
-<div class="form-group">
-    <label asp-for="Cpf"></label>
-    <input class="form-control" asp-for="Cpf" />
-</div>
+    <div class="form-group">
+        <label asp-for="Nome"></label>
+        <input class="form-control" asp-for="Nome" />
+    </div>
 
-<div class="form-group">
-    <label asp-for="Nome"></label>
-    <input class="form-control" asp-for="Nome"/>    
-</div>
+    <div class="form-group">
+        <label>UF</label>
+        <select class="form-control" id="uf" asp-items="@(new SelectList(Model.Ufs,"Sigla","Nome"))">
+            <option value="">Selecione uma UF</option>
+        </select>
+    </div>
 
-<div class="form-group">
-    <label asp-for="UfMunicipio"></label>
-    <input class="form-control" asp-for="UfMunicipio" />
-</div>
+    <div class="form-group">
+        <label asp-for="UfMunicipio"></label>
+        <select class="form-control" asp-for="GuidMunicipio"></select>
+    </div>
 
-<div class="form-group">
-    <label asp-for="GuidMunicipio"></label>
-    <input class="form-control" asp-for="GuidMunicipio" />
-</div>
+    <div id="contatos">
+        @Html.Partial("RascunhoInteressadoContato", new FormContatoViewModel { TiposContato = Model.TiposContato })
+    </div>
+
+
+    <div id="emails">
+        @Html.Partial("RascunhoInteressadoEmail", new EmailViewModel())
+    </div>
+
+    <div class="form-group">
+        <div class="btn-group pull-right">
+            <button type="reset" class="btn btn-default" onclick=""><i class="fa fa-trash"></i> Limpar</button>
+            <button class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Adicionar</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    $.applyDataMask();
+</script>

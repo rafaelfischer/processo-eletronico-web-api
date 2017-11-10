@@ -12,51 +12,140 @@ using Apresentacao.APP.ViewModels;
 namespace WebAPP.Controllers
 {
     public class RascunhoInteressadoController : BaseController
-    {   
+    {
         private IOrganogramaAppService _organogramaService;
         private IRascunhoProcessoInteressadoService _interessadoService;
+        private IRascunhoProcessoContato _contato;
 
-        public RascunhoInteressadoController(     
+        public RascunhoInteressadoController(
             IOrganogramaAppService organogramaService,
-            IRascunhoProcessoInteressadoService interessadoService)
-        {   
+            IRascunhoProcessoInteressadoService interessadoService,
+            IRascunhoProcessoContato contato
+            )
+        {
             _organogramaService = organogramaService;
             _interessadoService = interessadoService;
+            _contato = contato;
         }
 
-        [HttpPost]
+        //[HttpPost]
         [Authorize]
-        public IActionResult FormInteressado(int tipoInteressado)
+        public IActionResult FormInteressado(int idRascunho, int tipoInteressado)
         {
             switch (tipoInteressado)
             {
                 case 1:
-                    return PartialView("RascunhoInteressadoOrgaos");
+                    return PartialView("RascunhoInteressadoOrgaos", _organogramaService.GetOrganizacoesPorPatriarca());
                 case 2:
-                    return PartialView("RascunhoInteressadoPJ");
+                    return PartialView("RascunhoInteressadoPJ", new InteressadoPessoaJuridicaViewModel
+                    {
+                        Ufs = new UfViewModel().GetUFs(),
+                        TiposContato = _contato.GetTiposContato(),
+                        IdRascunho = idRascunho
+                    });
                 case 3:
-                    return PartialView("RascunhoInteressadoPF");
+                    return PartialView("RascunhoInteressadoPF", new InteressadoPessoaFisicaViewModel
+                    {
+                        Ufs = new UfViewModel().GetUFs(),
+                        TiposContato = _contato.GetTiposContato(),
+                        IdRascunho = idRascunho
+                    });
                 default:
                     return Content("Informe um tipo válido de interessado.");
             }
         }
 
+        public IActionResult FormContato(int index = 0)
+        {
+            ViewBag.Index = index;
+            return PartialView("RascunhoInteressadoContato", new FormContatoViewModel { TiposContato = _contato.GetTiposContato() });
+        }
+
+        public IActionResult FormEmail(int index = 0)
+        {
+            ViewBag.Index = index;
+            return PartialView("RascunhoInteressadoEmail");
+        }
+
         [HttpPost]
         [Authorize]
-        public IActionResult IncluirInteressadoPJ(int idRascunho, string guidOrganizacao, string guidUnidade)
+        public IActionResult GetUnidadesPorOrganizacao(string guidOrganizacao)
         {
-            if (string.IsNullOrEmpty(guidUnidade))
+            IEnumerable<UnidadeViewModel> unidades = _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao);
+            return PartialView("RascunhoInteressadoOrgaoUnidades", unidades);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult IncluirInteressadoPJOrganograma(int idRascunho, string guidOrganizacao, string guidUnidade)
+        {
+            OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
+
+            InteressadoPessoaJuridicaViewModel interessado = new InteressadoPessoaJuridicaViewModel
             {
-                OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
-                _interessadoService.PostInteressadoPJ(idRascunho, organizacao);
-            }
-            else
+                Ufs = new UfViewModel().GetUFs(),
+                TiposContato = _contato.GetTiposContato(),
+                Cnpj = organizacao.Cnpj,
+                RazaoSocial = organizacao.RazaoSocial,
+                Sigla = organizacao.Sigla,
+                IdRascunho = idRascunho
+            };
+
+            if (!string.IsNullOrEmpty(guidUnidade))
             {
-                OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
                 UnidadeViewModel unidade = _organogramaService.GetUnidade(guidUnidade);
 
-                _interessadoService.PostInteressadoPJ(idRascunho, organizacao, unidade);
+                interessado.NomeUnidade = unidade.Nome;
+                interessado.SiglaUnidade = unidade.Sigla;
             }
+
+            return PartialView("RascunhoInteressadoPJ", interessado);
+
+            //ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            //{
+            //    InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+            //    InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+            //};
+
+            //return PartialView("RascunhoInteressadosLista", interessados);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult IncluirInteressadoPJ(InteressadoPessoaJuridicaViewModel interessado)
+        {
+            int idRascunho = interessado.IdRascunho;
+            interessado.Cnpj = interessado.Cnpj.Replace("/", "").Replace(".", "").Replace("-", "");
+
+            if (interessado.Id > 0)
+            {
+                _interessadoService.ExcluirInteressadoPJ(idRascunho, interessado.Id);
+            }
+
+            _interessadoService.PostInteressadoPJ(idRascunho, interessado);
+
+            ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            {
+                InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+                InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+            };
+
+            return PartialView("RascunhoInteressadosLista", interessados);           
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult IncluirInteressadoPF(InteressadoPessoaFisicaViewModel interessado)
+        {
+            int idRascunho = interessado.IdRascunho;
+            interessado.Cpf = interessado.Cpf.Replace("/", "").Replace(".", "").Replace("-", "");
+
+            if (interessado.Id > 0)
+            {
+                _interessadoService.ExcluirInteressadoPJ(idRascunho, interessado.Id);
+            }
+
+            _interessadoService.PostInteressadoPF(idRascunho, interessado);
 
             ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
             {

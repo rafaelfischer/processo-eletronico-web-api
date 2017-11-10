@@ -63,3 +63,7 @@ function ResetModalDefault() {
     $btnConfirma.removeAttr('data-acao');
     $btnCancela.removeAttr('data-acao');
 }
+
+$(document).ajaxError(function (jqXHR, textStatus, errorThrown) {    
+    console.log(textStatus);    
+});

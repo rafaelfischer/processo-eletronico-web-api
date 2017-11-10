@@ -67,14 +67,6 @@ namespace WebAPP.Controllers
             return Json(organizacoes);
         }
 
-        [HttpPost]
-        [Authorize]
-        public IActionResult GetUnidadesPorOrganizacao(string guidOrganizacao)
-        {
-            IEnumerable<UnidadeViewModel> unidades = _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao);
-            return PartialView("RascunhoInteressadoOrgaoUnidades", unidades);
-        }
-
         [NonAction]
         private IEnumerable<OrganizacaoViewModel> GetOrganizacoesPorPatriarca(string guidPatriarca)
         {

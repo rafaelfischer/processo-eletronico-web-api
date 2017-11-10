@@ -37,12 +37,16 @@ namespace WebAPP.Controllers
                 {
                     municipios.Add(municipio.GuidMunicipio);
                 }
+
+                return PartialView("RascunhoMunicipioLista", _municipioService.UpdateMunicipioPorIdRascunho(rascunho.Id, municipios));                
+            }
+            else
+            {
+                _municipioService.DeleteAllMunicipio(rascunho.Id);
+                return PartialView("RascunhoMunicipioLista", _municipioService.GetMunicipiosPorIdRascunho(rascunho.Id));
             }
 
-            _municipioService.DeleteAllMunicipio(rascunho.Id);
-            _municipioService.UpdateMunicipioPorIdRascunho(rascunho.Id, municipios);
-
-            return PartialView("RascunhoMunicipioLista", _municipioService.GetMunicipiosPorIdRascunho(rascunho.Id));
+            
         }
     }
 }

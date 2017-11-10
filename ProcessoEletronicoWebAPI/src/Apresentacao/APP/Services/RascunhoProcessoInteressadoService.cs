@@ -40,15 +40,21 @@ namespace Apresentacao.APP.Services
         {
             InteressadoPessoaFisicaModeloNegocio interessadoNegocio = _interessadoPessoaFisica.Post(idRascunho, _mapper.Map<InteressadoPessoaFisicaModeloNegocio>(interessado));
             return _mapper.Map<InteressadoPessoaFisicaViewModel>(interessadoNegocio);
+        }        
+
+        public InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, InteressadoPessoaJuridicaViewModel interessado)
+        {
+            InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _interessadoPessoaJuridica.Post(idRascunho, _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(interessado));
+            return _mapper.Map<InteressadoPessoaJuridicaViewModel>(interessadoNegocio);
         }
 
-        public InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, OrganizacaoViewModel organizacaoInteressada)
+        public InteressadoPessoaJuridicaViewModel PostInteressadoPJOrganograma(int idRascunho, OrganizacaoViewModel organizacaoInteressada)
         {
             InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _interessadoPessoaJuridica.Post(idRascunho, _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(organizacaoInteressada));
             return _mapper.Map<InteressadoPessoaJuridicaViewModel>(interessadoNegocio);
         }
 
-        public InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, OrganizacaoViewModel organizacaoInteressada, UnidadeViewModel unidadeInteressada)
+        public InteressadoPessoaJuridicaViewModel PostInteressadoPJOrganograma(int idRascunho, OrganizacaoViewModel organizacaoInteressada, UnidadeViewModel unidadeInteressada)
         {
             InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(organizacaoInteressada);
             interessadoNegocio.NomeUnidade = unidadeInteressada.Nome;

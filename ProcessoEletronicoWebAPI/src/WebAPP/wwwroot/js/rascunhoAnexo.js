@@ -104,9 +104,9 @@ function ErrorTiposDocumentais() {
  * Upload de Anexos
  * @param {any} inputId
  */
-function uploadFiles(inputId) {
-    var input = document.getElementById(inputId);
-    var files = input.files;
+function uploadFiles(campo) {
+    var inputFiles = document.getElementById(campo);
+    var files = inputFiles.files;
     var formData = new FormData();
 
     if (files.length == 0)
@@ -125,23 +125,29 @@ function uploadFiles(inputId) {
 
     $.ajax(
         {
-            url: "/RascunhoAnexo/UploadAnexo",
+            url: "/RascunhoAnexo/UploadAnexo",            
             data: formData,
+            crossDomain: true,
             processData: false,
             contentType: false,
             type: "POST",
-            success: function (data) {
-                $("#textLoad").text('Selecionar arquivos');
-                $('#textLoad').toggleClass('disabled');
-                $("#progressAnexo").toggleClass('hide');
-                $("#grupoanexos").html(data)
+            success: function (dados) {
+                AtualizaFormAnexo(inputFiles);
+                $("#grupoanexos").html(dados)
             },
             error: function (erro) {
-                console.log(erro);
-                $("#progressAnexo").toggleClass('hide');
+                AtualizaFormAnexo(files);
             }
         }
     );
+}
+
+function AtualizaFormAnexo(inputFiles) {
+    $("#textLoad").text('Selecionar arquivos');
+    $('#textLoad').toggleClass('disabled');
+    $("#progressAnexo").toggleClass('hide');
+    $(inputFiles).val('');
+
 }
 
 /*Evento click para o botão excluir da lista de anexos*/

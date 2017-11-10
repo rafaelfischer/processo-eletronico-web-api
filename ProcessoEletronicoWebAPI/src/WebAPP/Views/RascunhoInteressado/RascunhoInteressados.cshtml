@@ -1,6 +1,6 @@
 ﻿@model RascunhoProcessoViewModel
 
-<form id="forminteressados">
+<form id="formTipoInteressados">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="GuidOrganizacao" />
@@ -12,16 +12,11 @@
             <option value="3">Pessoa Física</option>
         </select>
     </div>
-    <div id="formInteressado">
-        
-    </div>
-    <div id="listainteressados">
-        @Html.Partial("~/Views/RascunhoInteressado/RascunhoInteressadosLista.cshtml", Model.InteressadosRascunho)
-    </div>
-    <div class="box-footer">
-        <div class="btn-group pull-right">
-            <button type="reset" class="btn btn-default" onclick="LimparFormBasico()"><i class="fa fa-trash"></i> Limpar</button>
-            <button type="button" id="btnAddInteressado" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Adicionar</button>
-        </div>
-    </div>
 </form>
+
+<div id="formInteressado">
+</div>
+
+<div id="listainteressados">
+    @Html.Partial("~/Views/RascunhoInteressado/RascunhoInteressadosLista.cshtml", Model.InteressadosRascunho)
+</div>

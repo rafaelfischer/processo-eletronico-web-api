@@ -5,11 +5,14 @@
 
 function AtualizaSinalizacoesLista(data) {    
     $('#formsinalizacoes input[type="checkbox"]').iCheck('uncheck');
+    $(this).attr('checked', true);
+    $(this).removeAttr('name');
+
+    console.log(data);
 
     $.each(data.responseJSON, function (i, v) {        
-        $('#formsinalizacoes input[value="' + v.id + '"]').iCheck('check');
-        if ($('#formsinalizacoes input[value="' + v.id + '"]').length > 0)
-            alert('Achou!');
+        $('#formsinalizacoes input[value="' + v.id + '"]').attr('name', 'Sinalizacoes['+ i +'].Id' );
+        $('#formsinalizacoes input[value="' + v.id + '"]').iCheck('check');        
     });
 
     ResetSinalizacoesLista();
@@ -22,3 +25,20 @@ function ResetSinalizacoesLista() {
         increaseArea: '5%' // optional
     });
 }
+
+function RedefineListaSinalizacoes() {
+    $.each($('#formsinalizacoes input[type="checkbox"][checked]'), function (i) {
+        $(this).attr('name', 'Sinalizacoes[' + i + '].Id');
+    });
+}
+
+$('#formsinalizacoes').on('ifUnchecked', 'input[type="checkbox"]', function (event) {
+    $(this).removeAttr('name');
+    $(this).removeAttr('checked');
+    RedefineListaSinalizacoes();
+});
+
+$('#formsinalizacoes').on('ifChecked', 'input[type="checkbox"]', function (event) {        
+    $(this).attr('checked', true);
+    RedefineListaSinalizacoes();
+});

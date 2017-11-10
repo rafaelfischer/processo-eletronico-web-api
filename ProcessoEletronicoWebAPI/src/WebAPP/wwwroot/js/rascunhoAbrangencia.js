@@ -63,6 +63,11 @@ $eSMunicipio.on('select2:select', function (e) {
 /*Evento de uncheck para os checkbox que utilizam o plugin iCheck*/
 $('form').on('ifUnchecked', 'input[type="checkbox"]', function (event) {
     $('#' + this.value).remove();
+
+    $.each($('#grupomunicipios input[type="checkbox"]'), function (i) {
+        $(this).attr('name', 'MunicipiosRascunhoProcesso[' + i + '].GuidMunicipio');
+    })
+    
 });
 
 /**
@@ -71,8 +76,8 @@ $('form').on('ifUnchecked', 'input[type="checkbox"]', function (event) {
  * @param {any} val
  */
 function IncluirSelecionado(text, val) {
-    $('#grupomunicipios').append('<div class="checkbox municipio col-lg-3 col-md-4 col-xs-6" id="' + val + '"><label><input type="checkbox" checked name="MunicipiosRascunhoProcesso[' + index + '].GuidMunicipio" value="' + val + '" /> ' + text + '</label></div>');
-    index++;
+    index = $('#grupomunicipios input[type="checkbox"]').length;
+    $('#grupomunicipios').append('<div class="checkbox municipio col-lg-3 col-md-4 col-xs-6" id="' + val + '"><label><input type="checkbox" checked name="MunicipiosRascunhoProcesso[' + index + '].GuidMunicipio" value="' + val + '" /> ' + text + '</label></div>');    
 }
 
 /**
