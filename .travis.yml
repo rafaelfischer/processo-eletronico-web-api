@@ -10,11 +10,13 @@ script:
   - scripts/travis.sh
 deploy:
   - provider: script
-    script: scripts/deploy.sh api dev ${TRAVIS_COMMIT:0:7} && scripts/deploy.sh app dev ${TRAVIS_COMMIT:0:7}
+    skip_cleanup: true
+    script: scripts/deploy.sh api dev ${TRAVIS_COMMIT:0:7} # && scripts/deploy.sh app dev ${TRAVIS_COMMIT:0:7}
     on:
-      branch: develop
+      branch: travis
 
   - provider: script
+    skip_cleanup: true
     script: scripts/deploy.sh api hmg $TRAVIS_TAG
     on:
       tags: true
@@ -22,6 +24,7 @@ deploy:
       condition: $TRAVIS_TAG =~ ^api-v\d+\.\d+\.\d+-rc\d+$
 
   - provider: script
+    skip_cleanup: true
     script: scripts/deploy.sh app hmg $TRAVIS_TAG
     on:
       tags: true
@@ -29,6 +32,7 @@ deploy:
       condition: $TRAVIS_TAG =~ ^app-v\d+\.\d+\.\d+-rc\d+$
 
   - provider: script
+    skip_cleanup: true
     script: scripts/deploy.sh api prd $TRAVIS_TAG
     on:
       tags: true
@@ -36,6 +40,7 @@ deploy:
       condition: $TRAVIS_TAG =~ ^api-v\d+\.\d+\.\d+$
 
   - provider: script
+    skip_cleanup: true
     script: scripts/deploy.sh app prd $TRAVIS_TAG
     on:
       tags: true
@@ -43,6 +48,7 @@ deploy:
       condition: $TRAVIS_TAG =~ ^app-v\d+\.\d+\.\d+$
 
   - provider: script
+    skip_cleanup: true
     script: scripts/deploy.sh api demo ${TRAVIS_COMMIT:0:7}
     on:
       branch: demo

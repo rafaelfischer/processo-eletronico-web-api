@@ -8,10 +8,6 @@ export PROJECT=$1
 export RANCHER_STACK=$2
 export DOCKER_TAG=$3
 
-echo $1
-echo $2
-echo $3
-
 if [ "$PROJECT" = "app" ]; then
     export RANCHER_SERVICE=processoeletronico-app
     export DOCKER_IMAGE=prodest/processoeletronico-app:$DOCKER_TAG
