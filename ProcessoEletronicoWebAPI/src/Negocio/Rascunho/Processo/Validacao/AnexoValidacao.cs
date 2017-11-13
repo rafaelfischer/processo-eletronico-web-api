@@ -92,7 +92,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Validacao
 
         private void TipoDocumentalIsValid(AnexoModeloNegocio anexo, int? idAtividade)
         {
-            if (anexo.TipoDocumental != null && idAtividade.HasValue)
+            if (anexo.TipoDocumental != null && anexo.TipoDocumental.Id > 0 && idAtividade.HasValue)
             {
                 if (_repositorioTiposDocumentais.Where(td => td.Id == anexo.TipoDocumental.Id && td.IdAtividade == idAtividade.Value).SingleOrDefault() == null)
                 {
