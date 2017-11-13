@@ -1,16 +1,23 @@
 ﻿@model RascunhoProcessoViewModel
 
 <form id="formTipoInteressados">
-    <div class="form-group">
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="GuidOrganizacao" />
-        <label>Tipo de Interessado</label>
-        <select id="interessadoTipo" class="form-control">
-            <option>Selecione um tipo de interessado</option>
-            <option value="1">Órgão da Gestão Estadual</option>
-            <option value="2">Pessoa Jurídica</option>
-            <option value="3">Pessoa Física</option>
-        </select>
+    <div class="box-body">
+        <div class="form-group">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GuidOrganizacao" />
+            <label>Tipo de Interessado</label>
+            <div class="input-group">
+                <select id="interessadoTipo" class="form-control">
+                    <option>Selecione um tipo de interessado</option>
+                    <option value="1">Órgão da Gestão Estadual</option>
+                    <option value="2">Pessoa Jurídica</option>
+                    <option value="3">Pessoa Física</option>
+                </select>
+                <span class="input-group-btn">
+                    <button type="button" class="btnNovoInteressado btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </span>
+            </div>
+        </div>
     </div>
 </form>
 

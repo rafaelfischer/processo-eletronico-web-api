@@ -142,7 +142,7 @@ namespace WebAPP.Controllers
 
             if (interessado.Id > 0)
             {
-                _interessadoService.ExcluirInteressadoPJ(idRascunho, interessado.Id);
+                _interessadoService.ExcluirInteressadoPF(idRascunho, interessado.Id);
             }
 
             _interessadoService.PostInteressadoPF(idRascunho, interessado);
