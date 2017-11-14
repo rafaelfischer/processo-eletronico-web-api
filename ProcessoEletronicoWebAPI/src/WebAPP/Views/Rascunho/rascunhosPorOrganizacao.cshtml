@@ -34,9 +34,9 @@
                         <td>@r.Atividade?.Descricao</td>
                         <td>@r.Resumo</td>                        
                         <td class="text-center">
-                            <div class="btn-group">
-                                <a class="btn btn-sm btn-danger" asp-action="excluir" asp-controller="rascunho" asp-route-id="@r.Id"><i class="fa fa-trash"></i></a>                                
+                            <div class="btn-group">                                
                                 <a class="btn btn-sm btn-info" asp-action="editar" asp-controller="rascunho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>
+                                <a class="btn btn-sm btn-danger" asp-action="excluir" asp-controller="rascunho" asp-route-id="@r.Id"><i class="fa fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>
