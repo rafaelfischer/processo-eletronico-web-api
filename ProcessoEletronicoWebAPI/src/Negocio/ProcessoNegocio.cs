@@ -89,7 +89,7 @@ namespace ProcessoEletronicoService.Negocio
             return _mapper.Map<ProcessoModeloNegocio>(processo);
 
         }
-
+        
         public ProcessoModeloNegocio Pesquisar(string numero)
         {
             _validacao.NumeroValido(numero);
@@ -129,6 +129,35 @@ namespace ProcessoEletronicoService.Negocio
             {
                 LimparConteudoAnexos(processo.Anexos);
             }
+
+            return _mapper.Map<ProcessoModeloNegocio>(processo);
+
+        }
+
+        public ProcessoModeloNegocio PesquisarSimplificado(string numero)
+        {
+            _validacao.NumeroValido(numero);
+
+            int sequencial = ObterSequencial(numero);
+            byte digitoVerificadorRecebido = ObterDigitoVerificador(numero);
+            short ano = ObterAno(numero);
+            byte digitoPoder = ObterDigitoPoder(numero);
+            byte digitoEsfera = ObterDigitoEsfera(numero);
+            short digitoOrganizacao = ObterDigitoOrganizacao(numero);
+
+            byte digitoVerificadorGerado = (byte)DigitoVerificador(sequencial);
+            _validacao.DigitoVerificadorValido(digitoVerificadorRecebido, digitoVerificadorGerado);
+
+            var processo = _repositorioProcessos.Where(p => p.Sequencial == sequencial
+                                                        && p.DigitoVerificador == digitoVerificadorRecebido
+                                                        && p.Ano == ano
+                                                        && p.DigitoPoder == digitoPoder
+                                                        && p.DigitoEsfera == digitoEsfera
+                                                        && p.DigitoOrganizacao == digitoOrganizacao)
+                                                   .Include(p => p.Atividade)
+                                                   .SingleOrDefault();
+
+            _validacao.NaoEncontrado(processo);
 
             return _mapper.Map<ProcessoModeloNegocio>(processo);
 

@@ -68,4 +68,13 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<SinalizacaoProcessoGetModelo> Sinalizacoes { get; set; }
         public AtividadeProcessoGetModelo Atividade { get; set; }
     }
+
+    public class ProcessoSimplificadoModelo
+    {
+        public int Id { get; set; }
+        public string Resumo { get; set; }
+        public string Numero { get; set; }
+
+        public AtividadeProcessoGetModelo Atividade { get; set; }
+    }
 }
