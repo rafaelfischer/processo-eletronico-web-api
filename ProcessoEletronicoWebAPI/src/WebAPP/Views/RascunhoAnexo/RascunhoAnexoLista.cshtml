@@ -1,7 +1,6 @@
 ﻿@model ListaAnexosRascunho
 
-@if (Model.Anexos.Count() > 0 && Model != null)
-{
+@if (Model?.Anexos?.Count() > 0){
 
     <div class="box-header with-border">
         @*<h3 class="box-title">Anexos do Processo</h3>*@
@@ -13,6 +12,7 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>ARQUIVO</th>
                     <th>CLASSIFICAÇÃO</th>
                     <th>DESCRIÇÃO</th>
@@ -27,6 +27,7 @@
                 }))
                 {
                     <tr>
+                        <td>@item.value.Id</td>
                         <td>@item.value.Nome</td>
                         @if (item.value.TipoDocumental != null)
                     {

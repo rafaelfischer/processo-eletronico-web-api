@@ -13,26 +13,6 @@ $eSTipoDocumental.select2(
     }
 );
 
-/*Evento change do componente select para carregamento dos dados da consulta de tipo documental*/
-$eSAtividade.on('select2:selecting', function (e) {
-    carregaModalDefault(
-        "Alterar Atividade",
-        "Os tipos documentais dos anexos serão removidos caso confirme esta alteração. Deseja alterar a atividade do processo?",
-        "",
-        "",
-        "alterarAtividade",
-        "manterAtividade"
-    );
-});
-
-$('body').on('click', '.alterarAtividade', function (e) {
-    alert('Confirmou!');
-});
-
-$('body').on('click', '.manterAtividade', function (e) {
-    $eSAtividade.val($atividadeDefault).trigger("change");
-});
-
 /*Carrega tipos documentais com base no idAtividade */
 function getTiposDocumentais() {
     $idAtividade = $('#Atividade_Id').val();
@@ -183,24 +163,48 @@ function AtualizaFormAnexo(inputFiles) {
 /*Evento click para o botão excluir da lista de anexos*/
 $("#listaanexos").on("click", ".btnExcluirAnexo", function () {
 
-    $(this).parent('div').find('.btn').toggleClass('disabled');
+    var id = $(this).attr("data-id");
+    
+    carregaModalDefault(
+        "Excluir Anexo",
+        "Deseja realmente excluir o anexo ID " + id + "?",
+        "Excluir",
+        "Cancelar",
+        "btnConfirmarExclusaoAnexo",
+        "btnCancelarExclusao",
+        id);    
+});
+
+/*confirmar Exclusão de anexo*/
+$('body').on('click', '.btnConfirmarExclusaoAnexo', function () {
+
+    var id = $(this).attr('data-acaoconfirmar');
+    var url = "/RascunhoAnexo/ExcluirAnexo";
+
     var formData = new FormData();
     formData.append("idRascunho", $("#formanexo").find("#Id").val());
-    formData.append("idAnexo", $(this).attr("data-id"));
+    formData.append("idAnexo", id);
 
-    $.ajax(
-        {
-            url: "/RascunhoAnexo/ExcluirAnexo",
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                $("#listaanexos").html(data)
+    if (isNullOrEmpty(id)) {
+        return false;
+    }
+    else {
+
+        $.ajax(
+            {
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    $("#listaanexos").html(data)
+                }
             }
-        }
-    );
+        );
+    }
 });
+
 
 /*Evento click para o botão excluir da lista de anexos*/
 $("#listaanexos").on("click", ".btnEditarAnexos", function () {

@@ -7,7 +7,7 @@ namespace Apresentacao.APP.Services.Base
 {
     public interface IRascunhoProcessoAnexoService
     {
-        IEnumerable<AnexoViewModel> GetAnexos(int idRascunho);
+        ICollection<AnexoViewModel> GetAnexos(int idRascunho);
         AnexoViewModel GetAnexo(int idRascunho, int idAnexo);
         AnexoViewModel PostAnexo(int idRascunho, AnexoViewModel anexo);
         void EditarAnexo(int idRascunho, AnexoViewModel anexo);

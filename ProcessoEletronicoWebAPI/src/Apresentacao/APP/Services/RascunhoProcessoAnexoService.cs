@@ -23,7 +23,7 @@ namespace Apresentacao.APP.Services
             _anexoNegocio = anexoNegocio;
         }
 
-        public IEnumerable<AnexoViewModel> GetAnexos(int idRascunho)
+        public ICollection<AnexoViewModel> GetAnexos(int idRascunho)
         {
             return _mapper.Map<List<AnexoViewModel>>(_anexoNegocio.Get(idRascunho));
         }

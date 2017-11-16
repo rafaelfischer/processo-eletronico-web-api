@@ -70,16 +70,13 @@ namespace WebAPP.Controllers
             return PartialView("RascunhoBasico", rascunhoAtualizado);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public IActionResult Excluir(int id)
         {
             _service.DeleteRascunhoProcesso(id);
-
-            return RedirectToAction("Index");
-
-            //IEnumerable<GetRascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosOrganizacao();
-            //return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
+            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosProcessoPorOrganizacao();
+            return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
         }        
     }
 }

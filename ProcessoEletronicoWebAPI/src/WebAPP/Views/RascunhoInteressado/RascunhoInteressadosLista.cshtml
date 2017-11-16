@@ -1,29 +1,30 @@
 ﻿@model ListaInteressadosPJPF
 
-@if ((Model.InteressadosPJ != null && Model.InteressadosPJ.Count > 0) ||
-                                                   (Model.InteressadosPF != null && Model.InteressadosPF.Count > 0))
+@if ((Model?.InteressadosPJ.Count > 0) || (Model?.InteressadosPF.Count > 0))
 {    
     <div class="box-body">        
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="col-md-2">CNPJ/CPF</th>
-                    <th class="col-md-5">RAZÃO SOCIAL/NOME</th>
-                    <th class="col-md-2">MUNICÍPIO</th>
-                    <th class="col-md-1">UF</th>
+                    <th class="col-md-1 text-center">ID</th>
+                    <th class="col-md-2 text-center">CNPJ/CPF</th>
+                    <th class="col-md-4 text-center">RAZÃO SOCIAL/NOME</th>
+                    <th class="col-md-2 text-center">MUNICÍPIO</th>
+                    <th class="col-md-1 text-center">UF</th>
                     <th class="col-md-2 text-center">AÇÕES</th>
                 </tr>
             </thead>
             <tbody>
-                @if (Model.InteressadosPJ != null && Model.InteressadosPJ.Count > 0)
+                @if (Model?.InteressadosPJ.Count > 0)
                 {
                     @foreach (var pj in Model.InteressadosPJ)
                     {
                         <tr>
-                            <td class="text-right">@Convert.ToUInt64(pj.Cnpj).ToString(@"00\.000\.000\/0000\-00")</td>
+                            <td class="text-center">@pj.Id</td>
+                            <td class="text-center">@Convert.ToUInt64(pj.Cnpj).ToString(@"00\.000\.000\/0000\-00")</td>
                             <td>@pj.Sigla - @pj.RazaoSocial @(string.IsNullOrEmpty(pj.NomeUnidade) ? pj.SiglaUnidade + " - " + pj.NomeUnidade : "")</td>
                             <td>@pj.NomeMunicipio</td>
-                            <td>@pj.UfMunicipio</td>
+                            <td class="text-center">@pj.UfMunicipio</td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button type="button" data-id="@pj.Id" class="btn btn-sm btn-info btn-editar-interessado-pj"><i class="fa fa-edit"></i></button>
@@ -33,11 +34,12 @@
                         </tr>
                     }
                 }
-                @if (Model.InteressadosPF != null && Model.InteressadosPF.Count > 0)
+                @if (Model?.InteressadosPF.Count > 0)
                 {
                     @foreach (var pf in Model.InteressadosPF)
                     {
                         <tr>
+                            <td class="text-right">@pf.Id</td>
                             <td class="text-right">@Convert.ToUInt64(pf.Cpf).ToString(@"000\.000\.000\-00")</td>
                             <td>@pf.Nome</td>
                             <td>@pf.NomeMunicipio</td>
@@ -54,4 +56,5 @@
             </tbody>
         </table>
     </div>
+<hr />
 }

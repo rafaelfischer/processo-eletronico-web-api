@@ -40,8 +40,8 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult EditarAnexosForm(int idRascunho, int idAtividade)
         {
-            IEnumerable<AnexoViewModel> anexos = _anexoService.GetAnexos(idRascunho);
-            IEnumerable<TipoDocumentalViewModel> tiposDocumentais = _processoService.GetTiposDocumentais(idAtividade);
+            ICollection<AnexoViewModel> anexos = _anexoService.GetAnexos(idRascunho);
+            ICollection<TipoDocumentalViewModel> tiposDocumentais = _processoService.GetTiposDocumentais(idAtividade);
             return PartialView("RascunhoAnexoEditarLista", new EditarAnexosRascunho { IdRascunho = idRascunho, Anexos = anexos, TiposDocumentais = tiposDocumentais });
         }
 

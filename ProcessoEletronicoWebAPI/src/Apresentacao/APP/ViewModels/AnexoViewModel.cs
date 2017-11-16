@@ -18,7 +18,7 @@ namespace Apresentacao.APP.ViewModels
     public class ListaAnexosRascunho
     {
         public int IdRascunho { get; set; }
-        public IEnumerable<AnexoViewModel> Anexos { get; set; }
+        public ICollection<AnexoViewModel> Anexos { get; set; }
     }
 
     public class EditarAnexoRascunho

@@ -106,58 +106,136 @@ $("body").on("click", ".btnCarregarOrganizacao", function () {
 });
 
 //EXCLUIR INTERESSADO PESSOA JURÍDICA
+/*Evento click para o botão excluir da lista de interessados*/
 $("#listainteressados").on("click", ".btn-excluir-interessado-pj", function () {
 
-    var idRascunho = $("#formTipoInteressados").find("#Id").val();
+    //$(this).parent('div').find('.btn').toggleClass('disabled');
     var formData = new FormData();
+    formData.append("idRascunho", $("#formanexo").find("#Id").val());
+    formData.append("idAnexo", $(this).attr("data-id"));
+
+    var id = $(this).attr("data-id");
+
+    carregaModalDefault(
+        "Excluir Anexo",
+        "Deseja realmente excluir o interessado Pessoa Jurídica ID " + id + "?",
+        "Excluir",
+        "Cancelar",
+        "btnConfirmarExclusaoInteressadoPJ",
+        "btnCancelarExclusao",
+        id);
+});
+
+/*confirmar Exclusão de anexo*/
+$('body').on('click', '.btnConfirmarExclusaoInteressadoPJ', function () {
+
+    var id = $(this).attr('data-acaoconfirmar');
     var url = "/RascunhoInteressado/ExcluirInteressadoPJ";
+    var idRascunho = $("#formTipoInteressados").find("#Id").val();
 
+    var formData = new FormData();
     formData.append("idRascunho", idRascunho);
-    formData.append("idInteressadoPJ", $(this).attr('data-id'));
+    formData.append("idInteressadoPJ", id);
 
-    $.ajax(
-        {
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                $("#listainteressados").html(data)
-                //$('#interessadoUnidade select').select2({ width: '100%' })
+    if (isNullOrEmpty(id)) {
+        return false;
+    }
+    else {
+
+        $.ajax(
+            {
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    $("#listainteressados").html(data)
+                }
             }
-        }
-    );
-
-    return false;
+        );
+    }
 });
 
 //EXCLUIR INTERESSADO PESSOA FISICA
+/*Evento click para o botão excluir da lista de interessados*/
 $("#listainteressados").on("click", ".btn-excluir-interessado-pf", function () {
 
-    var idRascunho = $("#formTipoInteressados").find("#Id").val();
+    //$(this).parent('div').find('.btn').toggleClass('disabled');
     var formData = new FormData();
-    var url = "/RascunhoInteressado/ExcluirInteressadoPF";
+    formData.append("idRascunho", $("#formanexo").find("#Id").val());
+    formData.append("idAnexo", $(this).attr("data-id"));
 
-    formData.append("idRascunho", idRascunho);
-    formData.append("idInteressadoPF", $(this).attr('data-id'));
+    var id = $(this).attr("data-id");
 
-    $.ajax(
-        {
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                $("#listainteressados").html(data)
-                //$('#interessadoUnidade select').select2({ width: '100%' })
-            }
-        }
-    );
-
-    return false;
+    carregaModalDefault(
+        "Excluir Anexo",
+        "Deseja realmente excluir o interessado Pessoa Física ID " + id + "?",
+        "Excluir",
+        "Cancelar",
+        "btnConfirmarExclusaoInteressadoPF",
+        "btnCancelarExclusao",
+        id);
 });
+
+/*confirmar Exclusão de anexo*/
+$('body').on('click', '.btnConfirmarExclusaoInteressadoPF', function () {
+
+    var id = $(this).attr('data-acaoconfirmar');
+    var url = "/RascunhoInteressado/ExcluirInteressadoPF";
+    var idRascunho = $("#formTipoInteressados").find("#Id").val();
+
+    var formData = new FormData();
+    formData.append("idRascunho", idRascunho);
+    formData.append("idInteressadoPF", id);
+
+    if (isNullOrEmpty(id)) {
+        return false;
+    }
+    else {
+
+        $.ajax(
+            {
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    $("#listainteressados").html(data)
+                }
+            }
+        );
+    }
+});
+
+
+
+//$("#listainteressados").on("click", ".btn-excluir-interessado-pf", function () {
+
+//    var idRascunho = $("#formTipoInteressados").find("#Id").val();
+//    var formData = new FormData();
+//    var url = "/RascunhoInteressado/ExcluirInteressadoPF";
+
+//    formData.append("idRascunho", idRascunho);
+//    formData.append("idInteressadoPF", $(this).attr('data-id'));
+
+//    $.ajax(
+//        {
+//            url: url,
+//            data: formData,
+//            processData: false,
+//            contentType: false,
+//            type: "POST",
+//            success: function (data) {
+//                $("#listainteressados").html(data)
+//                //$('#interessadoUnidade select').select2({ width: '100%' })
+//            }
+//        }
+//    );
+
+//    return false;
+//});
 
 //CARREGAR INTERESSADO PESSOA JURÍDICA PARA FORMULARIO DE EDICAO
 $("#listainteressados").on("click", ".btn-editar-interessado-pj", function () {
