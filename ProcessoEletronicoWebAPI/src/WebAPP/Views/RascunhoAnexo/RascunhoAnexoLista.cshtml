@@ -1,28 +1,33 @@
-﻿@model IList<AnexoViewModel>
+﻿@model ListaAnexosRascunho
 
-@if (Model.Count > 0 && Model != null)
-{
+@if (Model?.Anexos?.Count() > 0){
 
     <div class="box-header with-border">
-        <h3 class="box-title">Anexos Carregados</h3>
+        @*<h3 class="box-title">Anexos do Processo</h3>*@
+        <div class="pull-right">
+            <button class="btnEditarAnexos btn-sm btn btn-info" type="button"><i class="fa fa-edit" aria-hidden="true"></i></button>
+        </div>        
     </div>
     <div class="box-body">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>ARQUIVO</th>
                     <th>CLASSIFICAÇÃO</th>
+                    <th>DESCRIÇÃO</th>
                     <th class="col-md-2">AÇÕES</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Select((value, i) => new
+                @foreach (var item in Model.Anexos.Select((value, i) => new
                 {
                     i,
                     value
                 }))
                 {
                     <tr>
+                        <td>@item.value.Id</td>
                         <td>@item.value.Nome</td>
                         @if (item.value.TipoDocumental != null)
                     {
@@ -32,10 +37,12 @@
                         {
                             <td></td>
                         }
+                        <td>
+                            @item.value.Descricao
+                        </td>
                         <td class="text-center">
-                            <div class="btn-group">
-                                <button type="button" data-id="@item.value.Id" class="btn btn-info btn-sm btnEditarAnexo"><i class="fa fa-edit"></i></button>
-                                <a data-id="@item.value.Id" class="btn btn-warning btn-sm btnDownloadAnexo"><i class="fa fa-download"></i></a>
+                            <div class="btn-group">                                
+                                <a href="/RascunhoAnexo/DownloadAnexo?idRascunho=@Model.IdRascunho&idAnexo=@item.value.Id" data-id="@item.value.Id" class="btn btn-warning btn-sm btnDownloadAnexo"><i class="fa fa-download"></i></a>
                                 <button type="button" data-id="@item.value.Id" class="btn btn-danger btn-sm btnExcluirAnexo"><i class="fa fa-trash"></i></button>
                             </div>
                         </td>

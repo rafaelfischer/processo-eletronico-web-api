@@ -23,14 +23,24 @@ namespace Apresentacao.APP.Services
             _anexoNegocio = anexoNegocio;
         }
 
-        public IEnumerable<AnexoViewModel> GetAnexos(int idRascunho)
+        public ICollection<AnexoViewModel> GetAnexos(int idRascunho)
         {
             return _mapper.Map<List<AnexoViewModel>>(_anexoNegocio.Get(idRascunho));
+        }
+
+        public AnexoViewModel GetAnexo(int idRascunho, int idAnexo)
+        {
+            return _mapper.Map<AnexoViewModel>(_anexoNegocio.Get(idRascunho, idAnexo));
         }
 
         public AnexoViewModel PostAnexo(int idRascunho, AnexoViewModel anexo)
         {
             return _mapper.Map<AnexoViewModel>(_anexoNegocio.Post(idRascunho, _mapper.Map<AnexoModeloNegocio>(anexo)));
+        }
+
+        public void EditarAnexo(int idRascunho, AnexoViewModel anexo)
+        {
+            _anexoNegocio.Patch(idRascunho, anexo.Id, _mapper.Map<AnexoModeloNegocio>(anexo));
         }
 
         public void DeleteAnexo(int idRascunho, int idAnexo)

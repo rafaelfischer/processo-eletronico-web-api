@@ -26,4 +26,24 @@ function LimparFormBasico() {
     $('form#formbasico')[0].reset();
 }
 
-/************************************************VISUALIZACAO************************************************/
+/*Evento change do componente select para carregamento dos dados da consulta de tipo documental*/
+$eSAtividade.on('select2:selecting', function (e) {
+    carregaModalDefault(
+        "Alterar Atividade",
+        "Os tipos documentais dos anexos serão removidos caso confirme esta alteração. Deseja alterar a atividade do processo?",
+        "",
+        "",
+        "alterarAtividade",
+        "manterAtividade"
+    );
+});
+
+/*Confirma alteração de atividade do processo*/
+$('body').on('click', '.alterarAtividade', function (e) {
+    alert('Confirmou!');
+});
+
+/*Cancela alteração de atividade do processo*/
+$('body').on('click', '.manterAtividade', function (e) {
+    $eSAtividade.val($atividadeDefault).trigger("change");
+});

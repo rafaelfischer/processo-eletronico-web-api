@@ -146,7 +146,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
             anexo.Conteudo = anexoModeloNegocio.Conteudo;
             anexo.Descricao = anexoModeloNegocio.Descricao;
             anexo.MimeType = anexoModeloNegocio.MimeType;
-            anexo.IdTipoDocumental = anexoModeloNegocio.TipoDocumental != null ? anexoModeloNegocio.TipoDocumental.Id : (int?) null;
+            anexo.IdTipoDocumental = anexoModeloNegocio.TipoDocumental != null && anexoModeloNegocio.TipoDocumental.Id > 0 ? anexoModeloNegocio.TipoDocumental.Id : (int?) null;
         }        
     }
 }

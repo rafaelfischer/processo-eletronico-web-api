@@ -1,5 +1,9 @@
 ﻿@model RascunhoProcessoViewModel
 
+<div id="listainteressados">
+    @Html.Partial("~/Views/RascunhoInteressado/RascunhoInteressadosLista.cshtml", Model.InteressadosRascunho)
+</div>
+
 <form id="formTipoInteressados">
     <div class="box-body">
         <div class="form-group">
@@ -22,8 +26,4 @@
 </form>
 
 <div id="formInteressado">
-</div>
-
-<div id="listainteressados">
-    @Html.Partial("~/Views/RascunhoInteressado/RascunhoInteressadosLista.cshtml", Model.InteressadosRascunho)
 </div>

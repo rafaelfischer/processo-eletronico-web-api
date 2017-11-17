@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Apresentacao.APP.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using System.Text;
+using Apresentacao.APP.WorkServices.Base;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,40 +17,68 @@ namespace WebAPP.Controllers
 {
     public class RascunhoAnexoController : BaseController
     {   
-        private IRascunhoProcessoAnexoService _anexoService;     
+        private IRascunhoProcessoAnexoService _anexoService;
+        private IProcessoService _processoService;
 
-        public RascunhoAnexoController(            
+        public RascunhoAnexoController(
+            IProcessoService processoService,
             IRascunhoProcessoAnexoService anexoService)
-        {   
+        {
+            _processoService = processoService;
             _anexoService = anexoService;            
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult EditarAnexo(RascunhoProcessoViewModel rascunho)
+        public IActionResult ListarAnexos(int idRascunho)
         {
-            long size = rascunho.files.Sum(f => f.Length);
-
-            // full path to file in temp location
-            var filePath = Path.GetTempFileName();
-
-            foreach (var formFile in rascunho.files)
-            {
-                if (formFile.Length > 0)
-                {
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        formFile.CopyToAsync(stream);
-                    }
-                }
-            }
-
-            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(rascunho.Id));
+            ListaAnexosRascunho listaAnexosRascunho = new ListaAnexosRascunho { IdRascunho = idRascunho, Anexos = _anexoService.GetAnexos(idRascunho) };
+            return PartialView("RascunhoAnexoLista", listaAnexosRascunho);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> UploadAnexo(IList<IFormFile> files, int idRascunho, int? idTipoDocumental)
+        public IActionResult EditarAnexosForm(int idRascunho, int idAtividade)
+        {
+            ICollection<AnexoViewModel> anexos = _anexoService.GetAnexos(idRascunho);
+            ICollection<TipoDocumentalViewModel> tiposDocumentais = _processoService.GetTiposDocumentais(idAtividade);
+            return PartialView("RascunhoAnexoEditarLista", new EditarAnexosRascunho { IdRascunho = idRascunho, Anexos = anexos, TiposDocumentais = tiposDocumentais });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditarAnexos(int idRascunho, List<AnexoViewModel> anexos)
+        {
+            foreach(var anexo in anexos)
+            {
+                _anexoService.EditarAnexo(idRascunho, anexo);
+            }
+
+            ListaAnexosRascunho listaAnexosRascunho = new ListaAnexosRascunho { IdRascunho = idRascunho, Anexos = _anexoService.GetAnexos(idRascunho) };
+
+            return PartialView("RascunhoAnexoLista", listaAnexosRascunho);            
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditarAnexoForm(int idRascunho, int idAnexo, int idAtividade)
+        {
+            AnexoViewModel anexo = _anexoService.GetAnexo(idRascunho,idAnexo);
+            IEnumerable<TipoDocumentalViewModel> tiposDocumentais = _processoService.GetTiposDocumentais(idAtividade);
+            return PartialView("RascunhoAnexoEditar", new EditarAnexoRascunho { IdRascunho = idRascunho, Anexo = anexo, TiposDocumentais = tiposDocumentais });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditarAnexo(int idRascunho, AnexoViewModel anexo)
+        {
+            _anexoService.EditarAnexo(idRascunho, anexo);
+            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UploadAnexo(IList<IFormFile> files, int idRascunho, int? idTipoDocumental, string descricaoAnexos)
         {
             long totalBytes = files.Sum(f => f.Length);
 
@@ -66,6 +96,7 @@ namespace WebAPP.Controllers
                             ConteudoString = s,
                             Nome = file.FileName,
                             MimeType = file.ContentType,
+                            Descricao = descricaoAnexos,
                             TipoDocumental = idTipoDocumental.HasValue ? new TipoDocumentalViewModel { Id = idTipoDocumental.Value } : null
                         };
                         _anexoService.PostAnexo(idRascunho, anexo);
@@ -73,7 +104,9 @@ namespace WebAPP.Controllers
                 }
             }
 
-            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));
+            ListaAnexosRascunho listaAnexosRascunho = new ListaAnexosRascunho { IdRascunho = idRascunho, Anexos = _anexoService.GetAnexos(idRascunho) };
+
+            return PartialView("RascunhoAnexoLista", listaAnexosRascunho);
         }
 
         [HttpPost]
@@ -82,7 +115,40 @@ namespace WebAPP.Controllers
         {
             _anexoService.DeleteAnexo(idRascunho, idAnexo);
 
-            return PartialView("RascunhoAnexoLista", _anexoService.GetAnexos(idRascunho));
+            ListaAnexosRascunho listaAnexosRascunho = new ListaAnexosRascunho { IdRascunho = idRascunho, Anexos = _anexoService.GetAnexos(idRascunho) };
+
+            return PartialView("RascunhoAnexoLista", listaAnexosRascunho);
         }
+
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult DownloadAnexo(int idRascunho, int idAnexo)
+        {
+            try
+            {
+                AnexoViewModel anexo = _anexoService.GetAnexo(idRascunho, idAnexo);
+
+                byte[] fileBase64 = Convert.FromBase64String(anexo.ConteudoString);
+                string file = Encoding.UTF8.GetString(fileBase64, 0, fileBase64.Length);
+                var conteudo = file.Split(',');
+
+                if (conteudo.Length == 2)
+                {
+                    return File(Convert.FromBase64String(conteudo[1]), "application/octet-stream", anexo.Nome);
+                }
+                else
+                {
+                    return File(Convert.FromBase64String(anexo.ConteudoString), "application/octet-stream", anexo.Nome);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+        }
+
+        
     }
 }

@@ -43,11 +43,11 @@ function carregaModalDefault(
     }
 
     if (!isNullOrEmpty(acaoConfirma)) {
-        $btnConfirma.attr('data-acao', acaoConfirma);
+        $btnConfirma.attr('data-acaoconfirmar', acaoConfirma);
     }
 
     if (!isNullOrEmpty(acaoCancela)) {
-        $btnCancela.attr('data-acao', acaoCancela);
+        $btnCancela.attr('data-acaocancelas', acaoCancela);
     }
 
     $modal.modal('show');

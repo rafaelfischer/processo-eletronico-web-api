@@ -199,6 +199,7 @@ namespace WebAPP.Controllers
         {
             InteressadoPessoaJuridicaViewModel interessado = _interessadoService.GetInteressadoPJ(idRascunho, idInteressadoPJ);
             interessado.Ufs = new UfViewModel().GetUFs();
+            interessado.Municipios = _organogramaService.GetMunicipios(interessado.UfMunicipio);
             interessado.TiposContato = _contato.GetTiposContato();
             interessado.IdRascunho = idRascunho;
 

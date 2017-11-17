@@ -47,12 +47,12 @@ namespace Apresentacao.APP.WorkServices
         
         }
 
-        public IEnumerable<TipoDocumentalViewModel> GetTiposDocumentais(int idAtividade)
+        public ICollection<TipoDocumentalViewModel> GetTiposDocumentais(int idAtividade)
         {
             try
             {
-                IEnumerable<TipoDocumentalModeloNegocio> tiposDocumentaisNegocio = _tipoDocumental.PesquisarPorAtividade(idAtividade);
-                IEnumerable<TipoDocumentalViewModel> tiposDocumentaisViewModel = _mapper.Map<List<TipoDocumentalViewModel>>(tiposDocumentaisNegocio);
+                ICollection<TipoDocumentalModeloNegocio> tiposDocumentaisNegocio = _tipoDocumental.PesquisarPorAtividade(idAtividade);
+                ICollection<TipoDocumentalViewModel> tiposDocumentaisViewModel = _mapper.Map<List<TipoDocumentalViewModel>>(tiposDocumentaisNegocio);
                 return tiposDocumentaisViewModel;
             }
             catch (Exception e)
@@ -62,12 +62,12 @@ namespace Apresentacao.APP.WorkServices
 
         }
 
-        public IEnumerable<GetProcessoViewModel> GetProcessosOrganizacao()
+        public ICollection<GetProcessoViewModel> GetProcessosOrganizacao()
         {
             try
             {
-                IEnumerable<ProcessoModeloNegocio> processos = _negocio.PesquisarProcessosNaOrganizacao(_user.UserGuidOrganizacao.ToString());
-                IEnumerable<GetProcessoViewModel> getProcessosViewModel = _mapper.Map<List<GetProcessoViewModel>>(processos);
+                ICollection<ProcessoModeloNegocio> processos = _negocio.PesquisarProcessosNaOrganizacao(_user.UserGuidOrganizacao.ToString());
+                ICollection<GetProcessoViewModel> getProcessosViewModel = _mapper.Map<List<GetProcessoViewModel>>(processos);
                 return getProcessosViewModel;
             }
             catch (Exception e)
