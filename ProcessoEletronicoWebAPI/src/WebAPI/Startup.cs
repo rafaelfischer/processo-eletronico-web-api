@@ -54,6 +54,7 @@ namespace WebAPI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IClientAccessTokenProvider, AcessoCidadaoClientAccessToken>();
             services.AddScoped<ICurrentUserProvider, CurrentUser>();
+            services.AddLogging();
 
             services.AddAutoMapper();
             InjecaoDependencias.InjetarDependencias(services);

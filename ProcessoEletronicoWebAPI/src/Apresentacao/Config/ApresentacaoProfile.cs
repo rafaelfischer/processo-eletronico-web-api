@@ -152,6 +152,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica != null && src.InteressadosPessoaJuridica.Count > 0 ? src.InteressadosPessoaJuridica : null))
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
+
+            CreateMap<ProcessoModeloNegocio, ProcessoSimplificadoModelo>()
+                .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade));
+
             #endregion
 
             #region Mapeamento de Tipo de Contato
