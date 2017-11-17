@@ -51,6 +51,14 @@ namespace WebAPP.Controllers
 
         [HttpGet]
         [Authorize]
+        public IActionResult Visualizar(int id)
+        {
+            RascunhoProcessoViewModel rascunho = _service.GetRascunhoProcesso(id);
+            return PartialView("RascunhoVisualizar", rascunho);
+        }
+
+        [HttpGet]
+        [Authorize]
         public IActionResult Editar(int? id)
         {
             RascunhoProcessoViewModel rascunho = _service.EditRascunhoProcesso(id);

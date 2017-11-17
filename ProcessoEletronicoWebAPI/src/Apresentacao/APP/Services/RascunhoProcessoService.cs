@@ -55,14 +55,14 @@ namespace Apresentacao.APP.Services
             }
         }
 
-        public GetRascunhoProcessoViewModel GetRascunhoProcesso(int id)
+        public RascunhoProcessoViewModel GetRascunhoProcesso(int id)
         {
             try
             {
-                RascunhoProcessoModeloNegocio rascunhos = _rascunhoService.Get(id);
-                GetRascunhoProcessoViewModel getRascunhosViewModel = _mapper.Map<GetRascunhoProcessoViewModel>(rascunhos);
+                RascunhoProcessoModeloNegocio rascunho = _rascunhoService.Get(id);
+                RascunhoProcessoViewModel rascunhoViewModel = _mapper.Map<RascunhoProcessoViewModel>(rascunho);
 
-                return getRascunhosViewModel;
+                return rascunhoViewModel;
             }
             catch (Exception)
             {
