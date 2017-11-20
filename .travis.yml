@@ -11,7 +11,7 @@ script:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: scripts/deploy.sh api dev ${TRAVIS_COMMIT:0:7} # && scripts/deploy.sh app dev ${TRAVIS_COMMIT:0:7}
+    script: scripts/deploy.sh api dev ${TRAVIS_COMMIT:0:7} && scripts/deploy.sh app dev ${TRAVIS_COMMIT:0:7}
     on:
       branch: develop
 
