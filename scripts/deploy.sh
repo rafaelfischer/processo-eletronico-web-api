@@ -29,7 +29,9 @@ docker push $DOCKER_IMAGE
 
 #Atualiza a infra
 echo "Deploy no Rancher da imagem $DOCKER_IMAGE, env $RANCHER_ENV, stack $RANCHER_STACK, service $RANCHER_SERVICE."
-git clone https://github.com/prodest/api-cloud-v2.git
+if [ ! -d "api-cloud-v2" ] ; then
+    git clone https://github.com/prodest/api-cloud-v2.git
+fi
 cd api-cloud-v2
 npm install
 node ./client --ENVIRONMENT=$RANCHER_ENV \
