@@ -1,0 +1,16 @@
+﻿@model SinalizacaoViewModel
+
+<div class="panel panel-success">
+    <div class="panel-body">
+        <form method="post">
+            <div class="col-xs-12 form-group">
+                <label asp-for="Descricao">Descricao:</label>
+                <input class="form-control" type="text" asp-for="Descricao" />
+            </div>
+            
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit" asp-controller="Sinalizacao" asp-action="Salvar">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
