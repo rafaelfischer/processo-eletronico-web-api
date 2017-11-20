@@ -49,7 +49,7 @@
 
         <div class="form-group">
             <label asp-for="UfMunicipio"></label>
-            <select class="form-control" asp-for="GuidMunicipio" asp-items="@(new SelectList(Model.Ufs,"Id","Text"))"></select>
+            <select class="form-control" asp-for="GuidMunicipio"></select>
         </div>
 
         <div id="contatos">
@@ -81,7 +81,7 @@
             <div class="btn-group pull-right">
                 <button type="reset" class="btn btn-default" onclick=""><i class="fa fa-close"></i> Limpar</button>
                 @*<button type="button" id="btnAddInteressado" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Adicionar</button>*@
-                <button class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                <button class="btn btn-primary"><i class="fa fa-save" aria-hidden="true"></i> Salvar</button>
             </div>
         </div>
     </div>

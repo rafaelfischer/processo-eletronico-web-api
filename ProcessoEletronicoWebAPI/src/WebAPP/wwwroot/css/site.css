@@ -83,3 +83,8 @@ input[type="checkbox"].input-validation-error {
     float: left;
     display: block;
 }
+
+#modalLoad .modal-dialog{
+    color:#fff;
+    top: 45%;
+}

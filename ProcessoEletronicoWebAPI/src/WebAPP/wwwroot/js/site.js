@@ -75,3 +75,12 @@ function mascaraCpf(valor) {
 function mascaraCnpj(valor) {
     return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "\$1.\$2.\$3\/\$4\-\$5");
 }
+
+/*CONTROLE LOAD AJAX */
+$(document).ajaxStart(function () {
+    $('#modalLoad').modal();
+});
+
+$(document).ajaxStop(function () {
+    $('#modalLoad').modal('hide');
+});
