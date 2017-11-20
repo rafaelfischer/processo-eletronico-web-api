@@ -23,7 +23,7 @@ namespace WebAPP
                 .UseKestrel()
                 .UseUrls(url)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                //.UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 
