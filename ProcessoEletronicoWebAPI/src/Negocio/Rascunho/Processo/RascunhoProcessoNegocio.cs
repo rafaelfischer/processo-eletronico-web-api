@@ -161,7 +161,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public void Patch(int id, RascunhoProcessoModeloNegocio rascunhoProcessoNegocio)
         {
-            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).SingleOrDefault();
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).Include(a => a.Anexos).ThenInclude(td => td.TipoDocumental).SingleOrDefault();
             _validacao.Exists(rascunhoProcesso);
 
             //Autenticacao do usuário
