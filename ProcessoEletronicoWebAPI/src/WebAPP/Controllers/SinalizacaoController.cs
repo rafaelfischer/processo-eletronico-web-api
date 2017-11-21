@@ -27,5 +27,23 @@ namespace WebAPP.Controllers
             ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
             return View("ListSinalizacoes", sinalizacoesViewModel);
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Update(int? Id)
+        {
+            return View("UpdateSinalizacao");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
+        {
+            _service.Add(sinalizacaoForm);
+            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
+            return View("ListSinalizacoes", sinalizacoesViewModel);
+        }
+
+
     }
 }
