@@ -39,7 +39,6 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
         {
-            Console.WriteLine(sinalizacaoForm);
             return View("UpdateSinalizacao");
         }
 
