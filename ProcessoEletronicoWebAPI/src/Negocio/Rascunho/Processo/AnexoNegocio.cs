@@ -143,9 +143,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
         
         private void MapAnexo (AnexoModeloNegocio anexoModeloNegocio, AnexoRascunho anexo)
         {
-            anexo.Conteudo = anexoModeloNegocio.Conteudo;
             anexo.Descricao = anexoModeloNegocio.Descricao;
-            anexo.MimeType = anexoModeloNegocio.MimeType;
             anexo.IdTipoDocumental = anexoModeloNegocio.TipoDocumental != null && anexoModeloNegocio.TipoDocumental.Id > 0 ? anexoModeloNegocio.TipoDocumental.Id : (int?) null;
         }        
     }
