@@ -8,7 +8,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Base
         SinalizacaoModeloNegocio Get(int id);
         IList<SinalizacaoModeloNegocio> Get(string guidOrganizacaoPatriarca);
         IList<SinalizacaoModeloNegocio> Get();
-        SinalizacaoModeloNegocio Insert(SinalizacaoModeloNegocio sinalizacaoModeloNegocio);
+        SinalizacaoModeloNegocio Add(SinalizacaoModeloNegocio sinalizacaoModeloNegocio);
         void Update(int id, SinalizacaoModeloNegocio sinalizacaoModeloNegocio);
         void Delete(int id);
     }

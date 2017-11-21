@@ -5,6 +5,7 @@ using System.Text;
 using Apresentacao.APP.ViewModels;
 using ProcessoEletronicoService.Negocio.Sinalizacoes.Base;
 using AutoMapper;
+using ProcessoEletronicoService.Negocio.Modelos;
 
 namespace Apresentacao.APP.Services
 {
@@ -30,5 +31,12 @@ namespace Apresentacao.APP.Services
         {
             throw new NotImplementedException();
         }
+        public SinalizacaoViewModel Add(SinalizacaoViewModel sinalizacaoViewModel)
+        {
+            SinalizacaoModeloNegocio sinalizacaoModeloNegocio = _mapper.Map<SinalizacaoModeloNegocio>(sinalizacaoViewModel);
+            SinalizacaoViewModel createdSinalizacaoViewModel = _mapper.Map<SinalizacaoViewModel>(_negocio.Add(sinalizacaoModeloNegocio));
+            return createdSinalizacaoViewModel;
+        }
+
     }
 }
