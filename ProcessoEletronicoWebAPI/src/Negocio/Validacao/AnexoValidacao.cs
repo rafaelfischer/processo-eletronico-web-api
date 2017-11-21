@@ -184,7 +184,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
                     if (anexos.Where(a => a.Nome == anexo.Nome).ToList().Count > 1)
                     {
-                        throw new RequisicaoInvalidaException("Nomes de arquivos duplicados");
+                        throw new RequisicaoInvalidaException($"Nomes de arquivos \"{anexo.Nome}\" duplicados");
                     }
                 }
 
