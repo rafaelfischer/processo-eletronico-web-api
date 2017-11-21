@@ -30,7 +30,7 @@ namespace WebAPP.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Update()
+        public IActionResult Update(int? Id)
         {
             return View("UpdateSinalizacao");
         }
@@ -39,7 +39,9 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
         {
-            return View("UpdateSinalizacao");
+            _service.Add(sinalizacaoForm);
+            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
+            return View("ListSinalizacoes", sinalizacoesViewModel);
         }
 
 
