@@ -25,14 +25,14 @@ namespace WebAPP.Controllers
         public IActionResult GetSinalizacoes()
         {
             ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
-            return View("ListSinalizacoes", sinalizacoesViewModel);
+            return View("Sinalizacao", sinalizacoesViewModel);
         }
 
         [HttpGet]
         [Authorize]
         public IActionResult Update(int? Id)
         {
-            return View("UpdateSinalizacao");
+            return PartialView("UpdateSinalizacao");
         }
 
         [HttpPost]
@@ -41,9 +41,9 @@ namespace WebAPP.Controllers
         {
             _service.Add(sinalizacaoForm);
             ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
-            return View("ListSinalizacoes", sinalizacoesViewModel);
+            return PartialView("ListSinalizacoes", sinalizacoesViewModel);
         }
 
-
+       
     }
 }

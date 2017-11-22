@@ -4,25 +4,26 @@
     ViewBag.Title = "Sinalização";
     ViewBag.SubTitle = "Criar nova sinalização";
 }
-
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">@ViewBag.SubTitle</h3>
-    </div>
-    <div class="box-body">
-        <form method="post">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <input type="hidden" asp-for="Id" />
-                    <label asp-for="Descricao">Descrição:</label>
-                    <input class="form-control" type="text" asp-for="Descricao" />
-                    <span asp-validation-for="Descricao"></span>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" type="submit" asp-controller="Sinalizacao" asp-action="Update">Salvar</button>
-                </div>
-
+<div class="box-body">
+    <form asp-controller="Sinalizacao"
+          asp-action="Update"
+          data-ajax-mode="replace"
+          data-ajax-update="#lista-sinalizacoes"
+          data-ajax-complete="ResetFormSinalizacao"
+          data-ajax="true"
+          data-ajax-method="POST"
+          id="form-sinalizacao">
+        
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" />
+                <label asp-for="Descricao">Descrição:</label>
+                <input class="form-control" type="text" asp-for="Descricao" />
+                <span asp-validation-for="Descricao"></span>
             </div>
-        </form>
-    </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>  Salvar</button>
+            </div>
+        </div>
+    </form>
 </div>
