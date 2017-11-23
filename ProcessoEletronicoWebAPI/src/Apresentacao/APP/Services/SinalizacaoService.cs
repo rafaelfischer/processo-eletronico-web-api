@@ -38,5 +38,10 @@ namespace Apresentacao.APP.Services
             return createdSinalizacaoViewModel;
         }
 
+        public void Delete(int id)
+        {
+            _negocio.Delete(id);
+        }
+
     }
 }

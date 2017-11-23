@@ -41,6 +41,14 @@ namespace WebAPP.Controllers
             return PartialView("ListSinalizacoes", sinalizacoesViewModel);
         }
 
-       
+        [HttpDelete]
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            _service.Delete(id);
+            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
+            return PartialView("ListSinalizacoes", sinalizacoesViewModel);
+        }
+        
     }
 }

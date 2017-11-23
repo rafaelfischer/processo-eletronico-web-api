@@ -23,6 +23,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
         {
             _repositorioSinalizacoes = repositorios.Sinalizacoes;
             _repositorioSinalizacoesProcessos = repositorios.SinalizacoesProcesso;
+            _repositorioSinalizacoesRascunhosProcessos = repositorios.SinalizacoesRascunhoProcesso;
             _user = user;
         }
 

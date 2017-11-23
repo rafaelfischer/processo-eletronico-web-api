@@ -14,7 +14,32 @@
 });
 
 $('body').on('click', '.btnConfirmarExclusaoSinalizacao', function () {
-    
+
+    var id = $(this).attr("data-acaoconfirmar");
+    var url = "/Sinalizacao/Delete";
+
+    var formData = new FormData();
+    formData.append("id", id);
+
+    if (isNullOrEmpty(id)) {
+        return false;
+    }
+    else {
+
+        $.ajax(
+            {
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "DELETE",
+                success: function (data) {
+                    $("#lista-sinalizacoes").html(data)
+                }
+            }
+        );
+    }
+
 });
 
 function ResetFormSinalizacao() {
