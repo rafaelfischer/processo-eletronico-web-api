@@ -60,28 +60,28 @@ namespace Apresentacao.APP.Services
             }
         }
 
-        public ResultViewModel GetRascunhoProcesso(int id)
+        public ResultViewModel<RascunhoProcessoViewModel> GetRascunhoProcesso(int id)
         {
-            ResultViewModel baseViewModel = new ResultViewModel();
+            ResultViewModel<RascunhoProcessoViewModel> result = new ResultViewModel<RascunhoProcessoViewModel>();
 
             try
             {
                 RascunhoProcessoModeloNegocio rascunho = _rascunhoService.Get(id);
                 RascunhoProcessoViewModel rascunhoViewModel = _mapper.Map<RascunhoProcessoViewModel>(rascunho);
 
-                baseViewModel.Entidade = rascunhoViewModel;
-                baseViewModel.Mensagens = new List<MensagemViewModel>();
-                baseViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Sucesso, Texto = "Rascunho recuperado com sucesso!", Titulo = "Rascunho Recuperado" });                
+                result.Entidade = rascunhoViewModel;
+                result.Mensagens = new List<MensagemViewModel>();
+                result.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Sucesso, Texto = "Rascunho recuperado com sucesso!", Titulo = "Rascunho Recuperado" });                
                 
-                return baseViewModel;
+                return result;
             }
             catch (RecursoNaoEncontradoException e)
             {
 
-                baseViewModel.Mensagens = new List<MensagemViewModel>();
-                baseViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Erro, Texto = e.Message, Titulo = "Erro ao consultar rascunho" });
+                result.Mensagens = new List<MensagemViewModel>();
+                result.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Erro, Texto = e.Message, Titulo = "Erro ao consultar rascunho" });
 
-                return baseViewModel;
+                return result;
             }
         }        
 

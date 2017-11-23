@@ -191,5 +191,5 @@
 <script>
     $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
     $('.cpf').mask('000.000.000-00', { reverse: true });
-    $mensagens = JSON.parse('@Html.Raw(ViewBag.Mensagens)');
+    $mensagens = '@ViewBag.Mensagens' != ''? JSON.parse('@Html.Raw(ViewBag.Mensagens)'):[];
 </script>

@@ -4,6 +4,7 @@ using AutoMapper;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
+using Prodest.ProcessoEletronico.Integration.Organograma.Base;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,24 +17,21 @@ namespace Apresentacao.APP.Services
         private ICurrentUserProvider _user;
         private IInteressadoPessoaJuridicaNegocio _interessadoPessoaJuridica;
         private IInteressadoPessoaFisicaNegocio _interessadoPessoaFisica;
-        //private IEmailNegocio _emailNegocio;
-        //private IContatoNegocio _contatoNegocio;
+        private IMunicipioService _municipioService;
 
         public RascunhoProcessoInteressadoService(
             IMapper mapper, 
             ICurrentUserProvider user,
             IInteressadoPessoaJuridicaNegocio interessadoPessoaJuridica,
-            IInteressadoPessoaFisicaNegocio interessadoPessoaFisica
-            //IEmailNegocio emailNegocio,
-            //IContatoNegocio contatoNegocio
+            IInteressadoPessoaFisicaNegocio interessadoPessoaFisica,
+            IMunicipioService municipioService
             )
         {
             _mapper = mapper;
             _user = user;
             _interessadoPessoaJuridica = interessadoPessoaJuridica;
             _interessadoPessoaFisica = interessadoPessoaFisica;
-            //_emailNegocio = emailNegocio;
-            //_contatoNegocio = contatoNegocio;
+            _municipioService = municipioService;
         }
 
         public InteressadoPessoaFisicaViewModel PostInteressadoPF(int idRascunho, InteressadoPessoaFisicaViewModel interessado)
@@ -93,6 +91,12 @@ namespace Apresentacao.APP.Services
             try
             {
                 InteressadoPessoaJuridicaViewModel interessadoPJ = _mapper.Map<InteressadoPessoaJuridicaViewModel>(_interessadoPessoaJuridica.Get(idRascunho, idInteressadoPJ));
+
+                if (!string.IsNullOrEmpty(interessadoPJ.GuidMunicipio))
+                {
+                    interessadoPJ.Municipios = _mapper.Map<List<MunicipioViewModel>>(_municipioService.SearchByEstado(interessadoPJ.UfMunicipio).ResponseObject);                    
+                }
+
                 return interessadoPJ;
             }
             catch (Exception e)
@@ -106,6 +110,12 @@ namespace Apresentacao.APP.Services
             try
             {
                 InteressadoPessoaFisicaViewModel interessadoPF = _mapper.Map<InteressadoPessoaFisicaViewModel>(_interessadoPessoaFisica.Get(idRascunho, idInteressadoPJ));
+
+                if (!string.IsNullOrEmpty(interessadoPF.GuidMunicipio))
+                {
+                    interessadoPF.Municipios = _mapper.Map<List<MunicipioViewModel>>(_municipioService.SearchByEstado(interessadoPF.UfMunicipio).ResponseObject);
+                }
+
                 return interessadoPF;
             }
             catch (Exception e)

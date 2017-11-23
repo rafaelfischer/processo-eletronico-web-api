@@ -12,7 +12,7 @@ var $mensagens = [];
 toastr.options = {
     "closeButton": true,
     "debug": false,
-    "newestOnTop": true,
+    "newestOnTop": false,
     "progressBar": true,
     "positionClass": "toast-top-center",
     "preventDuplicates": false,
@@ -27,10 +27,12 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
-function ExibirMensagem(mensagens) {
-    $.each(mensagens, function () {
+function ExibirMensagem() {
+    $.each($mensagens, function () {
         toastr[this.TipoToastr](this.Texto)
-    })    
+    });
+
+    $mensagens = [];
 }
 
 /*Correcao padding-right body ao fechar modal*/
@@ -119,5 +121,5 @@ $(document).ajaxComplete(function (data) {
 
 $(document).ajaxStop(function () {
     $('#modalLoad').modal('hide');
-    ExibirMensagem($mensagens);
+    ExibirMensagem();
 });
