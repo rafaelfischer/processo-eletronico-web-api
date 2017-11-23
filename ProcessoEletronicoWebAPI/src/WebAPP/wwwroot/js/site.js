@@ -6,6 +6,32 @@ var $titulo = $modal.find('#modaldefaultTitulo');
 var $conteudo = $modal.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
+var $mensagens = [];
+
+/*Toastr*/
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
+function ExibirMensagem(mensagens) {
+    $.each(mensagens, function () {
+        toastr[this.TipoToastr](this.Texto)
+    })    
+}
 
 /*Correcao padding-right body ao fechar modal*/
 $(document.body).on('hide.bs.modal,hidden.bs.modal, shown.bs.modal, show.bs.modal', function () {
@@ -93,6 +119,5 @@ $(document).ajaxComplete(function (data) {
 
 $(document).ajaxStop(function () {
     $('#modalLoad').modal('hide');
-
-    console.log(data);
+    ExibirMensagem($mensagens);
 });

@@ -2,6 +2,7 @@
 using Apresentacao.APP.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
@@ -59,25 +60,28 @@ namespace Apresentacao.APP.Services
             }
         }
 
-        public RascunhoProcessoViewModel GetRascunhoProcesso(int id)
+        public ResultViewModel GetRascunhoProcesso(int id)
         {
+            ResultViewModel baseViewModel = new ResultViewModel();
+
             try
             {
                 RascunhoProcessoModeloNegocio rascunho = _rascunhoService.Get(id);
                 RascunhoProcessoViewModel rascunhoViewModel = _mapper.Map<RascunhoProcessoViewModel>(rascunho);
 
-                //rascunhoViewModel.Mensagens = new List<MensagemViewModel>();
-                //rascunhoViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Sucesso, Texto = "Rascunho recuperado com sucesso!", Titulo = "Rascunho Recuperado" });
-
-                return rascunhoViewModel;
+                baseViewModel.Entidade = rascunhoViewModel;
+                baseViewModel.Mensagens = new List<MensagemViewModel>();
+                baseViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Sucesso, Texto = "Rascunho recuperado com sucesso!", Titulo = "Rascunho Recuperado" });                
+                
+                return baseViewModel;
             }
-            catch (Exception)
+            catch (RecursoNaoEncontradoException e)
             {
-                //RascunhoProcessoViewModel rascunhoViewModel =  new RascunhoProcessoViewModel();
-                //rascunhoViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Erro, Texto = "Erro", Titulo = e.ToString() });
 
-                //return rascunhoViewModel;
-                throw;
+                baseViewModel.Mensagens = new List<MensagemViewModel>();
+                baseViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Erro, Texto = e.Message, Titulo = "Erro ao consultar rascunho" });
+
+                return baseViewModel;
             }
         }        
 
