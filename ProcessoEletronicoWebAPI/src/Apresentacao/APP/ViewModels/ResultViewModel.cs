@@ -8,6 +8,6 @@ namespace Apresentacao.APP.ViewModels
     {
         public T Entidade { get; set; }
         public bool Success { get; set; }
-        public ICollection<MensagemViewModel> Mensagens { get; set; }
+        public ICollection<MensagemViewModel> Mensagens { get; set; } = new List<MensagemViewModel>();
     }
 }
