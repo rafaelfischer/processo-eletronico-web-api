@@ -23,6 +23,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
         {
             _repositorioSinalizacoes = repositorios.Sinalizacoes;
             _repositorioSinalizacoesProcessos = repositorios.SinalizacoesProcesso;
+            _repositorioSinalizacoesRascunhosProcessos = repositorios.SinalizacoesRascunhoProcesso;
             _user = user;
         }
 
@@ -161,7 +162,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
         {
             if (_repositorioSinalizacoesProcessos.Where(sp => sp.IdSinalizacao == sinalizacao.Id).ToList().Count > 0)
             {
-                throw new RequisicaoInvalidaException("A sinalização não pode ser excluída pois está associada a pelo menos um processo");
+                throw new RequisicaoInvalidaException($"A sinalização {sinalizacao.Descricao} não pode ser excluída pois está associada a pelo menos um processo");
             }
         }
 
@@ -169,7 +170,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
         {
             if (_repositorioSinalizacoesRascunhosProcessos.Where(sp => sp.IdSinalizacao == sinalizacao.Id).ToList().Count > 0)
             {
-                throw new RequisicaoInvalidaException("A sinalização não pode ser excluída pois está associada a pelo menos um rascunho de processo");
+                throw new RequisicaoInvalidaException($"A sinalização {sinalizacao.Descricao} não pode ser excluída pois está associada a pelo menos um rascunho de processo");
             }
         }
 
@@ -180,7 +181,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes.Validacao
                                                              .SingleOrDefault();
 
             if (sinalizacao == null)
-                throw new RequisicaoInvalidaException("Sinalização informada não pertence à organização patriarca da organização autuadora.");
+                throw new RequisicaoInvalidaException("A Sinalização informada não pertence à organização patriarca da organização autuadora.");
         }
     }
 }

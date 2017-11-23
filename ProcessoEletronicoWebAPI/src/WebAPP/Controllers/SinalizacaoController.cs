@@ -3,10 +3,7 @@ using Apresentacao.APP.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAPP.Controllers
 {
@@ -44,6 +41,14 @@ namespace WebAPP.Controllers
             return PartialView("ListSinalizacoes", sinalizacoesViewModel);
         }
 
-       
+        [HttpDelete]
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            _service.Delete(id);
+            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
+            return PartialView("ListSinalizacoes", sinalizacoesViewModel);
+        }
+        
     }
 }
