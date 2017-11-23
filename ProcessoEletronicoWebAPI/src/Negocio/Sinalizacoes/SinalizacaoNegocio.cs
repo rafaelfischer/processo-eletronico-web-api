@@ -64,7 +64,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes
             return _mapper.Map<List<SinalizacaoModeloNegocio>>(sinalizacoes);
         }
 
-        public SinalizacaoModeloNegocio Insert(SinalizacaoModeloNegocio sinalizacaoModeloNegocio)
+        public SinalizacaoModeloNegocio Add(SinalizacaoModeloNegocio sinalizacaoModeloNegocio)
         {
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _validacao.IsFilled(sinalizacaoModeloNegocio);

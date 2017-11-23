@@ -1,0 +1,31 @@
+﻿@model ICollection<SinalizacaoViewModel>
+@{
+    ViewBag.Title = "Sinalizações";
+    ViewBag.SubTitle = "Lista de Sinalizações";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">@ViewBag.SubTitle</h3>
+        <div class="box-tools pull-right">
+            <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#form-nova-sinalizacao" aria-expanded="false" aria-controls="form-nova-sinalizacao">
+                <i class="fa fa-plus"></i> Nova Sinalização
+            </a>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div id="form-nova-sinalizacao" class="collapse">
+            @Html.Partial("UpdateSinalizacao", new SinalizacaoViewModel())
+        </div>
+
+        <div id="lista-sinalizacoes">
+            @Html.Partial("ListSinalizacoes", Model)
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+
+@section scripts {
+    <script src="~/js/sinalizacao.js"></script>
+}

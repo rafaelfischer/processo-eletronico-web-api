@@ -94,7 +94,7 @@ namespace WebAPI.Sinalizacoes
                 return BadRequest();
             }
 
-            GetSinalizacaoDto getSinalizacaoDto = _mapper.Map<GetSinalizacaoDto>(_negocio.Insert(_mapper.Map<SinalizacaoModeloNegocio>(postSinalizacaoDto)));
+            GetSinalizacaoDto getSinalizacaoDto = _mapper.Map<GetSinalizacaoDto>(_negocio.Add(_mapper.Map<SinalizacaoModeloNegocio>(postSinalizacaoDto)));
             return CreatedAtRoute("GetSinalizacao", new { Id = getSinalizacaoDto.Id }, getSinalizacaoDto);
         }
 
