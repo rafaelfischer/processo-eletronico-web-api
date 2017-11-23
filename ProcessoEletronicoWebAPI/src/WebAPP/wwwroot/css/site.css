@@ -88,3 +88,8 @@ input[type="checkbox"].input-validation-error {
     color:#fff;
     top: 45%;
 }
+
+.modal-open {
+    overflow: hidden;
+    padding-right: 0 !important;
+}

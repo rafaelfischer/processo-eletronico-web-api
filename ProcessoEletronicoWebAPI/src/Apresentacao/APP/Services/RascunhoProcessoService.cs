@@ -1,6 +1,7 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
@@ -20,9 +21,11 @@ namespace Apresentacao.APP.Services
         private IOrganizacaoService _organizacaoService;        
         private IUnidadeService _unidadeService;
         private IAtividadeNegocio _atividadeService;        
-        private ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio _sinalizacaoNegocio;        
+        private ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio _sinalizacaoNegocio;
+        private IHttpContextAccessor _current;
 
         public RascunhoProcessoService(
+            IHttpContextAccessor current,
             IMapper mapper, 
             ICurrentUserProvider user, 
             IRascunhoProcessoNegocio rascunho, 
@@ -32,6 +35,7 @@ namespace Apresentacao.APP.Services
             ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio sinalizacaoNegocio
             )
         {
+            _current = current;
             _mapper = mapper;            
             _user = user;
             _rascunhoService = rascunho;
@@ -45,7 +49,7 @@ namespace Apresentacao.APP.Services
             try
             {
                 IEnumerable<RascunhoProcessoModeloNegocio> rascunhos = _rascunhoService.Get(_user.UserGuidOrganizacao);
-                IEnumerable<RascunhoProcessoViewModel> getRascunhosViewModel = _mapper.Map<List<RascunhoProcessoViewModel>>(rascunhos);
+                IEnumerable<RascunhoProcessoViewModel> getRascunhosViewModel = _mapper.Map<List<RascunhoProcessoViewModel>>(rascunhos);                
 
                 return getRascunhosViewModel;
             }
@@ -62,10 +66,17 @@ namespace Apresentacao.APP.Services
                 RascunhoProcessoModeloNegocio rascunho = _rascunhoService.Get(id);
                 RascunhoProcessoViewModel rascunhoViewModel = _mapper.Map<RascunhoProcessoViewModel>(rascunho);
 
+                //rascunhoViewModel.Mensagens = new List<MensagemViewModel>();
+                //rascunhoViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Sucesso, Texto = "Rascunho recuperado com sucesso!", Titulo = "Rascunho Recuperado" });
+
                 return rascunhoViewModel;
             }
             catch (Exception)
             {
+                //RascunhoProcessoViewModel rascunhoViewModel =  new RascunhoProcessoViewModel();
+                //rascunhoViewModel.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Erro, Texto = "Erro", Titulo = e.ToString() });
+
+                //return rascunhoViewModel;
                 throw;
             }
         }        

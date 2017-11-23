@@ -127,7 +127,7 @@ $("#listainteressados").on("click", ".btn-excluir-interessado-pj", function () {
 });
 
 /*confirmar Exclusão de anexo*/
-$('body').on('click', '.btnConfirmarExclusaoInteressadoPJ', function () {
+$('body').on('click', 'button[data-btn="btnConfirmarExclusaoInteressadoPJ"]', function () {
 
     var id = $(this).attr('data-acaoconfirmar');
     var url = "/RascunhoInteressado/ExcluirInteressadoPJ";

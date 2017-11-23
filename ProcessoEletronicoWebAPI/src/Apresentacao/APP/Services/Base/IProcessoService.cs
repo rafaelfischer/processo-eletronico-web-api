@@ -8,5 +8,6 @@ namespace Apresentacao.APP.WorkServices.Base
         GetProcessoViewModel GetProcessoPorNumero(string numero);
         ICollection<GetProcessoViewModel> GetProcessosOrganizacao();
         ICollection<TipoDocumentalViewModel> GetTiposDocumentais(int idAtividade);
+        GetProcessoViewModel AutuarPorIdRascunho(int idRascunho);
     }
 }

@@ -39,17 +39,27 @@
         <div class="tab-pane" id="tab_6">
             <div class="box-header with-border">
                 @*<h3 class="box-title">Anexos do Processo</h3>*@
-                <div class="pull-right">
-                    <form asp-action="Visualizar"
-                          asp-controller="Rascunho"                                
-                          data-ajax-mode="replace"
-                          data-ajax-update="#visualizarRascunho"                          
+                <div class="btn-group">
+                    <form data-ajax-mode="replace"
+                          data-ajax-update="#visualizarRascunho"
                           data-ajax="true"
-                          data-ajax-method="GET"
-                          >
+                          method="post">
                         <input type="hidden" asp-for="Id" />
-                        <button class="btnVisualizarRascunho btn-sm btn btn-info" type="submit">
-                        <i class="fa fa-refresh" aria-hidden="true"></i> Visualizar</button>
+                        <button formaction="Rascunho/AutuarPvrocessoPorIdRascunho" class="btnAutuarRascunho btn-sm btn btn-info pull-right" type="submit">
+                            <i class="fa fa-save" aria-hidden="true"></i> Autuar
+                        </button>
+                    </form>
+                    <form
+                          asp-controller="Rascunho"
+                          asp-action="Visualizar"
+                          data-ajax-mode="replace"
+                          data-ajax-update="#visualizarRascunho"
+                          data-ajax="true"
+                          method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button class="btnVisualizarRascunho btn-sm btn btn-info pull-right" type="submit">
+                            <i class="fa fa-refresh" aria-hidden="true"></i> Visualizar
+                        </button>
                     </form>
                 </div>
             </div>

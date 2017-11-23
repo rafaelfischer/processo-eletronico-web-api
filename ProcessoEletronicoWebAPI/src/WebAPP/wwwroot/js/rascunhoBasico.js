@@ -27,12 +27,12 @@ function LimparFormBasico() {
 }
 
 /*Evento change do componente select para carregamento dos dados da consulta de tipo documental*/
-$('body').on('change', $eSAtividade, function (e) {
+$('body').on('change', '#Atividade_Id', function (e) {
     carregaModalDefault(
         "Alterar Atividade",
         "Os tipos documentais dos anexos serão removidos caso confirme esta alteração. Deseja alterar a atividade do processo?",
-        "",
-        "",
+        "Sim",
+        "Não",
         "alterarAtividade",
         "manterAtividade"
     );

@@ -19,9 +19,9 @@ namespace Apresentacao.APP.WorkServices
         private ITipoDocumentalNegocio _tipoDocumental;
 
         public ProcessoService(
-            IMapper mapper, 
-            IProcessoNegocio negocio, 
-            ICurrentUserProvider user, 
+            IMapper mapper,
+            IProcessoNegocio negocio,
+            ICurrentUserProvider user,
             IRascunhoProcessoNegocio rascunho,
             ITipoDocumentalNegocio tipoDocumental)
         {
@@ -44,7 +44,7 @@ namespace Apresentacao.APP.WorkServices
             {
                 return null;
             }
-        
+
         }
 
         public ICollection<TipoDocumentalViewModel> GetTiposDocumentais(int idAtividade)
@@ -73,7 +73,21 @@ namespace Apresentacao.APP.WorkServices
             catch (Exception e)
             {
                 return null;
-            }            
+            }
+        }
+
+        public GetProcessoViewModel AutuarPorIdRascunho(int idRascunho)
+        {
+            try
+            {
+                ProcessoModeloNegocio processoModeloNegocio = _negocio.Post(idRascunho);
+                GetProcessoViewModel ProcessoViewModel = _mapper.Map<GetProcessoViewModel>(processoModeloNegocio);
+                return ProcessoViewModel;
+            }
+            catch(Exception e)
+            {
+                throw (e);
+            }
         }
     }
 }

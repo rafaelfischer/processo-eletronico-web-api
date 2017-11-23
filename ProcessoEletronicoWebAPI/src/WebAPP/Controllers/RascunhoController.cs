@@ -1,5 +1,6 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
+using Apresentacao.APP.WorkServices.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,8 @@ namespace WebAPP.Controllers
 {
     public class RascunhoController : BaseController
     {
-        private IRascunhoProcessoService _service;
+        private IProcessoService _processo;
+        private IRascunhoProcessoService _rascunho;
         private IRascunhoProcessoAbrangenciaService _municipioService;
         private IRascunhoProcessoSinalizacaoService _sinalizacaoService;
         private IRascunhoProcessoAnexoService _anexoService;
@@ -26,14 +28,16 @@ namespace WebAPP.Controllers
         private IRascunhoProcessoInteressadoService _interessadoService;
 
         public RascunhoController(
-            IRascunhoProcessoService service,
+            IProcessoService processo,
+            IRascunhoProcessoService rascunho,
             IRascunhoProcessoAbrangenciaService municipio,
             IRascunhoProcessoSinalizacaoService sinalizacao,
             IRascunhoProcessoAnexoService anexoService,
             IOrganogramaAppService organogramaService,
             IRascunhoProcessoInteressadoService interessadoService)
         {
-            _service = service;
+            _processo = processo;
+            _rascunho = rascunho;
             _municipioService = municipio;
             _sinalizacaoService = sinalizacao;
             _anexoService = anexoService;
@@ -45,15 +49,19 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosProcessoPorOrganizacao();
+            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
             return View("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public IActionResult Visualizar(int id)
         {
-            RascunhoProcessoViewModel rascunho = _service.GetRascunhoProcesso(id);
+            RascunhoProcessoViewModel rascunho = _rascunho.GetRascunhoProcesso(id);
+            //var teste = HttpContext.Items;
+
+            ViewBag.Mensagens = HttpContext.Items;
+
             return PartialView("RascunhoVisualizar", rascunho);
         }
 
@@ -61,7 +69,7 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Editar(int? id)
         {
-            RascunhoProcessoViewModel rascunho = _service.EditRascunhoProcesso(id);
+            RascunhoProcessoViewModel rascunho = _rascunho.EditRascunhoProcesso(id);
             return View("Editar", rascunho);
         }
 
@@ -69,12 +77,12 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult EditarBasico(RascunhoProcessoViewModel rascunho)
         {
-            _service.UpdateRascunhoProcesso(rascunho.Id, rascunho);
+            _rascunho.UpdateRascunhoProcesso(rascunho.Id, rascunho);
 
             if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0)
                 _sinalizacaoService.PostSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
 
-            RascunhoProcessoViewModel rascunhoAtualizado = _service.EditRascunhoProcesso(rascunho.Id);
+            RascunhoProcessoViewModel rascunhoAtualizado = _rascunho.EditRascunhoProcesso(rascunho.Id);
             return PartialView("RascunhoBasico", rascunhoAtualizado);
         }
 
@@ -82,9 +90,18 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Excluir(int id)
         {
-            _service.DeleteRascunhoProcesso(id);
-            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _service.GetRascunhosProcessoPorOrganizacao();
+            _rascunho.DeleteRascunhoProcesso(id);
+            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
             return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
-        }        
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult AutuarProcessoPorIdRascunho(int id)
+        {
+            var retorno = _processo.AutuarPorIdRascunho(id);
+
+            return Json(retorno);
+        }
     }
 }

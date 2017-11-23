@@ -176,14 +176,14 @@ $("#listaanexos").on("click", ".btnExcluirAnexo", function () {
 });
 
 /*confirmar Exclusão de anexo*/
-$('body').on('click', '.btnConfirmarExclusaoAnexo', function () {
+$('body').on('click', 'button[data-btn="btnConfirmarExclusaoAnexo"]', function () {
 
     var id = $(this).attr('data-acaoconfirmar');
     var url = "/RascunhoAnexo/ExcluirAnexo";
 
     var formData = new FormData();
     formData.append("idRascunho", $("#formanexo").find("#Id").val());
-    formData.append("idAnexo", id);
+    formData.append("idAnexo", id);    
 
     if (isNullOrEmpty(id)) {
         return false;
@@ -198,7 +198,7 @@ $('body').on('click', '.btnConfirmarExclusaoAnexo', function () {
                 contentType: false,
                 type: "POST",
                 success: function (data) {
-                    $("#listaanexos").html(data)
+                    $("#listaanexos").html(data);                    
                 }
             }
         );

@@ -7,6 +7,11 @@ var $conteudo = $modal.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
 
+/*Correcao padding-right body ao fechar modal*/
+$(document.body).on('hide.bs.modal,hidden.bs.modal, shown.bs.modal, show.bs.modal', function () {
+    $('body').css('padding-right', '0');
+});
+
 function isNullOrEmpty(s) {
     return (s == null || s === "");
 }
@@ -34,7 +39,8 @@ function carregaModalDefault(
 
     if (!isNullOrEmpty(classBtnConfirma)) {
         $classBtnConfirma = classBtnConfirma;
-        $btnConfirma.addClass($classBtnConfirma);
+        //$btnConfirma.addClass($classBtnConfirma);
+        $btnConfirma.attr('data-btn',$classBtnConfirma);
     }
 
     if (!isNullOrEmpty(classBtnCancela)) {
@@ -65,7 +71,7 @@ function ResetModalDefault() {
 }
 
 $(document).ajaxError(function (jqXHR, textStatus, errorThrown) {    
-    console.log(textStatus);    
+    //console.log(textStatus);    
 });
 
 function mascaraCpf(valor) {
@@ -81,6 +87,12 @@ $(document).ajaxStart(function () {
     $('#modalLoad').modal();
 });
 
+$(document).ajaxComplete(function (data) {
+    console.log(data);
+});
+
 $(document).ajaxStop(function () {
     $('#modalLoad').modal('hide');
+
+    console.log(data);
 });
