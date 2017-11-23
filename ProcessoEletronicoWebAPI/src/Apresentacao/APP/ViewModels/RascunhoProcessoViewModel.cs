@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Apresentacao.APP.ViewModels
 {
-    public class RascunhoProcessoViewModel: BaseViewModel
+    public class RascunhoProcessoViewModel
     {
         public int Id { get; set; }
         [Display(Name = "Resumo")]

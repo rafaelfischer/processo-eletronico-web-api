@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System;
 using System.Collections.Generic;
@@ -57,12 +58,18 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Visualizar(int id)
         {
-            RascunhoProcessoViewModel rascunho = _rascunho.GetRascunhoProcesso(id);
-            //var teste = HttpContext.Items;
 
-            ViewBag.Mensagens = HttpContext.Items;
+            ResultViewModel rascunho = _rascunho.GetRascunhoProcesso(id);
+            ViewBag.Mensagens = JsonConvert.SerializeObject(rascunho.Mensagens);
 
-            return PartialView("RascunhoVisualizar", rascunho);
+            if (rascunho.Entidade!=null){                
+                return PartialView("RascunhoVisualizar", rascunho.Entidade);
+            }
+            else
+            {            
+                return PartialView("RascunhoVisualizar", null);
+            }
+            
         }
 
         [HttpGet]
