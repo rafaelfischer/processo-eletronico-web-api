@@ -36,7 +36,9 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
         {
-            _service.Add(sinalizacaoForm);
+            ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Add(sinalizacaoForm);
+            SetMensagens(resultViewModel.Mensagens);
+
             ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
             return PartialView("ListSinalizacoes", sinalizacoesViewModel);
         }

@@ -10,7 +10,7 @@ using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 
 namespace Apresentacao.APP.Services
 {
-    public class SinalizacaoService : ISinalizacaoService
+    public class SinalizacaoService : MensagemService, ISinalizacaoService
     {
         private ISinalizacaoNegocio _negocio;
         private IMapper _mapper;
@@ -32,34 +32,42 @@ namespace Apresentacao.APP.Services
         {
             throw new NotImplementedException();
         }
-        public SinalizacaoViewModel Add(SinalizacaoViewModel sinalizacaoViewModel)
+        public ResultViewModel<SinalizacaoViewModel> Add(SinalizacaoViewModel sinalizacaoViewModel)
         {
             SinalizacaoModeloNegocio sinalizacaoModeloNegocio = _mapper.Map<SinalizacaoModeloNegocio>(sinalizacaoViewModel);
-            SinalizacaoViewModel createdSinalizacaoViewModel = _mapper.Map<SinalizacaoViewModel>(_negocio.Add(sinalizacaoModeloNegocio));
-            return createdSinalizacaoViewModel;
+            ResultViewModel<SinalizacaoViewModel> resultSinalizacaoViewModel = new ResultViewModel<SinalizacaoViewModel>();
+            
+            try
+            {
+                resultSinalizacaoViewModel.Entidade = _mapper.Map<SinalizacaoViewModel>(_negocio.Add(sinalizacaoModeloNegocio));
+                SetMensagemSucesso(resultSinalizacaoViewModel.Mensagens, "Operação realizada com sucesso");
+
+            }
+            catch (RequisicaoInvalidaException e)
+            {
+                SetMensagemErro(resultSinalizacaoViewModel.Mensagens, e);
+                
+            }
+
+            return resultSinalizacaoViewModel;
         }
 
         public ICollection<MensagemViewModel> Delete(int id)
         {
             ICollection<MensagemViewModel> mensagens = new List<MensagemViewModel>();
-            MensagemViewModel mensagem = new MensagemViewModel();
-
+           
             try
             {
                 _negocio.Delete(id);
-                mensagem.Texto = "Exclusão realizada com sucesso";
-                mensagem.Tipo = TipoMensagem.Sucesso;
-
+                SetMensagemSucesso(mensagens, "Exclusão realizada com sucesso");
             }
             catch (RequisicaoInvalidaException e)
             {
-                mensagem.Texto = e.Message;
-                mensagem.Tipo = TipoMensagem.Erro;
+                SetMensagemErro(mensagens, e);
             }
 
-            mensagens.Add(mensagem);
             return mensagens;
         }
-
+               
     }
 }
