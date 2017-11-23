@@ -4,10 +4,9 @@ using System.Text;
 
 namespace Apresentacao.APP.ViewModels
 {
-    public class ResultViewModel
+    public class ResultViewModel<T>
     {
-        public object Entidade { get; set; }                
-        public ICollection<object> Entidades {get; set;}
+        public T Entidade { get; set; }                
         public ICollection<MensagemViewModel> Mensagens { get; set; }
     }
 }

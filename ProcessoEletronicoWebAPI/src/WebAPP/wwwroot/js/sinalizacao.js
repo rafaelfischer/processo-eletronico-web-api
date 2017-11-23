@@ -13,7 +13,7 @@
         id);
 });
 
-$('body').on('click', '.btnConfirmarExclusaoSinalizacao', function () {
+$('body').on('click', 'button[data-btn="btnConfirmarExclusaoSinalizacao"]', function () {
 
     var id = $(this).attr("data-acaoconfirmar");
     var url = "/Sinalizacao/Delete";
