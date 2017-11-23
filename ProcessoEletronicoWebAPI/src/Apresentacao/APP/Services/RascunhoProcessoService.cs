@@ -60,9 +60,9 @@ namespace Apresentacao.APP.Services
             }
         }
 
-        public ResultViewModel GetRascunhoProcesso(int id)
+        public ResultViewModel<RascunhoProcessoViewModel> GetRascunhoProcesso(int id)
         {
-            ResultViewModel baseViewModel = new ResultViewModel();
+            ResultViewModel<RascunhoProcessoViewModel> baseViewModel = new ResultViewModel<RascunhoProcessoViewModel>();
 
             try
             {

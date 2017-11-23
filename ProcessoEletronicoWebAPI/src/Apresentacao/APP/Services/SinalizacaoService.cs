@@ -6,6 +6,7 @@ using Apresentacao.APP.ViewModels;
 using ProcessoEletronicoService.Negocio.Sinalizacoes.Base;
 using AutoMapper;
 using ProcessoEletronicoService.Negocio.Modelos;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 
 namespace Apresentacao.APP.Services
 {
@@ -38,9 +39,26 @@ namespace Apresentacao.APP.Services
             return createdSinalizacaoViewModel;
         }
 
-        public void Delete(int id)
+        public ICollection<MensagemViewModel> Delete(int id)
         {
-            _negocio.Delete(id);
+            ICollection<MensagemViewModel> mensagens = new List<MensagemViewModel>();
+            MensagemViewModel mensagem = new MensagemViewModel();
+
+            try
+            {
+                _negocio.Delete(id);
+                mensagem.Texto = "Exclusão realizada com sucesso";
+                mensagem.Tipo = TipoMensagem.Sucesso;
+
+            }
+            catch (RequisicaoInvalidaException e)
+            {
+                mensagem.Texto = e.Message;
+                mensagem.Tipo = TipoMensagem.Erro;
+            }
+
+            mensagens.Add(mensagem);
+            return mensagens;
         }
 
     }
