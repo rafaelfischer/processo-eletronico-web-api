@@ -29,6 +29,10 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Update(int? Id)
         {
+            if (Id.HasValue)
+            {
+                
+            }
             return PartialView("UpdateSinalizacao");
         }
 
@@ -36,7 +40,15 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
         {
-            ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Add(sinalizacaoForm);
+            if(sinalizacaoForm.Id == 0)
+            {
+                ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Add(sinalizacaoForm);
+            }
+            else
+            {
+                ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Update(id, sinalizacaoForm);
+            }
+
             SetMensagens(resultViewModel.Mensagens);
 
             ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());

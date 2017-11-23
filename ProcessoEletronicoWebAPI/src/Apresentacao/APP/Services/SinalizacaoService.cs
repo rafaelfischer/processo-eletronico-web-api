@@ -21,17 +21,29 @@ namespace Apresentacao.APP.Services
             _mapper = mapper;
         }
 
-        public ICollection<SinalizacaoViewModel> Search()
+        public ResultViewModel<ICollection<SinalizacaoViewModel>> Search()
         {
-            ICollection<SinalizacaoViewModel> sinalizacoes = new List<SinalizacaoViewModel>();
-            sinalizacoes = _mapper.Map<ICollection<SinalizacaoViewModel>>(_negocio.Get());
-            return sinalizacoes;
+            ResultViewModel<ICollection<SinalizacaoViewModel>> resultSinalizacoes = new ResultViewModel<ICollection<SinalizacaoViewModel>>();
+            resultSinalizacoes.Entidade = _mapper.Map<ICollection<SinalizacaoViewModel>>(_negocio.Get());
+            return resultSinalizacoes;
         }
 
-        public SinalizacaoViewModel Search(int id)
+        public ResultViewModel<SinalizacaoViewModel> Search(int id)
         {
-            throw new NotImplementedException();
+            ResultViewModel<SinalizacaoViewModel> resultSinalizacaoViewModel = new ResultViewModel<SinalizacaoViewModel>();
+
+            try
+            {
+                resultSinalizacaoViewModel.Entidade = _mapper.Map<SinalizacaoViewModel>(_negocio.Get(id));
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                SetMensagemErro(resultSinalizacaoViewModel.Mensagens, e);
+            }
+
+            return resultSinalizacaoViewModel;
         }
+
         public ResultViewModel<SinalizacaoViewModel> Add(SinalizacaoViewModel sinalizacaoViewModel)
         {
             SinalizacaoModeloNegocio sinalizacaoModeloNegocio = _mapper.Map<SinalizacaoModeloNegocio>(sinalizacaoViewModel);
@@ -52,6 +64,11 @@ namespace Apresentacao.APP.Services
             return resultSinalizacaoViewModel;
         }
 
+        public ResultViewModel<SinalizacaoViewModel> Update(SinalizacaoViewModel sinalizacaoViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICollection<MensagemViewModel> Delete(int id)
         {
             ICollection<MensagemViewModel> mensagens = new List<MensagemViewModel>();
@@ -68,6 +85,7 @@ namespace Apresentacao.APP.Services
 
             return mensagens;
         }
-               
+
+ 
     }
 }
