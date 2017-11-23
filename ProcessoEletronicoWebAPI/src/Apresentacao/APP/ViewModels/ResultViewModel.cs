@@ -6,7 +6,8 @@ namespace Apresentacao.APP.ViewModels
 {
     public class ResultViewModel<T>
     {
-        public T Entidade { get; set; }                
+        public T Entidade { get; set; }
+        public bool Success { get; set; }
         public ICollection<MensagemViewModel> Mensagens { get; set; }
     }
 }

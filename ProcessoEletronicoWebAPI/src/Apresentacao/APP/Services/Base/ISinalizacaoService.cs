@@ -8,7 +8,7 @@ namespace Apresentacao.APP.Services.Base
         ICollection<SinalizacaoViewModel> Search();
         SinalizacaoViewModel Search(int id);
         SinalizacaoViewModel Add(SinalizacaoViewModel sinalizacaoViewModel);
-        void Delete(int id);
+        ICollection<MensagemViewModel> Delete(int id);
 
     }
 }

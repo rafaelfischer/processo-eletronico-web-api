@@ -45,7 +45,8 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Delete(int id)
         {
-            _service.Delete(id);
+            ICollection<MensagemViewModel> mensagens = _service.Delete(id);
+            SetMensagens(mensagens);
             ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
             return PartialView("ListSinalizacoes", sinalizacoesViewModel);
         }

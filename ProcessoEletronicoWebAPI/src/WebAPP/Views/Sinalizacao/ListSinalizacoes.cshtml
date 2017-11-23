@@ -25,3 +25,8 @@
     </tbody>
 </table>
 
+
+<script>
+        $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>
+
