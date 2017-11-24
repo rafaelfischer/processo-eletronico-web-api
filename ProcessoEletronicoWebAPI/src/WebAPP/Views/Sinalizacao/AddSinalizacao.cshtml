@@ -1,17 +1,21 @@
 ﻿@model SinalizacaoViewModel
 
+@{
+    ViewBag.Title = "Sinalização";
+    ViewBag.SubTitle = "Criar nova sinalização";
+}
 <form asp-controller="Sinalizacao"
-      asp-action="Update"
+      asp-action="Add"
       data-ajax-mode="replace"
-      data-ajax-complete="ExibirSinalizacaoAtualizada"
+      data-ajax-update="#lista-sinalizacoes"
+      data-ajax-complete="ResetFormSinalizacao"
       data-ajax="true"
       data-ajax-method="POST"
-      >
+      id="form-nova-sinalizacao">
 
     <div class="form-group">
         <label asp-for="Descricao">Descrição:</label>
         <div class="input-group">
-            <input type="hidden" asp-for="Id" />
             <input class="form-control" type="text" asp-for="Descricao" />
             <span asp-validation-for="Descricao"></span>
             <span class="input-group-btn">

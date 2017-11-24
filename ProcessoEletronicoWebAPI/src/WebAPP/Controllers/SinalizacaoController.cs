@@ -21,26 +21,52 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult GetSinalizacoes()
         {
-            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
+            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search().Entidade);
             return View("Sinalizacao", sinalizacoesViewModel);
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Update(int? Id)
+        public IActionResult Add()
         {
-            return PartialView("UpdateSinalizacao");
+            return PartialView("AddSinalizacao");
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Update(int Id)
+        {
+            ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Search(Id);
+            return PartialView("UpdateSinalizacao", resultViewModel.Entidade);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Add(SinalizacaoViewModel sinalizacaoForm)
+        {
+            ResultViewModel<SinalizacaoViewModel> resultViewModel = new ResultViewModel<SinalizacaoViewModel>();
+            resultViewModel = _service.Add(sinalizacaoForm);
+            SetMensagens(resultViewModel.Mensagens);
+
+            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search().Entidade);
+            return PartialView("ListSinalizacoes", sinalizacoesViewModel);
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
         {
-            ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Add(sinalizacaoForm);
+            ResultViewModel<SinalizacaoViewModel> resultViewModel = new ResultViewModel<SinalizacaoViewModel>();
+            resultViewModel = _service.Update(sinalizacaoForm);
             SetMensagens(resultViewModel.Mensagens);
+            
+            if(resultViewModel.Entidade == null)
+            {
+                return PartialView("ItemSinalizacao" ,_service.Search(sinalizacaoForm.Id).Entidade);
+            }
 
-            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
-            return PartialView("ListSinalizacoes", sinalizacoesViewModel);
+            return PartialView("ItemSinalizacao", resultViewModel.Entidade);
         }
 
         [HttpDelete]
@@ -49,7 +75,7 @@ namespace WebAPP.Controllers
         {
             ICollection<MensagemViewModel> mensagens = _service.Delete(id);
             SetMensagens(mensagens);
-            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search());
+            ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search().Entidade);
             return PartialView("ListSinalizacoes", sinalizacoesViewModel);
         }
         
