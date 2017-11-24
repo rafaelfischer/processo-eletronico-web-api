@@ -27,10 +27,11 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
-function ExibirMensagem(mensagens) {
-    $.each(mensagens, function () {
+function ExibirMensagem() {
+    $.each($mensagens, function () {
         toastr[this.TipoToastr](this.Texto)
-    })    
+    });
+    $mensagens = [];
 }
 
 /*Correcao padding-right body ao fechar modal*/
