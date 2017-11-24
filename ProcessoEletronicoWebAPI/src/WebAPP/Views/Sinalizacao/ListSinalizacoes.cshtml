@@ -11,16 +11,7 @@
     <tbody>
         @foreach (var sinalizacao in Model)
         {
-            <tr>
-                <td>@sinalizacao.Id</td>
-                <td>@sinalizacao.Descricao</td>
-                <td class="text-center">
-                    <div class="btn-group">
-                        <a class="btn btn-sm btn-info" href="#"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger btn-excluir-sinalizacao" data-descricao="@sinalizacao.Descricao" data-id="@sinalizacao.Id" href="#"><i class="fa fa-trash"></i></a>
-                    </div>
-                </td>
-            </tr>
+            <tr>@Html.Partial("ItemSinalizacao", sinalizacao)</tr>
         }
     </tbody>
 </table>
