@@ -66,7 +66,21 @@ namespace Apresentacao.APP.Services
 
         public ResultViewModel<SinalizacaoViewModel> Update(SinalizacaoViewModel sinalizacaoViewModel)
         {
-            throw new NotImplementedException();
+            ResultViewModel<SinalizacaoViewModel> resultSinalizacaoViewModel = new ResultViewModel<SinalizacaoViewModel>();
+            
+            try
+            {
+                _negocio.Update(sinalizacaoViewModel.Id, _mapper.Map<SinalizacaoModeloNegocio>(sinalizacaoViewModel));
+                resultSinalizacaoViewModel.Entidade = _mapper.Map<SinalizacaoViewModel>(_negocio.Get(sinalizacaoViewModel.Id));
+                SetMensagemSucesso(resultSinalizacaoViewModel.Mensagens, "Operação realizada com sucesso");
+
+            }
+            catch (Exception e)
+            {
+                SetMensagemErro(resultSinalizacaoViewModel.Mensagens, e);
+            }
+
+            return resultSinalizacaoViewModel;
         }
 
         public ICollection<MensagemViewModel> Delete(int id)

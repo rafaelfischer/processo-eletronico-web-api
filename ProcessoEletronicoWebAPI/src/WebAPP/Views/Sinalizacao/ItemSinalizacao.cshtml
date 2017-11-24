@@ -1,0 +1,14 @@
+﻿@model SinalizacaoViewModel
+
+    <td>@Model?.Id</td>
+    <td>@Model?.Descricao</td>
+    <td class="text-center">
+        <div class="btn-group">
+            <a class="btn btn-sm btn-info btn-editar-sinalizacao" asp-action="Update" asp-controller="Sinalizacao" asp-route-id="@Model?.Id"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-sm btn-danger btn-excluir-sinalizacao" data-descricao="@Model?.Descricao" data-id="@Model?.Id" href="#"><i class="fa fa-trash"></i></a>
+        </div>
+    </td>
+
+<script>
+        $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>
