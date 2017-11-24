@@ -136,6 +136,9 @@ namespace WebAPP.Controllers
             }
             else
             {
+                interessado.Ufs = new UfViewModel().GetUFs();
+                interessado.TiposContato = _contato.GetTiposContato();
+
                 return PartialView("RascunhoInteressadoPJ", interessado);
             }
         }

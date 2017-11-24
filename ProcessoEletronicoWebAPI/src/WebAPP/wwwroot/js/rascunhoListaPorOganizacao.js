@@ -11,7 +11,7 @@
         url);
 });
 
-$('body').on('click', '.btnConfirmarExclusao', function () {
+$('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
 
     var url = $(this).attr('data-acaoconfirmar');
 

@@ -18,6 +18,7 @@
             <input type="hidden" asp-for="Id" />
             <label asp-for="Cnpj"></label>
             <input data-mask="99.999.999/9999-99" placeholder="00.000.000/0000-00" class="form-control" asp-for="Cnpj" />
+            <span asp-validation-for="Cnpj" class="text-danger"></span>
         </div>
 
         <div class="form-group">
@@ -41,7 +42,7 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="UfMunicipio"></label>
+            <label asp-for="UfMunicipio"></label>            
             <select class="form-control" id="uf" asp-for="UfMunicipio" asp-items="@(new SelectList(Model.Ufs,"Sigla","Nome"))">
                 <option value="">Selecione uma UF</option>
             </select>
