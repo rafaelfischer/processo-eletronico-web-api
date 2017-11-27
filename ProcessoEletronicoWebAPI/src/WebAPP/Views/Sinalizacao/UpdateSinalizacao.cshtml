@@ -5,19 +5,20 @@
       data-ajax-mode="replace"
       data-ajax-complete="ExibirSinalizacaoAtualizada"
       data-ajax="true"
-      data-ajax-method="POST"
-      >
+      data-ajax-method="POST">
 
-    <div class="form-group">
+
+    <div class="col-xs-12">
+        <input type="hidden" asp-for="Id" />
         <label asp-for="Descricao">Descrição:</label>
-        <div class="input-group">
-            <input type="hidden" asp-for="Id" />
-            <input class="form-control" type="text" asp-for="Descricao" />
-            <span asp-validation-for="Descricao"></span>
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>  Salvar</button>
-                <button class="btn btn-default btn-cancelar-sinalizacao" type="button"><i class="fa fa-close"></i>  Cancelar</button>
-            </span>
-        </div>
+    </div>
+
+    <div class="col-md-8 form-group">
+        <input class="form-control" type="text" asp-for="Descricao" />
+        <span asp-validation-for="Descricao"></span>
+    </div>
+    <div class="col-md-4 form-group">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>  Salvar</button>
+        <button class="btn btn-default btn-cancelar-sinalizacao" type="button"><i class="fa fa-close"></i>  Cancelar</button>
     </div>
 </form>
