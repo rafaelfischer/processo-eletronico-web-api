@@ -12,7 +12,7 @@ var $mensagens = [];
 toastr.options = {
     "closeButton": true,
     "debug": false,
-    "newestOnTop": true,
+    "newestOnTop": false,
     "progressBar": true,
     "positionClass": "toast-top-center",
     "preventDuplicates": false,
@@ -31,6 +31,7 @@ function ExibirMensagem() {
     $.each($mensagens, function () {
         toastr[this.TipoToastr](this.Texto)
     });
+
     $mensagens = [];
 }
 
@@ -120,5 +121,5 @@ $(document).ajaxComplete(function (data) {
 
 $(document).ajaxStop(function () {
     $('#modalLoad').modal('hide');
-    ExibirMensagem($mensagens);
+    ExibirMensagem();
 });

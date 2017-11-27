@@ -9,7 +9,6 @@ namespace Apresentacao.APP.Services.Base
     public interface IRascunhoProcessoService
     {
         ResultViewModel<RascunhoProcessoViewModel> GetRascunhoProcesso(int id);
-        //RascunhoProcessoViewModel GetRascunhoProcesso(int id);
         RascunhoProcessoViewModel PostRascunhoProcesso(RascunhoProcessoViewModel rascunhoViewModel);
         IEnumerable<RascunhoProcessoViewModel> GetRascunhosProcessoPorOrganizacao();        
         RascunhoProcessoViewModel EditRascunhoProcesso(int? id);        

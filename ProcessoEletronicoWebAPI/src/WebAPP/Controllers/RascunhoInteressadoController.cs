@@ -114,23 +114,33 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult IncluirInteressadoPJ(InteressadoPessoaJuridicaViewModel interessado)
         {
-            int idRascunho = interessado.IdRascunho;
-            interessado.Cnpj = interessado.Cnpj.Replace("/", "").Replace(".", "").Replace("-", "");
-
-            if (interessado.Id > 0)
+            if (ModelState.IsValid)
             {
-                _interessadoService.ExcluirInteressadoPJ(idRascunho, interessado.Id);
+                int idRascunho = interessado.IdRascunho;
+                interessado.Cnpj = interessado.Cnpj.Replace("/", "").Replace(".", "").Replace("-", "");
+
+                if (interessado.Id > 0)
+                {
+                    _interessadoService.ExcluirInteressadoPJ(idRascunho, interessado.Id);
+                }
+
+                _interessadoService.PostInteressadoPJ(idRascunho, interessado);
+
+                ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+                {
+                    InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+                    InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+                };
+
+                return PartialView("RascunhoInteressadosLista", interessados);
             }
-
-            _interessadoService.PostInteressadoPJ(idRascunho, interessado);
-
-            ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            else
             {
-                InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
-                InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
-            };
+                interessado.Ufs = new UfViewModel().GetUFs();
+                interessado.TiposContato = _contato.GetTiposContato();
 
-            return PartialView("RascunhoInteressadosLista", interessados);
+                return PartialView("RascunhoInteressadoPJ", interessado);
+            }
         }
 
         [HttpPost]
@@ -203,7 +213,7 @@ namespace WebAPP.Controllers
             interessado.TiposContato = _contato.GetTiposContato();
             interessado.IdRascunho = idRascunho;
 
-            return PartialView("RascunhoInteressadoPJ", interessado);            
+            return PartialView("RascunhoInteressadoPJ", interessado);
         }
 
         [HttpPost]

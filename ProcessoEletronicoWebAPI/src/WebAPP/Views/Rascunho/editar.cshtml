@@ -4,7 +4,21 @@
     ViewBag.SubTitle = "Autuação de Processo - Rascunho";
 }
 
+<div class="form-group text-right">
+    <div class="btn-group">
+        <button class="btnVisualizarRascunho btn-sm btn btn-info" data-id="@Model.Id" type="submit">
+            <i class="fa fa-file-text-o" aria-hidden="true"></i> Visualizar
+        </button>
 
+        <button class="btnAutuarRascunho btn-sm btn btn-success" data-id="@Model.Id" type="submit">
+            <i class="fa fa-save" aria-hidden="true"></i> Autuar
+        </button>
+
+        <button class="btnAutuarRascunho btn-sm btn btn-danger btnExcluirRascunho" data-id="@Model.Id" type="submit">
+            <i class="fa fa-trash" aria-hidden="true"></i> Descartar
+        </button>        
+    </div>
+</div>
 
 <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
@@ -37,34 +51,7 @@
         </div>
         <!-- /.tab-pane -->
         <div class="tab-pane" id="tab_6">
-            <div class="box-header with-border">
-                @*<h3 class="box-title">Anexos do Processo</h3>*@
-                <div class="btn-group">
-                    <form data-ajax-mode="replace"
-                          data-ajax-update="#visualizarRascunho"
-                          data-ajax="true"
-                          method="post">
-                        <input type="hidden" asp-for="Id" />
-                        <button formaction="Rascunho/AutuarPvrocessoPorIdRascunho" class="btnAutuarRascunho btn-sm btn btn-info pull-right" type="submit">
-                            <i class="fa fa-save" aria-hidden="true"></i> Autuar
-                        </button>
-                    </form>
-                    <form
-                          asp-controller="Rascunho"
-                          asp-action="Visualizar"
-                          data-ajax-mode="replace"
-                          data-ajax-update="#visualizarRascunho"
-                          data-ajax="true"
-                          method="post">
-                        <input type="hidden" asp-for="Id" />                       
-                        <button class="btnVisualizarRascunho btn-sm btn btn-info pull-right" type="submit">
-                            <i class="fa fa-refresh" aria-hidden="true"></i> Visualizar
-                        </button>
-                    </form>
-                </div>
-            </div>
             <div class="box-body" id="visualizarRascunho">
-
             </div>
         </div>
         <!-- /.tab-pane -->
@@ -72,22 +59,11 @@
     <!-- /.tab-content -->
 </div>
 
-<div class="modal fade" id="modalDescartarRascunho" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default">Descartar Rascunho</button>
-                <button type="button" class="btn btn-primary">Salvar</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
 @section scripts{
     <script src="~/js/rascunhoBasico.js"></script>
     <script src="~/js/rascunhoSinalizacao.js"></script>
     <script src="~/js/rascunhoInteressado.js"></script>
     <script src="~/js/rascunhoAbrangencia.js"></script>
     <script src="~/js/rascunhoAnexo.js"></script>
+    <script src="~/js/rascunhoListaPorOganizacao.js"></script>
 }

@@ -58,8 +58,7 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult Visualizar(int id)
         {
-
-            ResultViewModel<RascunhoProcessoViewModel> rascunho = _rascunho.GetRascunhoProcesso(id);
+            var rascunho = _rascunho.GetRascunhoProcesso(id);
             ViewBag.Mensagens = JsonConvert.SerializeObject(rascunho.Mensagens);
 
             if (rascunho.Entidade!=null){                
