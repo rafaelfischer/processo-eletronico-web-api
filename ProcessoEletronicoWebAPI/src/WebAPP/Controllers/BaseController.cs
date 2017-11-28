@@ -1,6 +1,7 @@
 ﻿using Apresentacao.APP.ViewModels;
 using Apresentacao.APP.WorkServices.Base;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 
 namespace WebAPP.Controllers
 {
+    [Authorize]
     public class BaseController : Controller
     {
         public IActionResult Login()

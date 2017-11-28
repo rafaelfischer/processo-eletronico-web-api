@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model?.InteressadosPJ.Count > 0)
+                @if (Model.InteressadosPJ?.Count > 0)
                 {
                     @foreach (var pj in Model.InteressadosPJ)
                     {
@@ -34,7 +34,7 @@
                         </tr>
                     }
                 }
-                @if (Model?.InteressadosPF.Count > 0)
+                @if (Model.InteressadosPF?.Count > 0)
                 {
                     @foreach (var pf in Model.InteressadosPF)
                     {

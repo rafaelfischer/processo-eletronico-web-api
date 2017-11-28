@@ -28,8 +28,6 @@ namespace WebAPP.Controllers
             _contato = contato;
         }
 
-        //[HttpPost]
-        [Authorize]
         public IActionResult FormInteressado(int idRascunho, int tipoInteressado)
         {
             switch (tipoInteressado)
@@ -68,7 +66,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult GetUnidadesPorOrganizacao(string guidOrganizacao)
         {
             IEnumerable<UnidadeViewModel> unidades = _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao);
@@ -76,7 +73,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult IncluirInteressadoPJOrganograma(int idRascunho, string guidOrganizacao, string guidUnidade)
         {
             OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
@@ -103,7 +99,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult IncluirInteressadoPJ(InteressadoPessoaJuridicaViewModel interessado)
         {
             if (ModelState.IsValid)
@@ -154,7 +149,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult IncluirInteressadoPF(InteressadoPessoaFisicaViewModel interessado)
         {
             int idRascunho = interessado.IdRascunho;
@@ -195,7 +189,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
         {
             ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
@@ -212,7 +205,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult ExcluirInteressadoPF(int idRascunho, int idInteressadoPF)
         {
             ResultViewModel<InteressadoPessoaFisicaViewModel> result = new ResultViewModel<InteressadoPessoaFisicaViewModel>();
@@ -229,7 +221,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult FormInteressadoPF()
         {
             return PartialView("RascunhoInteressadoPF");
@@ -249,7 +240,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult FormInteressadoPFPreenchido(int idRascunho, int idInteressadoPF)
         {
             InteressadoPessoaFisicaViewModel interessado = _interessadoService.GetInteressadoPF(idRascunho, idInteressadoPF);
