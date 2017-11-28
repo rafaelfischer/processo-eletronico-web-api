@@ -1,5 +1,5 @@
 ﻿/*Incialização da página*/
-$(document).ready(function () {
+$(document).ready(function () {    
     ResetSinalizacoesLista();
     ResetMunicipioLista();
     $('#formbasico select').select2({ width: '100%' });

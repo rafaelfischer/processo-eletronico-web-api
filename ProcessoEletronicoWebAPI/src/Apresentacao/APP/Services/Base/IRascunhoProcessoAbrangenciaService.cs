@@ -9,7 +9,7 @@ namespace Apresentacao.APP.Services.Base
     {
         IEnumerable<MunicipioViewModel> GetMunicipiosPorIdRascunho(int idRascunho);
         MunicipioViewModel PostMunicipioPorIdRascunho(int idRascunho, MunicipioViewModel municipioViewModel);
-        List<MunicipioViewModel> UpdateMunicipioPorIdRascunho(int idRascunho, List<string> municipios);
-        void DeleteAllMunicipio(int idRascunho);
+        ResultViewModel<List<MunicipioViewModel>> UpdateMunicipioPorIdRascunho(int idRascunho, List<string> municipios);
+        ResultViewModel<List<MunicipioViewModel>> DeleteAllMunicipio(int idRascunho);
     }
 }

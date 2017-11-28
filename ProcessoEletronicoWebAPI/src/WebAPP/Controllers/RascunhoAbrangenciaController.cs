@@ -36,13 +36,17 @@ namespace WebAPP.Controllers
                 {
                     municipios.Add(municipio.GuidMunicipio);
                 }
+                ResultViewModel<List<MunicipioViewModel>> municipiosViewModel = _municipioService.UpdateMunicipioPorIdRascunho(rascunho.Id, municipios);
+                SetMensagens(municipiosViewModel.Mensagens);
 
-                return PartialView("RascunhoMunicipioLista", _municipioService.UpdateMunicipioPorIdRascunho(rascunho.Id, municipios));                
+                return PartialView("RascunhoMunicipioLista", municipiosViewModel.Entidade);                
             }
             else
             {
-                _municipioService.DeleteAllMunicipio(rascunho.Id);
-                return PartialView("RascunhoMunicipioLista", _municipioService.GetMunicipiosPorIdRascunho(rascunho.Id));
+                ResultViewModel<List<MunicipioViewModel>> municipiosViewModel = _municipioService.DeleteAllMunicipio(rascunho.Id);
+                SetMensagens(municipiosViewModel.Mensagens);
+
+                return PartialView("RascunhoMunicipioLista", municipiosViewModel.Entidade);                
             }
 
             

@@ -1,6 +1,7 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
 using AutoMapper;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
 using System;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace Apresentacao.APP.Services
 {
-    public class RascunhoProcessoSinalizacaoService: IRascunhoProcessoSinalizacaoService
+    public class RascunhoProcessoSinalizacaoService : MensagemService, IRascunhoProcessoSinalizacaoService
     {
         private IMapper _mapper;
         private ICurrentUserProvider _user;
@@ -27,20 +28,45 @@ namespace Apresentacao.APP.Services
             return _mapper.Map<List<SinalizacaoViewModel>>(_sinalizacaoNegocio.Get(idRascunho));
         }
 
-        public List<SinalizacaoViewModel> UpdateSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes)
+        public ResultViewModel<List<SinalizacaoViewModel>> UpdateSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes)
         {
             List<int> sinalizacoesListaInt = new List<int>();
+            ResultViewModel<List<SinalizacaoViewModel>> resultSinalizacoesViewModel = new ResultViewModel<List<SinalizacaoViewModel>>();
 
-            foreach (var sinalizacao in sinalizacoes)
+            try
             {
-                sinalizacoesListaInt.Add(sinalizacao.Id);
+                if (sinalizacoes != null && sinalizacoes.Count > 0)
+                {
+                    foreach (var sinalizacao in sinalizacoes)
+                    {
+                        sinalizacoesListaInt.Add(sinalizacao.Id);
+                    }
+
+                    List<SinalizacaoViewModel> listaSinalizacoes = _mapper.Map<List<SinalizacaoViewModel>>(_sinalizacaoNegocio.Put(idRascunho, sinalizacoesListaInt));
+                    resultSinalizacoesViewModel.Entidade = listaSinalizacoes;                    
+                }
+                else
+                {
+                    DeleteAllSinalizacao(idRascunho);
+                }
+
+                SetMensagemSucesso(resultSinalizacoesViewModel.Mensagens, "Sinalizações atualizadas com sucesso.");
+
+            }
+            catch (RequisicaoInvalidaException e)
+            {
+                SetMensagemErro(resultSinalizacoesViewModel.Mensagens, e);
+            }
+            catch (Exception e)
+            {
+                SetMensagemErro(resultSinalizacoesViewModel.Mensagens, e);
             }
 
-            return _mapper.Map<List<SinalizacaoViewModel>>(_sinalizacaoNegocio.Put(idRascunho, sinalizacoesListaInt));
+            return resultSinalizacoesViewModel;
         }
 
         public void DeleteAllSinalizacao(int idRascunho)
-        {   
+        {
             _sinalizacaoNegocio.DeleteAll(idRascunho);
         }
 
@@ -49,7 +75,7 @@ namespace Apresentacao.APP.Services
         {
             List<int> sinalizacoesListaInt = new List<int>();
 
-            foreach(var sinalizacao in sinalizacoes)
+            foreach (var sinalizacao in sinalizacoes)
             {
                 sinalizacoesListaInt.Add(sinalizacao.Id);
             }

@@ -58,3 +58,7 @@
     </div>
 <hr />
 }
+
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>

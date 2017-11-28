@@ -1,4 +1,5 @@
-﻿using Apresentacao.APP.ViewModels;
+﻿using Apresentacao.APP.Services.Base;
+using Apresentacao.APP.ViewModels;
 using Apresentacao.APP.WorkServices.Base;
 using AutoMapper;
 using ProcessoEletronicoService.Negocio.Base;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Apresentacao.APP.WorkServices
 {
-    public class ProcessoService : IProcessoService
+    public class ProcessoService : MensagemService, IProcessoService
     {
         private IMapper _mapper;
         private IProcessoNegocio _negocio;
@@ -76,18 +77,22 @@ namespace Apresentacao.APP.WorkServices
             }
         }
 
-        public GetProcessoViewModel AutuarPorIdRascunho(int idRascunho)
+        public ResultViewModel<GetProcessoViewModel> AutuarPorIdRascunho(int idRascunho)
         {
+            ResultViewModel<GetProcessoViewModel> result = new ResultViewModel<GetProcessoViewModel>();
+
             try
             {
                 ProcessoModeloNegocio processoModeloNegocio = _negocio.Post(idRascunho);
-                GetProcessoViewModel ProcessoViewModel = _mapper.Map<GetProcessoViewModel>(processoModeloNegocio);
-                return ProcessoViewModel;
+                result.Entidade = _mapper.Map<GetProcessoViewModel>(processoModeloNegocio);
+                SetMensagemSucesso(result.Mensagens, "Processo autuado com sucesso.");
             }
             catch(Exception e)
             {
-                throw (e);
+                SetMensagemErro(result.Mensagens, e);
             }
+
+            return result;
         }
     }
 }

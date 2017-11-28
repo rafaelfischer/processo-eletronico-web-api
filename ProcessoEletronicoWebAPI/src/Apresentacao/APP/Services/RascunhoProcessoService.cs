@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Apresentacao.APP.Services
 {
-    public class RascunhoProcessoService : IRascunhoProcessoService
+    public class RascunhoProcessoService : MensagemService, IRascunhoProcessoService
     {
         private IMapper _mapper;        
         private ICurrentUserProvider _user;
@@ -70,31 +70,31 @@ namespace Apresentacao.APP.Services
                 RascunhoProcessoViewModel rascunhoViewModel = _mapper.Map<RascunhoProcessoViewModel>(rascunho);
 
                 result.Entidade = rascunhoViewModel;
-                result.Mensagens = new List<MensagemViewModel>();
-                result.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Sucesso, Texto = "Rascunho recuperado com sucesso!", Titulo = "Rascunho Recuperado" });                
-                
-                return result;
+                SetMensagemSucesso(result.Mensagens, "Rascunho recuperado com sucesso.");                
             }
             catch (RecursoNaoEncontradoException e)
             {
-
                 result.Mensagens = new List<MensagemViewModel>();
-                result.Mensagens.Add(new MensagemViewModel() { Tipo = TipoMensagem.Erro, Texto = e.Message, Titulo = "Erro ao consultar rascunho" });
-
-                return result;
+                SetMensagemErro(result.Mensagens, e);
             }
+
+            return result;
         }        
 
-        public void DeleteRascunhoProcesso(int id)
+        public ResultViewModel<RascunhoProcessoViewModel> DeleteRascunhoProcesso(int id)
         {
+            ResultViewModel<RascunhoProcessoViewModel> result = new ResultViewModel<RascunhoProcessoViewModel>();
             try
             {
                 _rascunhoService.Delete(id);
+                SetMensagemSucesso(result.Mensagens, "Rascunho excluido com sucesso.");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
-            }            
+                SetMensagemErro(result.Mensagens, e);
+            }
+
+            return result;
         }
 
         public RascunhoProcessoViewModel PostRascunhoProcesso(RascunhoProcessoViewModel rascunhoViewModel)
@@ -162,7 +162,46 @@ namespace Apresentacao.APP.Services
             rascunhoProcesso.UfLista = new UfViewModel().GetUFs();            
 
             return rascunhoProcesso;
-        }        
+        }
+
+        public ResultViewModel<RascunhoProcessoViewModel> GetForEditRascunhoProcesso(int? id)
+        {
+            RascunhoProcessoViewModel rascunhoProcesso = new RascunhoProcessoViewModel();
+            ResultViewModel<RascunhoProcessoViewModel> resultRascunhoProcessoViewModel = new ResultViewModel<RascunhoProcessoViewModel>();
+
+            try
+            {
+                if (id.HasValue)
+                {
+                    RascunhoProcessoModeloNegocio rascunho = _rascunhoService.Get(id.Value);
+                    rascunhoProcesso = _mapper.Map<RascunhoProcessoViewModel>(rascunho);
+                }
+                else
+                {
+                    rascunhoProcesso.Id = PostRascunhoProcesso(null).Id;
+                }
+
+                IEnumerable<AtividadeModeloNegocio> atividades = _atividadeService.Pesquisar();
+                rascunhoProcesso.AtividadesLista = _mapper.Map<List<AtividadeViewModel>>(atividades);
+
+                IEnumerable<Unidade> unidades = _unidadeService.SearchByOrganizacao(_user.UserGuidOrganizacao).ResponseObject;
+                rascunhoProcesso.UnidadesLista = _mapper.Map<List<UnidadeViewModel>>(unidades);
+
+                Organizacao organizacao = _organizacaoService.Search(_user.UserGuidOrganizacao).ResponseObject;
+                rascunhoProcesso.OrganizacaoProcesso = _mapper.Map<OrganizacaoViewModel>(organizacao);
+
+                rascunhoProcesso.NomeUsuarioAutuador = _user.UserNome;
+
+                resultRascunhoProcessoViewModel.Entidade = rascunhoProcesso;
+                SetMensagemSucesso(resultRascunhoProcessoViewModel.Mensagens, "Dados básicos atualizados com sucesso.");
+            }
+            catch (RecursoNaoEncontradoException e)
+            {    
+                SetMensagemErro(resultRascunhoProcessoViewModel.Mensagens, e);
+            }
+
+            return resultRascunhoProcessoViewModel;
+        }
 
         public void UpdateRascunhoProcesso(int id, RascunhoProcessoViewModel rascunhoProcessoViewModel)
         {   

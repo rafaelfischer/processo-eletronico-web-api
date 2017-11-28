@@ -9,7 +9,8 @@ namespace Apresentacao.APP.Services.Base
     {
         List<SinalizacaoViewModel> GetSinalizacoes(int idRascunho);
         void PostSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes);
-        List<SinalizacaoViewModel> UpdateSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes);
+        //List<SinalizacaoViewModel> UpdateSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes);
+        ResultViewModel<List<SinalizacaoViewModel>> UpdateSinalizacao(int idRascunho, IList<SinalizacaoViewModel> sinalizacoes);
         void DeleteAllSinalizacao(int idRascunho);
     }
 }

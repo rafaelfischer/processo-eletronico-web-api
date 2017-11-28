@@ -8,14 +8,15 @@ function AtualizaSinalizacoesLista(data) {
     $(this).attr('checked', true);
     $(this).removeAttr('name');
 
-    console.log(data);
+    $mensagens = data.responseJSON.mensagens;
 
-    $.each(data.responseJSON, function (i, v) {        
+    $.each(data.responseJSON.entidade, function (i, v) {        
         $('#formsinalizacoes input[value="' + v.id + '"]').attr('name', 'Sinalizacoes['+ i +'].Id' );
         $('#formsinalizacoes input[value="' + v.id + '"]').iCheck('check');        
     });
-
+    
     ResetSinalizacoesLista();
+    ExibirMensagemRetornoJson();
 }
 
 function ResetSinalizacoesLista() {

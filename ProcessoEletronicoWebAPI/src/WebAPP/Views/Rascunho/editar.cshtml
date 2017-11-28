@@ -6,7 +6,7 @@
 
 <div class="form-group text-right">
     <div class="btn-group">
-        <button class="btnVisualizarRascunho btn-sm btn btn-info" data-id="@Model.Id" type="submit">
+        <button class="btnVisualizarRascunho btn-sm btn btn-info" data-id="@Model.Id" type="button">
             <i class="fa fa-file-text-o" aria-hidden="true"></i> Visualizar
         </button>
 
@@ -16,7 +16,7 @@
 
         <button class="btnAutuarRascunho btn-sm btn btn-danger btnExcluirRascunho" data-id="@Model.Id" type="submit">
             <i class="fa fa-trash" aria-hidden="true"></i> Descartar
-        </button>        
+        </button>
     </div>
 </div>
 
@@ -27,11 +27,13 @@
         <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Interessados</h3></a></li>
         <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Abrangência</h3></a></li>
         <li class=""><a href="#tab_5" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Anexos</h3></a></li>
-        <li class=""><a href="#tab_6" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Visualizar</h3></a></li>
+        <li class=""><a href="#tab_6" id="tab-visualizar" data-toggle="tab" aria-expanded="true"><h3 class="box-title">Visualizar</h3></a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_1">
-            @Html.Partial("RascunhoBasico", Model)
+            <div id="divformbasico">
+                @Html.Partial("RascunhoBasico", Model)
+            </div>
         </div>
         <!-- /.tab-pane -->
         <div class="tab-pane" id="tab_2">
@@ -66,4 +68,5 @@
     <script src="~/js/rascunhoAbrangencia.js"></script>
     <script src="~/js/rascunhoAnexo.js"></script>
     <script src="~/js/rascunhoListaPorOganizacao.js"></script>
+    <script src="~/js/rascunhoVisualizacao.js"></script>
 }

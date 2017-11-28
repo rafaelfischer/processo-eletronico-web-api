@@ -35,6 +35,14 @@ function ExibirMensagem() {
     $mensagens = [];
 }
 
+function ExibirMensagemRetornoJson() {
+    $.each($mensagens, function () {
+        toastr[this.tipoToastr](this.texto)
+    });
+
+    $mensagens = [];
+}
+
 /*Correcao padding-right body ao fechar modal*/
 $(document.body).on('hide.bs.modal,hidden.bs.modal, shown.bs.modal, show.bs.modal', function () {
     $('body').css('padding-right', '0');

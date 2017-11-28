@@ -24,7 +24,7 @@
                     <span class="input-group-addon">
                         @if (contato.TipoContato?.id == item.id)
                         {
-                            <input type="radio" checked name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
+                            <input type="radio" checked="checked" name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
                         }
                         else
                         {
