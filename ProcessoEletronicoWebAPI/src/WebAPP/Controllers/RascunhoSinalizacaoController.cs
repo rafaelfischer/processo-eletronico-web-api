@@ -23,7 +23,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult EditarSinalizacoes(RascunhoProcessoViewModel rascunho)
         {
             if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0) { 

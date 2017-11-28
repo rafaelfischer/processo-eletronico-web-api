@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace WebAPP.Controllers
 {
-    public class HomeController : BaseController
+    public class ProcessoController : BaseController
     {
         private IProcessoService _service;
 
-        public HomeController(IProcessoService service)
+        public ProcessoController(IProcessoService service)
         {
             _service = service;
         }
@@ -35,10 +35,8 @@ namespace WebAPP.Controllers
         }        
 
         [HttpGet]
-        [Authorize]
-        public IActionResult CaixaEntrada()
+        public IActionResult SearchByOrganizacao()
         {
-            //IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao(User.Claims.First(a => a.Type ==""));
             IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
             return View("processosPorOrganizacao", processosPorOrganizacao);
         }       

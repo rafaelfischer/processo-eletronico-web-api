@@ -18,7 +18,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult GetSinalizacoes()
         {
             ICollection<SinalizacaoViewModel> sinalizacoesViewModel = _mapper.Map<ICollection<SinalizacaoViewModel>>(_service.Search().Entidade);
@@ -26,14 +25,12 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Add()
         {
             return PartialView("AddSinalizacao");
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Update(int Id)
         {
             ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Search(Id);
@@ -42,7 +39,6 @@ namespace WebAPP.Controllers
 
 
         [HttpPost]
-        [Authorize]
         public IActionResult Add(SinalizacaoViewModel sinalizacaoForm)
         {
             ResultViewModel<SinalizacaoViewModel> resultViewModel = new ResultViewModel<SinalizacaoViewModel>();
@@ -54,7 +50,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
         {
             ResultViewModel<SinalizacaoViewModel> resultViewModel = new ResultViewModel<SinalizacaoViewModel>();
@@ -70,7 +65,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
         public IActionResult Delete(int id)
         {
             ICollection<MensagemViewModel> mensagens = _service.Delete(id);

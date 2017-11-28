@@ -47,7 +47,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Index()
         {
             IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
@@ -55,7 +54,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Visualizar(int id)
         {
             var rascunho = _rascunho.GetRascunhoProcesso(id);
@@ -72,7 +70,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Editar(int? id)
         {
             RascunhoProcessoViewModel rascunho = _rascunho.EditRascunhoProcesso(id);
@@ -80,7 +77,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult EditarBasico(RascunhoProcessoViewModel rascunho)
         {
             _rascunho.UpdateRascunhoProcesso(rascunho.Id, rascunho);
@@ -93,7 +89,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Excluir(int id)
         {
             _rascunho.DeleteRascunhoProcesso(id);
@@ -102,7 +97,6 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult AutuarProcessoPorIdRascunho(int id)
         {
             var retorno = _processo.AutuarPorIdRascunho(id);
