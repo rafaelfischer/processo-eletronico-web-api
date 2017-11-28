@@ -35,7 +35,6 @@ namespace WebAPP.Controllers
         }        
 
         [HttpGet]
-        [Authorize]
         public IActionResult SearchByOrganizacao()
         {
             IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();

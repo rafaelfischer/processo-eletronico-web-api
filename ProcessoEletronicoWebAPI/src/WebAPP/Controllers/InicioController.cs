@@ -3,7 +3,7 @@
 
 namespace WebAPP.Controllers
 {
-    public class InicioController : BaseController
+    public class InicioController : Controller
     {
         public IActionResult Index()
         {
