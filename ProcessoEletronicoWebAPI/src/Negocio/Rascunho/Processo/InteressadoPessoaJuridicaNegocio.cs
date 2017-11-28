@@ -54,7 +54,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public InteressadoPessoaJuridicaModeloNegocio Get(int idRascunhoProcesso, int id)
         {
-            InteressadoPessoaJuridicaRascunho interessadoPessoaJuridica = _repositorioInteressadosPessoaJuridicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso && ipf.Id == id).Include(ipf => ipf.ContatosRascunho).Include(ipf => ipf.EmailsRascunho).SingleOrDefault();
+            InteressadoPessoaJuridicaRascunho interessadoPessoaJuridica = _repositorioInteressadosPessoaJuridicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso && ipf.Id == id).Include(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato).Include(ipf => ipf.EmailsRascunho).SingleOrDefault();
             _validacao.Exists(interessadoPessoaJuridica);
             return _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(interessadoPessoaJuridica);
         }

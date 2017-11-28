@@ -25,18 +25,8 @@ namespace WebAPP.Controllers
         [HttpPost]
         [Authorize]
         public IActionResult EditarSinalizacoes(RascunhoProcessoViewModel rascunho)
-        {
-            if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0) { 
-                List<SinalizacaoViewModel> sinalizacoes = new List<SinalizacaoViewModel>();
-                sinalizacoes = _sinalizacaoService.UpdateSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
-                return Json(sinalizacoes);
-            }
-            else
-            {
-                _sinalizacaoService.DeleteAllSinalizacao(rascunho.Id);
-                return Json(rascunho.Sinalizacoes);
-            }
-            
+        {   
+            return Json(_sinalizacaoService.UpdateSinalizacao(rascunho.Id, rascunho.Sinalizacoes));
         }
     }
 }

@@ -43,3 +43,7 @@
     </div>
     <!-- /.box-body -->
 </div>
+
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>

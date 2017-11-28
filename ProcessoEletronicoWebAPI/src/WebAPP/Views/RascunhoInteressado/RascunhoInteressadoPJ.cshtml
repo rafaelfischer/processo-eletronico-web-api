@@ -4,8 +4,9 @@
       asp-controller="RascunhoInteressado"
       data-ajax-mode="replace"
       data-ajax-update="#listainteressados"
-      data-ajax-complete="ResetSinalizacoesLista"      
+      data-ajax-success="SucessoSalvarInteressadoPJ"
       data-ajax="true"
+      data-ajax-failure="ErroSalvarInteressadoPJ"
       data-ajax-method="POST"
       >
     <div class="box-header with-border">
@@ -97,6 +98,6 @@
     
 </form>
 
-<script>
+<script>    
     $.applyDataMask();
 </script>

@@ -1,0 +1,22 @@
+﻿@model ResultViewModel<GetProcessoViewModel>
+
+@if (Model?.Mensagens?.Count > 0)
+{
+    @foreach (var m in Model.Mensagens)
+    {
+        <div class="alert alert-@m.TipoToastr">@m.Texto</div>
+    }    
+}
+
+
+@if (Model?.Entidade != null)
+{
+    <div class="btn-group">
+        <button class="btn btn-success">Visualizar Processo Autuado</button>
+        <button class="btn btn-danger">Descartar Rascunho</button>
+    </div>    
+}
+
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>

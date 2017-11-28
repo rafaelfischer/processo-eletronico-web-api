@@ -1,6 +1,6 @@
 ﻿@model ListaInteressadosPJPF
 
-@if ((Model?.InteressadosPJ.Count > 0) || (Model?.InteressadosPF.Count > 0))
+@if ((Model?.InteressadosPJ?.Count > 0) || (Model?.InteressadosPF?.Count > 0))
 {    
     <div class="box-body">        
         <table class="table table-bordered table-striped">
@@ -58,3 +58,7 @@
     </div>
 <hr />
 }
+
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>

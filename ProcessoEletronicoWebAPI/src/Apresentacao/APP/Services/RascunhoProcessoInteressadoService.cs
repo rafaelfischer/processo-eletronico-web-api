@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Apresentacao.APP.Services
 {
-    public class RascunhoProcessoInteressadoService: IRascunhoProcessoInteressadoService
+    public class RascunhoProcessoInteressadoService: MensagemService, IRascunhoProcessoInteressadoService
     {
         private IMapper _mapper;
         private ICurrentUserProvider _user;
@@ -34,16 +34,40 @@ namespace Apresentacao.APP.Services
             _municipioService = municipioService;
         }
 
-        public InteressadoPessoaFisicaViewModel PostInteressadoPF(int idRascunho, InteressadoPessoaFisicaViewModel interessado)
+        public ResultViewModel<InteressadoPessoaFisicaViewModel> PostInteressadoPF(int idRascunho, InteressadoPessoaFisicaViewModel interessado)
         {
-            InteressadoPessoaFisicaModeloNegocio interessadoNegocio = _interessadoPessoaFisica.Post(idRascunho, _mapper.Map<InteressadoPessoaFisicaModeloNegocio>(interessado));
-            return _mapper.Map<InteressadoPessoaFisicaViewModel>(interessadoNegocio);
+            ResultViewModel<InteressadoPessoaFisicaViewModel> result = new ResultViewModel<InteressadoPessoaFisicaViewModel>();
+
+            try
+            {
+                InteressadoPessoaFisicaModeloNegocio interessadoNegocio = _interessadoPessoaFisica.Post(idRascunho, _mapper.Map<InteressadoPessoaFisicaModeloNegocio>(interessado));
+                result.Entidade = _mapper.Map<InteressadoPessoaFisicaViewModel>(interessadoNegocio);
+                SetMensagemSucesso(result.Mensagens, "Interessado pessoa física salvo com sucesso.");
+            }
+            catch (Exception e)
+            {
+                SetMensagemErro(result.Mensagens, e);
+            }
+
+            return result;
         }        
 
-        public InteressadoPessoaJuridicaViewModel PostInteressadoPJ(int idRascunho, InteressadoPessoaJuridicaViewModel interessado)
+        public ResultViewModel<InteressadoPessoaJuridicaViewModel> PostInteressadoPJ(int idRascunho, InteressadoPessoaJuridicaViewModel interessado)
         {
-            InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _interessadoPessoaJuridica.Post(idRascunho, _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(interessado));
-            return _mapper.Map<InteressadoPessoaJuridicaViewModel>(interessadoNegocio);
+            ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
+
+            try
+            {
+                InteressadoPessoaJuridicaModeloNegocio interessadoNegocio = _interessadoPessoaJuridica.Post(idRascunho, _mapper.Map<InteressadoPessoaJuridicaModeloNegocio>(interessado));
+                result.Entidade = _mapper.Map<InteressadoPessoaJuridicaViewModel>(interessadoNegocio);
+                SetMensagemSucesso(result.Mensagens, "Interessado pessoa jurídica salvo com sucesso.");
+            }
+            catch (Exception e)
+            {
+                SetMensagemErro(result.Mensagens, e);
+            }
+
+            return result;
         }
 
         public InteressadoPessoaJuridicaViewModel PostInteressadoPJOrganograma(int idRascunho, OrganizacaoViewModel organizacaoInteressada)
@@ -124,14 +148,38 @@ namespace Apresentacao.APP.Services
             }
         }
 
-        public void ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
+        public ResultViewModel<InteressadoPessoaJuridicaViewModel> ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
         {
-            _interessadoPessoaJuridica.Delete(idRascunho, idInteressadoPJ);
+            ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
+
+            try
+            {
+                _interessadoPessoaJuridica.Delete(idRascunho, idInteressadoPJ);
+                SetMensagemSucesso(result.Mensagens, "Interessado pessoa jurídica excluído com sucesso.");
+            }
+            catch (Exception e)
+            {
+                SetMensagemErro(result.Mensagens, e);
+            }
+
+            return result;
         }
 
-        public void ExcluirInteressadoPF(int idRascunho, int idInteressadoPF)
+        public ResultViewModel<InteressadoPessoaFisicaViewModel> ExcluirInteressadoPF(int idRascunho, int idInteressadoPF)
         {
-            _interessadoPessoaFisica.Delete(idRascunho, idInteressadoPF);
+            ResultViewModel<InteressadoPessoaFisicaViewModel> result = new ResultViewModel<InteressadoPessoaFisicaViewModel>();
+
+            try
+            {
+                _interessadoPessoaFisica.Delete(idRascunho, idInteressadoPF);
+                SetMensagemSucesso(result.Mensagens, "Interessado pessoa física excluído com sucesso.");
+            }
+            catch (Exception e)
+            {
+                SetMensagemErro(result.Mensagens, e);
+            }
+
+            return result;            
         }
     }
 }
