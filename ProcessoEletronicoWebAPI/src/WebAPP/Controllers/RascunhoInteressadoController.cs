@@ -100,14 +100,6 @@ namespace WebAPP.Controllers
             }
 
             return PartialView("RascunhoInteressadoPJ", interessado);
-
-            //ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
-            //{
-            //    InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
-            //    InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
-            //};
-
-            //return PartialView("RascunhoInteressadosLista", interessados);
         }
 
         [HttpPost]
@@ -124,7 +116,25 @@ namespace WebAPP.Controllers
                     _interessadoService.ExcluirInteressadoPJ(idRascunho, interessado.Id);
                 }
 
-                _interessadoService.PostInteressadoPJ(idRascunho, interessado);
+                ICollection<ContatoViewModel> contatos = new List<ContatoViewModel>(interessado.Contatos);
+
+                foreach(var c in contatos)
+                {
+                    if (string.IsNullOrEmpty(c.Telefone))
+                        interessado.Contatos.Remove(c);
+                }
+                
+                ICollection<EmailViewModel> emails = new List<EmailViewModel>(interessado.Emails);
+
+                foreach (var e in emails)
+                {
+                    if (string.IsNullOrEmpty(e.Endereco))
+                        interessado.Emails.Remove(e);
+                }
+
+                ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
+                result = _interessadoService.PostInteressadoPJ(idRascunho, interessado);
+                SetMensagens(result.Mensagens);
 
                 ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
                 {
@@ -155,7 +165,25 @@ namespace WebAPP.Controllers
                 _interessadoService.ExcluirInteressadoPF(idRascunho, interessado.Id);
             }
 
-            _interessadoService.PostInteressadoPF(idRascunho, interessado);
+            ICollection<ContatoViewModel> contatos = new List<ContatoViewModel>(interessado.Contatos);
+
+            foreach (var c in contatos)
+            {
+                if (string.IsNullOrEmpty(c.Telefone))
+                    interessado.Contatos.Remove(c);
+            }
+
+            ICollection<EmailViewModel> emails = new List<EmailViewModel>(interessado.Emails);
+
+            foreach (var e in emails)
+            {
+                if (string.IsNullOrEmpty(e.Endereco))
+                    interessado.Emails.Remove(e);
+            }
+
+            ResultViewModel<InteressadoPessoaFisicaViewModel> result = new ResultViewModel<InteressadoPessoaFisicaViewModel>();
+            result = _interessadoService.PostInteressadoPF(idRascunho, interessado);
+            SetMensagens(result.Mensagens);           
 
             ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
             {
@@ -170,7 +198,9 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
         {
-            _interessadoService.ExcluirInteressadoPJ(idRascunho, idInteressadoPJ);
+            ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
+            result = _interessadoService.ExcluirInteressadoPJ(idRascunho, idInteressadoPJ);
+            SetMensagens(result.Mensagens);
 
             ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
             {
@@ -185,7 +215,9 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult ExcluirInteressadoPF(int idRascunho, int idInteressadoPF)
         {
-            _interessadoService.ExcluirInteressadoPF(idRascunho, idInteressadoPF);
+            ResultViewModel<InteressadoPessoaFisicaViewModel> result = new ResultViewModel<InteressadoPessoaFisicaViewModel>();
+            result = _interessadoService.ExcluirInteressadoPF(idRascunho, idInteressadoPF);
+            SetMensagens(result.Mensagens);
 
             ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
             {

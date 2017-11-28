@@ -2,52 +2,55 @@
 @*@{
         var cont = 0;
     }*@
-<div id="divformbasico">    
-    <form asp-action="EditarBasico"
-          asp-controller="rascunho"
-          name="formbasico"
-          id="formbasico"
-          data-ajax-complete="ResetSinalizacoesLista"
-          data-ajax="true"
-          data-ajax-method="POST"
-          data-ajax-mode="replace"
-          data-ajax-update="#divformbasico">
-        <div class="box-body">
-            <div class="form-group">
-                <strong>Id</strong><br /> @Model.Id
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="GuidOrganizacao" />
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Atividade"></label>
-                <select class="form-control" asp-for="Atividade.Id" asp-items="@(new SelectList(Model.AtividadesLista,"Id","CodigoDescricao"))">
-                    <option value="">Selecione uma Atividade</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NomeUsuarioAutuador"></label>
-                <input disabled asp-for="NomeUsuarioAutuador" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="UnidadesLista"></label>
-                <select class="form-control" asp-for="GuidUnidade" asp-items="@(new SelectList(Model.UnidadesLista,"Guid","Nome"))">
-                    <option value="">Selecione uma Unidade</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Resumo"></label>
-                <textarea class="form-control" asp-for="Resumo" rows="5" cols="80"></textarea>
-            </div>
+<form asp-action="EditarBasico"
+      asp-controller="rascunho"
+      name="formbasico"
+      id="formbasico"
+      data-ajax-complete="ResetSinalizacoesLista"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#divformbasico">
+    <div class="box-body">
+        <div class="form-group">
+            <strong>Id</strong><br /> @Model.Id
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GuidOrganizacao" />
         </div>
-        <div class="box-footer">
-            <div class="btn-group pull-right">
-                <button type="reset" class="btn btn-default" onclick="LimparFormBasico()"><i class="fa fa-close"></i> Limpar</button>
-                <button class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
-            </div>
+
+        <div class="form-group">
+            <label asp-for="Atividade"></label>
+            <select class="form-control" asp-for="Atividade.Id" asp-items="@(new SelectList(Model.AtividadesLista,"Id","CodigoDescricao"))">
+                <option value="">Selecione uma Atividade</option>
+            </select>
         </div>
-    </form>
-</div>
+
+        <div class="form-group">
+            <label asp-for="NomeUsuarioAutuador"></label>
+            <input disabled asp-for="NomeUsuarioAutuador" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UnidadesLista"></label>
+            <select class="form-control" asp-for="GuidUnidade" asp-items="@(new SelectList(Model.UnidadesLista,"Guid","Nome"))">
+                <option value="">Selecione uma Unidade</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Resumo"></label>
+            <textarea class="form-control" asp-for="Resumo" rows="5" cols="80"></textarea>
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="btn-group pull-right">
+            <button type="reset" class="btn btn-default" onclick="LimparFormBasico()"><i class="fa fa-close"></i> Limpar</button>
+            <button class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>

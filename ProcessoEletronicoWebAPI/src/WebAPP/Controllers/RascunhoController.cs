@@ -88,15 +88,19 @@ namespace WebAPP.Controllers
             if (rascunho.Sinalizacoes != null && rascunho.Sinalizacoes.Count > 0)
                 _sinalizacaoService.PostSinalizacao(rascunho.Id, rascunho.Sinalizacoes);
 
-            RascunhoProcessoViewModel rascunhoAtualizado = _rascunho.EditRascunhoProcesso(rascunho.Id);
-            return PartialView("RascunhoBasico", rascunhoAtualizado);
+            ResultViewModel<RascunhoProcessoViewModel> result = _rascunho.GetForEditRascunhoProcesso(rascunho.Id);
+            SetMensagens(result.Mensagens);
+            
+            return PartialView("RascunhoBasico", result.Entidade);
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult Excluir(int id)
         {
-            _rascunho.DeleteRascunhoProcesso(id);
+            ResultViewModel<RascunhoProcessoViewModel> result = _rascunho.DeleteRascunhoProcesso(id);
+            SetMensagens(result.Mensagens);
+
             IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
             return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
         }
@@ -105,9 +109,10 @@ namespace WebAPP.Controllers
         [Authorize]
         public IActionResult AutuarProcessoPorIdRascunho(int id)
         {
-            var retorno = _processo.AutuarPorIdRascunho(id);
+            ResultViewModel<GetProcessoViewModel> result = _processo.AutuarPorIdRascunho(id);
+            SetMensagens(result.Mensagens);
 
-            return Json(retorno);
+            return PartialView("RascunhoRetornoAutuacao", result);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Apresentacao.APP.Services
 {
-    public class RascunhoProcessoAbrangenciaService : IRascunhoProcessoAbrangenciaService
+    public class RascunhoProcessoAbrangenciaService : MensagemService, IRascunhoProcessoAbrangenciaService
     {
         private IMapper _mapper;
         private ICurrentUserProvider _user;        
@@ -57,28 +57,37 @@ namespace Apresentacao.APP.Services
             }
         }
 
-        public List<MunicipioViewModel> UpdateMunicipioPorIdRascunho(int idRascunho, List<string> municipios)
+        public ResultViewModel<List<MunicipioViewModel>> UpdateMunicipioPorIdRascunho(int idRascunho, List<string> municipios)
         {
+            ResultViewModel<List<MunicipioViewModel>> result = new ResultViewModel<List<MunicipioViewModel>>();
             try
-            {   
-                return _mapper.Map<List<MunicipioViewModel>>(_municipioNegocio.PostCollection(idRascunho, municipios));
-            }
-            catch (Exception)
             {
-                throw;
+                result.Entidade = _mapper.Map<List<MunicipioViewModel>>(_municipioNegocio.PostCollection(idRascunho, municipios));
+                SetMensagemSucesso(result.Mensagens, "Abrangência atualizada com sucesso.");
             }
+            catch (Exception e)
+            {
+                SetMensagemErro(result.Mensagens, e);
+            }
+
+            return result;
         }
 
-        public void DeleteAllMunicipio(int idRascunho)
+        public ResultViewModel<List<MunicipioViewModel>> DeleteAllMunicipio(int idRascunho)
         {
+            ResultViewModel<List<MunicipioViewModel>> result = new ResultViewModel<List<MunicipioViewModel>>();
+
             try
             {
-                _municipioNegocio.DeleteAll(idRascunho);
+                _municipioNegocio.DeleteAll(idRascunho);                
+                SetMensagemSucesso(result.Mensagens, "Abrangência atualizada com sucesso.");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                SetMensagemErro(result.Mensagens, e);
             }
+
+            return result;
         }
     }
 }

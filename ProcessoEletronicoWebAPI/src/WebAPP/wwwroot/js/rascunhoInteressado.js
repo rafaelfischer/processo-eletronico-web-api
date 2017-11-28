@@ -209,34 +209,6 @@ $('body').on('click', '.btnConfirmarExclusaoInteressadoPF', function () {
     }
 });
 
-
-
-//$("#listainteressados").on("click", ".btn-excluir-interessado-pf", function () {
-
-//    var idRascunho = $("#formTipoInteressados").find("#Id").val();
-//    var formData = new FormData();
-//    var url = "/RascunhoInteressado/ExcluirInteressadoPF";
-
-//    formData.append("idRascunho", idRascunho);
-//    formData.append("idInteressadoPF", $(this).attr('data-id'));
-
-//    $.ajax(
-//        {
-//            url: url,
-//            data: formData,
-//            processData: false,
-//            contentType: false,
-//            type: "POST",
-//            success: function (data) {
-//                $("#listainteressados").html(data)
-//                //$('#interessadoUnidade select').select2({ width: '100%' })
-//            }
-//        }
-//    );
-
-//    return false;
-//});
-
 //CARREGAR INTERESSADO PESSOA JURÍDICA PARA FORMULARIO DE EDICAO
 $("#listainteressados").on("click", ".btn-editar-interessado-pj", function () {
 
@@ -255,8 +227,9 @@ $("#listainteressados").on("click", ".btn-editar-interessado-pj", function () {
             contentType: false,
             type: "POST",
             success: function (data) {
-                $("#formInteressado").html(data)
-                $('#forminteressados select').select2({ width: '100%' })
+                $("#formInteressado").html(data);
+                $('#forminteressados select').select2({ width: '100%' });
+                $('#collapseNovoInteressado').addClass('in');
             }
         }
     );
@@ -282,8 +255,9 @@ $("#listainteressados").on("click", ".btn-editar-interessado-pf", function () {
             contentType: false,
             type: "POST",
             success: function (data) {
-                $("#formInteressado").html(data)
+                $("#formInteressado").html(data);
                 $('#forminteressados select').select2({ width: '100%' })
+                $('#collapseNovoInteressado').slideDown();
             }
         }
     );
@@ -306,16 +280,13 @@ $("#formInteressado").on("select2:select", "#uf", function () {
 //INCLUIR CAMPOS DE CONTATO DE INTERESSADO
 $("#formInteressado").on("click", "#btnAddContato", function () {    
     var formContato = $('#contatos div.formContato:first').clone();
+    formContato.find('input[type="text"]').val('');
+    console.log(formContato.find('input[checked="checked"]'));
     formContato.appendTo('#contatos');
     AtualizaNomeCamposContato();
 });
 
 function AtualizaNomeCamposContato() {
-    //$.each($('#contatos div.formContato input[type="text"]'), function (i) {
-    //    $(this).attr('name', 'Contato[' + index + '].Telefone');
-    //    $(this).parent().find('input[type="radio"]').attr('name', 'Contato[' + index + '].TipoContato');
-    //}); 
-
     $.each($('#contatos div.formContato'), function (i) {
         $(this).find('input[type="text"]').attr('name', 'Contatos[' + i + '].Telefone');
         $(this).find('input[type="radio"]').attr('name', 'Contatos[' + i + '].TipoContato.id');
@@ -329,7 +300,8 @@ $("#formInteressado").on("click", ".btnDelContato", function () {
 
 //INCLUIR CAMPO DE EMAIL DE INTERESSADO
 $("#formInteressado").on("click", "#btnAddEmail", function () {    
-    var formEmail = $('#emails div.formEmail:first').clone();    
+    var formEmail = $('#emails div.formEmail:first').clone();
+    formEmail.find('input').val('');
     formEmail.appendTo('#emails');
     AtualizaNomeCamposEmail();
 });
@@ -350,4 +322,20 @@ $("#formInteressado").on("click", ".btnDelEmail", function () {
 function Confirm() {    
     alert("Foi!");
     $("#formPF input, #formPJ input").unmask();
+}
+
+
+/**
+ * Apaga formulário de cadastro de interessado
+ */
+function ResetSinalizacoesLista() {
+    $('#formInteressado').html('');
+}
+
+function ErroSalvarInteressadoPJ() {
+    console.log('Ocorreu um erro!');
+}
+
+function SucessoSalvarInteressadoPJ(data) {
+    console.log(data);
 }

@@ -48,13 +48,13 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
         public IList<InteressadoPessoaFisicaModeloNegocio> Get(int idRascunhoProcesso)
         {
-            IList<InteressadoPessoaFisicaRascunho> interessadoPessoaFisica = _repositorioInteressadosPessoaFisicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso).Include(ipf => ipf.ContatosRascunho).Include(ipf => ipf.EmailsRascunho).ToList();
+            IList<InteressadoPessoaFisicaRascunho> interessadoPessoaFisica = _repositorioInteressadosPessoaFisicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso).Include(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato).Include(ipf => ipf.EmailsRascunho).ToList();
             return _mapper.Map<IList<InteressadoPessoaFisicaModeloNegocio>>(interessadoPessoaFisica);
         }
 
         public InteressadoPessoaFisicaModeloNegocio Get(int idRascunhoProcesso, int id)
         {
-            InteressadoPessoaFisicaRascunho interessadoPessoaFisica = _repositorioInteressadosPessoaFisicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso && ipf.Id == id).Include(ipf => ipf.ContatosRascunho).Include(ipf => ipf.EmailsRascunho).SingleOrDefault();
+            InteressadoPessoaFisicaRascunho interessadoPessoaFisica = _repositorioInteressadosPessoaFisicaRascunho.Where(ipf => ipf.IdRascunhoProcesso == idRascunhoProcesso && ipf.Id == id).Include(ipf => ipf.ContatosRascunho).ThenInclude(c => c.TipoContato).Include(ipf => ipf.EmailsRascunho).SingleOrDefault();
             _validacao.Exists(interessadoPessoaFisica);
             return _mapper.Map<InteressadoPessoaFisicaModeloNegocio>(interessadoPessoaFisica);
         }
