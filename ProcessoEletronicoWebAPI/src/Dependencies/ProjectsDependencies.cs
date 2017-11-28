@@ -98,7 +98,9 @@ namespace ProcessoEletronicoService.Dependencies
             dependencies.Add(typeof(IRascunhoProcessoContato), typeof(RascunhoProcessoContato));
             dependencies.Add(typeof(IRascunhoProcessoEmail), typeof(RascunhoProcessoEmail));          
             dependencies.Add(typeof(ISinalizacaoService), typeof(SinalizacaoService));
-
+            dependencies.Add(typeof(IRascunhoDespachoAppAnexoService), typeof(RascunhoDespachoAppAnexoService));
+            dependencies.Add(typeof(IRascunhoDespachoAppService), typeof(RascunhoDespachoAppService));
+            
             //WebAPI
             dependencies.Add(typeof(IRascunhoDespachoService), typeof(RascunhoDespachoService));
             dependencies.Add(typeof(IAnexoRascunhoDespachoService), typeof(AnexoRascunhoDespachoService));
