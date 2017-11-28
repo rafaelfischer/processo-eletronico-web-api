@@ -1,0 +1,195 @@
+﻿@model GetProcessoViewModel
+
+@if (Model != null)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Dados Básicos</h3>
+        </div>
+        <table class="table table-bordered table-condensed">
+            <tr>
+                <th class="col-md-2 text-right">Número</th>
+                <td>@Model.Numero</td>
+            </tr>
+            @*<tr>
+                    <th class="col-md-2 text-right">Usuário Autuador</th>
+                    <td>@Model.NomeUsuarioAutuador</td>
+                </tr>*@
+            <tr>
+                <th class="col-md-2 text-right">Organização</th>
+                <td>@Model.NomeOrganizacaoAutuadora</td>
+            </tr>
+            <tr>
+                <th class="col-md-2 text-right">Unidade</th>
+                <td>@Model.NomeUnidadeAutuadora</td>
+            </tr>
+            <tr>
+                <th class="col-md-2 text-right">Atividade do Processo</th>
+                <td>@Model.Atividade?.CodigoDescricao</td>
+            </tr>
+            <tr>
+                <th class="col-md-2 text-right">Resumo</th>
+                <td>@Model.Resumo</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Sinalizações</h3>
+        </div>
+        @if (Model.Sinalizacoes?.Count > 0)
+        {
+            <ul class="list-group">
+                @foreach (var s in Model.Sinalizacoes)
+                {
+                    <li class="list-group-item">@s.Descricao</li>
+                }
+            </ul>
+        }
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Abrangência</h3>
+        </div>
+        @if (Model.Municipios?.Count > 0)
+        {
+            <div class="panel-body">
+                @foreach (var m in Model.Municipios)
+                {
+                    <div class="col-md-4 col-lg-3">@m.Uf - @m.Nome</div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Interessados</h3>
+        </div>
+        @if (Model.InteressadosPessoaJuridica?.Count > 0 || Model.InteressadosPessoaFisica?.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-2 col-md-3">CPNJ/CPG</th>
+                            <th>Nome/Razão Social</th>
+                            <th>Unidade</th>
+                            <th>Município</th>
+                            <th>Contato</th>
+                            <th>E-mail</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.InteressadosPessoaJuridica?.Count > 0)
+                        {
+
+                            @foreach (var pj in Model.InteressadosPessoaJuridica)
+                            {
+                                <tr>
+                                    <td class="cnpj">@pj.Cnpj</td>
+                                    <td>@pj.RazaoSocial</td>
+                                    <td>@pj.NomeUnidade</td>
+                                    <td>@pj.NomeMunicipio</td>
+                                    <td>
+                                        @if (pj.Contatos?.Count > 0)
+                                        {
+                                            @foreach (var c in pj.Contatos)
+                                            {
+                                                @c.Telefone
+                                            }
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (pj.Emails?.Count > 0)
+                                        {
+                                            @foreach (var m in pj.Emails)
+                                            {
+                                                @m.Endereco
+                                            }
+
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        @if (Model.InteressadosPessoaFisica?.Count > 0)
+                        {
+                            @foreach (var pf in Model.InteressadosPessoaFisica)
+                            {
+                                <tr>
+                                    <td class="cpf">@pf.Cpf</td>
+                                    <td>@pf.Nome</td>
+                                    <td>-</td>
+                                    <td>@pf.NomeMunicipio</td>
+                                    <td>
+                                        @if (pf.Contatos?.Count > 0)
+                                        {
+                                            @foreach (var c in pf.Contatos)
+                                            {
+                                                @c.Telefone
+                                            }
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (pf.Emails?.Count > 0)
+                                        {
+                                            @foreach (var m in pf.Emails)
+                                            {
+                                                @m.Endereco
+                                            }
+
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Anexos</h3>
+        </div>
+        @if (Model.Anexos?.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>Arquivo</th>
+                            <th>Descrição</th>
+                            <th>Tipo Documental</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model.Anexos)
+                        {
+                            <tr>
+                                <td>@a.Nome</td>
+                                <td>@a.Descricao</td>
+                                <td>@a.TipoDocumental?.Codigo @a.TipoDocumental?.Descricao</td>
+                                <td>@a.MimeType</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+
+<script>
+    $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
+    $('.cpf').mask('000.000.000-00', { reverse: true });
+    $mensagens = '@ViewBag.Mensagens' != ''? JSON.parse('@Html.Raw(ViewBag.Mensagens)'):[];
+</script>

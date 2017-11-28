@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace WebAPP.Controllers
 {
-    public class ProcessoController : BaseController
+    public class ProcessosController : BaseController
     {
         private IProcessoService _service;
 
-        public ProcessoController(IProcessoService service)
+        public ProcessosController(IProcessoService service)
         {
             _service = service;
         }
@@ -27,17 +27,25 @@ namespace WebAPP.Controllers
             return View(null);
         }
 
+        [HttpGet]
+        public IActionResult Search(int id)
+        {
+            ResultViewModel<GetProcessoViewModel> getProcessoResult = _service.Search(id);
+
+            return View("VisualizacaoProcesso", getProcessoResult.Entidade);
+        }
+
         [HttpPost]
         public IActionResult ConsultaProcessoPorNumero(string numero)
         {
-            GetProcessoViewModel getProcesso = _service.GetProcessoPorNumero(numero);
+            GetProcessoBasicoViewModel getProcesso = _service.GetProcessoPorNumero(numero);
             return View("ConsultaProcesso", getProcesso);
         }        
 
         [HttpGet]
         public IActionResult SearchByOrganizacao()
         {
-            IEnumerable<GetProcessoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
+            IEnumerable<GetProcessoBasicoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
             return View("processosPorOrganizacao", processosPorOrganizacao);
         }       
         

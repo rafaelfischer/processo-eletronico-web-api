@@ -14,6 +14,7 @@ namespace Apresentacao.APP.Mappings
         public ProcessoMapper()
         {
             /*Processo*/
+            CreateMap<ProcessoModeloNegocio, GetProcessoBasicoViewModel>();
             CreateMap<ProcessoModeloNegocio, GetProcessoViewModel>();
             CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcessoViewModel>().ReverseMap();
             CreateMap<RascunhoProcessoModeloNegocio, GetRascunhoProcessoViewModel>().ReverseMap();
