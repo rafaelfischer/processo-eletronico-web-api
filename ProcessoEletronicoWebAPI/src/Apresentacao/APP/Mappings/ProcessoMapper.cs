@@ -33,6 +33,7 @@ namespace Apresentacao.APP.Mappings
             CreateMap<Municipio, MunicipioViewModel>()
                 .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.Guid))
                 .ReverseMap();
+            
 
             /*Anexos*/
             CreateMap<AnexoModeloNegocio, AnexoViewModel>().ReverseMap();

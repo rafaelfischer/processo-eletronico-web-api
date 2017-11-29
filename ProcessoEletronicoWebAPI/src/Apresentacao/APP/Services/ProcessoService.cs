@@ -55,7 +55,7 @@ namespace Apresentacao.APP.WorkServices
 
             try
             {
-                ProcessoModeloNegocio processoModeloNegocio = _negocio.PesquisarSemDespachos(id);
+                ProcessoModeloNegocio processoModeloNegocio = _negocio.Pesquisar(id);
                 getProcessoResult.Entidade = _mapper.Map<GetProcessoViewModel>(processoModeloNegocio);
                 
             }
