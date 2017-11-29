@@ -15,7 +15,7 @@ using Apresentacao.APP.WorkServices.Base;
 
 namespace WebAPP.Controllers
 {
-    public class SuporteController : Controller
+    public class SuporteController : BaseController
     {        
         private IOrganogramaAppService _organogramaService;
         private IProcessoService _processoService;
@@ -28,8 +28,7 @@ namespace WebAPP.Controllers
             _processoService = processoService;
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public IActionResult GetUF()
         {
             string ufs = string.Empty;
@@ -43,35 +42,32 @@ namespace WebAPP.Controllers
             return Json(JsonConvert.DeserializeObject<List<UfViewModel>>(ufs));
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public IActionResult GetMunicipiosPorUF(string uf)
         {
             IEnumerable<MunicipioViewModel> municipios = _organogramaService.GetMunicipios(uf);
             return Json(municipios);
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public IActionResult GetTiposDocumentais(int idAtividade)
         {
             IEnumerable<TipoDocumentalViewModel> tiposDocumentais = _processoService.GetTiposDocumentais(idAtividade);
             return Json(tiposDocumentais);
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public IActionResult GetOrganizacoesPorPatriarca()
         {
             IEnumerable<OrganizacaoViewModel> organizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
             return Json(organizacoes);
         }
 
-        [NonAction]
-        private IEnumerable<OrganizacaoViewModel> GetOrganizacoesPorPatriarca(string guidPatriarca)
+        [HttpGet]
+        public IActionResult GetUnidadesPorOrganizacao(string guidOrganizacao)
         {
-            IEnumerable<OrganizacaoViewModel> organiozacoes = _organogramaService.GetOrganizacoesPorPatriarca();
-            return organiozacoes;
+            IEnumerable<UnidadeViewModel> unidades = _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao);
+            return Json(unidades);
         }
     }    
 }

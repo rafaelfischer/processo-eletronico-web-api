@@ -87,7 +87,7 @@ namespace Apresentacao.APP.Services
             try
             {
                 _rascunhoService.Delete(id);
-                SetMensagemSucesso(result.Mensagens, "Rascunho excluido com sucesso.");
+                SetMensagemSucesso(result.Mensagens, "Rascunho excluído com sucesso.");
             }
             catch (Exception e)
             {

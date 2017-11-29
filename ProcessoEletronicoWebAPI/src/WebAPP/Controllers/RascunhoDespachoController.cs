@@ -22,15 +22,8 @@ namespace WebAPP.Controllers
         
         public IActionResult Index()
         {
-            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
-            SetMensagens(result.Mensagens);
+            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();            
 
-            return View(result.Entidade);
-        }
-
-        public IActionResult Search(int id)
-        {
-            ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Search(id);
             SetMensagens(result.Mensagens);
 
             return View(result.Entidade);
@@ -47,17 +40,37 @@ namespace WebAPP.Controllers
         public IActionResult Add(RascunhoDespachoViewModel rascunhoDespacho)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Add(rascunhoDespacho);
+            result.Entidade.ListaOrganizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
+
+            string guidOrganizacao = result.Entidade.GuidOrganizacaoDestino;
+            result.Entidade.ListaUnidades = !string.IsNullOrEmpty(guidOrganizacao) ? _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao) : null;
+
+            SetMensagens(result.Mensagens);
+
+            return View("Update", result.Entidade);
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Search(id);
+            result.Entidade.ListaOrganizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
+
+            string guidOrganizacao = result.Entidade.GuidOrganizacaoDestino;
+            result.Entidade.ListaUnidades = !string.IsNullOrEmpty(guidOrganizacao) ? _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao) : null;
+
             SetMensagens(result.Mensagens);
 
             return View(result.Entidade);
         }
 
-        public IActionResult Update(int id, RascunhoDespachoViewModel rascunhoDespacho)
+        [HttpPost]
+        public IActionResult Update(RascunhoDespachoViewModel rascunhoDespacho)
         {
-            ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Update(id, rascunhoDespacho);
+            ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Update(rascunhoDespacho);
             SetMensagens(result.Mensagens);
 
-            return View(result.Entidade);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)

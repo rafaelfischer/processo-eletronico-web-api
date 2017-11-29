@@ -49,7 +49,7 @@ namespace Apresentacao.APP.Services
 
             try
             {
-                result.Entidade = _mapper.Map<List<RascunhoDespachoViewModel>>(_rascunhoDespacho.SearchByOrganizacao());
+                result.Entidade = _mapper.Map<List<RascunhoDespachoViewModel>>(_rascunhoDespacho.SearchByUsuario());
             }
             catch (RecursoNaoEncontradoException e)
             {
@@ -75,14 +75,14 @@ namespace Apresentacao.APP.Services
             return result;
         }
 
-        public ResultViewModel<RascunhoDespachoViewModel> Update(int id, RascunhoDespachoViewModel rascunhoDespacho)
+        public ResultViewModel<RascunhoDespachoViewModel> Update(RascunhoDespachoViewModel rascunhoDespacho)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = new ResultViewModel<RascunhoDespachoViewModel>();
 
             try
             {
-                _rascunhoDespacho.Update(id, _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho));
-                result.Entidade = _mapper.Map<RascunhoDespachoViewModel>(_rascunhoDespacho.Search(id));
+                _rascunhoDespacho.Update(rascunhoDespacho.Id, _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho));
+                result.Entidade = _mapper.Map<RascunhoDespachoViewModel>(_rascunhoDespacho.Search(rascunhoDespacho.Id));
 
                 SetMensagemSucesso(result.Mensagens, "Rascunho de despacho atualizado com sucesso.");
             }

@@ -10,7 +10,7 @@ namespace Apresentacao.APP.Services.Base
         ResultViewModel<RascunhoDespachoViewModel> Search(int id);
         ResultViewModel<ICollection<RascunhoDespachoViewModel>> Search();
         ResultViewModel<RascunhoDespachoViewModel> Add(RascunhoDespachoViewModel rascunhoDespacho);
-        ResultViewModel<RascunhoDespachoViewModel> Update(int id, RascunhoDespachoViewModel rascunhoDespacho);
+        ResultViewModel<RascunhoDespachoViewModel> Update(RascunhoDespachoViewModel rascunhoDespacho);
         ResultViewModel<RascunhoDespachoViewModel> Delete(int id);
     }
 }

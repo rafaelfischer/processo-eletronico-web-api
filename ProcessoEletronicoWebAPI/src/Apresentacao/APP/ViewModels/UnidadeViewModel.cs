@@ -16,5 +16,20 @@ namespace Apresentacao.APP.ViewModels
                 return this.Sigla + " - " + this.Nome;
             }
         }
+        public string Text
+        {
+            get
+            {
+                return this.Sigla + " - " + this.Nome;
+            }
+        }
+
+        public string Id
+        {
+            get
+            {
+                return this.Guid;
+            }
+        }
     }    
 }

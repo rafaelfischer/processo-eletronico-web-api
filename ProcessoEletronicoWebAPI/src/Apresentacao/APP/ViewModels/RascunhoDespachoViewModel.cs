@@ -20,7 +20,10 @@ namespace Apresentacao.APP.ViewModels
         public int IdOrganizacaoProcesso { get; set; }
         public string GuidOrganizacao { get; set; }
 
-        public IList<AnexoRascunhoDespachoViewModel> Anexos { get; set; }
+        public IEnumerable<OrganizacaoViewModel> ListaOrganizacoes { get; set; }
+        public IEnumerable<UnidadeViewModel> ListaUnidades { get; set; }
+
+        public ICollection<AnexoRascunhoDespachoViewModel> Anexos { get; set; }
 
     }
 }
