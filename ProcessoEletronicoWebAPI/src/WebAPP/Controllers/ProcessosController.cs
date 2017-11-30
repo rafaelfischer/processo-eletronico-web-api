@@ -1,18 +1,21 @@
-﻿using Apresentacao.APP.ViewModels;
-using Apresentacao.APP.WorkServices.Base;
-using Microsoft.AspNetCore.Authorization;
+﻿using Apresentacao.APP.Services.Base;
+using Apresentacao.APP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace WebAPP.Controllers
 {
     public class ProcessosController : BaseController
     {
         private IProcessoService _service;
-
-        public ProcessosController(IProcessoService service)
+        private IProcessoAnexoService _anexoService;
+        
+        public ProcessosController(IProcessoService service, IProcessoAnexoService anexoService)
         {
             _service = service;
+            _anexoService = anexoService;
         }
 
         [HttpGet]        
@@ -47,7 +50,33 @@ namespace WebAPP.Controllers
         {
             IEnumerable<GetProcessoBasicoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
             return View("processosPorOrganizacao", processosPorOrganizacao);
-        }       
-        
+        }
+
+        [HttpGet]
+        public IActionResult DownloadAnexo(int id)
+        {
+            try
+            {
+                AnexoViewModel anexo = _anexoService.Search(id);
+                string file = Encoding.UTF8.GetString(anexo.Conteudo, 0, anexo.Conteudo.Length);
+                var conteudo = file.Split(',');
+
+                if (conteudo.Length == 2)
+                {
+                    return File(conteudo[1], "application/octet-stream", anexo.Nome);
+                }
+                else
+                {
+                    return File(anexo.Conteudo, "application/octet-stream", anexo.Nome);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+
     }
 }

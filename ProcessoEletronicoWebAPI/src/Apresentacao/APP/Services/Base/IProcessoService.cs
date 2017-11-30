@@ -1,7 +1,7 @@
 ﻿using Apresentacao.APP.ViewModels;
 using System.Collections.Generic;
 
-namespace Apresentacao.APP.WorkServices.Base
+namespace Apresentacao.APP.Services.Base
 {
     public interface IProcessoService
     {

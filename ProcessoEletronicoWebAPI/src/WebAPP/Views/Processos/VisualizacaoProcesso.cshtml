@@ -18,7 +18,7 @@
             </div>
         </div>
         <!-- /.box-header -->
-        <div class="box-body table-responsive no-padding" style="display: block;">
+        <div class="box-body table-responsive" style="display: block;">
             <table class="table table-bordered table-striped">
                 <tbody>
                     <tr>
@@ -71,7 +71,7 @@
                 </button>
             </div>
         </div>
-        <div class="box-body table-responsive no-padding" style="display: none;">
+        <div class="box-body table-responsive" style="display: none;">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -101,7 +101,7 @@
                 </button>
             </div>
         </div>
-        <div class="box-body table-responsive no-padding" style="display: none;">
+        <div class="box-body table-responsive" style="display: none;">
 
             @if (Model.Sinalizacoes?.Count > 0)
             {
@@ -140,90 +140,90 @@
                 </button>
             </div>
         </div>
-        <div class="box-body table-responsive no-padding" style="display: none;">
+        <div class="box-body table-responsive" style="display: none;">
             @if (Model.InteressadosPessoaJuridica?.Count > 0 || Model.InteressadosPessoaFisica?.Count > 0)
             {
-                
-                    <table class="table table-bordered table-condensed table-striped">
-                        <thead>
-                            <tr>
-                                <th class="col-lg-2 col-md-3">CPNJ/CPF</th>
-                                <th>Nome/Razão Social</th>
-                                <th>Unidade</th>
-                                <th>Município</th>
-                                <th>Contato</th>
-                                <th>E-mail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.InteressadosPessoaJuridica?.Count > 0)
+
+                <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-2 col-md-3">CPNJ/CPF</th>
+                            <th>Nome/Razão Social</th>
+                            <th>Unidade</th>
+                            <th>Município</th>
+                            <th>Contato</th>
+                            <th>E-mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.InteressadosPessoaJuridica?.Count > 0)
+                        {
+
+                            @foreach (var pj in Model.InteressadosPessoaJuridica)
                             {
-
-                                @foreach (var pj in Model.InteressadosPessoaJuridica)
-                                {
-                                    <tr>
-                                        <td class="cnpj">@pj.Cnpj</td>
-                                        <td>@pj.RazaoSocial</td>
-                                        <td>@pj.NomeUnidade</td>
-                                        <td>@pj.NomeMunicipio</td>
-                                        <td>
-                                            @if (pj.Contatos?.Count > 0)
+                                <tr>
+                                    <td class="cnpj">@pj.Cnpj</td>
+                                    <td>@pj.RazaoSocial</td>
+                                    <td>@pj.NomeUnidade</td>
+                                    <td>@pj.NomeMunicipio</td>
+                                    <td>
+                                        @if (pj.Contatos?.Count > 0)
+                                        {
+                                            @foreach (var c in pj.Contatos)
                                             {
-                                                @foreach (var c in pj.Contatos)
-                                                {
-                                                    @c.Telefone
-                                                }
-
+                                                @c.Telefone
                                             }
-                                        </td>
-                                        <td>
-                                            @if (pj.Emails?.Count > 0)
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (pj.Emails?.Count > 0)
+                                        {
+                                            @foreach (var m in pj.Emails)
                                             {
-                                                @foreach (var m in pj.Emails)
-                                                {
-                                                    @m.Endereco
-                                                }
-
+                                                @m.Endereco
                                             }
-                                        </td>
-                                    </tr>
-                                }
+
+                                        }
+                                    </td>
+                                </tr>
                             }
-                            @if (Model.InteressadosPessoaFisica?.Count > 0)
+                        }
+                        @if (Model.InteressadosPessoaFisica?.Count > 0)
+                        {
+                            @foreach (var pf in Model.InteressadosPessoaFisica)
                             {
-                                @foreach (var pf in Model.InteressadosPessoaFisica)
-                                {
-                                    <tr>
-                                        <td class="cpf">@pf.Cpf</td>
-                                        <td>@pf.Nome</td>
-                                        <td>-</td>
-                                        <td>@pf.NomeMunicipio</td>
-                                        <td>
-                                            @if (pf.Contatos?.Count > 0)
+                                <tr>
+                                    <td class="cpf">@pf.Cpf</td>
+                                    <td>@pf.Nome</td>
+                                    <td>-</td>
+                                    <td>@pf.NomeMunicipio</td>
+                                    <td>
+                                        @if (pf.Contatos?.Count > 0)
+                                        {
+                                            @foreach (var c in pf.Contatos)
                                             {
-                                                @foreach (var c in pf.Contatos)
-                                                {
-                                                    @c.Telefone
-                                                }
-
+                                                @c.Telefone
                                             }
-                                        </td>
-                                        <td>
-                                            @if (pf.Emails?.Count > 0)
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (pf.Emails?.Count > 0)
+                                        {
+                                            @foreach (var m in pf.Emails)
                                             {
-                                                @foreach (var m in pf.Emails)
-                                                {
-                                                    @m.Endereco
-                                                }
-
+                                                @m.Endereco
                                             }
-                                        </td>
-                                    </tr>
-                                }
+
+                                        }
+                                    </td>
+                                </tr>
                             }
-                        </tbody>
-                    </table>
-                
+                        }
+                    </tbody>
+                </table>
+
             }
 
         </div>
@@ -239,7 +239,7 @@
                 </button>
             </div>
         </div>
-        <div class="box-body table-responsive no-padding" style="display: none;">
+        <div class="box-body table-responsive" style="display: none;">
             @if (Model.Anexos?.Count > 0)
             {
                 <table class="table table-bordered table-condensed table-striped">
@@ -249,16 +249,22 @@
                             <th>Descrição</th>
                             <th>Tipo Documental</th>
                             <th>Tipo</th>
+                            <th class="text-center">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var a in Model.Anexos)
+                        @foreach (var anexo in Model.Anexos)
                         {
                             <tr>
-                                <td>@a.Nome</td>
-                                <td>@a.Descricao</td>
-                                <td>@a.TipoDocumental?.Codigo @a.TipoDocumental?.Descricao</td>
-                                <td>@a.MimeType</td>
+                                <td>@anexo.Nome</td>
+                                <td>@anexo.Descricao</td>
+                                <td>@anexo.TipoDocumental?.Descricao</td>
+                                <td>@anexo.MimeType</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-warning" asp-controller="Processos" asp-action="DownloadAnexo" asp-route-id="@anexo.Id"><i class="fa fa-download"></i></a>
+                                    </div>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -268,7 +274,58 @@
 
         </div>
     </div>
-    
+
+    <div class="box box-primary collapsed-box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Despachos</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body table-responsive" style="display: none;">
+            @if (Model.Despachos?.Count > 0)
+            {
+                <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">Destino</th>
+                            <th class="col-md-2">Usuário</th>
+                            <th class="col-md-4">Texto</th>
+                            <th class="col-md-2">Data/hora</th>
+                            <th class="col-md-2 text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DespachoBasicoViewModel despacho in Model.Despachos)
+                        {
+                            <tr>
+                                <td>@despacho.Destino</td>
+                                <td>@despacho.NomeUsuarioDespachante</td>
+                                <td>
+                                    @if (despacho.Texto.Length > 100 && !despacho.Texto.Contains("<table"))
+                                    {
+                                        @Html.Raw(despacho.Texto.Substring(0, 99))
+
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(despacho.Texto)
+                                    }
+                                </td>
+                                <td>@despacho.DataHoraDespacho</td>
+                                <td>Ações</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+
+        </div>
+    </div>
+
 }
 
 <script>

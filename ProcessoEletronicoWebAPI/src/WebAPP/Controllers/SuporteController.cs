@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Apresentacao.APP.Services.Base;
-using Microsoft.AspNetCore.Authorization;
+﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Apresentacao.APP.WorkServices.Base;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Collections.Generic;
+using System.IO;
 
 namespace WebAPP.Controllers
 {

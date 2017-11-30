@@ -1,6 +1,5 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
-using Apresentacao.APP.WorkServices.Base;
 using AutoMapper;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Base;

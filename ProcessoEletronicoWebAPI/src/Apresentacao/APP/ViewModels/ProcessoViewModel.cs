@@ -55,8 +55,8 @@ namespace Apresentacao.APP.ViewModels
         public DateTime DataUltimoTramite { get; set; }
         public AtividadeViewModel Atividade { get; set; }
         public ICollection<AnexoViewModel> Anexos { get; set; }
-        
-        //Despachos
+
+        public ICollection<DespachoBasicoViewModel> Despachos { get; set; }
         public ICollection<InteressadoPessoaFisicaViewModel> InteressadosPessoaFisica { get; set; }
         public ICollection<InteressadoPessoaJuridicaViewModel> InteressadosPessoaJuridica { get; set; }
         public ICollection<MunicipioViewModel> Municipios { get; set; }
