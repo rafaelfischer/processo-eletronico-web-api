@@ -37,6 +37,7 @@ namespace Apresentacao.APP.Mappings
 
             /*Anexos*/
             CreateMap<AnexoModeloNegocio, AnexoViewModel>().ReverseMap();
+            CreateMap<AnexoModeloNegocio, AnexoBasicoViewModel>();
             CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalViewModel>().ReverseMap();
 
             /*Interessados*/

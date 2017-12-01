@@ -262,14 +262,20 @@
                                 <td>@anexo.MimeType</td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-warning" asp-controller="Processos" asp-action="DownloadAnexo" asp-route-id="@anexo.Id"><i class="fa fa-download"></i></a>
+                                        <a class="btn btn-sm btn-warning"
+                                           asp-controller="Processos"
+                                           asp-action="DownloadAnexo"
+                                           asp-route-id="@anexo.Id"
+                                           data-toggle="tooltip"
+                                           title="Baixar anexo">
+                                            <i class="fa fa-download"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-
             }
 
         </div>
@@ -287,12 +293,12 @@
         <div class="box-body table-responsive" style="display: none;">
             @if (Model.Despachos?.Count > 0)
             {
-                <table class="table table-bordered table-condensed table-striped">
+                <table class="tree table table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th class="col-md-2">Destino</th>
                             <th class="col-md-2">Usuário</th>
-                            <th class="col-md-4">Texto</th>
+                            <th class="col-md-3">Texto</th>
                             <th class="col-md-2">Data/hora</th>
                             <th class="col-md-2 text-center">Ações</th>
                         </tr>
@@ -300,8 +306,8 @@
                     <tbody>
                         @foreach (DespachoBasicoViewModel despacho in Model.Despachos)
                         {
-                            <tr>
-                                <td>@despacho.Destino</td>
+                            <tr class="treegrid-@despacho.Id treegrid-collapsed">
+                                <td><span class="treegrid-expander fa fa-square-o"></span>@despacho.Destino</td>
                                 <td>@despacho.NomeUsuarioDespachante</td>
                                 <td>
                                     @if (despacho.Texto.Length > 100 && !despacho.Texto.Contains("<table"))
@@ -315,8 +321,31 @@
                                     }
                                 </td>
                                 <td>@despacho.DataHoraDespacho</td>
-                                <td>Ações</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-primary" data-toggle="tooltip" title="Visualizar Despacho"><i class="fa fa-eye"></i></a>
+                                    </div>
+                                </td>
                             </tr>
+
+                            <tr class="treegrid-filho-@despacho.Id treegrid-parent-@despacho.Id">
+                                <td colspan="6">
+                                    <ul class="list-group">
+                                        @foreach (AnexoBasicoViewModel anexo in despacho.Anexos)
+                                        {
+                                            <li class="list-group-item">
+                                                <a asp-controller="Processos"
+                                                   asp-action="DownloadAnexo"
+                                                   asp-route-id="@anexo.Id">
+                                                @anexo.Nome
+                                               </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+
+
                         }
                     </tbody>
                 </table>
@@ -333,6 +362,7 @@
 </script>
 
 @section scripts {
+    <script src="~/js/visualizacaoProcesso.js"></script>
     <script>
         $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
         $('.cpf').mask('000.000.000-00', { reverse: true });

@@ -19,6 +19,6 @@ namespace Apresentacao.APP.ViewModels
             }
         }
         public DateTime DataHoraDespacho { get; set; }
-        //public IEnumerable<AnexoBasicoViewModel> Anexos { get; set; }
+        public IEnumerable<AnexoBasicoViewModel> Anexos { get; set; }
     }
 }
