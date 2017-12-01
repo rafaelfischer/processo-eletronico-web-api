@@ -15,6 +15,14 @@ namespace Apresentacao.APP.ViewModels
         public TipoDocumentalViewModel TipoDocumental { get; set; }        
     }
 
+    public class AnexoBasicoViewModel
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Descricao { get; set; }
+        public string MimeType { get; set; }
+    }
+
     public class ListaAnexosRascunho
     {
         public int IdRascunho { get; set; }

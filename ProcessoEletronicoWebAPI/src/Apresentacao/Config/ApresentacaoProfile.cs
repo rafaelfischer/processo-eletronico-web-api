@@ -138,7 +138,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModelo>, List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(src => src.IdSinalizacoes))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
-                .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.Municipios));
+                .ForMember(dest => dest.Municipios, opt => opt.MapFrom(src => src.Municipios));
             CreateMap<ProcessoModeloNegocio, ProcessoModelo>()
                 .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.DataUltimoTramite, opt => opt.MapFrom(src => src.DataUltimoTramite.ToString("dd/MM/yyyy HH:mm:ss")))

@@ -1,12 +1,10 @@
 ﻿using Apresentacao.APP.Services;
 using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.WorkServices;
-using Apresentacao.APP.WorkServices.Base;
 using Apresentacao.WebAPI;
 using Apresentacao.WebAPI.Base;
 using Infraestrutura.Integrations;
 using Infraestrutura.Integrations.Organograma;
-using Microsoft.Extensions.FileProviders;
 using Negocio.Bloqueios;
 using Negocio.Bloqueios.Base;
 using Negocio.Comum.Validacao;
@@ -20,7 +18,6 @@ using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Infraestrutura.Repositorios;
 using ProcessoEletronicoService.Negocio;
 using ProcessoEletronicoService.Negocio.Base;
-using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
@@ -88,6 +85,7 @@ namespace ProcessoEletronicoService.Dependencies
 
             //WebAPP
             dependencies.Add(typeof(IProcessoService), typeof(ProcessoService));
+            dependencies.Add(typeof(IProcessoAnexoService), typeof(ProcessoAnexoService));
             dependencies.Add(typeof(IRascunhoProcessoService), typeof(RascunhoProcessoService));
             dependencies.Add(typeof(IAutuacaoService), typeof(AutuacaoService));
             dependencies.Add(typeof(IOrganogramaAppService), typeof(OrganogramaAppService));

@@ -1,7 +1,7 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
-using Apresentacao.APP.WorkServices.Base;
 using AutoMapper;
+using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Modelos;
@@ -33,18 +33,37 @@ namespace Apresentacao.APP.WorkServices
             _tipoDocumental = tipoDocumental;
         }
 
-        public GetProcessoViewModel GetProcessoPorNumero(string numero)
+        public GetProcessoBasicoViewModel GetProcessoPorNumero(string numero)
         {
             try
             {
                 ProcessoModeloNegocio processoModeloNegocio = _negocio.Pesquisar(numero);
-                GetProcessoViewModel getProcessoViewModel = _mapper.Map<GetProcessoViewModel>(processoModeloNegocio);
-                return getProcessoViewModel;
+                GetProcessoBasicoViewModel GetProcessoBasicoViewModel = _mapper.Map<GetProcessoBasicoViewModel>(processoModeloNegocio);
+                return GetProcessoBasicoViewModel;
             }
             catch (Exception e)
             {
                 return null;
             }
+
+        }
+
+        public ResultViewModel<GetProcessoViewModel> Search(int id)
+        {
+            ResultViewModel<GetProcessoViewModel> getProcessoResult = new ResultViewModel<GetProcessoViewModel>();
+
+            try
+            {
+                ProcessoModeloNegocio processoModeloNegocio = _negocio.Pesquisar(id);
+                getProcessoResult.Entidade = _mapper.Map<GetProcessoViewModel>(processoModeloNegocio);
+                
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                SetMensagemErro(getProcessoResult.Mensagens, e);
+            }
+
+            return getProcessoResult;
 
         }
 
@@ -63,12 +82,12 @@ namespace Apresentacao.APP.WorkServices
 
         }
 
-        public ICollection<GetProcessoViewModel> GetProcessosOrganizacao()
+        public ICollection<GetProcessoBasicoViewModel> GetProcessosOrganizacao()
         {
             try
             {
                 ICollection<ProcessoModeloNegocio> processos = _negocio.PesquisarProcessosNaOrganizacao(_user.UserGuidOrganizacao.ToString());
-                ICollection<GetProcessoViewModel> getProcessosViewModel = _mapper.Map<List<GetProcessoViewModel>>(processos);
+                ICollection<GetProcessoBasicoViewModel> getProcessosViewModel = _mapper.Map<List<GetProcessoBasicoViewModel>>(processos);
                 return getProcessosViewModel;
             }
             catch (Exception e)

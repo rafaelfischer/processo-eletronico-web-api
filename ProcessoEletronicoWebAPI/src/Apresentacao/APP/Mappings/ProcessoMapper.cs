@@ -14,6 +14,7 @@ namespace Apresentacao.APP.Mappings
         public ProcessoMapper()
         {
             /*Processo*/
+            CreateMap<ProcessoModeloNegocio, GetProcessoBasicoViewModel>();
             CreateMap<ProcessoModeloNegocio, GetProcessoViewModel>();
             CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcessoViewModel>().ReverseMap();
             CreateMap<RascunhoProcessoModeloNegocio, GetRascunhoProcessoViewModel>().ReverseMap();
@@ -32,9 +33,11 @@ namespace Apresentacao.APP.Mappings
             CreateMap<Municipio, MunicipioViewModel>()
                 .ForMember(dest => dest.GuidMunicipio, opt => opt.MapFrom(src => src.Guid))
                 .ReverseMap();
+            
 
             /*Anexos*/
             CreateMap<AnexoModeloNegocio, AnexoViewModel>().ReverseMap();
+            CreateMap<AnexoModeloNegocio, AnexoBasicoViewModel>();
             CreateMap<TipoDocumentalModeloNegocio, TipoDocumentalViewModel>().ReverseMap();
 
             /*Interessados*/

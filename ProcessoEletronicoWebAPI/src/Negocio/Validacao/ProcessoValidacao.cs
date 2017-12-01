@@ -54,7 +54,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaFisicaValidacao.Preenchido(processo.InteressadosPessoaFisica);
             interessadoPessoaJuridicaValidacao.Preenchido(processo.InteressadosPessoaJuridica);
             anexoValidacao.Preenchido(processo.Anexos);
-            municipioValidacao.Preenchido(processo.MunicipiosProcesso);
+            municipioValidacao.Preenchido(processo.Municipios);
             sinalizacaoValidacao.IdValido(processo.Sinalizacoes);
 
         }
@@ -110,7 +110,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         /*Municípios*/
         internal void MunicipioPreenchido(ProcessoModeloNegocio processo)
         {
-            if (processo.MunicipiosProcesso.Count == 0)
+            if (processo.Municipios.Count == 0)
             {
                 throw new RequisicaoInvalidaException("Pelo menos um município deve ser informado.");
             }
@@ -145,7 +145,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             interessadoPessoaJuridicaValidacao.Valido(processo.InteressadosPessoaJuridica);
             sinalizacaoValidacao.SinalizacaoExistente(processo.Sinalizacoes);
             anexoValidacao.Valido(processo.Anexos, processo.Atividade.Id);
-            municipioValidacao.Valido(processo.MunicipiosProcesso);
+            municipioValidacao.Valido(processo.Municipios);
             GuidOrganizacaoValido(processo);
             GuidUnidadeValido(processo);
 

@@ -44,7 +44,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
                     }
                 }
                 else
-                    throw new ProcessoEletronicoException("Para obter a data do último tramite é necessário informar os despachos.");
+                    return DataAutuacao;
 
                 return dataUltimoTramite;
             }
@@ -61,7 +61,7 @@ namespace ProcessoEletronicoService.Negocio.Modelos
         public List<DespachoModeloNegocio> Despachos { get; set; }
         public List<InteressadoPessoaFisicaModeloNegocio> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaModeloNegocio> InteressadosPessoaJuridica { get; set; }
-        public List<MunicipioProcessoModeloNegocio> MunicipiosProcesso { get; set; }
+        public List<MunicipioProcessoModeloNegocio> Municipios { get; set; }
         public List<SinalizacaoModeloNegocio> Sinalizacoes { get; set; }
         public AtividadeModeloNegocio Atividade { get; set; }
         public OrganizacaoProcessoModeloNegocio OrganizacaoProcesso { get; set; }
