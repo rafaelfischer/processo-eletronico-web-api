@@ -64,7 +64,7 @@ namespace ProcessoEletronicoService.Apresentacao.Modelos
         public List<DespachoSimplesModeloGet> Despachos { get; set; }
         public List<InteressadoPessoaFisicaProcessoGetModelo> InteressadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridicaProcessoGetModelo> InteressadosPessoaJuridica { get; set; }
-        public List<MunicipioProcessoModeloGet> MunicipiosProcesso { get; set; }
+        public List<MunicipioProcessoModeloGet> Municipios { get; set; }
         public List<SinalizacaoProcessoGetModelo> Sinalizacoes { get; set; }
         public AtividadeProcessoGetModelo Atividade { get; set; }
     }

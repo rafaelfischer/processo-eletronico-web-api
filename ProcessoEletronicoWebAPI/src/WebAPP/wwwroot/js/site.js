@@ -7,6 +7,10 @@ var $conteudo = $modal.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
 
+$(document).ready(function () {
+    ativaTooltipBootstrap();
+});
+
 /*Toastr*/
 toastr.options = {
     "closeButton": true,
@@ -52,18 +56,18 @@ $(document.body).on('hide.bs.modal,hidden.bs.modal, shown.bs.modal, show.bs.moda
 });
 
 function isNullOrEmpty(s) {
-    return (s == null || s === "");
+    return (s === null || s === "");
 }
 
 function carregaModalDefault(
     titulo,
-    conteudo,    
+    conteudo,
     btnConfirma,
     btnCancela,
     classBtnConfirma,
     classBtnCancela,
     acaoConfirma,
-    acaoCancela    
+    acaoCancela
 ) {
     $titulo.text(titulo);
     $conteudo.html(conteudo);
@@ -79,7 +83,7 @@ function carregaModalDefault(
     if (!isNullOrEmpty(classBtnConfirma)) {
         $classBtnConfirma = classBtnConfirma;
         //$btnConfirma.addClass($classBtnConfirma);
-        $btnConfirma.attr('data-btn',$classBtnConfirma);
+        $btnConfirma.attr('data-btn', $classBtnConfirma);
     }
 
     if (!isNullOrEmpty(classBtnCancela)) {
@@ -109,7 +113,7 @@ function ResetModalDefault() {
     $btnCancela.removeAttr('data-acao');
 }
 
-$(document).ajaxError(function (jqXHR, textStatus, errorThrown) {    
+$(document).ajaxError(function (jqXHR, textStatus, errorThrown) {
     //console.log(textStatus);    
 });
 
@@ -119,6 +123,12 @@ function mascaraCpf(valor) {
 
 function mascaraCnpj(valor) {
     return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "\$1.\$2.\$3\/\$4\-\$5");
+}
+
+function ativaTooltipBootstrap() {
+    $('[data-toggle="tooltip"]').tooltip({
+        placement: 'top'
+    });
 }
 
 /*CONTROLE LOAD AJAX */
@@ -134,3 +144,4 @@ $(document).ajaxStop(function () {
     $('#modalLoad').modal('hide');
     ExibirMensagem();
 });
+

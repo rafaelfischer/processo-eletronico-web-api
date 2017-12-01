@@ -138,7 +138,7 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.Atividade, opt => opt.Ignore())
                 .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => src.InteressadosPessoaFisica))
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica))
-                .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.MunicipiosProcesso))
+                .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.Municipios))
                 .ForMember(dest => dest.SinalizacoesProcesso, opt => opt.MapFrom(src => src.Sinalizacoes))
                 .ForMember(dest => dest.GuidOrganizacaoAutuadora, opt => opt.MapFrom(src => new Guid(src.GuidOrganizacaoAutuadora)))
                 .ForMember(dest => dest.GuidUnidadeAutuadora, opt => opt.MapFrom(src => new Guid(src.GuidUnidadeAutuadora)))
@@ -149,6 +149,7 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(s => s.SinalizacoesProcesso != null ? Mapper.Map<List<SinalizacaoProcesso>, List<SinalizacaoModeloNegocio>>(s.SinalizacoesProcesso.ToList()) : null))
                 .ForMember(dest => dest.GuidOrganizacaoAutuadora, opt => opt.MapFrom(src => src.GuidOrganizacaoAutuadora.ToString("D")))
                 .ForMember(dest => dest.GuidUnidadeAutuadora, opt => opt.MapFrom(src => src.GuidUnidadeAutuadora.ToString("D")))
+                .ForMember(dest => dest.Municipios, opt => opt.MapFrom(src => src.MunicipiosProcesso))
                 .MaxDepth(1);
 
             #endregion
@@ -193,7 +194,7 @@ namespace ProcessoEletronicoService.Negocio.Config
                 .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.IdAtividade.HasValue ? new Atividade { Id = src.IdAtividade.Value } : null))
                 .ForMember(dest => dest.InteressadosPessoaFisica, opt => opt.MapFrom(src => src.InteressadosPessoaFisica))
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica))
-                .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.MunicipiosRascunhoProcesso))
+                .ForMember(dest => dest.Municipios, opt => opt.MapFrom(src => src.MunicipiosRascunhoProcesso))
                 .ForMember(dest => dest.GuidOrganizacaoAutuadora, opt => opt.MapFrom(src => src.GuidOrganizacao))
                 .ForMember(dest => dest.NomeOrganizacaoAutuadora, opt => opt.Ignore())
                 .ForMember(dest => dest.SiglaOrganizacaoAutuadora, opt => opt.Ignore())

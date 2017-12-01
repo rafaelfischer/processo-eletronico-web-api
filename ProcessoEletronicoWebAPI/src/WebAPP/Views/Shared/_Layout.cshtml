@@ -23,6 +23,9 @@
     <link rel="stylesheet" href="~/css/site.css">
     <!--Toastr-->
     <link href="~/lib/toastr/toastr.css" rel="stylesheet" />
+    
+    <!--Jquery Treegrid-->
+    <link href="~/lib/jquery-treegrid/css/jquery.treegrid.css" rel="stylesheet" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -127,7 +130,7 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <!-- Optionally, you can add icons to the links -->
                     <li class="active"><a asp-action="Index" asp-controller="Inicio"><i class="fa fa-home"></i> <span>Página Inicial</span></a></li>
-                    <li><a asp-action="SearchByOrganizacao" asp-controller="Processo"><i class="fa fa-inbox"></i> <span>Caixa de Entrada</span></a></li>
+                    <li><a asp-action="SearchByOrganizacao" asp-controller="Processos"><i class="fa fa-inbox"></i> <span>Caixa de Entrada</span></a></li>
                     <li><a asp-action="Editar" asp-controller="Rascunho"><i class="fa fa-file-text-o"></i> <span>Autuar Processo</span></a></li>
                     <li><a asp-action="Index" asp-controller="Rascunho"><i class="fa fa-file"></i> <span>Rascunhos de Processo</span></a></li>
                     <li><a asp-action="Index" asp-controller="RascunhoDespacho"><i class="fa fa-file"></i> <span>Rascunhos de Despacho</span></a></li>
@@ -279,6 +282,10 @@
     <script src="~/lib/select2/dist/js/i18n/pt-BR.js"></script>
     <!--Toastr-->
     <script src="~/lib/toastr/toastr.js"></script>
+
+    <!--Jquery Treegrid-->
+    <script src="~/lib/jquery-treegrid/js/jquery.treegrid.min.js"></script>
+
     <!--Custom Scripts-->
     <script src="~/js/site.js"></script>
     <!--Render Scripts-->

@@ -89,7 +89,33 @@ namespace ProcessoEletronicoService.Negocio
             return _mapper.Map<ProcessoModeloNegocio>(processo);
 
         }
-        
+
+        public ProcessoModeloNegocio PesquisarSemDespachos(int id)
+        {
+            Processo processo = _repositorioProcessos.Where(p => p.Id == id)
+                                               .Include(p => p.Anexos).ThenInclude(td => td.TipoDocumental)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaFisica).ThenInclude(ipf => ipf.Emails)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Contatos).ThenInclude(c => c.TipoContato)
+                                               .Include(p => p.InteressadosPessoaJuridica).ThenInclude(ipf => ipf.Emails)
+                                               .Include(p => p.MunicipiosProcesso)
+                                               .Include(p => p.SinalizacoesProcesso).ThenInclude(sp => sp.Sinalizacao)
+                                               .Include(p => p.Atividade).ThenInclude(a => a.Funcao).ThenInclude(f => f.PlanoClassificacao)
+                                               .Include(p => p.OrganizacaoProcesso)
+                                               .SingleOrDefault();
+
+            _validacao.NaoEncontrado(processo);
+
+            //Limpando contedo dos anexos para não enviar na resposta da consulta de processos
+            if (processo.Anexos != null)
+            {
+                LimparConteudoAnexos(processo.Anexos);
+            }
+
+            return _mapper.Map<ProcessoModeloNegocio>(processo);
+
+        }
+
         public ProcessoModeloNegocio Pesquisar(string numero)
         {
             _validacao.NumeroValido(numero);
