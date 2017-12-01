@@ -7,6 +7,11 @@
 
 @if (Model != null)
 {
+    <div class="pull-right">
+        <a asp-controller="Processos" asp-action="SearchByOrganizacao" class="btn btn-primary"><span><i class="fa fa-arrow-left"></i> Caixa de Entrada</span></a>
+        <a class="btn btn-success"><span><i class="fa fa-edit"></i> Realizar novo despacho</span></a>
+    </div>
+    <hr />
     <div class="box box-primary">
         <!-- /.box-header -->
         <div class="box-header with-border">
