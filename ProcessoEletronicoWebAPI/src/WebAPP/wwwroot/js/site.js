@@ -6,7 +6,6 @@ var $titulo = $modal.find('#modaldefaultTitulo');
 var $conteudo = $modal.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
-var $mensagens = [];
 
 /*Toastr*/
 toastr.options = {
@@ -26,6 +25,10 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 }
+
+$(document).ready(function () {
+    ExibirMensagem();
+});
 
 function ExibirMensagem() {
     $.each($mensagens, function () {

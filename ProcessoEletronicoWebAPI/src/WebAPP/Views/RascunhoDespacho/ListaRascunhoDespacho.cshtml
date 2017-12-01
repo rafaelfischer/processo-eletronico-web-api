@@ -10,13 +10,12 @@
         <td>@r.NomeUnidadeDestino</td>
         <td class="text-center">
             <div class="btn-group">
-                <a class="btn btn-sm btn-info" asp-action="Update" asp-controller="RascunhoDespacho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>                                
+                <a class="btn btn-sm btn-info" asp-action="Update" asp-controller="RascunhoDespacho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>
                 <a class="btn btn-sm btn-danger btnExcluirRascunhoDespacho" data-id="@r.Id"><i class="fa fa-trash"></i></a>
             </div>
         </td>
     </tr>
-}           
-
+}
 <script>
     $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
 </script>

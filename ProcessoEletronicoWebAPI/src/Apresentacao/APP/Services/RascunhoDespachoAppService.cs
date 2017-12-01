@@ -34,6 +34,7 @@ namespace Apresentacao.APP.Services
             try
             {
                 result.Entidade = _mapper.Map<RascunhoDespachoViewModel>(_rascunhoDespacho.Search(id));
+                result.Success = true;
             }
             catch (RecursoNaoEncontradoException e)
             {
@@ -50,6 +51,7 @@ namespace Apresentacao.APP.Services
             try
             {
                 result.Entidade = _mapper.Map<List<RascunhoDespachoViewModel>>(_rascunhoDespacho.SearchByUsuario());
+                result.Success = true;
             }
             catch (RecursoNaoEncontradoException e)
             {
@@ -66,6 +68,7 @@ namespace Apresentacao.APP.Services
             try
             {
                 result.Entidade = _mapper.Map<RascunhoDespachoViewModel>(_rascunhoDespacho.Add(_mapper.Map<RascunhoDespachoModel>(rascunhoDespacho)));
+                result.Success = true;
             }
             catch (Exception e)
             {
@@ -85,6 +88,7 @@ namespace Apresentacao.APP.Services
                 result.Entidade = _mapper.Map<RascunhoDespachoViewModel>(_rascunhoDespacho.Search(rascunhoDespacho.Id));
 
                 SetMensagemSucesso(result.Mensagens, "Rascunho de despacho atualizado com sucesso.");
+                result.Success = true;
             }
             catch (Exception e)
             {
@@ -102,6 +106,7 @@ namespace Apresentacao.APP.Services
             {
                 _rascunhoDespacho.Delete(id);
                 SetMensagemSucesso(result.Mensagens, "Rascunho de despacho excluído com sucesso.");
+                result.Success = true;
             }
             catch (Exception e)
             {

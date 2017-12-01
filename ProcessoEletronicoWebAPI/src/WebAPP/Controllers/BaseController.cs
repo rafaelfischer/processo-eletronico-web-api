@@ -14,6 +14,10 @@ namespace WebAPP.Controllers
     [Authorize]
     public class BaseController : Controller
     {
+        public BaseController()
+        {            
+        }
+
         public IActionResult Login()
         {
             return new ChallengeResult("processoeletronico", new AuthenticationProperties() { RedirectUri = "/" });
@@ -29,10 +33,18 @@ namespace WebAPP.Controllers
             return View();
         }
 
-        protected void SetMensagens (ICollection<MensagemViewModel> mensagens)
+        protected void SetMensagens(ICollection<MensagemViewModel> mensagens)
         {
-            string mensagemJSON = JsonConvert.SerializeObject(mensagens);
+            if (mensagens != null)
+            {
+                var _mensagens = HttpContext.Items["messages"] as List<MensagemViewModel>;
+                _mensagens = _mensagens ?? new List<MensagemViewModel>();
+                _mensagens.AddRange(mensagens);
+                HttpContext.Items["messages"] = _mensagens;
+            }
+
+            string mensagemJSON = JsonConvert.SerializeObject(HttpContext.Items["messages"] as ICollection<MensagemViewModel>);
             ViewBag.Mensagens = mensagemJSON;
-        }
+        }        
     }
 }

@@ -98,7 +98,16 @@ $('#formanexo').on('change', '#files', function () {
  */
 function LimpaArquivosSelecionados() {
     var local = $('#arquivosselecionados');
-    local.find('.table').remove();
+    local.find('.table').remove();    
+}
+
+/**
+ * /Limpar formulário de anexos
+ */
+function LimpaFormAnexos() {
+    $('#formanexo')[0].reset();
+    LimpaArquivosSelecionados();
+    $eSTipoDocumental.val('0').trigger("change");
 }
 
 /*Evento click botão salvar anexos*/
@@ -142,7 +151,8 @@ function uploadFiles(campo) {
             success: function (dados) {
                 AtualizaFormAnexo(inputFiles);
                 LimpaArquivosSelecionados();
-                $("#listaanexos").html(dados)
+                $("#listaanexos").html(dados);
+                LimpaFormAnexos();
             },
             error: function (erro) {
                 AtualizaFormAnexo(files);
@@ -163,16 +173,17 @@ function AtualizaFormAnexo(inputFiles) {
 /*Evento click para o botão excluir da lista de anexos*/
 $("#listaanexos").on("click", ".btnExcluirAnexo", function () {
 
+    var nome = $(this).attr("data-nome");
     var id = $(this).attr("data-id");
-    
+
     carregaModalDefault(
         "Excluir Anexo",
-        "Deseja realmente excluir o anexo ID " + id + "?",
+        "Deseja confirmar a exclusão do anexo <strong>" + nome + "</strong>?",
         "Excluir",
         "Cancelar",
         "btnConfirmarExclusaoAnexo",
         "btnCancelarExclusao",
-        id);    
+        id);
 });
 
 /*confirmar Exclusão de anexo*/
