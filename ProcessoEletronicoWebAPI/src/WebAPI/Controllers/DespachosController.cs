@@ -50,7 +50,7 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         [ProducesResponseType(typeof(string), 500)]
         public IActionResult PesquisarDespacho(int id)
         {
-            return Ok(_mapper.Map<DespachoModeloGet>(_negocio.Pesquisar(id)));
+            return Ok(_mapper.Map<DespachoModeloGet>(_negocio.PesquisarComProcesso(id)));
         }
         #endregion
 
