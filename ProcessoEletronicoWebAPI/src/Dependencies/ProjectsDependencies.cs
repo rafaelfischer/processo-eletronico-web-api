@@ -86,6 +86,7 @@ namespace ProcessoEletronicoService.Dependencies
             //WebAPP
             dependencies.Add(typeof(IProcessoService), typeof(ProcessoService));
             dependencies.Add(typeof(IProcessoAnexoService), typeof(ProcessoAnexoService));
+            dependencies.Add(typeof(IDespachoService), typeof(DespachoService));
             dependencies.Add(typeof(IRascunhoProcessoService), typeof(RascunhoProcessoService));
             dependencies.Add(typeof(IAutuacaoService), typeof(AutuacaoService));
             dependencies.Add(typeof(IOrganogramaAppService), typeof(OrganogramaAppService));

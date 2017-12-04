@@ -15,7 +15,7 @@
     <div class="box box-primary">
         <!-- /.box-header -->
         <div class="box-header with-border">
-            <h3 class="box-title">Dados do Processo</h3>
+            <h3 class="box-title">Dados do Despacho</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -309,7 +309,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (DespachoBasicoViewModel despacho in Model.Despachos)
+                        @foreach (GetDespachoBasicoViewModel despacho in Model.Despachos)
                         {
                             <tr class="treegrid-@despacho.Id treegrid-collapsed">
                                 <td><span class="treegrid-expander fa fa-square-o"></span>@despacho.Destino</td>
@@ -328,7 +328,7 @@
                                 <td>@despacho.DataHoraDespacho</td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-primary" data-toggle="tooltip" title="Visualizar Despacho"><i class="fa fa-eye"></i></a>
+                                        <a asp-controller="Despachos" asp-action="Search" asp-route-id="@despacho.Id" class="btn btn-sm btn-primary btn-visualizar-despacho" data-toggle="tooltip" title="Visualizar Despacho"><i class="fa fa-eye"></i></a>
                                     </div>
                                 </td>
                             </tr>
@@ -368,6 +368,7 @@
 
 @section scripts {
     <script src="~/js/visualizacaoProcesso.js"></script>
+    <script src="~/js/visualizacaoDespacho.js"></script>
     <script>
         $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
         $('.cpf').mask('000.000.000-00', { reverse: true });

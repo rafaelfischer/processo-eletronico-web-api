@@ -1,0 +1,91 @@
+﻿@model GetDespachoViewModel
+
+<div class="box box-primary">
+    <!-- /.box-header -->
+    <div class="box-header with-border">
+        <h3 class="box-title">Dados básicos</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive">
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th class="col-md-2 text-right">Número do Processo</th>
+                    <td>@Model.Processo.Numero</td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Data</th>
+                    <td>@Model.DataHoraDespacho</td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Usuário Despachante</th>
+                    <td>
+                        <p>@Model.NomeUsuarioDespachante</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Destino</th>
+                    <td>@Model.Destino</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="box box-primary">
+    <!-- /.box-header -->
+    <div class="box-header with-border">
+        <h3 class="box-title">Texto</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive">
+        <div class="post">
+            @Html.Raw(Model.Texto)
+        </div>
+    </div>
+</div>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Anexos</h3>
+    </div>
+    <div class="box-body table-responsive">
+        @if (Model.Anexos?.Count > 0)
+        {
+            <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Arquivo</th>
+                        <th>Descrição</th>
+                        <th>Tipo Documental</th>
+                        <th>Tipo</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var anexo in Model.Anexos)
+                    {
+                        <tr>
+                            <td>@anexo.Nome</td>
+                            <td>@anexo.Descricao</td>
+                            <td>@anexo.TipoDocumental?.Descricao</td>
+                            <td>@anexo.MimeType</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-warning"
+                                       asp-controller="Processos"
+                                       asp-action="DownloadAnexo"
+                                       asp-route-id="@anexo.Id"
+                                       data-toggle="tooltip"
+                                       title="Baixar anexo">
+                                        <i class="fa fa-download"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

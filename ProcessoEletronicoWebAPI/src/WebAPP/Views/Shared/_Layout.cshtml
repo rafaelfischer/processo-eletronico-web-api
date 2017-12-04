@@ -236,7 +236,7 @@
         immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
     </div>
-    <!--Modal-->
+    <!--Modal de confirmação-->
     <div class="modal fade" id="modaldefault" data-keyboard="false" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modaldefaultTitulo">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -253,7 +253,25 @@
             </div>
         </div>
     </div>
-    <!--/Modal-->
+    <!--/Modal de confirmação-->
+    
+    <!--Modal de detalhes -->
+    <div class="modal fade in" id="modal-detalhe" data-keyboard="false" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modaldefaultTitulo">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-detalhe-titulo"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnModalFechar" class="btn btn-default pull-right" data-dismiss="modal"><span><i class="fa fa-close"></i></span> Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/Modal de confirmação-->
 
     <!--Load-->
     <div class="modal fade" id="modalLoad" data-keyboard="false" data-backdrop="false" tabindex="-1" role="dialog">
