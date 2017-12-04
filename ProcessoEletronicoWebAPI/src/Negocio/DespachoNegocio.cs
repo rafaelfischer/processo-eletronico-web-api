@@ -75,7 +75,7 @@ namespace ProcessoEletronicoService.Negocio
             return _mapper.Map<List<DespachoModeloNegocio>>(query.ToList());
         }
 
-        public DespachoModeloNegocio Pesquisar(int idDespacho)
+        public DespachoModeloNegocio PesquisarComProcesso(int idDespacho)
         {
             Despacho despacho = _repositorioDespachos.Where(d => d.Id == idDespacho)
                                                     .Include(p => p.Processo)
@@ -91,6 +91,16 @@ namespace ProcessoEletronicoService.Negocio
             }
 
 
+            return _mapper.Map<DespachoModeloNegocio>(despacho);
+        }
+
+        public DespachoModeloNegocio Pesquisar(int idProcesso, int idDespacho)
+        {
+            Despacho despacho = _repositorioDespachos.Where(d => d.Id == idDespacho && d.IdProcesso == idProcesso)
+                                                    .Include(a => a.Anexos).ThenInclude(td => td.TipoDocumental)
+                                                    .SingleOrDefault();
+
+            _validacao.Existe(despacho);
             return _mapper.Map<DespachoModeloNegocio>(despacho);
         }
 
@@ -131,7 +141,7 @@ namespace ProcessoEletronicoService.Negocio
             _notificacoesService.Insert(despacho);
             _unitOfWork.Save();
 
-            return Pesquisar(despacho.Id);
+            return PesquisarComProcesso(despacho.Id);
         }
 
         private void PermissaoDespacho(DespachoModeloNegocio despacho)

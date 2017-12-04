@@ -1,9 +1,12 @@
 ﻿/*Variáveis Globais*/
-var $modal = $('#modaldefault');
-var $btnConfirma = $modal.find('#btnModalConfirma');
-var $btnCancela = $modal.find('#btnModalCancela');
-var $titulo = $modal.find('#modaldefaultTitulo');
-var $conteudo = $modal.find('.modal-body');
+var $modalDefault = $('#modaldefault');
+var $modalDetalhe = $('#modal-detalhe');
+var $btnConfirma = $modalDefault.find('#btnModalConfirma');
+var $btnCancela = $modalDefault.find('#btnModalCancela');
+var $titulo = $modalDefault.find('#modaldefaultTitulo');
+var $conteudo = $modalDefault.find('.modal-body');
+var $tituloModalDetalhe = $modalDetalhe.find('#modal-detalhe-titulo');
+var $conteudoModalDetalhe = $modalDetalhe.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
 var $mensagens = [];
@@ -79,7 +82,6 @@ function carregaModalDefault(
 
     if (!isNullOrEmpty(classBtnConfirma)) {
         $classBtnConfirma = classBtnConfirma;
-        //$btnConfirma.addClass($classBtnConfirma);
         $btnConfirma.attr('data-btn', $classBtnConfirma);
     }
 
@@ -96,7 +98,7 @@ function carregaModalDefault(
         $btnCancela.attr('data-acaocancelas', acaoCancela);
     }
 
-    $modal.modal('show');
+    $modalDefault.modal('show');
 }
 
 function ResetModalDefault() {
@@ -108,6 +110,13 @@ function ResetModalDefault() {
     $btnCancela.removeClass($classBtnCancela);
     $btnConfirma.removeAttr('data-acao');
     $btnCancela.removeAttr('data-acao');
+}
+
+function CarregaModelDetalhe(titulo, conteudo) {
+    $tituloModalDetalhe.text(titulo);
+    $conteudoModalDetalhe.html(conteudo);
+
+    $modalDetalhe.modal('show')
 }
 
 $(document).ajaxError(function (jqXHR, textStatus, errorThrown) {

@@ -56,7 +56,7 @@ namespace Apresentacao.APP.ViewModels
         public AtividadeViewModel Atividade { get; set; }
         public ICollection<AnexoViewModel> Anexos { get; set; }
 
-        public ICollection<DespachoBasicoViewModel> Despachos { get; set; }
+        public ICollection<GetDespachoBasicoViewModel> Despachos { get; set; }
         public ICollection<InteressadoPessoaFisicaViewModel> InteressadosPessoaFisica { get; set; }
         public ICollection<InteressadoPessoaJuridicaViewModel> InteressadosPessoaJuridica { get; set; }
         public ICollection<MunicipioViewModel> Municipios { get; set; }

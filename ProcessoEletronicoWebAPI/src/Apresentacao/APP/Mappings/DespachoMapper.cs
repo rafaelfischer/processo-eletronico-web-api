@@ -10,7 +10,8 @@ namespace Apresentacao.APP.Mappings
     public class DespachoMapper : Profile
     {
         public DespachoMapper(){
-            CreateMap<DespachoModeloNegocio, DespachoBasicoViewModel>();
+            CreateMap<DespachoModeloNegocio, GetDespachoBasicoViewModel>();
+            CreateMap<DespachoModeloNegocio, GetDespachoViewModel>();
         }
     }
 }
