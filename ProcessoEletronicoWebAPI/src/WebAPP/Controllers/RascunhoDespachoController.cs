@@ -22,11 +22,13 @@ namespace WebAPP.Controllers
         
         public IActionResult Index()
         {
-            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();            
+            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
+            
+            SetMensagens(result.Mensagens);            
 
-            SetMensagens(result.Mensagens);
+            var teste = ViewBag.Mensagens;
 
-            return View(result.Entidade);
+            return View("Index", result.Entidade);
         }
 
         public IActionResult View(int id)
@@ -68,9 +70,14 @@ namespace WebAPP.Controllers
         public IActionResult Update(RascunhoDespachoViewModel rascunhoDespacho)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Update(rascunhoDespacho);
+
+            result.Entidade.ListaOrganizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
+            string guidOrganizacao = result.Entidade.GuidOrganizacaoDestino;
+            result.Entidade.ListaUnidades = !string.IsNullOrEmpty(guidOrganizacao) ? _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao) : null;
+
             SetMensagens(result.Mensagens);
 
-            return RedirectToAction("Index");
+            return PartialView("FormDadosBasicos", result.Entidade);
         }
 
         public IActionResult Delete(int id)

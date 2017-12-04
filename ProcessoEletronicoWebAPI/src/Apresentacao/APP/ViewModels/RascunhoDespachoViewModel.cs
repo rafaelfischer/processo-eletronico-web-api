@@ -25,5 +25,12 @@ namespace Apresentacao.APP.ViewModels
 
         public ICollection<AnexoRascunhoDespachoViewModel> Anexos { get; set; }
 
+        public ListaAnexosRascunho AnexosRascunhoDespacho { get; set; }
+    }
+
+    public class ListaAnexosRascunhoDespacho
+    {
+        public int IdRascunhoDespacho { get; set; }
+        public ICollection<AnexoRascunhoDespachoViewModel> Anexos { get; set; }
     }
 }

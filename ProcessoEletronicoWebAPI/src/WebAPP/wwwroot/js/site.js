@@ -9,7 +9,6 @@ var $tituloModalDetalhe = $modalDetalhe.find('#modal-detalhe-titulo');
 var $conteudoModalDetalhe = $modalDetalhe.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
-var $mensagens = [];
 
 $(document).ready(function () {
     ativaTooltipBootstrap();
@@ -33,6 +32,10 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 }
+
+$(document).ready(function () {
+    ExibirMensagem();
+});
 
 function ExibirMensagem() {
     $.each($mensagens, function () {

@@ -3,7 +3,11 @@
 <form id="form-dados-basicos"
       asp-controller="RascunhoDespacho"
       asp-action="Update"
-      method="post">
+      data-ajax-mode="replace"
+      data-ajax-update="#div-form-basico"      
+      data-ajax="true"
+      data-ajax-method="POST"
+      >
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
         <label asp-for="Id"></label>
@@ -37,3 +41,7 @@
         </div>
     </div>
 </form>
+
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>
