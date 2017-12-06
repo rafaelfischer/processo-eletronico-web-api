@@ -94,8 +94,6 @@ namespace Negocio.RascunhosDespacho
         {
             anexoRascunho.Nome = anexoRascunhoDespachoModel.Nome;
             anexoRascunho.Descricao = anexoRascunhoDespachoModel.Descricao;
-            anexoRascunho.Conteudo = !string.IsNullOrWhiteSpace(anexoRascunhoDespachoModel.ConteudoString) ? Convert.FromBase64String(anexoRascunhoDespachoModel.ConteudoString) : null;
-            anexoRascunho.MimeType = anexoRascunhoDespachoModel.MimeType;
         }
     }
 }
