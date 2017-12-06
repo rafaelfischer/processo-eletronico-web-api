@@ -1,20 +1,30 @@
 ﻿/*Incialização da página*/
-$(document).ready(function () {
-    $('#form-dados-basicos select').select2({ width: '100%' });
+$(document).ready(function () {    
+    InicializacaoComponentes();
 });
 
+function InicializacaoComponentes() {
+    $('#form-dados-basicos select').select2({ width: '100%' });
+}
+
 //CARREGAR UNIDADES POR ORGANIZACAO
-$("#form-dados-basicos").on("select2:select", "#GuidOrganizacaoDestino", function () {
+$("body").on("select2:select", "#GuidOrganizacaoDestino", function () {
 
     var formData = new FormData();
     var orgao = $(this).val();
     var url = "/Suporte/GetUnidadesPorOrganizacao";
 
+    if (isNullOrEmpty(orgao) || orgao == 0) {
+        var data = [{ id: '0', text: 'Selecione uma unidade' }];
+        $('#GuidUnidadeDestino').select2({ width: '100%', data: data });
+        return false;
+    }   
+
     $.get(url, { guidOrganizacao: orgao })
         .done(function (data) {
             if (data.length > 0) {                
                 data.unshift({ id: '0', text: 'Selecione uma unidade' });
-                $('#GuidUnidadeDestino').select2({ width: '100%', data: data })
+                $('#GuidUnidadeDestino').select2({ width: '100%', data: data });
             }            
         });
 });
@@ -157,49 +167,22 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusaoAnexo"]', function (
 });
 
 
-/*Evento click para o botão excluir da lista de anexos*/
+/*Evento click para o botão editar da lista de anexos*/
 $("#listaanexos").on("click", ".btnEditarAnexos", function () {
 
     var formData = new FormData();
 
-    formData.append("idRascunho", $("#formanexo").find("#Id").val());
-    formData.append("idAtividade", $('#Atividade_Id').val());
+    formData.append("idRascunhoDespacho", $("#formanexo").find("#Id").val());    
 
     $.ajax(
         {
-            url: "/RascunhoAnexo/EditarAnexosForm",
+            url: "/RascunhoAnexoDespacho/EditList",
             data: formData,
             processData: false,
             contentType: false,
             type: "POST",
             success: function (data) {
                 $('#listaanexos').html(data);
-                //$(this).parent('tr td:nth-child(2)').html(data);
-            }
-        }
-    );
-});
-
-/*Evento click para o botão excluir da lista de anexos*/
-$("#listaanexos").on("click", ".btnEditarAnexo", function () {
-
-    var elemento = $(this);
-    //$(this).parent('div').find('.btn').toggleClass('disabled');
-    var formData = new FormData();
-
-    formData.append("idRascunho", $("#formanexo").find("#Id").val());
-    formData.append("idAnexo", $(this).attr("data-id"));
-    formData.append("idAtividade", $('#Atividade_Id').val());
-
-    $.ajax(
-        {
-            url: "/RascunhoAnexo/EditarAnexosForm",
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                elemento.parents('tr').find('td:nth-child(2)').html(data);
                 //$(this).parent('tr td:nth-child(2)').html(data);
             }
         }

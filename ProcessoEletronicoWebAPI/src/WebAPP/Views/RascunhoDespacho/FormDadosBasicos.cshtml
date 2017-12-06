@@ -4,7 +4,8 @@
       asp-controller="RascunhoDespacho"
       asp-action="Update"
       data-ajax-mode="replace"
-      data-ajax-update="#div-form-basico"      
+      data-ajax-update="#div-form-basico"
+      data-ajax-success="InicializacaoComponentes"
       data-ajax="true"
       data-ajax-method="POST"
       >
@@ -27,7 +28,9 @@
         <label asp-for="GuidUnidadeDestino"></label>
         @if (Model?.ListaUnidades?.Count() > 0)
         {
-            <select class="form-control" asp-for="GuidUnidadeDestino" asp-items="@(new SelectList(Model.ListaUnidades,"Guid","NomeSigla"))"></select>
+            <select class="form-control" asp-for="GuidUnidadeDestino" asp-items="@(new SelectList(Model.ListaUnidades,"Guid","NomeSigla"))">
+                <option value="0">Selecione uma unidade</option>
+            </select>
         }
         else
         {

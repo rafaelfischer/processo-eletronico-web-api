@@ -78,9 +78,9 @@ namespace Apresentacao.APP.Services
             try
             {
                 _anexoRascunhoDespacho.Update(idRascunhoDespacho, id, _mapper.Map<AnexoRascunhoDespachoModel>(anexoRascunhoDespacho));
-                result.Entidade = _mapper.Map<AnexoRascunhoDespachoViewModel>(_anexoRascunhoDespacho.Search(id));
+                //result.Entidade = _mapper.Map<AnexoRascunhoDespachoViewModel>(_anexoRascunhoDespacho.Search(id));
 
-                SetMensagemSucesso(result.Mensagens, "Anexo de rascunho de despacho atualizado com sucesso.");
+                SetMensagemSucesso(result.Mensagens, "Anexo "+ anexoRascunhoDespacho.Nome +"  de rascunho de despacho atualizado com sucesso.");
             }
             catch (Exception e)
             {
@@ -97,7 +97,7 @@ namespace Apresentacao.APP.Services
             try
             {
                 _anexoRascunhoDespacho.Delete(idRascunhoDespacho, id);
-                SetMensagemSucesso(result.Mensagens, "Anexo de rascunho de despacho excluído com sucesso.");
+                SetMensagemAlerta(result.Mensagens, "Anexo de rascunho de despacho excluído com sucesso.");
             }
             catch (Exception e)
             {

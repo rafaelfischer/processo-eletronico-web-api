@@ -92,7 +92,6 @@ namespace Negocio.RascunhosDespacho
 
         private void MapAlteracaoAnexo(AnexoRascunhoDespachoModel anexoRascunhoDespachoModel, AnexoRascunho anexoRascunho)
         {
-            anexoRascunho.Nome = anexoRascunhoDespachoModel.Nome;
             anexoRascunho.Descricao = anexoRascunhoDespachoModel.Descricao;
         }
     }

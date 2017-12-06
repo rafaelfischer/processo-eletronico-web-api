@@ -239,29 +239,3 @@ $("#listaanexos").on("click", ".btnEditarAnexos", function () {
         }
     );
 });
-
-/*Evento click para o botão excluir da lista de anexos*/
-$("#listaanexos").on("click", ".btnEditarAnexo", function () {
-
-    var elemento = $(this);
-    //$(this).parent('div').find('.btn').toggleClass('disabled');
-    var formData = new FormData();    
-
-    formData.append("idRascunho", $("#formanexo").find("#Id").val());
-    formData.append("idAnexo", $(this).attr("data-id"));
-    formData.append("idAtividade", $('#Atividade_Id').val());    
-
-    $.ajax(
-        {
-            url: "/RascunhoAnexo/EditarAnexosForm",
-            data: formData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                elemento.parents('tr').find('td:nth-child(2)').html(data);
-                //$(this).parent('tr td:nth-child(2)').html(data);
-            }
-        }
-    );
-});

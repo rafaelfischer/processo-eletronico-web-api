@@ -22,13 +22,18 @@ namespace WebAPP.Controllers
         
         public IActionResult Index()
         {
-            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
-            
-            SetMensagens(result.Mensagens);            
-
-            var teste = ViewBag.Mensagens;
+            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();            
+            SetMensagens(result.Mensagens);
 
             return View("Index", result.Entidade);
+        }
+
+        public IActionResult Search()
+        {
+            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
+            SetMensagens(result.Mensagens);
+
+            return PartialView("ListaImportacaoRascunhoDespacho", result.Entidade);
         }
 
         public IActionResult View(int id)
@@ -70,12 +75,13 @@ namespace WebAPP.Controllers
         public IActionResult Update(RascunhoDespachoViewModel rascunhoDespacho)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Update(rascunhoDespacho);
+            SetMensagens(result.Mensagens);            
 
-            result.Entidade.ListaOrganizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
-            string guidOrganizacao = result.Entidade.GuidOrganizacaoDestino;
-            result.Entidade.ListaUnidades = !string.IsNullOrEmpty(guidOrganizacao) ? _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao) : null;
-
-            SetMensagens(result.Mensagens);
+            if(result.Entidade != null) { 
+                result.Entidade.ListaOrganizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
+                string guidOrganizacao = result.Entidade.GuidOrganizacaoDestino;
+                result.Entidade.ListaUnidades = !string.IsNullOrEmpty(guidOrganizacao) ? _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao) : null;
+            }
 
             return PartialView("FormDadosBasicos", result.Entidade);
         }

@@ -103,6 +103,28 @@ namespace WebAPP.Controllers
             return Search(idRascunhoDespacho);
         }
 
+        [HttpPost]
+        public IActionResult EditList(int idRascunhoDespacho)
+        {
+            ResultViewModel<ICollection<AnexoRascunhoDespachoViewModel>> result = _anexoRascunhoDespachoAppService.Search(idRascunhoDespacho);
+            return PartialView("RascunhoAnexoDespachoEditarLista", new ListaAnexosRascunhoDespacho { IdRascunhoDespacho = idRascunhoDespacho, Anexos = result.Entidade });
+        }
+
+        [HttpPost]
+        public IActionResult UpdateList(int idRascunhoDespacho, List<AnexoRascunhoDespachoViewModel> anexos)
+        {
+            ResultViewModel<AnexoRascunhoDespachoViewModel> result;
+
+            foreach (var anexo in anexos)
+            {
+                result = _anexoRascunhoDespachoAppService.Update(idRascunhoDespacho, anexo.Id, anexo);
+                SetMensagens(result.Mensagens);
+            }
+
+            return Search(idRascunhoDespacho);
+
+        }
+
         [HttpGet]
         public IActionResult DownloadAnexo(int idRascunhoDespacho, int id)
         {
