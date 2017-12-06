@@ -16,9 +16,9 @@ namespace Negocio.RascunhosDespacho.Validations
         private IRepositorioGenerico<TipoDocumental> _repositorioTiposDocumentais;
         private ICurrentUserProvider _user;
 
-        public AnexoRascunhoDespachoValidation(IRepositorioGenerico<TipoDocumental> repositorioTiposDocumentais, ICurrentUserProvider user)
+        public AnexoRascunhoDespachoValidation(IProcessoEletronicoRepositorios repositorio, ICurrentUserProvider user)
         {
-            _repositorioTiposDocumentais = repositorioTiposDocumentais;
+            _repositorioTiposDocumentais = repositorio.TiposDocumentais;
             _user = user;
         }
 
