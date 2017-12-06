@@ -4,6 +4,7 @@ using ProcessoEletronicoService.Negocio.Modelos;
 using ProcessoEletronicoService.Dominio.Modelos;
 using System.Collections.Generic;
 using System.Linq;
+using Negocio.RascunhosDespacho.Models;
 
 namespace ProcessoEletronicoService.Negocio.Config
 {
@@ -177,7 +178,7 @@ namespace ProcessoEletronicoService.Negocio.Config
             #endregion
 
             #region Mapeamento de Sinalização de Processo
-            
+
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoProcesso>()
                 .ForMember(dest => dest.IdSinalizacao, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
@@ -207,6 +208,15 @@ namespace ProcessoEletronicoService.Negocio.Config
 
             #endregion
 
+            #region Mapeamento de Rascunho de Despachos para Despacho
+            CreateMap<RascunhoDespacho, DespachoModeloNegocio>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.AnexosRascunho))
+                .ForMember(dest => dest.GuidOrganizacaoDestino, opt => opt.MapFrom(src => src.GuidOrganizacaoDestino.HasValue ? src.GuidOrganizacaoDestino.Value.ToString("D") : null))
+                .ForMember(dest => dest.GuidUnidadeDestino, opt => opt.MapFrom(src => src.GuidUnidadeDestino.HasValue ? src.GuidUnidadeDestino.Value.ToString("D") : null));
+
+
+            #endregion
         }
 
     }

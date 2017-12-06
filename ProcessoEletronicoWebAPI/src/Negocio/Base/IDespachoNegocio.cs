@@ -11,6 +11,7 @@ namespace ProcessoEletronicoService.Negocio.Base
     {
         DespachoModeloNegocio PesquisarComProcesso(int idDespacho);
         DespachoModeloNegocio Despachar(DespachoModeloNegocio despachoNegocio);
+        DespachoModeloNegocio DespacharPorRascunho(int idProcesso, int idRascunhoDespacho);
         List<DespachoModeloNegocio> PesquisarDespachosUsuario();
     }
 }

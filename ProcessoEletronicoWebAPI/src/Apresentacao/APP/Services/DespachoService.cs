@@ -22,6 +22,7 @@ namespace Apresentacao.APP.Services
         public ResultViewModel<GetDespachoViewModel> Search(int id)
         {
             ResultViewModel<GetDespachoViewModel> despachoResultViewModel = new ResultViewModel<GetDespachoViewModel>();
+
             despachoResultViewModel.Entidade = _mapper.Map<GetDespachoViewModel>(_negocio.PesquisarComProcesso(id));
             return despachoResultViewModel;
         }
