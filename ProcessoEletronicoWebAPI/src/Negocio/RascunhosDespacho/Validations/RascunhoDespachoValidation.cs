@@ -49,7 +49,7 @@ namespace Negocio.RascunhosDespacho.Validations
 
         private void GuidUnidadeDestinoIsValid(RascunhoDespachoModel rascunhoDespachoModel)
         {
-            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino))
+            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino) || rascunhoDespachoModel.GuidUnidadeDestino != "0")
             {
                 try
                 {
@@ -64,7 +64,7 @@ namespace Negocio.RascunhosDespacho.Validations
 
         private void GuidOrganizacaoDestinoIsValid(RascunhoDespachoModel rascunhoDespachoModel)
         {
-            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino))
+            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino) || rascunhoDespachoModel.GuidOrganizacaoDestino != "0")
             {
                 try
                 {

@@ -5,11 +5,23 @@ using System.Text;
 using Negocio.RascunhosDespacho.Models;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
+using ProcessoEletronicoService.Dominio.Base;
+using System.Linq;
+using ProcessoEletronicoService.Negocio.Comum.Base;
 
 namespace Negocio.RascunhosDespacho.Validations
 {
     public class AnexoRascunhoDespachoValidation : IAnexoRascunhoDespachoValidation
     {
+        private IRepositorioGenerico<TipoDocumental> _repositorioTiposDocumentais;
+        private ICurrentUserProvider _user;
+
+        public AnexoRascunhoDespachoValidation(IRepositorioGenerico<TipoDocumental> repositorioTiposDocumentais, ICurrentUserProvider user)
+        {
+            _repositorioTiposDocumentais = repositorioTiposDocumentais;
+            _user = user;
+        }
+
         public void Exists(AnexoRascunho anexoRascunho)
         {
             if (anexoRascunho == null)
@@ -35,6 +47,7 @@ namespace Negocio.RascunhosDespacho.Validations
             if (anexoRascunhoDespachoModel != null)
             {
                 ConteudoIsValid(anexoRascunhoDespachoModel);
+                TipoDocumentalIsValid(anexoRascunhoDespachoModel);
             }
         }
         
@@ -60,6 +73,19 @@ namespace Negocio.RascunhosDespacho.Validations
                 catch (FormatException)
                 {
                     throw new RequisicaoInvalidaException("Conteúdo do anexo " + anexoRascunhoDespachoModel.Nome + " inválido.");
+                }
+            }
+        }
+
+        private void TipoDocumentalIsValid(AnexoRascunhoDespachoModel anexoRascunhoDespachoModel)
+        {
+            if (anexoRascunhoDespachoModel.TipoDocumental?.Id > 0)
+            {
+                if (_repositorioTiposDocumentais.Where(td => td.Id == anexoRascunhoDespachoModel.TipoDocumental.Id 
+                                                                   && td.Atividade.Funcao.PlanoClassificacao.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca))
+                                                                   .ToList().Count == 0)
+                {
+                    throw new RequisicaoInvalidaException($"Tipo Documental de identificador {anexoRascunhoDespachoModel.TipoDocumental.Id} não encontrado");
                 }
             }
         }
