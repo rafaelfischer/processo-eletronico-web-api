@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Negocio.RascunhosDespacho.Base;
 using Negocio.RascunhosDespacho.Models;
 using Negocio.RascunhosDespacho.Validations.Base;
@@ -61,7 +62,7 @@ namespace Negocio.RascunhosDespacho
 
         public AnexoRascunhoDespachoModel Search(int idRascunhoDespacho, int id)
         {
-            AnexoRascunho anexoRascunho = _repositorioAnexosRascunho.Where(a => a.Id == id && a.IdRascunhoDespacho == idRascunhoDespacho).SingleOrDefault();
+            AnexoRascunho anexoRascunho = _repositorioAnexosRascunho.Where(a => a.Id == id && a.IdRascunhoDespacho == idRascunhoDespacho).Include(a => a.TipoDocumental).SingleOrDefault();
             _validation.Exists(anexoRascunho);
 
             return _mapper.Map<AnexoRascunhoDespachoModel>(anexoRascunho);
@@ -69,7 +70,7 @@ namespace Negocio.RascunhosDespacho
 
         public IEnumerable<AnexoRascunhoDespachoModel> Search(int idRascunhoDespacho)
         {
-            IEnumerable<AnexoRascunho> anexosRascunho = _repositorioAnexosRascunho.Where(a => a.IdRascunhoDespacho == idRascunhoDespacho).ToList();
+            IEnumerable<AnexoRascunho> anexosRascunho = _repositorioAnexosRascunho.Where(a => a.IdRascunhoDespacho == idRascunhoDespacho).Include(a => a.TipoDocumental).ToList();
             return _mapper.Map<IEnumerable<AnexoRascunhoDespachoModel>>(anexosRascunho);
         }
 
