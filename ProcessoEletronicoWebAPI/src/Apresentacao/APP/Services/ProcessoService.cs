@@ -33,18 +33,22 @@ namespace Apresentacao.APP.WorkServices
             _tipoDocumental = tipoDocumental;
         }
 
-        public GetProcessoBasicoViewModel GetProcessoPorNumero(string numero)
+        public ResultViewModel<GetProcessoViewModel> GetProcessoPorNumero(string numero)
         {
+            ResultViewModel<GetProcessoViewModel> result = new ResultViewModel<GetProcessoViewModel>();
+
             try
             {
                 ProcessoModeloNegocio processoModeloNegocio = _negocio.Pesquisar(numero);
-                GetProcessoBasicoViewModel GetProcessoBasicoViewModel = _mapper.Map<GetProcessoBasicoViewModel>(processoModeloNegocio);
-                return GetProcessoBasicoViewModel;
+                result.Entidade = _mapper.Map<GetProcessoViewModel>(processoModeloNegocio);
+
             }
-            catch (Exception e)
+            catch (RecursoNaoEncontradoException e)
             {
-                return null;
+                SetMensagemErro(result.Mensagens, e);
             }
+
+            return result;            
 
         }
 

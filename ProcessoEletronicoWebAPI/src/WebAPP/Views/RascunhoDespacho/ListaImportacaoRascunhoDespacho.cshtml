@@ -22,7 +22,17 @@
                     <td>@r.NomeUnidadeDestino</td>
                     <td class="text-center">
                         <div class="btn-group">
-                            <a class="btn btn-sm btn-default" asp-action="Update" asp-controller="RascunhoDespacho" asp-route-id="@r.Id"><i class="fa fa-square-o"></i></a>
+                            <form asp-action="UpdateFormDespacho"
+                                  asp-controller="RascunhoDespacho"
+                                  data-ajax-mode="replace"
+                                  data-ajax-update="#opcoes-carregamento"
+                                  data-ajax="true"
+                                  data-ajax-method="GET">
+                                <input type="hidden" name="Id" value="@r.Id" />
+                                <input type="hidden" name="IdProcesso" value="@r.IdProcesso" />
+                                <input type="hidden" name="IdAtividade" value="@r.IdAtividade" />
+                                <button class="btn btn-sm btn-default"><i class="fa fa-square-o"></i></button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -35,17 +45,20 @@ else
     <div class="alert alert-warning">Você não possui rascunho de despacho.</div>
 }
 
-<div class="pull-right">
-    <form asp-action="OpcoesCarregamento" 
+
+<div class="form-group">
+    <form asp-action="OpcoesCarregamento"
           asp-controller="Despachos"
           data-ajax-mode="replace"
           data-ajax-update="#opcoes-carregamento"
           data-ajax="true"
-          data-ajax-method="GET"
-          >
-        <button class="btn btn-default">Cancelar</button>
-    </form>    
+          data-ajax-method="GET">
+        <input type="hidden" name="IdProcesso" value="@Model.First().IdProcesso." />
+        <input type="hidden" name="IdAtividade" value="@Model.First().IdAtividade" />
+        <button class="btn btn-block btn-danger"><i class="fa fa-close"></i> Cancelar</button>
+    </form>
 </div>
+
 
 <script>
     $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];

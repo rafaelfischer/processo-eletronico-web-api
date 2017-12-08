@@ -8,7 +8,7 @@ using ProcessoEletronicoService.Negocio.Base;
 
 namespace Apresentacao.APP.Services
 {
-    public class DespachoService : IDespachoService
+    public class DespachoService : MensagemService, IDespachoService
     {
         private IDespachoNegocio _negocio;
         private IMapper _mapper;
@@ -25,6 +25,23 @@ namespace Apresentacao.APP.Services
 
             despachoResultViewModel.Entidade = _mapper.Map<GetDespachoViewModel>(_negocio.PesquisarComProcesso(id));
             return despachoResultViewModel;
+        }
+
+        public ResultViewModel<GetDespachoViewModel> Despachar(int idProcesso, int idRascunhoDespacho)
+        {
+            ResultViewModel<GetDespachoViewModel> result = new ResultViewModel<GetDespachoViewModel>();
+
+            try
+            {
+                result.Entidade = _mapper.Map<GetDespachoViewModel>(_negocio.DespacharPorRascunho(idProcesso, idRascunhoDespacho));
+                SetMensagemSucesso(result.Mensagens, "Despacho realizado com sucesso.");
+            }
+            catch (Exception e)
+            {
+                SetMensagemErro(result.Mensagens, e);
+            }           
+
+            return result;
         }
     }
 }

@@ -115,9 +115,9 @@
                     <img src="https://cdn.es.gov.br/images/logo/governo/colors/brasao_es_64x61.png" class="img-responsive mini" />
                 </div>
                 <!-- search form (Optional) -->
-                <form action="#" method="get" class="sidebar-form">
+                <form asp-controller="Processos" asp-action="ConsultaProcessoPorNumero" method="post" class="sidebar-form">
                     <div class="input-group">
-                        <input type="text" data-mask="0000-00.0000.0.0.0000" name="q" class="form-control" placeholder="0000-00.0000.0.0.0000">
+                        <input type="text" name="numero" class="form-control" placeholder="0000-00.0000.0.0.0000">
                         <span class="input-group-btn">
                             <button type="submit" name="search" id="search-btn" class="btn btn-flat">
                                 <i class="fa fa-search"></i>

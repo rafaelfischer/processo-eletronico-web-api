@@ -1,4 +1,7 @@
-﻿/*Incialização da página*/
+﻿/*Variaveis globais*/
+var $dataId;
+
+/*Incialização da página*/
 $(document).ready(function () {    
     InicializacaoComponentes();
 });
@@ -15,6 +18,7 @@ $("body").on("select2:select", "#GuidOrganizacaoDestino", function () {
     var url = "/Suporte/GetUnidadesPorOrganizacao";
 
     if (isNullOrEmpty(orgao) || orgao == 0) {
+        $('#GuidUnidadeDestino').children().remove();
         var data = [{ id: '0', text: 'Selecione uma unidade' }];
         $('#GuidUnidadeDestino').select2({ width: '100%', data: data });
         return false;
@@ -23,6 +27,7 @@ $("body").on("select2:select", "#GuidOrganizacaoDestino", function () {
     $.get(url, { guidOrganizacao: orgao })
         .done(function (data) {
             if (data.length > 0) {                
+                $('#GuidUnidadeDestino').children().remove();
                 data.unshift({ id: '0', text: 'Selecione uma unidade' });
                 $('#GuidUnidadeDestino').select2({ width: '100%', data: data });
             }            
@@ -35,7 +40,7 @@ $("body").on("select2:select", "#GuidOrganizacaoDestino", function () {
 
 
 /*Evento Change Files. Lista arquivos selecionados.*/
-$('#formanexo').on('change', '#files', function () {
+$('body').on('change', '#files', function () {
     var local = $('#arquivosselecionados');
 
     LimpaArquivosSelecionados();
@@ -64,7 +69,7 @@ function LimpaFormAnexos() {
 }
 
 /*Evento click botão salvar anexos*/
-$('#formanexo').on('click', '#btnSalvarAnexo', function () {
+$('body').on('click', '#btnSalvarAnexo', function () {
     uploadFiles('files');
 });
 
@@ -187,4 +192,90 @@ $("#listaanexos").on("click", ".btnEditarAnexos", function () {
             }
         }
     );
+});
+
+/***************************************************************************************************************************/
+/*EXCLUSAO DE RASCUNHO DE DESPACHO*/
+
+$('body').on('submit', '#formExcluirRascunhoDespachoAjax', function () {
+    var id = $(this).find('#Id').val();
+    var url = "/RascunhoDespacho/Delete/" + id;
+
+    $.ajax(
+        {
+            url: url,
+            processData: false,
+            contentType: false,
+            type: "GET"
+        }
+    );
+});
+
+/*Exclusão na tela de edição de rascunho de despacho*/
+$('body').on('click', '.btnExcluirRascunhoDespachoForm', function () {
+    var id = $(this).attr('data-id');
+    var url = $(this).attr('href');
+
+    carregaModalDefault(
+        "Excluir Rascunho de Despacho",
+        "Deseja realmente excluir o rascunho de despacho ID " + id + "?",
+        "Excluir",
+        "Cancelar",
+        "btnConfirmarExclusaoForm",
+        "btnCancelarExclusao",
+        url);
+
+    return false;
+});
+
+$('body').on('click', 'button[data-btn="btnConfirmarExclusaoForm"]', function () {
+
+    var url = $(this).attr('data-acaoconfirmar');
+
+    if (isNullOrEmpty(url)) {
+        return false;
+    }
+    else {
+        window.location.assign(url);
+    }
+});
+
+
+/*Exclusão na tela de consulta de rascunhos de despachos*/
+$('body').on('click', '.btnExcluirRascunhoDespacho', function () {
+    var id = $(this).attr('data-id');
+    var url = $(this).attr('href');
+
+    carregaModalDefault(
+        "Excluir Rascunho de Despacho",
+        "Deseja realmente excluir o rascunho de despacho ID " + id + "?",
+        "Excluir",
+        "Cancelar",
+        "btnConfirmarExclusao",
+        "btnCancelarExclusao",
+        url);
+
+    return false;
+});
+
+$('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
+
+    var url = $(this).attr('data-acaoconfirmar') + "?ajax=true";
+
+    if (isNullOrEmpty(url)) {
+        return false;
+    }
+    else {
+        $.ajax(
+            {
+                url: url,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    $("#listaRascunhosDespacho").html(data)
+                }
+            }
+        );
+    }
 });

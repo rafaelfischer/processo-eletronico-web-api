@@ -5,6 +5,11 @@
     ViewBag.SubTitle = "Edição de Rascunhos de Despacho";
 }
 
+<div class="form-group text-right">    
+    <a asp-controller="RascunhoDespacho" asp-action="Index" class="btn btn-primary btn-sm"><span><i class="fa fa-arrow-left"></i> Rascunhos</span></a>    
+    <a asp-controller="RascunhoDespacho" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-danger btnExcluirRascunhoDespachoForm" data-id="@Model.Id"><i class="fa fa-trash"></i> Descartar</a>
+</div>
+
 <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="false"><h3 class="box-title">Dados Básicos</h3></a></li>
@@ -17,8 +22,12 @@
             </div>
         </div>
         <div class="tab-pane" id="tab_2">
-            <div id="div-form-anexo">
-                @Html.Partial("~/Views/RascunhoAnexoDespacho/FormAnexos.cshtml", Model)
+            <div id="div-form-anexo">                
+                @Html.Partial("~/Views/RascunhoAnexoDespacho/FormAnexos.cshtml", new ListaAnexosRascunhoDespacho
+                                                                                    {
+                                                                                        Anexos = Model.Anexos,                                     
+                                                                                        IdRascunhoDespacho = Model.Id
+                                                                                    })
             </div>
         </div>
     </div>

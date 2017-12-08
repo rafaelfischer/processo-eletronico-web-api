@@ -26,13 +26,24 @@ namespace WebAPP.Controllers
         public IActionResult Despachar(int id)
         {
             ResultViewModel<GetProcessoViewModel> result = _processoService.Search(id);
+            SetMensagens(result.Mensagens);
+
             return View("DespacharProcesso", result.Entidade);
         }
 
         [HttpGet]
-        public IActionResult OpcoesCarregamento()
-        {            
-            return PartialView("_opcoesCarregamentoRascunhoDespacho");
+        public IActionResult OpcoesCarregamento(CarregamentoRascunhoDespachoViewModel opcoes, bool delete = false)
+        {
+            return PartialView("_opcoesCarregamentoRascunhoDespacho", opcoes);
+        }
+
+        [HttpPost]
+        public IActionResult Despachar(int idProcesso, int idRascunhoDespacho)
+        {
+            ResultViewModel<GetDespachoViewModel> result = _service.Despachar(idProcesso, idRascunhoDespacho);
+            SetMensagens(result.Mensagens);
+
+            return View("DespacharProcesso", result.Entidade);
         }
     }
 }

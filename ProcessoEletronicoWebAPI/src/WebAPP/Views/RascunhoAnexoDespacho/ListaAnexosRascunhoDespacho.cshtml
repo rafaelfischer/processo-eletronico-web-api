@@ -1,19 +1,26 @@
 ﻿@model ListaAnexosRascunhoDespacho
 
-@if (Model?.Anexos?.Count > 0){
+@if (Model?.Anexos?.Count > 0)
+{
 
     <div class="box-header with-border">
         @*<h3 class="box-title">Anexos do Processo</h3>*@
         <div class="pull-right">
             <button class="btnEditarAnexos btn-sm btn btn-info" type="button"><i class="fa fa-edit" aria-hidden="true"></i> Editar</button>
-        </div>        
+        </div>
     </div>
     <div class="box-body">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>ARQUIVO</th>                    
+                    <th>ARQUIVO</th>
+
+                    @if (Model.TiposDocumentais != null)
+                    {
+                        <th>TIPO DOCUMENTAL</th>
+                    }
+
                     <th>DESCRIÇÃO</th>
                     <th class="col-md-2">AÇÕES</th>
                 </tr>
@@ -27,10 +34,14 @@
                 {
                     <tr>
                         <td>@item.value.Id</td>
-                        <td>@item.value.Nome</td>                        
-                        <td>
-                            @item.value.Descricao
-                        </td>
+                        <td>@item.value.Nome</td>
+
+                        @if (Model.TiposDocumentais != null)
+                        {
+                            <td>@item.value.TipoDocumental?.Text</td>
+                        }
+
+                        <td>@item.value.Descricao</td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <a asp-controller="RascunhoAnexoDespacho" asp-action="DownloadAnexo" asp-route-idRascunhoDespacho="@Model.IdRascunhoDespacho" asp-route-id="@item.value.Id" class="btn btn-warning btn-sm btnDownloadAnexo"><i class="fa fa-download"></i></a>

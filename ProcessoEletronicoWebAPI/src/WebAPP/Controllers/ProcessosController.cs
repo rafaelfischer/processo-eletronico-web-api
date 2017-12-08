@@ -41,8 +41,8 @@ namespace WebAPP.Controllers
         [HttpPost]
         public IActionResult ConsultaProcessoPorNumero(string numero)
         {
-            GetProcessoBasicoViewModel getProcesso = _service.GetProcessoPorNumero(numero);
-            return View("ConsultaProcesso", getProcesso);
+            ResultViewModel<GetProcessoViewModel> getProcesso = _service.GetProcessoPorNumero(numero);
+            return View("VisualizacaoProcesso", getProcesso.Entidade);
         }        
 
         [HttpGet]

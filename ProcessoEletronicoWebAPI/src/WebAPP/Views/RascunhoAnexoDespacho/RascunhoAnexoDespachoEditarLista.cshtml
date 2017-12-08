@@ -41,10 +41,9 @@
                     @foreach (var item in Model.Anexos.Select((value, i) => new { i, value }))
                     {
                         <tr>
-                            <td>@item.value.Nome</td>
+                            <td><input type="text" readonly class="form-control" name="Anexos[@item.i].Nome" asp-for="@item.value.Nome"/></td>
                             <td>
-                                <input type="hidden" name="Anexos[@item.i].Id" value="@item.value.Id" />
-
+                                <input type="hidden" name="Anexos[@item.i].Id" value="@item.value.Id" />                                
                                 <textarea class="form-control" name="Anexos[@item.i].Descricao" asp-for="@item.value.Descricao" rows="2"></textarea>
                             </td>
                         </tr>

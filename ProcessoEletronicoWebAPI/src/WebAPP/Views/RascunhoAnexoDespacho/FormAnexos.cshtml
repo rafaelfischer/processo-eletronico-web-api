@@ -1,4 +1,4 @@
-﻿@model RascunhoDespachoViewModel
+﻿@model ListaAnexosRascunhoDespacho
 
 <div class="box-header with-border">
     <div class="pull-right">
@@ -14,8 +14,19 @@
         <form name="formanexo"
               enctype="multipart/form-data"
               id="formanexo">
+
+            @if (Model.TiposDocumentais?.Count > 0)
+            {
+                <div class="form-group">
+                    <label>Tipo Documental</label>
+                    <select id="idTipoDocumental" class="form-control" asp-items="@(new SelectList(Model.TiposDocumentais,"Id","Text"))">
+                        <option value="0">Selecione uma unidade</option>
+                    </select>
+                </div>
+            }
+
             <div class="form-group">
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" name="Id" value="@Model.IdRascunhoDespacho" />
                 <label>Descrição</label>
                 <textarea id="DescricaoAnexos" class="form-control" rows="2"></textarea>
             </div>
@@ -47,5 +58,5 @@
 </div>
 
 <div id="listaanexos" class="table-responsive">
-    @Html.Partial("~/Views/RascunhoAnexoDespacho/ListaAnexosRascunhoDespacho.cshtml", new ListaAnexosRascunhoDespacho() { Anexos = Model.Anexos, IdRascunhoDespacho = Model.Id })
+    @Html.Partial("~/Views/RascunhoAnexoDespacho/ListaAnexosRascunhoDespacho.cshtml", new ListaAnexosRascunhoDespacho() { Anexos = Model.Anexos, IdRascunhoDespacho = Model.IdRascunhoDespacho, TiposDocumentais = Model.TiposDocumentais })
 </div>

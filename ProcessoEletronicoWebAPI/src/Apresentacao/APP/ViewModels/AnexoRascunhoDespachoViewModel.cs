@@ -12,5 +12,7 @@ namespace Apresentacao.APP.ViewModels
         public byte[] Conteudo { get; set; }
         public string ConteudoString { get; set; }
         public string MimeType { get; set; }
+        public TipoDocumentalViewModel TipoDocumental { get; set; }
+        
     }
 }
