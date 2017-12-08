@@ -8,11 +8,17 @@ namespace WebAPP.Controllers
     {
         private IDespachoService _service;
         private IProcessoService _processoService;
+        private IRascunhoDespachoAppService _rascunhoDespachoAppService;
 
-        public DespachosController(IDespachoService service, IProcessoService processoService)
+        public DespachosController(
+            IDespachoService service, 
+            IProcessoService processoService,
+            IRascunhoDespachoAppService rascunhoDespachoAppService
+            )
         {
             _service = service;
             _processoService = processoService;
+            _rascunhoDespachoAppService = rascunhoDespachoAppService;
         }
 
         [HttpGet]
@@ -43,7 +49,10 @@ namespace WebAPP.Controllers
             ResultViewModel<GetDespachoViewModel> result = _service.Despachar(idProcesso, idRascunhoDespacho);
             SetMensagens(result.Mensagens);
 
-            return View("DespacharProcesso", result.Entidade);
+            if (result.Success)
+                _rascunhoDespachoAppService.Delete(idRascunhoDespacho);
+
+            return Json(result);
         }
     }
 }

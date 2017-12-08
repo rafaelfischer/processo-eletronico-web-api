@@ -282,3 +282,15 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
         );
     }
 });
+
+/*Retorno Despacho*/
+
+function RetornoDespacho(data) {
+    var local = $('#opcoes-carregamento');
+    console.log(data);
+    if (data.mensagens!=null) {        
+        $.each(data.mensagens, function (i, v) {
+            local.prepend('<div class="alert alert-' + v.tipoToastr + '">' + v.texto +'</div>')
+        });        
+    }
+}

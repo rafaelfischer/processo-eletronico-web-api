@@ -23,7 +23,18 @@ namespace Apresentacao.APP.Services
         {
             ResultViewModel<GetDespachoViewModel> despachoResultViewModel = new ResultViewModel<GetDespachoViewModel>();
 
-            despachoResultViewModel.Entidade = _mapper.Map<GetDespachoViewModel>(_negocio.PesquisarComProcesso(id));
+            try
+            {
+                despachoResultViewModel.Entidade = _mapper.Map<GetDespachoViewModel>(_negocio.PesquisarComProcesso(id));
+                SetMensagemSucesso(despachoResultViewModel.Mensagens, "Consulta realizada com sucesso.");
+                despachoResultViewModel.Success = true;
+            }
+            catch(Exception e)
+            {
+                SetMensagemErro(despachoResultViewModel.Mensagens, e);
+                despachoResultViewModel.Success = false;
+            }
+
             return despachoResultViewModel;
         }
 
@@ -35,9 +46,11 @@ namespace Apresentacao.APP.Services
             {
                 result.Entidade = _mapper.Map<GetDespachoViewModel>(_negocio.DespacharPorRascunho(idProcesso, idRascunhoDespacho));
                 SetMensagemSucesso(result.Mensagens, "Despacho realizado com sucesso.");
+                result.Success = true;
             }
             catch (Exception e)
             {
+                result.Success = false;
                 SetMensagemErro(result.Mensagens, e);
             }           
 

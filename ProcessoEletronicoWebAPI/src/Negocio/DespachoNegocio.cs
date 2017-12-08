@@ -151,7 +151,7 @@ namespace ProcessoEletronicoService.Negocio
 
         public DespachoModeloNegocio DespacharPorRascunho(int idProcesso, int idRascunhoDespacho)
         {
-            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(d => d.Id == idRascunhoDespacho).SingleOrDefault();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(d => d.Id == idRascunhoDespacho).Include(d => d.AnexosRascunho).ThenInclude(a => a.TipoDocumental).SingleOrDefault();
             _rascunhoDespachoValidation.Exists(rascunhoDespacho);
             
 
