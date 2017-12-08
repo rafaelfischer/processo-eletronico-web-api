@@ -51,7 +51,7 @@ namespace Negocio.RascunhosDespacho
 
         public RascunhoDespachoModel Search(int id)
         {
-            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(rascunho => rascunho.Id == id).Include(rascunho => rascunho.AnexosRascunho).SingleOrDefault();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(rascunho => rascunho.Id == id).Include(rascunho => rascunho.AnexosRascunho).ThenInclude(a => a.TipoDocumental).SingleOrDefault();
             return _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho);
         }
 
@@ -79,13 +79,22 @@ namespace Negocio.RascunhosDespacho
             FillOrganizacaoDestino(rascunhoDespacho);
             FillUnidadeDestino(rascunhoDespacho);
             FillUserAndDataHora(rascunhoDespacho);
-             FillOrganizacao(rascunhoDespacho);
+            FillOrganizacao(rascunhoDespacho);
             FillOrganizacaoProcesso(rascunhoDespacho);
 
             _repositorioRascunhosDespacho.Add(rascunhoDespacho);
             _unitOfWork.Save();
 
             return Search(rascunhoDespacho.Id);
+        }
+
+        public RascunhoDespachoModel Clone(int id)
+        {
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).Include(r => r.AnexosRascunho).ThenInclude(a => a.TipoDocumental).SingleOrDefault();
+            _validation.Exists(rascunhoDespacho);
+
+            RascunhoDespachoModel rascunhoDespachoModel = _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho);
+            return Add(rascunhoDespachoModel);
         }
 
         public void Delete(int id)

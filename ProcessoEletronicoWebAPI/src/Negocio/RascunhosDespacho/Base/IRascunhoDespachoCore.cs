@@ -11,6 +11,7 @@ namespace Negocio.RascunhosDespacho.Base
         IEnumerable<RascunhoDespachoModel> SearchByOrganizacao();
         IEnumerable<RascunhoDespachoModel> SearchByUsuario();
         RascunhoDespachoModel Add(RascunhoDespachoModel rascunhoDespacho);
+        RascunhoDespachoModel Clone(int id);
         void Update(int id, RascunhoDespachoModel rascunhoDespacho);
         void Delete(int id);
     }
