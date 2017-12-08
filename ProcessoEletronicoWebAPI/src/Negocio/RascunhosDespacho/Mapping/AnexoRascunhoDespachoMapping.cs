@@ -10,6 +10,7 @@ namespace Negocio.RascunhosDespacho.Mapping
         public AenxoRascunhoDespachoMapping()
         {
             CreateMap<AnexoRascunhoDespachoModel, AnexoRascunho>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Conteudo, opt => opt.MapFrom(src => Convert.FromBase64String(src.ConteudoString)))
                 .ForMember(dest => dest.IdTipoDocumental, opt => opt.MapFrom(src => src.TipoDocumental != null ? src.TipoDocumental.Id : (int?) null));
 
