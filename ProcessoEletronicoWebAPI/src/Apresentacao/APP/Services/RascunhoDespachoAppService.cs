@@ -44,6 +44,23 @@ namespace Apresentacao.APP.Services
             return result;
         }
 
+        public ResultViewModel<RascunhoDespachoViewModel> Clone(int id)
+        {
+            ResultViewModel<RascunhoDespachoViewModel> result = new ResultViewModel<RascunhoDespachoViewModel>();
+
+            try
+            {
+                result.Entidade = _mapper.Map<RascunhoDespachoViewModel>(_rascunhoDespacho.Clone(id));
+                result.Success = true;
+            }
+            catch (RecursoNaoEncontradoException e)
+            {
+                SetMensagemErro(result.Mensagens, e);
+            }
+
+            return result;
+        }
+
         public ResultViewModel<ICollection<RascunhoDespachoViewModel>> Search()
         {
             ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = new ResultViewModel<ICollection<RascunhoDespachoViewModel>>();

@@ -89,7 +89,8 @@ namespace WebAPP.Controllers
         [HttpGet]
         public IActionResult UpdateFormDespacho(RascunhoDespachoViewModel rascunhoDespacho)
         {
-            ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Search(rascunhoDespacho.Id);
+            ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Clone(rascunhoDespacho.Id);
+
             result.Entidade.ListaOrganizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
 
             string guidOrganizacao = result.Entidade.GuidOrganizacaoDestino;

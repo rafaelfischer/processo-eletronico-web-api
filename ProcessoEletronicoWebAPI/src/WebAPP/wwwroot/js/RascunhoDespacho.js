@@ -89,6 +89,9 @@ function uploadFiles(campo) {
         formData.append("files", files[i]);
         formData.append("idRascunhoDespacho", $("#formanexo").find("#Id").val());
         formData.append("descricaoAnexos", $("#formanexo").find("#DescricaoAnexos").val());
+
+        if (!isNullOrEmpty($("#idTipoDocumental").val()) && $("#idTipoDocumental").val() > 0)
+            formData.append("idTipoDocumental", $("#formanexo").find("#idTipoDocumental").val());
     }
 
     $('#textLoad').toggleClass('disabled');

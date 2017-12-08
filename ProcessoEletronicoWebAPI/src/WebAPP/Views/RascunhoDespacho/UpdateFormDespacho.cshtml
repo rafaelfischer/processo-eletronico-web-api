@@ -18,7 +18,7 @@
         </div>
         <div class="tab-pane" id="tab_2">
             <div id="div-form-anexo">
-                @Html.Partial("~/Views/RascunhoAnexoDespacho/FormAnexos.cshtml",   new ListaAnexosRascunhoDespacho { Anexos = Model.Anexos, TiposDocumentais = Model.ListaTiposDocumentais, IdRascunhoDespacho = Model.Id })
+                @Html.Partial("~/Views/RascunhoAnexoDespacho/FormAnexos.cshtml", new ListaAnexosRascunhoDespacho { Anexos = Model.Anexos, TiposDocumentais = Model.ListaTiposDocumentais, IdRascunhoDespacho = Model.Id })
             </div>
         </div>
     </div>
@@ -43,36 +43,19 @@
                 <button data-id="@Model.Id" class="btn btn-success btn-block"><i class="fa fa-save"></i> Despachar Processo</button>
             </form>
         </div>
-
-        @if (dia == 0 && hora == 0 && min == 0 && sec > -5)
-        {
-
-            <form asp-action="OpcoesCarregamento"
-                  asp-controller="Despachos"
-                  id="formExcluirRascunhoDespachoAjax"
-                  data-ajax-mode="replace"
-                  data-ajax-update="#opcoes-carregamento"
-                  data-ajax="true"
-                  data-ajax-method="GET">                
-                <input type="hidden" name="IdProcesso" value="@Model.IdProcesso" />
-                <input type="hidden" name="IdAtividade" value="@Model.IdAtividade" />
-                <button data-id="@Model.Id" class="btn btn-danger btn-block"><i class="fa fa-close"></i> Cancelar Despacho</button>
-            </form>
-        }
-        else
-        {
-            <form asp-action="OpcoesCarregamento"
-                  asp-controller="Despachos"
-                  data-ajax-mode="replace"
-                  data-ajax-update="#opcoes-carregamento"
-                  data-ajax="true"
-                  data-ajax-method="GET">
-                <input type="hidden" name="IdProcesso" value="@Model.IdProcesso" />
-                <input type="hidden" name="IdAtividade" value="@Model.IdAtividade" />
-                <button data-id="@Model.Id" class="btn btn-danger btn-block"><i class="fa fa-close"></i> Cancelar Despacho</button>
-            </form>
-        }
-    </div>    
+        <form asp-action="OpcoesCarregamento"
+              asp-controller="Despachos"
+              id="formExcluirRascunhoDespachoAjax"
+              data-ajax-mode="replace"
+              data-ajax-update="#opcoes-carregamento"
+              data-ajax="true"
+              data-ajax-method="GET">
+            <input type="hidden" id="Id" name="id" value="@Model.Id" />
+            <input type="hidden" name="IdProcesso" value="@Model.IdProcesso" />
+            <input type="hidden" name="IdAtividade" value="@Model.IdAtividade" />
+            <button data-id="@Model.Id" class="btn btn-danger btn-block"><i class="fa fa-close"></i> Cancelar Despacho</button>
+        </form>
+    </div>
 </div>
 
 @section scripts{

@@ -23,11 +23,7 @@
         </div>
         <div class="tab-pane" id="tab_2">
             <div id="div-form-anexo">                
-                @Html.Partial("~/Views/RascunhoAnexoDespacho/FormAnexos.cshtml", new ListaAnexosRascunhoDespacho
-                                                                                    {
-                                                                                        Anexos = Model.Anexos,                                     
-                                                                                        IdRascunhoDespacho = Model.Id
-                                                                                    })
+                @Html.Partial("~/Views/RascunhoAnexoDespacho/FormAnexos.cshtml", new ListaAnexosRascunhoDespacho { Anexos = Model.Anexos, IdRascunhoDespacho = Model.Id })
             </div>
         </div>
     </div>

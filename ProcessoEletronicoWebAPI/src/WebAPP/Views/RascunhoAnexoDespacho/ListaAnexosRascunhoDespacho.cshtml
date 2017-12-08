@@ -15,12 +15,7 @@
                 <tr>
                     <th>ID</th>
                     <th>ARQUIVO</th>
-
-                    @if (Model.TiposDocumentais != null)
-                    {
-                        <th>TIPO DOCUMENTAL</th>
-                    }
-
+                    <th>TIPO DOCUMENTAL</th>
                     <th>DESCRIÇÃO</th>
                     <th class="col-md-2">AÇÕES</th>
                 </tr>
@@ -35,12 +30,7 @@
                     <tr>
                         <td>@item.value.Id</td>
                         <td>@item.value.Nome</td>
-
-                        @if (Model.TiposDocumentais != null)
-                        {
-                            <td>@item.value.TipoDocumental?.Text</td>
-                        }
-
+                        <td>@item.value.TipoDocumental?.Text</td>
                         <td>@item.value.Descricao</td>
                         <td class="text-center">
                             <div class="btn-group">
