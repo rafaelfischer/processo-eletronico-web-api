@@ -90,7 +90,7 @@ function carregaModalDefault(
 
     if (!isNullOrEmpty(classBtnCancela)) {
         $classBtnCancela = classBtnCancela;
-        $btnCancela.addClass($classBtnCancela);
+        $btnCancela.attr('data-btn', classBtnCancela);        
     }
 
     if (!isNullOrEmpty(acaoConfirma)) {

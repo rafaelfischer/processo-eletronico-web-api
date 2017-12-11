@@ -40,7 +40,8 @@ function getTiposDocumentais() {
 
 /*Evento abrindo do componente tipo documental para carregamento dos dados da consulta de tipo documental*/
 $eSTipoDocumental.on('select2:opening', function (e) {
-    if ($idAtividade == 0) {
+    if ($idAtividade == 0)
+    {
         $idAtividade = $('#Atividade_Id').val();
         $.get(
             "/Suporte/GetTiposDocumentais?idAtividade=" + $idAtividade, function (data) {
@@ -48,7 +49,7 @@ $eSTipoDocumental.on('select2:opening', function (e) {
             }).fail(function () {
                 ErrorTiposDocumentais();
             });
-    }
+    }    
 });
 
 /**
