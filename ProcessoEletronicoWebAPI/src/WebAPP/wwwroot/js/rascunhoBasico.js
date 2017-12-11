@@ -1,11 +1,4 @@
-﻿/*Incialização da página*/
-$(document).ready(function () {    
-    ResetSinalizacoesLista();
-    ResetMunicipioLista();
-    $('#formbasico select').select2({ width: '100%' });
-});
-
-/**
+﻿/**
  * Variáveis globais
  */
 var index = 0;
@@ -15,6 +8,13 @@ var $eSTipoDocumental = $("#idTipoDocumental");
 var $eSAtividade = $('#Atividade_Id');
 var $idAtividade = 0;
 var $atividadeDefault = $('#Atividade_Id').val();
+
+/*Incialização da página*/
+$(document).ready(function () {
+    ResetSinalizacoesLista();
+    ResetMunicipioLista();
+    $('#formbasico select').select2({ width: '100%' });
+});
 
 /************************************************DADOS BASICOS************************************************/
 /**
@@ -27,7 +27,7 @@ function LimparFormBasico() {
 }
 
 /*Evento change do componente select para carregamento dos dados da consulta de tipo documental*/
-$('body').on('change', '#Atividade_Id', function (e) {
+$('body').on('select2:select', '#Atividade_Id', function (e) {
     carregaModalDefault(
         "Alterar Atividade",
         "Os tipos documentais dos anexos serão removidos caso confirme esta alteração. Deseja alterar a atividade do processo?",
@@ -39,11 +39,11 @@ $('body').on('change', '#Atividade_Id', function (e) {
 });
 
 /*Confirma alteração de atividade do processo*/
-$('body').on('click', '.alterarAtividade', function (e) {
-    //....
+$('body').on('click', 'button[data-btn="alterarAtividade"]', function (e) {
+    $idAtividade = 0;
 });
 
 /*Cancela alteração de atividade do processo*/
-$('body').on('click', '.manterAtividade', function (e) {
+$('body').on('click', 'button[data-btn="manterAtividade"]', function (e) {
     $eSAtividade.val($atividadeDefault).trigger("change");
 });

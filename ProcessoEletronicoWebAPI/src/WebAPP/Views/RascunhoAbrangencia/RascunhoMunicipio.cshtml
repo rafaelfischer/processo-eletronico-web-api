@@ -1,14 +1,13 @@
 ﻿@model RascunhoProcessoViewModel
 
-<form 
-      name="formabrangencia" 
-      asp-action="EditarMunicipio" 
-      asp-controller="RascunhoAbrangencia" 
-      data-ajax-complete="ResetMunicipioLista" 
-      id="formabrangencia" 
-      data-ajax="true" 
-      data-ajax-method="POST" 
-      data-ajax-mode="replace" 
+<form name="formabrangencia"
+      asp-action="EditarMunicipio"
+      asp-controller="RascunhoAbrangencia"
+      data-ajax-complete="ResetMunicipioLista"
+      id="formabrangencia"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
       data-ajax-update="#grupomunicipios">
 
     <div class="box-body">
@@ -26,10 +25,16 @@
             <select class="form-control" id="municipiosajax" data-placehoder="Selecione um município"></select>
         </div>
     </div>
-    
-    <div id="grupomunicipios">
-        @Html.Partial("~/Views/RascunhoAbrangencia/RascunhoMunicipioLista.cshtml", Model.MunicipiosRascunhoProcesso)
+
+    <div class="box-header">
+        <h3 class="box-title">Municípios Selecionados</h3>
     </div>
+    <div class="box-body">
+        <div id="grupomunicipios">
+            @Html.Partial("~/Views/RascunhoAbrangencia/RascunhoMunicipioLista.cshtml", Model.MunicipiosRascunhoProcesso)
+        </div>
+    </div>
+
 
     <div class="box-footer">
         <div class="btn-group pull-right">

@@ -24,6 +24,7 @@ namespace Apresentacao.APP.Services
         private IAtividadeNegocio _atividadeService;        
         private ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio _sinalizacaoNegocio;
         private IHttpContextAccessor _current;
+        private ProcessoEletronicoService.Negocio.Rascunho.Processo.Base.ISinalizacaoNegocio _sinalizacaoNegocioService;
 
         public RascunhoProcessoService(
             IHttpContextAccessor current,
@@ -33,7 +34,8 @@ namespace Apresentacao.APP.Services
             IOrganizacaoService organizacaoService,             
             IUnidadeService unidadeService, 
             IAtividadeNegocio atividadeNegocio,            
-            ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio sinalizacaoNegocio
+            ProcessoEletronicoService.Negocio.Base.ISinalizacaoNegocio sinalizacaoNegocio,
+            ProcessoEletronicoService.Negocio.Rascunho.Processo.Base.ISinalizacaoNegocio sinalizacaoNegocioService
             )
         {
             _current = current;
@@ -44,6 +46,7 @@ namespace Apresentacao.APP.Services
             _unidadeService = unidadeService;
             _atividadeService = atividadeNegocio;            
             _sinalizacaoNegocio = sinalizacaoNegocio;
+            _sinalizacaoNegocioService = sinalizacaoNegocioService;
         }
         public IEnumerable<RascunhoProcessoViewModel> GetRascunhosProcessoPorOrganizacao()
         {
@@ -151,8 +154,11 @@ namespace Apresentacao.APP.Services
             IEnumerable<Unidade> unidades = _unidadeService.SearchByOrganizacao(_user.UserGuidOrganizacao).ResponseObject;
             rascunhoProcesso.UnidadesLista = _mapper.Map<List<UnidadeViewModel>>(unidades);
 
-            IEnumerable<SinalizacaoModeloNegocio> sinalizacoes = _sinalizacaoNegocio.Pesquisar(_user.UserGuidOrganizacaoPatriarca.ToString());
-            rascunhoProcesso.SinalizacoesLista = _mapper.Map<List<SinalizacaoViewModel>>(sinalizacoes);
+            IEnumerable<SinalizacaoModeloNegocio> listaSinalizacoes = _sinalizacaoNegocio.Pesquisar(_user.UserGuidOrganizacaoPatriarca.ToString());
+            rascunhoProcesso.SinalizacoesLista = _mapper.Map<List<SinalizacaoViewModel>>(listaSinalizacoes);
+
+            IEnumerable<SinalizacaoModeloNegocio> sinalizacoes = _sinalizacaoNegocioService.Get(rascunhoProcesso.Id);
+            rascunhoProcesso.Sinalizacoes = _mapper.Map<List<SinalizacaoViewModel>>(sinalizacoes);
 
             Organizacao organizacao = _organizacaoService.Search(_user.UserGuidOrganizacao).ResponseObject;
             rascunhoProcesso.OrganizacaoProcesso = _mapper.Map<OrganizacaoViewModel>(organizacao);
