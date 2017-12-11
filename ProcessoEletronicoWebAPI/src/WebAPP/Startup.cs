@@ -23,6 +23,7 @@ using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace WebAPP
 {
@@ -84,14 +85,26 @@ namespace WebAPP
 
             app.UseStaticFiles();
 
-            app.Use((context, next) =>
+            app.Use(async (context, next) =>
             {
-                if (context.Request.Path.ToString().EndsWith("signin-oidc"))
-                {
-                    context.Request.Scheme = "http";
-                }
-                return next();
+                context.Request.Scheme = "https";
+                await next.Invoke();
             });
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            //app.Use((context, next) =>
+            //{
+            //    if (context.Request.Path.ToString().EndsWith("signin-oidc"))
+            //    {
+            //        context.Request.Scheme = "https";
+            //        context.Request.Path = "/Rascunho/Editar";
+            //    }
+            //    return next();
+            //});
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
