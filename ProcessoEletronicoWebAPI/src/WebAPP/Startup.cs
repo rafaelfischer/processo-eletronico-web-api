@@ -91,19 +91,14 @@ namespace WebAPP
                 await next.Invoke();
             });
 
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-
-            app.Use((context, next) =>
-            {
-                if (context.Request.Path.ToString().EndsWith("signin-oidc"))
-                {
-                    context.Request.Scheme = "http";
-                }
-                return next();
-            });
+            //app.Use((context, next) =>
+            //{
+            //    if (context.Request.Path.ToString().EndsWith("signin-oidc"))
+            //    {
+            //        context.Request.Scheme = "http";
+            //    }
+            //    return next();
+            //});
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
@@ -212,8 +207,6 @@ namespace WebAPP
                     },
                     OnMessageReceived = async c => 
                     {
-                        var teste = 1;
-
                         Console.WriteLine("Entrou aqui!");
 
                         await Task.FromResult(0);
