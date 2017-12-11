@@ -10,6 +10,14 @@ var $conteudoModalDetalhe = $modalDetalhe.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
 
+
+$('.numero').mask('ZZZZZZZZ9-09.9000.9.9.0009', {
+    translation: {
+        'Z': { pattern: /[0-9]/, optional: true },
+        '9': { pattern: /[1-9]/, optional: true }
+    }
+});
+
 $(document).ready(function () {
     ativaTooltipBootstrap();
 });
