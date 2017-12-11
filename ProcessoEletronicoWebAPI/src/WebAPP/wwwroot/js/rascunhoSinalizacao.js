@@ -3,6 +3,9 @@
  * Inicializa os campos de sinalização com o plugin iCheck
  */
 
+ResetSinalizacoesLista();
+
+
 function AtualizaSinalizacoesLista(data) {    
     $('#formsinalizacoes input[type="checkbox"]').iCheck('uncheck');
     $(this).attr('checked', true);
