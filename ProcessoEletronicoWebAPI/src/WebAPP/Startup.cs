@@ -87,7 +87,7 @@ namespace WebAPP
 
             app.Use(async (context, next) =>
             {
-                context.Request.Scheme = "https";
+                //context.Request.Scheme = "https";
                 await next.Invoke();
             });
 
@@ -155,6 +155,8 @@ namespace WebAPP
                 {
                     OnTokenValidated = async c =>
                     {
+                        Console.WriteLine("Entrou aqui também!");
+
                         // use the access token to retrieve claims from userinfo
                         var userInfoClient = new UserInfoClient("https://acessocidadao.es.gov.br/is/connect/userinfo");
                         var access_token = c.ProtocolMessage.AccessToken;
