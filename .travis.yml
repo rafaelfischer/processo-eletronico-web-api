@@ -6,6 +6,7 @@ services:
   - docker
 install:
   - nvm install 6.10
+  - npm i -g bower
 script: 
   - scripts/travis.sh
 deploy:
