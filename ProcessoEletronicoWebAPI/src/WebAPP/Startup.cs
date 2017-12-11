@@ -96,15 +96,14 @@ namespace WebAPP
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            //app.Use((context, next) =>
-            //{
-            //    if (context.Request.Path.ToString().EndsWith("signin-oidc"))
-            //    {
-            //        context.Request.Scheme = "https";
-            //        context.Request.Path = "/Rascunho/Editar";
-            //    }
-            //    return next();
-            //});
+            app.Use((context, next) =>
+            {
+                if (context.Request.Path.ToString().EndsWith("signin-oidc"))
+                {
+                    context.Request.Scheme = "http";
+                }
+                return next();
+            });
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
