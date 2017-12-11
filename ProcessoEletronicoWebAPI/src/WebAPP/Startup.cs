@@ -87,18 +87,9 @@ namespace WebAPP
 
             app.Use(async (context, next) =>
             {
-                //context.Request.Scheme = "https";
+                context.Request.Scheme = "https";
                 await next.Invoke();
             });
-
-            //app.Use((context, next) =>
-            //{
-            //    if (context.Request.Path.ToString().EndsWith("signin-oidc"))
-            //    {
-            //        context.Request.Scheme = "http";
-            //    }
-            //    return next();
-            //});
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
@@ -120,6 +111,8 @@ namespace WebAPP
             {
                 // Set the authority to your Auth0 domain
                 Authority = $"https://{settings.Value.Domain}",
+
+                AuthenticationScheme = "oidc",
 
                 // Configure the Auth0 Client ID and Client Secret
                 ClientId = Environment.GetEnvironmentVariable("ProcessoEletronicoAppClientId"),
@@ -155,8 +148,6 @@ namespace WebAPP
                 {
                     OnTokenValidated = async c =>
                     {
-                        Console.WriteLine("Entrou aqui também!");
-
                         // use the access token to retrieve claims from userinfo
                         var userInfoClient = new UserInfoClient("https://acessocidadao.es.gov.br/is/connect/userinfo");
                         var access_token = c.ProtocolMessage.AccessToken;
@@ -204,12 +195,6 @@ namespace WebAPP
                             c.Ticket.Properties,
                             c.Ticket.AuthenticationScheme
                             );
-
-                        await Task.FromResult(0);
-                    },
-                    OnMessageReceived = async c => 
-                    {
-                        Console.WriteLine("Entrou aqui!");
 
                         await Task.FromResult(0);
                     }
