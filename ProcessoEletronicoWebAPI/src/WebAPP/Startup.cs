@@ -22,6 +22,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace WebAPP
 {
@@ -83,7 +85,11 @@ namespace WebAPP
 
             app.UseStaticFiles();
 
-
+            app.Use(async (context, next) =>
+            {
+                context.Request.Scheme = "https";
+                await next.Invoke();
+            });
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
@@ -105,6 +111,8 @@ namespace WebAPP
             {
                 // Set the authority to your Auth0 domain
                 Authority = $"https://{settings.Value.Domain}",
+
+                AuthenticationScheme = "oidc",
 
                 // Configure the Auth0 Client ID and Client Secret
                 ClientId = Environment.GetEnvironmentVariable("ProcessoEletronicoAppClientId"),
