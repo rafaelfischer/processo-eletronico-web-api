@@ -22,6 +22,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using Microsoft.Extensions.Primitives;
 
 namespace WebAPP
 {
@@ -83,7 +84,14 @@ namespace WebAPP
 
             app.UseStaticFiles();
 
-
+            app.Use((context, next) =>
+            {
+                if (context.Request.Path.ToString().EndsWith("signin-oidc"))
+                {
+                    context.Request.Scheme = "http";
+                }
+                return next();
+            });
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
@@ -119,8 +127,7 @@ namespace WebAPP
 
                 // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 
                 // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard 
-                //CallbackPath = new PathString("/signin-oidc"),
-                CallbackPath = "http://processoeletronico.des.es.gov.br/signin-oidc",
+                CallbackPath = new PathString("/signin-oidc"),
 
                 // Configure the Claims Issuer to be Auth0
                 ClaimsIssuer = "processoeletronico",
