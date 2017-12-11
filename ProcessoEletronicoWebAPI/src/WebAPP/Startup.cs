@@ -209,6 +209,14 @@ namespace WebAPP
                             );
 
                         await Task.FromResult(0);
+                    },
+                    OnMessageReceived = async c => 
+                    {
+                        var teste = 1;
+
+                        Console.WriteLine("Entrou aqui!");
+
+                        await Task.FromResult(0);
                     }
                 }
             };
