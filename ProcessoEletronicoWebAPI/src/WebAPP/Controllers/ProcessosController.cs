@@ -49,7 +49,7 @@ namespace WebAPP.Controllers
         public IActionResult SearchByOrganizacao()
         {
             IEnumerable<GetProcessoBasicoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
-            return View("processosPorOrganizacao", processosPorOrganizacao);
+            return View("ProcessosPorOrganizacao", processosPorOrganizacao);
         }
 
         [HttpGet]
