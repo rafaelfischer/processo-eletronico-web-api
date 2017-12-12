@@ -27,7 +27,7 @@ namespace ProcessoEletronicoService.WebAPI.Common
         private Guid _userGuidOrganizacaoPatriarca;
         private IOrganizacaoService _organizacaoService;
 
-        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken, IOrganizacaoService organizacaoService )
+        public CurrentUser(IHttpContextAccessor httpContextAccessor, IClientAccessTokenProvider clientAccessToken, IOrganizacaoService organizacaoService)
         {
             _organizacaoService = organizacaoService;
             FillUser(httpContextAccessor.HttpContext.User, clientAccessToken);
@@ -90,37 +90,40 @@ namespace ProcessoEletronicoService.WebAPI.Common
 
                     string accessToken = clientAccessToken.AccessToken;
 
-                    Claim claimOrganizacao = user.FindFirst("orgao");
-
-                    if (claimOrganizacao != null)
+                    List<Claim> claimsOrganizacao = user.FindAll("orgao").ToList();
+                    
+                    if (claimsOrganizacao != null && claimsOrganizacao.Count > 0)
                     {
-                        //TODO:Após o Acesso Cidadão implementar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
-                        string siglaOrganizacao = claimOrganizacao.Value;
-                        
-                        ApiCallResponse<Organizacao> organizacaoUsuario = _organizacaoService.Search(siglaOrganizacao);
-                        if (organizacaoUsuario.ResponseObject == null)
+                        foreach (Claim c in claimsOrganizacao)
                         {
-                            throw new ProcessoEletronicoException($"Não foi possível obter informações da organização do usuário (Sigla: {siglaOrganizacao})");
-                        }
-                        else
-                        {
-                            _userGuidOrganizacao = Guid.Parse(organizacaoUsuario.ResponseObject.Guid);
-                        }
+                            Guid guidClaim = new Guid();
 
-                        ApiCallResponse<Organizacao> organizacaoPatriarca = _organizacaoService.SearchPatriarca(_userGuidOrganizacao);
-                        if (organizacaoPatriarca.ResponseObject == null)
-                        {
-                            throw new ProcessoEletronicoException($"Não foi possível obter informações da organização patriarca do usuário (Guid: {_userGuidOrganizacao})");
-                        }
-                        else
-                        {
-                            _userGuidOrganizacaoPatriarca = Guid.Parse(organizacaoPatriarca.ResponseObject.Guid);
+                            if (Guid.TryParse(c.Value, out guidClaim))
+                                FillOrgaoEPatriarca(guidClaim);
                         }
                     }
                 }
             }
         }
-        
+
+        private void FillOrgaoEPatriarca(Guid guidOrganizacaoUsuario)
+        {
+
+            _userGuidOrganizacao = guidOrganizacaoUsuario;
+            
+            ApiCallResponse<Organizacao> organizacaoPatriarca = _organizacaoService.SearchPatriarca(_userGuidOrganizacao);
+            if (organizacaoPatriarca.ResponseObject == null)
+            {
+                throw new ProcessoEletronicoException($"Não foi possível obter informações da organização patriarca do usuário (Guid: {_userGuidOrganizacao})");
+            }
+            else
+            {
+                _userGuidOrganizacaoPatriarca = Guid.Parse(organizacaoPatriarca.ResponseObject.Guid);
+            }
+
+        }
+
+
         //Essa função será utilizada enquanto o token do acesso cidadão não contiver o guid do sistema
         private string FormatClientIdValue(string clientIdValue)
         {

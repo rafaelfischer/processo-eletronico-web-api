@@ -60,9 +60,9 @@ namespace WebAPP
             // Add the Auth0 Settings object so it can be injected
             services.Configure<Settings>(Configuration.GetSection("oidc"));
 
-            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;            
+            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
 
-            services.AddSingleton<IFileProvider>(physicalProvider);            
+            services.AddSingleton<IFileProvider>(physicalProvider);
 
             DependencyInjection.InjectDependencies(services);
         }
@@ -85,11 +85,14 @@ namespace WebAPP
 
             app.UseStaticFiles();
 
-            app.Use(async (context, next) =>
+            if (!env.IsDevelopment())
             {
-                context.Request.Scheme = "https";
-                await next.Invoke();
-            });
+                app.Use(async (context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    await next.Invoke();
+                });
+            }
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
@@ -187,9 +190,7 @@ namespace WebAPP
                         id.AddClaim(new Claim("id_token", c.ProtocolMessage.IdToken));
                         id.AddClaim(new Claim("client_id", c.Ticket.Principal.FindFirst("aud").Value));
 
-                        //Adiciona dados do orgao e patriarca
-                        FillOrgaoEPatriarca(id, access_token);
-
+                      
                         c.Ticket = new AuthenticationTicket(
                             new ClaimsPrincipal(id),
                             c.Ticket.Properties,
@@ -217,6 +218,7 @@ namespace WebAPP
 
         private void FillOrgaoEPatriarca(ClaimsIdentity id, string token)
         {
+
             if (id.HasClaim(a => a.Type == "orgao"))
             {
                 string siglaOrganizacao = string.Empty;
@@ -224,7 +226,7 @@ namespace WebAPP
 
                 string guidOrganizacao = "";
                 string guidPatriarca = "";
-                string nomeOrganizacao = "";                
+                string nomeOrganizacao = "";
 
                 DownloadJson downloadJson = new DownloadJson();
                 string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
@@ -233,7 +235,7 @@ namespace WebAPP
 
                 guidOrganizacao = organizacao.Guid;
                 nomeOrganizacao = organizacao.RazaoSocial;
-                guidPatriarca = organizacao.GuidPatriarca;                
+                guidPatriarca = organizacao.GuidPatriarca;
 
                 id.AddClaim(new Claim("guidorganizacao", guidOrganizacao));
                 id.AddClaim(new Claim("nomeorganizacao", nomeOrganizacao));
