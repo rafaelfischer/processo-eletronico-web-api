@@ -2,6 +2,7 @@
 using Apresentacao.APP.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Negocio.Modelos.Patch;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
 using ProcessoEletronicoService.Negocio.Base;
 using ProcessoEletronicoService.Negocio.Comum.Base;
@@ -213,8 +214,8 @@ namespace Apresentacao.APP.Services
         {   
             try
             {    
-                RascunhoProcessoModeloNegocio rascunhoProcessoNegocio = _mapper.Map<RascunhoProcessoModeloNegocio>(rascunhoProcessoViewModel);
-                _rascunhoService.Patch(id, rascunhoProcessoNegocio);
+                RascunhoProcessoPatchModel rascunhoProcessoPatchModel = _mapper.Map<RascunhoProcessoPatchModel>(rascunhoProcessoViewModel);
+                _rascunhoService.Patch(id, rascunhoProcessoPatchModel);
             }
             catch (MemberAccessException)
             {

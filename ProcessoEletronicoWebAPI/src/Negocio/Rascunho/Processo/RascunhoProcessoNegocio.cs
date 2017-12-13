@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Negocio.Modelos.Patch;
 using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Infraestrutura.Comum.Exceptions;
@@ -187,6 +188,40 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo
 
             MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
             InformacoesUnidade(rascunhoProcesso);
+            _unitOfWork.Save();
+        }
+
+        public void Patch(int id, RascunhoProcessoPatchModel rascunhoProcessoPatchModel)
+        {
+            RascunhoProcesso rascunhoProcesso = _repositorioRascunhosProcesso.Where(rp => rp.Id.Equals(id)).Include(a => a.Anexos).ThenInclude(td => td.TipoDocumental).SingleOrDefault();
+            _validacao.Exists(rascunhoProcesso);
+
+            RascunhoProcessoModeloNegocio rascunhoProcessoNegocio = _mapper.Map<RascunhoProcessoModeloNegocio>(rascunhoProcesso);
+            _mapper.Map(rascunhoProcessoPatchModel, rascunhoProcessoNegocio);
+            
+            //Autenticacao do usuário
+            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
+            _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
+            _usuarioValidacao.PodeSalvarProcessoNaOrganizacao(rascunhoProcessoNegocio, _user.UserGuidOrganizacao);
+
+            _validacao.IsFilled(rascunhoProcessoNegocio);
+            _anexoValidacao.IsFilled(rascunhoProcessoNegocio.Anexos);
+            _interessadoPessoaFisicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaFisica);
+            _interessadoPessoaJuridicaValidacao.IsFilled(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
+            _municipioValidacao.IsFilled(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
+            //Como sinalizações são representadas como lista de inteiros, não faz sentido verificar o preechimento um a um, apenas sua validade.
+
+            //Preenchimento correto dos campos
+            _validacao.IsValid(rascunhoProcessoNegocio);
+            ClearTiposDocumentaisAnexos(rascunhoProcessoNegocio, rascunhoProcesso);
+            _anexoValidacao.IsValid(rascunhoProcessoNegocio.Anexos, rascunhoProcessoNegocio.Atividade?.Id);
+            _interessadoPessoaFisicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaFisica);
+            _interessadoPessoaJuridicaValidacao.IsValid(rascunhoProcessoNegocio.InteressadosPessoaJuridica);
+            _municipioValidacao.IsValid(rascunhoProcessoNegocio.MunicipiosRascunhoProcesso);
+            _sinalizacaoValidacao.IsValid(rascunhoProcessoNegocio.Sinalizacoes.Select(s => s.Id).ToList());
+
+            InformacoesUnidade(rascunhoProcesso);
+            MapAlteracaoRascunhoProcesso(rascunhoProcessoNegocio, rascunhoProcesso);
             _unitOfWork.Save();
         }
 
