@@ -101,7 +101,7 @@ namespace Apresentacao.APP.Services
 
             try
             {
-                _rascunhoDespacho.Update(rascunhoDespacho.Id, _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho));
+                _rascunhoDespacho.Update(rascunhoDespacho.Id, _mapper.Map<RascunhoDespachoPatchModel>(rascunhoDespacho));
                 result.Entidade = _mapper.Map<RascunhoDespachoViewModel>(_rascunhoDespacho.Search(rascunhoDespacho.Id));
 
                 SetMensagemSucesso(result.Mensagens, "Rascunho de despacho atualizado com sucesso.");

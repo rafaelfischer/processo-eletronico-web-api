@@ -13,6 +13,7 @@ namespace Negocio.RascunhosDespacho.Base
         RascunhoDespachoModel Add(RascunhoDespachoModel rascunhoDespacho);
         RascunhoDespachoModel Clone(int id);
         void Update(int id, RascunhoDespachoModel rascunhoDespacho);
+        void Update(int id, RascunhoDespachoPatchModel rascunhoDespachoPatchModel);
         void Delete(int id);
     }
 }

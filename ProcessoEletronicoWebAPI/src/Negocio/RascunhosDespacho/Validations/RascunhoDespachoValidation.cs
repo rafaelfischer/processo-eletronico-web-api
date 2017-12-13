@@ -79,7 +79,7 @@ namespace Negocio.RascunhosDespacho.Validations
 
         private void OrganizacaoDestinoExists(RascunhoDespachoModel rascunhoDespachoModel)
         {
-            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino))
+            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino) && rascunhoDespachoModel.GuidOrganizacaoDestino != "0")
             {
                 if (_organizacaoService.Search(new Guid(rascunhoDespachoModel.GuidOrganizacaoDestino)).ResponseObject == null)
                 {
@@ -90,7 +90,7 @@ namespace Negocio.RascunhosDespacho.Validations
 
         private void UnidadeDestinoExists(RascunhoDespachoModel rascunhoDespachoModel)
         {
-            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino))
+            if (!string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino) && rascunhoDespachoModel.GuidUnidadeDestino != "0")
             {
                 if (_unidadeService.Search(new Guid(rascunhoDespachoModel.GuidUnidadeDestino)).ResponseObject == null)
                 {
