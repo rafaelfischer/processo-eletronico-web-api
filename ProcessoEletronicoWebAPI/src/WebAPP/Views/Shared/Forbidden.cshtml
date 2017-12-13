@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "ProcessoEletrônico - Página não encontrada.";
+    Layout = "~/Views/Shared/_LayoutPageOffline.cshtml";
+}
+<section class="content">
+    <div class="error-page">
+        <div class="lockscreen-logo">
+            <strong>Processo</strong>Eletrônico
+        </div>
+        <h3 class="text-center"><i class="fa fa-warning text-yellow"></i> Acesso Negado!</h3>
+
+        <p class="text-center">
+            Seu usuário não possui permissão para acessar esta área do sistema.<br />
+            Para regularizar sua situação, entre em contato com a central de atendimento do Prodest.            
+            <br />
+            <br />
+        </p>
+
+        <h4 class="text-center">Atendimento Prodest</h4>
+        <p class="text-center">
+            <label>Tel.:</label> (027) 3636-7166 / 
+            <label>E-mail:</label> atendimento@prodest.es.gov.br            
+        </p>
+        <div style="text-align: center">
+            @Html.ActionLink("Sair", "Signout", "Home", new { @class = "btn btn-default btn-flat" })
+        </div>
+        
+    </div>
+</section>
+<div class="lockscreen-footer text-center">
+    Copyright &copy; 2016-2017 <b><a href="http://prodest.es.gov.br" class="text-black">Prodest</a></b>
+</div>
