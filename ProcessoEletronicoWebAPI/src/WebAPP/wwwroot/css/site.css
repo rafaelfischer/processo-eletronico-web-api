@@ -115,3 +115,8 @@ input[type="checkbox"].input-validation-error {
 *::-webkit-scrollbar-thumb {
     background-color: #ccc;
 }
+
+.skin-blue .sidebar-menu > li > .treeview-menu {
+    margin: 0 0px;
+    background: #fff;
+}
