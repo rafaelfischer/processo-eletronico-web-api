@@ -24,16 +24,16 @@
                     <span class="input-group-addon">
                         @if (contato.TipoContato?.id == item.id)
                         {
-                            <input type="radio" checked="checked" name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
+                            <input type="radio" data-size="@item.quantidadeDigitos" checked="checked" name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
                         }
                         else
                         {
-                            <input type="radio" name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
+                            <input type="radio" data-size="@item.quantidadeDigitos" name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
                         }                        
                     </span>
                 }
 
-                <input type="text" class="form-control" name="Contatos[@(index++)].Telefone" value="@contato.Telefone" />
+                <input type="text" class="form-control telefone" name="Contatos[@(index++)].Telefone" value="@contato.Telefone" />
             </div>
         </div>
     }
@@ -49,11 +49,46 @@ else
             @foreach (var item in Model.TiposContato)
             {
                 <span class="input-group-addon">
-                    <input type="radio" name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
+                    <input type="radio" data-size="@item.quantidadeDigitos" name="Contatos[@index].TipoContato.id" value="@item.id" /> @item.descricao
                 </span>
             }
 
-            <input type="text" class="form-control" name="Contatos[@index].Telefone" />
+            <input type="text" class="form-control telefone" name="Contatos[@index].Telefone" />
         </div>
     </div>
 }
+
+<script>
+    
+    var masks = ['(00) 00000-0000', '(00) 0000-0000', '(00) 0000-0000 (0000)'];    
+
+    $.each($('.formContato .input-group').find('input[type="radio"]'), function (i) {
+        if ($(this).prop("checked")) {
+            var elemento = $(this).parents('.input-group').children('input[type="text"]');
+            var digitos = $(this).attr("data-size");
+            MaskTelefone(elemento, digitos);
+        }
+    });
+
+    $('body').on('focus', '.telefone', function () {        
+        var elemento = this;
+        var digitos = $(this).parents('.input-group').find('input[type="radio"]:checked').attr('data-size');        
+        MaskTelefone(elemento, digitos);
+    });
+
+    $('body').on('change', 'input[type="radio"]', function () {
+        var elemento = $(this).parents('.input-group').children('input[type="text"]');
+        var digitos = $(this).attr('data-size');
+        MaskTelefone(elemento, digitos);
+    });
+
+    function MaskTelefone(elemento, digitos) {
+        if (digitos > 11)
+            $(elemento).mask(masks[2]);
+        else if (digitos == 11)
+            $(elemento).mask(masks[0]);
+        else
+            $(elemento).mask(masks[1]);
+    }
+
+</script>
