@@ -9,6 +9,7 @@ namespace Apresentacao.APP.Mappings
         public RascunhoDespachoMapper()
         {   
             CreateMap<RascunhoDespachoModel, RascunhoDespachoViewModel>().ReverseMap();
+            CreateMap<RascunhoDespachoViewModel, RascunhoDespachoPatchModel>();
             CreateMap<AnexoRascunhoDespachoModel, AnexoRascunhoDespachoViewModel>().ReverseMap();
         }
     }
