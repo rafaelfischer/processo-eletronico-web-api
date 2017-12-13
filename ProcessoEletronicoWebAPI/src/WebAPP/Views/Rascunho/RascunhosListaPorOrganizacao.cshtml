@@ -4,7 +4,7 @@
     <div class="box-header with-border">
         <h3 class="box-title">@ViewBag.SubTitle</h3>
         <div class="box-tools pull-right">
-            <a asp-action="editar" asp-controller="rascunho" class="btn btn-primary btn-sm">
+            <a asp-action="Editar" asp-controller="Rascunho" class="btn btn-primary btn-sm">
                 <i class="fa fa-plus"></i> Novo Processo
             </a>
         </div>
@@ -31,7 +31,7 @@
                         <td>@r.Resumo</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a class="btn btn-sm btn-info" asp-action="editar" asp-controller="rascunho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>
+                                <a class="btn btn-sm btn-info" asp-action="Editar" asp-controller="Rascunho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>
                                 @*<a class="btn btn-sm btn-danger btnExcluirRascunho" asp-action="excluir" asp-controller="rascunho" asp-route-id="@r.Id"><i class="fa fa-trash"></i></a>*@
                                 <a class="btn btn-sm btn-danger btnExcluirRascunho" data-id="@r.Id"><i class="fa fa-trash"></i></a>
                             </div>

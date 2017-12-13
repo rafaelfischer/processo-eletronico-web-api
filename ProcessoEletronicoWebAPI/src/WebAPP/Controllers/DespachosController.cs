@@ -40,7 +40,7 @@ namespace WebAPP.Controllers
         [HttpGet]
         public IActionResult OpcoesCarregamento(CarregamentoRascunhoDespachoViewModel opcoes, bool delete = false)
         {
-            return PartialView("_opcoesCarregamentoRascunhoDespacho", opcoes);
+            return PartialView("_OpcoesCarregamentoRascunhoDespacho", opcoes);
         }
 
         [HttpPost]
