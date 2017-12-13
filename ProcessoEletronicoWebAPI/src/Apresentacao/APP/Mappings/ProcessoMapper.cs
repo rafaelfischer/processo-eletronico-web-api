@@ -1,5 +1,6 @@
 ﻿using Apresentacao.APP.ViewModels;
 using AutoMapper;
+using Negocio.Modelos.Patch;
 using ProcessoEletronicoService.Negocio.Modelos;
 using Prodest.ProcessoEletronico.Integration.Organograma.Models;
 using System;
@@ -18,6 +19,7 @@ namespace Apresentacao.APP.Mappings
             CreateMap<ProcessoModeloNegocio, GetProcessoViewModel>();
             CreateMap<RascunhoProcessoModeloNegocio, RascunhoProcessoViewModel>().ReverseMap();
             CreateMap<RascunhoProcessoModeloNegocio, GetRascunhoProcessoViewModel>().ReverseMap();
+            CreateMap<RascunhoProcessoViewModel, RascunhoProcessoPatchModel>();
 
             CreateMap<AtividadeModeloNegocio, AtividadeViewModel>().ReverseMap();
             CreateMap<SinalizacaoModeloNegocio, SinalizacaoViewModel>().ReverseMap();
