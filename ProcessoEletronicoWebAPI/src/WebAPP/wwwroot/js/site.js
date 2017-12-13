@@ -10,6 +10,24 @@ var $conteudoModalDetalhe = $modalDetalhe.find('.modal-body');
 var $classBtnConfirma = "";
 var $classBtnCancela = "";
 
+AtivarMenu();
+
+function AtivarMenu() {
+    var titulo = $('section.content-header h1 span').text();
+
+    $.each($('.sidebar-menu').find('span'), function () {
+        if ($(this).text() == titulo) {
+            console.log(titulo + " = " + $(this).text());
+
+            $.each($(this).parents('li'), function () {
+                console.log(this);
+
+                $(this).addClass('active');
+            });
+        }
+    });
+}
+
 
 $('.numero').mask('ZZZZZZZZ9-09.9000.9.9.0009', {
     translation: {
