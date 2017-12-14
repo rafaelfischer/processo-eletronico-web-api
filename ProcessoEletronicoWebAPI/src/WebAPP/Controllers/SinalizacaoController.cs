@@ -25,12 +25,14 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Sinalizacao.Edit")]
         public IActionResult Add()
         {
             return PartialView("AddSinalizacao");
         }
 
         [HttpGet]
+        [Authorize(Policy = "Sinalizacao.Edit")]
         public IActionResult Update(int Id)
         {
             ResultViewModel<SinalizacaoViewModel> resultViewModel = _service.Search(Id);
