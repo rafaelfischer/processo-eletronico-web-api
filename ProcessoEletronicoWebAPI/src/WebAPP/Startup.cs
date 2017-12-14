@@ -80,9 +80,9 @@ namespace WebAPP
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Inicio/Error");                
             }
-
+            
             app.UseStaticFiles();
 
             if (!env.IsDevelopment())
@@ -101,11 +101,11 @@ namespace WebAPP
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                LoginPath = "/home/login",
-                AccessDeniedPath = "/home/AcessoNegado",
+                LoginPath = "/Home/Login",
+                AccessDeniedPath = "/Home/AcessoNegado",
                 ExpireTimeSpan = TimeSpan.FromMinutes(30),
                 SlidingExpiration = true,
-                LogoutPath = "/home/logout",
+                LogoutPath = "/Home/Logout",
                 CookieName = "processoeletronico"
             });
 

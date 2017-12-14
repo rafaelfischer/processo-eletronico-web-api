@@ -1,13 +1,65 @@
 ﻿<!DOCTYPE html>
-
-<html>
+<html lang="pt-br">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge; IE=11; IE=10; IE=9;" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="https://cdn.es.gov.br/images/logo/governo/colors/brasao_es_64x61.png" type="image/x-icon">
+    <link rel="icon" href="https://cdn.es.gov.br/images/logo/governo/colors/brasao_es_64x61.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.es.gov.br/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!--iCheck-->
+    <link href="~/lib/icheck/skins/square/_all.css" rel="stylesheet">
+    <!--Select2-->
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.es.gov.br/fonts/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdn.es.gov.br/fonts/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <!--Toastr-->
+    <link href="~/lib/toastr/toastr.css" rel="stylesheet" />
+
+    <!--Jquery Treegrid-->
+    <link href="~/lib/jquery-treegrid/css/jquery.treegrid.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body>
-    <div>
-        @RenderBody()
-    </div>
+<body class="hold-transition lockscreen">
+    @RenderBody()
+    <!-- REQUIRED JS SCRIPTS -->
+    <!-- jQuery 3 -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="https://cdn.es.gov.br/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- JQuery Mask -->
+    <script src="~/lib/jquery-mask-plugin/dist/jquery.mask.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/js/adminlte.min.js"></script>
+    <script src="~/lib/icheck/icheck.min.js"></script>
+    <script src="~/lib/select2/dist/js/select2.js"></script>
+    <script src="~/lib/select2/dist/js/i18n/pt-BR.js"></script>
+    <!--Toastr-->
+    <script src="~/lib/toastr/toastr.js"></script>
+
+    <!--Jquery Treegrid-->
+    <script src="~/lib/jquery-treegrid/js/jquery.treegrid.min.js"></script>
+
+    <!--Render Scripts-->s
+    @RenderSection("scripts", required: false)
 </body>
 </html>

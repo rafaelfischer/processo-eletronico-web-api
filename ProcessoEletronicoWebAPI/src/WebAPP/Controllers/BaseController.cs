@@ -23,7 +23,10 @@ namespace WebAPP.Controllers
 
         public IActionResult Sair()
         {
-            return SignOut("processoeletronico", CookieAuthenticationDefaults.AuthenticationScheme);
+            //return SignOut("processoeletronico", CookieAuthenticationDefaults.AuthenticationScheme);
+            var logout = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            return RedirectToAction("Index", "Inicio");
         }
 
         public IActionResult AcessoNegado()

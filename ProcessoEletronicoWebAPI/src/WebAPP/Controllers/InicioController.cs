@@ -9,5 +9,15 @@ namespace WebAPP.Controllers
         {
             return View();
         }
+
+        public IActionResult Error()
+        {
+            return View();
+        }
+
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
     }
 }
