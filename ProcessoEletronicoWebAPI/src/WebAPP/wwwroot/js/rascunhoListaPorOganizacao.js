@@ -1,6 +1,6 @@
 ﻿$('body').on('click', '.btnExcluirRascunho', function () {
     var id = $(this).attr('data-id');
-    var url = "/Rascunho/Excluir/" + id;
+    var url = "/Rascunho/Delete/" + id;
     carregaModalDefault(
         "Excluir Rascunho de Processo",
         "Deseja realmente excluir o rascunho ID "+id+"?",
@@ -13,7 +13,7 @@
 
 $('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
 
-    var url = $(this).attr('data-acaoconfirmar');
+    var url = $(this).attr('data-acaoconfirmar') + "?ajax=true";
 
     if (isNullOrEmpty(url)) {
         return false;
@@ -30,5 +30,36 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
                 }
             }
         );
+    }
+});
+
+
+/*Exclusão na tela de edição de rascunho de despacho*/
+$('body').on('click', '.btnExcluirRascunhoForm', function () {
+    var id = $(this).attr('data-id');
+    var url = $(this).attr('href');
+
+    carregaModalDefault(
+        "Excluir Rascunho de Despacho",
+        "Deseja realmente excluir o rascunho de despacho ID " + id + "?",
+        "Excluir",
+        "Cancelar",
+        "btnConfirmarExclusaoForm",
+        "btnCancelarExclusao",
+        url);
+
+    return false;
+});
+
+$('body').on('click', 'button[data-btn="btnConfirmarExclusaoForm"]', function () {
+
+    var url = $(this).attr('data-acaoconfirmar');
+
+    if (isNullOrEmpty(url)) {
+        return false;
+    }
+    else {
+
+        window.location.assign(url);
     }
 });

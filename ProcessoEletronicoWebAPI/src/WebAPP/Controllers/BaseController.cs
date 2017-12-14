@@ -14,25 +14,7 @@ namespace WebAPP.Controllers
     {
         public BaseController()
         {            
-        }
-
-        public IActionResult Login()
-        {
-            return new ChallengeResult("processoeletronico", new AuthenticationProperties() { RedirectUri = "/" });
-        }
-
-        public IActionResult Sair()
-        {
-            //return SignOut("processoeletronico", CookieAuthenticationDefaults.AuthenticationScheme);
-            var logout = CookieAuthenticationDefaults.AuthenticationScheme;
-
-            return RedirectToAction("Index", "Inicio");
-        }
-
-        public IActionResult AcessoNegado()
-        {
-            return View();
-        }
+        }               
 
         protected void SetMensagens(ICollection<MensagemViewModel> mensagens)
         {

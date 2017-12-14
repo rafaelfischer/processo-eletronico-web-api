@@ -173,7 +173,10 @@ $(document).ajaxComplete(function (data) {
 
 $(document).ajaxError(function (data, response) {
     if (response.status === 403) {
-        toastr.error("Você não possui permissão para executar essa operação");
+        toastr.error("Você não possui permissão para executar essa operação.");
+    }
+    if (response.status === 0) {
+        toastr.error("Sua sessão expirou! Recarregue a página para iniciar uma nova sessão.");
     }
 });
 

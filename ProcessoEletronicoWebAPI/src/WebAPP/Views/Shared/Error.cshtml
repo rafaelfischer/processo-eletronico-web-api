@@ -2,20 +2,22 @@
     ViewBag.Title = "ProcessoEletrônico - Página não encontrada.";
     Layout = "~/Views/Shared/_LayoutPublico.cshtml";
 }
-<section class="content">
-    <div class="error-page">        
+<section class="content" style="margin-top: 25%;">
+    <div class="error-page">
         <h1 class="text-center"><i class="fa fa-warning text-yellow"></i> Página não encontrada!</h1>
-        <h4 class="text-center">Atendimento Prodest</h4>
-        <p class="text-center">
-            <label>Tel.:</label> (027) 3636-7166 /
-            <label>E-mail:</label> atendimento@prodest.es.gov.br
-        </p>
-        <div style="text-align: center">
-            @Html.ActionLink("Sair", "Signout", "Inicio", new { @class = "btn btn-default btn-flat" })
+
+
+        <div style="text-align: center; margin-top: 50px ">
+            <a class="btn btn-warning" asp-controller="Inicio" asp-action="Index">Voltar para a página incial</a>
         </div>
 
+        <div style="margin-top: 50px">
+            <h4 class="text-center">Atendimento Prodest</h4>
+            <p class="text-center">
+                atendimento@prodest.es.gov.br
+                <br />
+                (027) 3636-7166
+                </p>
+        </div>
     </div>
 </section>
-<div class="lockscreen-footer text-center">
-    Copyright &copy; 2017-2018 <b><a href="http://prodest.es.gov.br" class="text-black">Prodest</a></b>
-</div>

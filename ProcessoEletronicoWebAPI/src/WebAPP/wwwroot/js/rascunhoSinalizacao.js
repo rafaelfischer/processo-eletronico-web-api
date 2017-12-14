@@ -11,9 +11,9 @@ function AtualizaSinalizacoesLista(data) {
     $(this).attr('checked', true);
     $(this).removeAttr('name');
 
-    $mensagens = data.responseJSON.mensagens;
+    $mensagens = data.mensagens;
 
-    $.each(data.responseJSON.entidade, function (i, v) {        
+    $.each(data.entidade, function (i, v) {        
         $('#formsinalizacoes input[value="' + v.id + '"]').attr('name', 'Sinalizacoes['+ i +'].Id' );
         $('#formsinalizacoes input[value="' + v.id + '"]').iCheck('check');        
     });

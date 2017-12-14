@@ -14,9 +14,7 @@
         <i class="fa fa-save" aria-hidden="true"></i> Autuar
     </button>
 
-    <button class="btn-sm btn btn-danger btnExcluirRascunho" data-id="@Model.Id" type="button">
-        <i class="fa fa-trash" aria-hidden="true"></i> Descartar
-    </button>    
+    <a asp-controller="Rascunho" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-danger btnExcluirRascunhoForm" data-id="@Model.Id"><i class="fa fa-trash"></i> Descartar</a>    
 </div>
 
 <div class="nav-tabs-custom">
@@ -69,3 +67,7 @@
     <script src="~/js/rascunhoListaPorOganizacao.js"></script>
     <script src="~/js/rascunhoVisualizacao.js"></script>
 }
+
+<script>    
+    $mensagens = '@ViewBag.Mensagens' != ''? JSON.parse('@Html.Raw(ViewBag.Mensagens)'):[];
+</script>

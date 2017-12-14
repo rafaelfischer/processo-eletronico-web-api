@@ -113,11 +113,11 @@ namespace WebAPP
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                LoginPath = "/Home/Login",
-                AccessDeniedPath = "/Home/AcessoNegado",
+                LoginPath = "/Inicio/Login",
+                AccessDeniedPath = "/Inicio/Forbidden",
                 ExpireTimeSpan = TimeSpan.FromMinutes(30),
                 SlidingExpiration = true,
-                LogoutPath = "/Home/Logout",
+                LogoutPath = "/Inicio/Logout",
                 CookieName = "processoeletronico"
             });
 

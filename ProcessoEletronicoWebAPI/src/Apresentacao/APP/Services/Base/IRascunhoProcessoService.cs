@@ -10,7 +10,7 @@ namespace Apresentacao.APP.Services.Base
     {
         ResultViewModel<RascunhoProcessoViewModel> GetRascunhoProcesso(int id);
         RascunhoProcessoViewModel PostRascunhoProcesso(RascunhoProcessoViewModel rascunhoViewModel);
-        IEnumerable<RascunhoProcessoViewModel> GetRascunhosProcessoPorOrganizacao();        
+        ResultViewModel<IEnumerable<RascunhoProcessoViewModel>> GetRascunhosProcessoPorOrganizacao();
         RascunhoProcessoViewModel EditRascunhoProcesso(int? id);
         ResultViewModel<RascunhoProcessoViewModel> GetForEditRascunhoProcesso(int? id);
         void UpdateRascunhoProcesso(int id, RascunhoProcessoViewModel rascunhoProcessoAlterado);

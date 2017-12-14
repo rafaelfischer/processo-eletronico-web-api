@@ -40,8 +40,10 @@ namespace WebAPP.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
-            return View("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
+            ResultViewModel<IEnumerable<RascunhoProcessoViewModel>> result = _rascunho.GetRascunhosProcessoPorOrganizacao();
+            SetMensagens(result.Mensagens);
+
+            return View("RascunhosPorOrganizacao", result.Entidade);
         }
 
         [HttpPost]
@@ -81,16 +83,22 @@ namespace WebAPP.Controllers
             
             return PartialView("RascunhoBasico", result.Entidade);
         }
-
-        [HttpPost]
+        
         [Authorize(Policy = "RascunhoProcesso.Edit")]
-        public IActionResult Excluir(int id)
+        public IActionResult Delete(int id, bool ajax=false)
         {
             ResultViewModel<RascunhoProcessoViewModel> result = _rascunho.DeleteRascunhoProcesso(id);
             SetMensagens(result.Mensagens);
 
-            IEnumerable<RascunhoProcessoViewModel> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
-            return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao);
+            if (ajax)
+            {
+                ResultViewModel<IEnumerable<RascunhoProcessoViewModel>> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
+                SetMensagens(rascunhosPorOrganizacao.Mensagens);
+
+                return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao.Entidade);
+            }
+
+            return Index();
         }
 
         [HttpPost]

@@ -49,19 +49,25 @@ namespace Apresentacao.APP.Services
             _sinalizacaoNegocio = sinalizacaoNegocio;
             _sinalizacaoNegocioService = sinalizacaoNegocioService;
         }
-        public IEnumerable<RascunhoProcessoViewModel> GetRascunhosProcessoPorOrganizacao()
+
+        public ResultViewModel<IEnumerable<RascunhoProcessoViewModel>> GetRascunhosProcessoPorOrganizacao()
         {
+            ResultViewModel<IEnumerable<RascunhoProcessoViewModel>> result = new ResultViewModel<IEnumerable<RascunhoProcessoViewModel>>();
+
             try
             {
                 IEnumerable<RascunhoProcessoModeloNegocio> rascunhos = _rascunhoService.Get(_user.UserGuidOrganizacao);
-                IEnumerable<RascunhoProcessoViewModel> getRascunhosViewModel = _mapper.Map<List<RascunhoProcessoViewModel>>(rascunhos);                
+                IEnumerable<RascunhoProcessoViewModel> getRascunhosViewModel = _mapper.Map<List<RascunhoProcessoViewModel>>(rascunhos);
 
-                return getRascunhosViewModel;
+                result.Entidade = getRascunhosViewModel;                
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                result.Mensagens = new List<MensagemViewModel>();
+                SetMensagemErro(result.Mensagens, e);
             }
+
+            return result;
         }
 
         public ResultViewModel<RascunhoProcessoViewModel> GetRascunhoProcesso(int id)
