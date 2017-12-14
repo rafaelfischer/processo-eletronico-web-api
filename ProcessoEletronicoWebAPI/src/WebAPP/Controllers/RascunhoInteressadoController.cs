@@ -73,6 +73,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult IncluirInteressadoPJOrganograma(int idRascunho, string guidOrganizacao, string guidUnidade)
         {
             OrganizacaoViewModel organizacao = _organogramaService.GetOrganizacao(guidOrganizacao);
@@ -99,6 +100,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult IncluirInteressadoPJ(InteressadoPessoaJuridicaViewModel interessado)
         {
             if (ModelState.IsValid)
@@ -149,6 +151,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult IncluirInteressadoPF(InteressadoPessoaFisicaViewModel interessado)
         {
             int idRascunho = interessado.IdRascunho;
@@ -189,6 +192,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult ExcluirInteressadoPJ(int idRascunho, int idInteressadoPJ)
         {
             ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
@@ -205,6 +209,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult ExcluirInteressadoPF(int idRascunho, int idInteressadoPF)
         {
             ResultViewModel<InteressadoPessoaFisicaViewModel> result = new ResultViewModel<InteressadoPessoaFisicaViewModel>();

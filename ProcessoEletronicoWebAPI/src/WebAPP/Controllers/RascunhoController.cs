@@ -1,5 +1,6 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -67,6 +68,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult EditarBasico(RascunhoProcessoViewModel rascunho)
         {
             _rascunho.UpdateRascunhoProcesso(rascunho.Id, rascunho);
@@ -81,6 +83,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult Excluir(int id)
         {
             ResultViewModel<RascunhoProcessoViewModel> result = _rascunho.DeleteRascunhoProcesso(id);
@@ -91,6 +94,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Processo.Edit")]
         public IActionResult AutuarProcessoPorIdRascunho(int id)
         {
             ResultViewModel<GetProcessoViewModel> result = _processo.AutuarPorIdRascunho(id);

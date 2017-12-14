@@ -73,9 +73,17 @@ namespace WebAPP.Config
             }
         }
 
+        private bool isEmpty()
+        {
+            return (string.IsNullOrWhiteSpace(UserCpf) 
+                 && string.IsNullOrWhiteSpace(UserNome) 
+                 && UserGuidOrganizacao == Guid.Empty 
+                 && UserGuidOrganizacaoPatriarca == Guid.Empty);
+        }
+
         private void FillUser(ClaimsPrincipal user, IClientAccessTokenProvider clientAccessToken)
         {
-            if (user != null)
+            if (user != null && isEmpty())
             {
                 Claim claimCpf = user.FindFirst("cpf");
                 Claim claimNome = user.FindFirst("nome");
