@@ -1,5 +1,6 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPP.Controllers
@@ -29,6 +30,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Despacho.Edit")]
         public IActionResult Despachar(int id)
         {
             ResultViewModel<GetProcessoViewModel> result = _processoService.Search(id);
@@ -44,6 +46,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Despacho.Edit")]
         public IActionResult Despachar(int idProcesso, int idRascunhoDespacho)
         {
             ResultViewModel<GetDespachoViewModel> result = _service.Despachar(idProcesso, idRascunhoDespacho);

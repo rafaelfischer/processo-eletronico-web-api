@@ -23,6 +23,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult EditarSinalizacoes(RascunhoProcessoViewModel rascunho)
         {   
             return Json(_sinalizacaoService.UpdateSinalizacao(rascunho.Id, rascunho.Sinalizacoes));

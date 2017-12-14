@@ -21,6 +21,8 @@ namespace Negocio.RascunhosDespacho.Mapping
                 .ForMember(dest => dest.GuidUnidadeDestino, opt => opt.MapFrom(src => src.GuidUnidadeDestino.HasValue ? src.GuidUnidadeDestino.Value.ToString("D") : null))
                 .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => src.GuidOrganizacao.ToString("D")))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.AnexosRascunho));
+
+            CreateMap<RascunhoDespachoPatchModel, RascunhoDespachoModel>().ReverseMap();
         }
     }
 }

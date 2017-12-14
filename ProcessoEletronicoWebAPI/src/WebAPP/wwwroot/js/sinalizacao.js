@@ -45,7 +45,7 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusaoSinalizacao"]', func
 $('body').on('click', '.btn-editar-sinalizacao', function () {
     var url = $(this).attr("href");
     var tr = $(this).parents("tr");
-    
+
     if (isNullOrEmpty(url)) {
         return false;
     }
@@ -61,10 +61,12 @@ $('body').on('click', '.btn-editar-sinalizacao', function () {
                     tr.children('td').hide();
                     tr.append('<td colspan="3">' + data + '</td>')
                 },
-                error: function () {
-                    toastr['success']('Sinalização não encontrada, favor recarregar a página para obter a lista atualizada.');
+                error: function (data, response) {
+                    if (response.status === 404) {
+                        toastr['success']('Sinalização não encontrada, favor recarregar a página para obter a lista atualizada.');
+                    }
                 }
-                
+
             }
         );
     }

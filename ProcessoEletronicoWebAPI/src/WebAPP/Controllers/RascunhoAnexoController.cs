@@ -33,6 +33,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult EditarAnexosForm(int idRascunho, int idAtividade)
         {
             ICollection<AnexoViewModel> anexos = _anexoService.GetAnexos(idRascunho);
@@ -41,7 +42,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult EditarAnexos(int idRascunho, List<AnexoViewModel> anexos)
         {
             foreach(var anexo in anexos)
@@ -55,6 +56,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult EditarAnexoForm(int idRascunho, int idAnexo, int idAtividade)
         {
             AnexoViewModel anexo = _anexoService.GetAnexo(idRascunho,idAnexo);
@@ -63,6 +65,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult EditarAnexo(int idRascunho, AnexoViewModel anexo)
         {
             _anexoService.EditarAnexo(idRascunho, anexo);
@@ -70,6 +73,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public async Task<IActionResult> UploadAnexo(IList<IFormFile> files, int idRascunho, int? idTipoDocumental, string descricaoAnexos)
         {
             long totalBytes = files.Sum(f => f.Length);
@@ -102,6 +106,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult ExcluirAnexo(int idRascunho, int idAnexo)
         {
             _anexoService.DeleteAnexo(idRascunho, idAnexo);

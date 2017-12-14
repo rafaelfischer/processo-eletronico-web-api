@@ -64,6 +64,18 @@ namespace WebAPP
 
             services.AddSingleton<IFileProvider>(physicalProvider);
 
+            #region Políticas que serão concedidas
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Processo.Edit", policy => policy.RequireClaim("Acao$Processo", "Autuar"));
+                options.AddPolicy("RascunhoProcesso.Edit", policy => policy.RequireClaim("Acao$RascunhoProcesso", "Rascunhar"));
+                options.AddPolicy("Despacho.Edit", policy => policy.RequireClaim("Acao$Despacho", "Inserir"));
+                options.AddPolicy("RascunhoDespacho.Edit", policy => policy.RequireClaim("Acao$RascunhosDespacho", "Elaborar"));
+                options.AddPolicy("Sinalizacao.Edit", policy => policy.RequireClaim("Acao$Sinalizacao", "Inserir"));
+            }
+            );
+            #endregion
+
             DependencyInjection.InjectDependencies(services);
         }
 
@@ -183,14 +195,14 @@ namespace WebAPP
                             }
                         }
 
-                        id.AddClaims(userInfoResponse.Claims);
+                        //id.AddClaims(userInfoResponse.Claims);
 
                         id.AddClaim(new Claim("access_token", access_token));
                         id.AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(int.Parse(c.ProtocolMessage.ExpiresIn)).ToLocalTime().ToString()));
                         id.AddClaim(new Claim("id_token", c.ProtocolMessage.IdToken));
                         id.AddClaim(new Claim("client_id", c.Ticket.Principal.FindFirst("aud").Value));
 
-                      
+
                         c.Ticket = new AuthenticationTicket(
                             new ClaimsPrincipal(id),
                             c.Ticket.Properties,

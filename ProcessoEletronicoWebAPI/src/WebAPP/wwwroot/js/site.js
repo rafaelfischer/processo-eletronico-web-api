@@ -116,7 +116,7 @@ function carregaModalDefault(
 
     if (!isNullOrEmpty(classBtnCancela)) {
         $classBtnCancela = classBtnCancela;
-        $btnCancela.attr('data-btn', classBtnCancela);        
+        $btnCancela.attr('data-btn', classBtnCancela);
     }
 
     if (!isNullOrEmpty(acaoConfirma)) {
@@ -148,10 +148,6 @@ function CarregaModelDetalhe(titulo, conteudo) {
     $modalDetalhe.modal('show')
 }
 
-$(document).ajaxError(function (jqXHR, textStatus, errorThrown) {
-    //console.log(textStatus);    
-});
-
 function mascaraCpf(valor) {
     return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "\$1.\$2.\$3\-\$4");
 }
@@ -173,6 +169,12 @@ $(document).ajaxStart(function () {
 
 $(document).ajaxComplete(function (data) {
     console.log(data);
+});
+
+$(document).ajaxError(function (data, response) {
+    if (response.status === 403) {
+        toastr.error("Você não possui permissão para executar essa operação");
+    }
 });
 
 $(document).ajaxStop(function () {

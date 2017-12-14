@@ -1,5 +1,6 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -22,7 +23,8 @@ namespace WebAPP.Controllers
             _rascunhoDespachoAppService = rascunhoDespachoAppService;
             _processoService = processoService;
         }
-        
+
+        [HttpGet]
         public IActionResult Index()
         {
             ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();            
@@ -31,6 +33,7 @@ namespace WebAPP.Controllers
             return View("Index", result.Entidade);
         }
 
+        [HttpGet]
         public IActionResult SearchToImport(int? idProcesso, int? idAtividade)
         {
             ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
@@ -45,6 +48,7 @@ namespace WebAPP.Controllers
             return PartialView("ListaImportacaoRascunhoDespacho", result.Entidade);
         }
 
+        [HttpGet]
         public IActionResult Search()
         {
             ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
@@ -53,6 +57,7 @@ namespace WebAPP.Controllers
             return PartialView("ListaRascunhoDespacho", result.Entidade);
         }
 
+        [HttpGet]
         public IActionResult View(int id)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Search(id);
@@ -61,6 +66,8 @@ namespace WebAPP.Controllers
             return View(result.Entidade);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult Add(RascunhoDespachoViewModel rascunhoDespacho, int? idProcesso, int? idAtividade, bool ajax=false)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Add(rascunhoDespacho);
@@ -87,6 +94,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult UpdateFormDespacho(RascunhoDespachoViewModel rascunhoDespacho)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Clone(rascunhoDespacho.Id);
@@ -106,6 +114,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult Update(int id)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Search(id);
@@ -120,6 +129,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult Update(RascunhoDespachoViewModel rascunhoDespacho)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Update(rascunhoDespacho);
@@ -134,6 +144,7 @@ namespace WebAPP.Controllers
             return PartialView("FormDadosBasicos", result.Entidade);
         }
 
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult Delete(int id, bool ajax=false)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Delete(id);

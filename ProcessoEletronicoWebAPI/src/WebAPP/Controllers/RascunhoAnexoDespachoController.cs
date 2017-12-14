@@ -1,5 +1,6 @@
 ﻿using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -36,7 +37,7 @@ namespace WebAPP.Controllers
 
             return PartialView("ListaAnexosRascunhoDespacho", listaAnexosRascunho);
         }
-
+        [HttpGet]
         public IActionResult Add(int idRascunhoDespacho, AnexoRascunhoDespachoViewModel anexoRascunhoDespacho)
         {
             ResultViewModel<AnexoRascunhoDespachoViewModel> result = _anexoRascunhoDespachoAppService.Add(idRascunhoDespacho, anexoRascunhoDespacho);
@@ -56,6 +57,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult Update(int idRascunhoDespacho, AnexoRascunhoDespachoViewModel rascunhoDespacho)
         {
             int id = rascunhoDespacho.Id;
@@ -105,6 +107,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult EditList(int idRascunhoDespacho)
         {
             ResultViewModel<ICollection<AnexoRascunhoDespachoViewModel>> result = _anexoRascunhoDespachoAppService.Search(idRascunhoDespacho);
@@ -112,6 +115,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoDespacho.Edit")]
         public IActionResult UpdateList(int idRascunhoDespacho, List<AnexoRascunhoDespachoViewModel> anexos)
         {
             ResultViewModel<AnexoRascunhoDespachoViewModel> result;
