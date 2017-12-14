@@ -26,6 +26,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult EditarMunicipio(RascunhoProcessoViewModel rascunho)
         {
             List<string> municipios = new List<string>();

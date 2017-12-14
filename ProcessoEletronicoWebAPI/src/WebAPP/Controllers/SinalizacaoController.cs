@@ -39,6 +39,7 @@ namespace WebAPP.Controllers
 
 
         [HttpPost]
+        [Authorize(Policy = "Sinalizacao.Edit")]
         public IActionResult Add(SinalizacaoViewModel sinalizacaoForm)
         {
             ResultViewModel<SinalizacaoViewModel> resultViewModel = new ResultViewModel<SinalizacaoViewModel>();
@@ -50,6 +51,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Sinalizacao.Edit")]
         public IActionResult Update(SinalizacaoViewModel sinalizacaoForm)
         {
             ResultViewModel<SinalizacaoViewModel> resultViewModel = new ResultViewModel<SinalizacaoViewModel>();
@@ -65,6 +67,7 @@ namespace WebAPP.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "Sinalizacao.Edit")]
         public IActionResult Delete(int id)
         {
             ICollection<MensagemViewModel> mensagens = _service.Delete(id);
