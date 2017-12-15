@@ -17,11 +17,7 @@ function AtivarMenu() {
 
     $.each($('.sidebar-menu').find('span'), function () {
         if ($(this).text() == titulo) {
-            console.log(titulo + " = " + $(this).text());
-
             $.each($(this).parents('li'), function () {
-                console.log(this);
-
                 $(this).addClass('active');
             });
         }
@@ -165,10 +161,6 @@ function ativaTooltipBootstrap() {
 /*CONTROLE LOAD AJAX */
 $(document).ajaxStart(function () {
     $('#modalLoad').modal();
-});
-
-$(document).ajaxComplete(function (data) {
-    console.log(data);
 });
 
 $(document).ajaxError(function (data, response) {

@@ -1,15 +1,16 @@
 ﻿@model ListaInteressadosPJPF
 
 @if ((Model?.InteressadosPJ?.Count > 0) || (Model?.InteressadosPF?.Count > 0))
-{    
-    <div class="box-body">        
+{
+    <div class="box-body">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th class="col-md-1 text-center">ID</th>
                     <th class="col-md-2 text-center">CNPJ/CPF</th>
-                    <th class="col-md-4 text-center">RAZÃO SOCIAL/NOME</th>
-                    <th class="col-md-2 text-center">MUNICÍPIO</th>
+                    <th class="col-md-3 text-center">RAZÃO SOCIAL/NOME</th>
+                    <th class="col-md-2 text-center">UNIDADE</th>
+                    <th class="col-md-1 text-center">MUNICÍPIO</th>
                     <th class="col-md-1 text-center">UF</th>
                     <th class="col-md-2 text-center">AÇÕES</th>
                 </tr>
@@ -22,7 +23,12 @@
                         <tr>
                             <td class="text-center">@pj.Id</td>
                             <td class="text-center">@Convert.ToUInt64(pj.Cnpj).ToString(@"00\.000\.000\/0000\-00")</td>
-                            <td>@pj.Sigla - @pj.RazaoSocial @(string.IsNullOrEmpty(pj.NomeUnidade) ? pj.SiglaUnidade + " - " + pj.NomeUnidade : "")</td>
+                            <td>
+                                @pj.RazaoSocial
+                            </td>
+                            <td>
+                                @pj.NomeUnidade
+                            </td>
                             <td>@pj.NomeMunicipio</td>
                             <td class="text-center">@pj.UfMunicipio</td>
                             <td class="text-center">
@@ -40,10 +46,11 @@
                     {
                         <tr>
                             <td class="text-center">@pf.Id</td>
-                            <td class="text-right cpf">@pf.Cpf</td>
+                            <td class="text-center cpf">@Convert.ToUInt64(pf.Cpf).ToString(@"000\.000\.000\-00")</td>
                             <td>@pf.Nome</td>
+                            <td class="text-center">-</td>
                             <td>@pf.NomeMunicipio</td>
-                            <td>@pf.UfMunicipio</td>
+                            <td class="text-center">@pf.UfMunicipio</td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button type="button" data-id="@pf.Id" class="btn btn-sm btn-info btn-editar-interessado-pf"><i class="fa fa-edit"></i></button>
@@ -56,9 +63,15 @@
             </tbody>
         </table>
     </div>
-<hr />
+    <hr />
 }
 
-<script>
+<script>    
     $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
 </script>
+
+@section scripts{
+    <script>
+        $.applyDataMask();
+    </script>
+}

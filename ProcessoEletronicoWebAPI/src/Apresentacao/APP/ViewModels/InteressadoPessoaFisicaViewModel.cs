@@ -34,6 +34,6 @@ namespace Apresentacao.APP.ViewModels
 
         public List<TipoContatoViewModel> TiposContato { get; set; }
         public List<UfViewModel> Ufs { get; set; }
-        public List<MunicipioViewModel> Municipios { get; set; }
+        public IEnumerable<MunicipioViewModel> Municipios { get; set; }
     }
 }

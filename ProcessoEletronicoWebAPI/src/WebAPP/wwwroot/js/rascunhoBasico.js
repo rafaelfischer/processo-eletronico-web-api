@@ -22,7 +22,7 @@ $(document).ready(function () {
  */
 function LimparFormBasico() {
     $('#Atividade_Id').val($('#Atividade_Id option:first').val()).trigger('change')
-    $('#GuidUnidade').index[0].trigger("change");
+    $('#GuidUnidade').val($('#GuidUnidade option:first').val()).trigger('change')    
     $('form#formbasico')[0].reset();
 }
 
