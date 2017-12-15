@@ -1,0 +1,54 @@
+﻿@model ListaAnexosRascunho
+
+@if (Model?.Anexos?.Count > 0){
+
+    <div class="box-header with-border">
+        @*<h3 class="box-title">Anexos do Processo</h3>*@
+        <div class="pull-right">
+            <button class="btnEditarAnexos btn-sm btn btn-info" type="button"><i class="fa fa-edit" aria-hidden="true"></i> Editar</button>
+        </div>        
+    </div>
+    <div class="box-body">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ARQUIVO</th>
+                    <th>CLASSIFICAÇÃO</th>
+                    <th>DESCRIÇÃO</th>
+                    <th class="col-md-2">AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Anexos.Select((value, i) => new
+                {
+                    i,
+                    value
+                }))
+                {
+                    <tr>
+                        <td>@item.value.Id</td>
+                        <td>@item.value.Nome</td>
+                        @if (item.value.TipoDocumental != null)
+                    {
+                            <td>@item.value.TipoDocumental.Codigo - @item.value.TipoDocumental.Descricao</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        <td>
+                            @item.value.Descricao
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a asp-controller="RascunhoAnexo" asp-action="DownloadAnexo" asp-route-idRascunho="@Model.IdRascunho" asp-route-idAnexo="@item.value.Id" class="btn btn-warning btn-sm btnDownloadAnexo"><i class="fa fa-download"></i></a>
+                                <button type="button" data-id="@item.value.Id" data-nome="@item.value.Nome" class="btn btn-danger btn-sm btnExcluirAnexo"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

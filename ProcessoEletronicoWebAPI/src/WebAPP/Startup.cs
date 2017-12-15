@@ -19,11 +19,17 @@ using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
+using Prodest.ProcessoEletronico.Integration.Organograma.Models;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
+using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace WebAPP
 {
     public class Startup
     {
+        private IHostingEnvironment _hostingEnvironment;
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -32,6 +38,8 @@ namespace WebAPP
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            _hostingEnvironment = env;
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -52,6 +60,22 @@ namespace WebAPP
             // Add the Auth0 Settings object so it can be injected
             services.Configure<Settings>(Configuration.GetSection("oidc"));
 
+            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+
+            services.AddSingleton<IFileProvider>(physicalProvider);
+
+            #region Políticas que serão concedidas
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Processo.Edit", policy => policy.RequireClaim("Acao$Processo", "Autuar"));
+                options.AddPolicy("RascunhoProcesso.Edit", policy => policy.RequireClaim("Acao$RascunhoProcesso", "Rascunhar"));
+                options.AddPolicy("Despacho.Edit", policy => policy.RequireClaim("Acao$Despacho", "Inserir"));
+                options.AddPolicy("RascunhoDespacho.Edit", policy => policy.RequireClaim("Acao$RascunhosDespacho", "Elaborar"));
+                options.AddPolicy("Sinalizacao.Edit", policy => policy.RequireClaim("Acao$Sinalizacao", "Inserir"));
+            }
+            );
+            #endregion
+
             DependencyInjection.InjectDependencies(services);
         }
 
@@ -68,12 +92,19 @@ namespace WebAPP
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Inicio/Error");                
             }
-
+            
             app.UseStaticFiles();
 
-
+            if (!env.IsDevelopment())
+            {
+                app.Use(async (context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    await next.Invoke();
+                });
+            }
 
             #region CONFIGURACAO AUTENTICAÇÃO ACESSO CIDADAO
 
@@ -82,11 +113,11 @@ namespace WebAPP
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                LoginPath = "/home/login",
-                AccessDeniedPath = "/home/AcessoNegado",
+                LoginPath = "/Inicio/Login",
+                AccessDeniedPath = "/Inicio/Forbidden",
                 ExpireTimeSpan = TimeSpan.FromMinutes(30),
                 SlidingExpiration = true,
-                LogoutPath = "/home/logout",
+                LogoutPath = "/Inicio/Logout",
                 CookieName = "processoeletronico"
             });
 
@@ -95,6 +126,8 @@ namespace WebAPP
             {
                 // Set the authority to your Auth0 domain
                 Authority = $"https://{settings.Value.Domain}",
+
+                AuthenticationScheme = "oidc",
 
                 // Configure the Auth0 Client ID and Client Secret
                 ClientId = Environment.GetEnvironmentVariable("ProcessoEletronicoAppClientId"),
@@ -162,15 +195,13 @@ namespace WebAPP
                             }
                         }
 
-                        id.AddClaims(userInfoResponse.Claims);
+                        //id.AddClaims(userInfoResponse.Claims);
 
                         id.AddClaim(new Claim("access_token", access_token));
                         id.AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(int.Parse(c.ProtocolMessage.ExpiresIn)).ToLocalTime().ToString()));
                         id.AddClaim(new Claim("id_token", c.ProtocolMessage.IdToken));
                         id.AddClaim(new Claim("client_id", c.Ticket.Principal.FindFirst("aud").Value));
 
-                        //Adiciona dados do orgao e patriarca
-                        FillOrgaoEPatriarca(id, access_token);
 
                         c.Ticket = new AuthenticationTicket(
                             new ClaimsPrincipal(id),
@@ -199,6 +230,7 @@ namespace WebAPP
 
         private void FillOrgaoEPatriarca(ClaimsIdentity id, string token)
         {
+
             if (id.HasClaim(a => a.Type == "orgao"))
             {
                 string siglaOrganizacao = string.Empty;
@@ -206,16 +238,16 @@ namespace WebAPP
 
                 string guidOrganizacao = "";
                 string guidPatriarca = "";
-                string nomeOrganizacao = "";                
+                string nomeOrganizacao = "";
 
                 DownloadJson downloadJson = new DownloadJson();
                 string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
 
                 Organizacao organizacao = downloadJson.DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/sigla/{siglaOrganizacao}?guidPatriarca=true", token);
 
-                guidOrganizacao = organizacao.guid;
-                nomeOrganizacao = organizacao.razaoSocial;
-                guidPatriarca = organizacao.guidPatriarca;                
+                guidOrganizacao = organizacao.Guid;
+                nomeOrganizacao = organizacao.RazaoSocial;
+                guidPatriarca = organizacao.GuidPatriarca;
 
                 id.AddClaim(new Claim("guidorganizacao", guidOrganizacao));
                 id.AddClaim(new Claim("nomeorganizacao", nomeOrganizacao));

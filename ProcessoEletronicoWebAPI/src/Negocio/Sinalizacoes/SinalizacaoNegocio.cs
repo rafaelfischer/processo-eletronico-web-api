@@ -64,7 +64,7 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes
             return _mapper.Map<List<SinalizacaoModeloNegocio>>(sinalizacoes);
         }
 
-        public SinalizacaoModeloNegocio Insert(SinalizacaoModeloNegocio sinalizacaoModeloNegocio)
+        public SinalizacaoModeloNegocio Add(SinalizacaoModeloNegocio sinalizacaoModeloNegocio)
         {
             _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
             _validacao.IsFilled(sinalizacaoModeloNegocio);
@@ -88,6 +88,8 @@ namespace ProcessoEletronicoService.Negocio.Sinalizacoes
 
             Sinalizacao sinalizacao = _repositorioSinalizacoes.Where(s => s.Id == id && s.OrganizacaoProcesso.GuidOrganizacao.Equals(_user.UserGuidOrganizacaoPatriarca)).SingleOrDefault();
             _validacao.Exists(sinalizacao);
+            _validacao.ExistsInProcesso(sinalizacao);
+            _validacao.ExistsInRascunhoProcesso(sinalizacao);
 
             _validacao.IsFilled(sinalizacaoModeloNegocio);
             _validacao.IsValid(sinalizacaoModeloNegocio);

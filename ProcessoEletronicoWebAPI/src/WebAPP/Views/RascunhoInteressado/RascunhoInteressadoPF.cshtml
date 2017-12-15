@@ -1,0 +1,83 @@
+﻿@model InteressadoPessoaFisicaViewModel
+<form id="formPF"
+      asp-action="IncluirInteressadoPF"
+      asp-controller="RascunhoInteressado"
+      data-ajax-mode="replace"
+      data-ajax-update="#listainteressados"
+      data-ajax-complete="ResetSinalizacoesLista"      
+      data-ajax="true"
+      data-ajax-method="POST">
+    <div class="box-header with-border">
+        <h3 class="box-title">Interessado Pessoa Física</h3>
+    </div>
+    <div class="box-body">
+
+        <div class="form-group">
+            <input type="hidden" asp-for="IdRascunho" />
+            <input type="hidden" asp-for="Id" />
+            <label asp-for="Cpf"></label>
+            <input data-mask="999.999.999-99" placeholder="000.000.000-00" class="form-control" asp-for="Cpf" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Nome"></label>
+            <input class="form-control" asp-for="Nome" />
+        </div>
+
+        <div class="form-group">
+            <label>UF</label>
+            <select class="form-control" id="uf" asp-for="UfMunicipio" asp-items="@(new SelectList(Model.Ufs,"Sigla","Nome"))">
+                <option value="">Selecione uma UF</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UfMunicipio"></label>
+            @if (Model.Municipios?.Count() > 0)
+            {
+                <select class="form-control" asp-for="GuidMunicipio" asp-items="@(new SelectList(Model.Municipios,"Id","Text"))"></select>
+            }
+            else
+            {
+                <select class="form-control" asp-for="GuidMunicipio"></select>
+            }
+        </div>
+
+        <div id="contatos">
+            @if (Model.Contatos != null && Model.Contatos.Count() > 0)
+            {
+
+                @Html.Partial("RascunhoInteressadoContato", new FormContatoViewModel { TiposContato = Model.TiposContato, Contatos = Model.Contatos })
+
+            }
+            else
+            {
+                @Html.Partial("RascunhoInteressadoContato", new FormContatoViewModel { TiposContato = Model.TiposContato })
+            }
+        </div>
+
+        <div id="emails">
+            @if (Model.Emails != null && Model.Emails.Count() > 0)
+            {
+                @Html.Partial("RascunhoInteressadoEmail", Model.Emails)
+            }
+            else
+            {
+                @Html.Partial("RascunhoInteressadoEmail", new List<EmailViewModel>())
+            }
+        </div>
+
+        <div class="box-footer">
+            <div class="form-group">
+                <div class="btn-group pull-right">
+                    <button type="reset" class="btn btn-default" onclick=""><i class="fa fa-close"></i> Limpar</button>
+                    <button class="btn btn-primary"><i class="fa fa-save" aria-hidden="true"></i> Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $.applyDataMask();
+</script>

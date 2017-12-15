@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Hosting;
+using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace WebAPP
 {
@@ -17,18 +11,17 @@ namespace WebAPP
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5970";
             var requestPath = Environment.GetEnvironmentVariable("REQUEST_PATH");
             var url = $"http://*:{port}{requestPath}";
-                       
 
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseUrls(url)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                //.UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 
             host.Run();
         }
-        
+
     }
 }

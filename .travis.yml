@@ -6,14 +6,15 @@ services:
   - docker
 install:
   - nvm install 6.10
+  - npm i -g bower
 script: 
   - scripts/travis.sh
 deploy:
   - provider: script
     skip_cleanup: true
-    script: scripts/deploy.sh api dev ${TRAVIS_COMMIT:0:7} # && scripts/deploy.sh app dev ${TRAVIS_COMMIT:0:7}
+    script: scripts/deploy.sh api dev ${TRAVIS_COMMIT:0:7} && scripts/deploy.sh app dev ${TRAVIS_COMMIT:0:7}
     on:
-      branch: travis
+      branch: develop
 
   - provider: script
     skip_cleanup: true
@@ -21,7 +22,7 @@ deploy:
     on:
       tags: true
       all_branches: true
-      condition: $TRAVIS_TAG =~ ^api-v\d+\.\d+\.\d+-rc\d+$
+      condition: "$TRAVIS_TAG =~ ^api-v[0-9]+\\.[0-9]+\\.[0-9]+-rc[0-9]+$"
 
   - provider: script
     skip_cleanup: true
@@ -29,7 +30,7 @@ deploy:
     on:
       tags: true
       all_branches: true
-      condition: $TRAVIS_TAG =~ ^app-v\d+\.\d+\.\d+-rc\d+$
+      condition: "$TRAVIS_TAG =~ ^app-v[0-9]+\\.[0-9]+\\.[0-9]+-rc[0-9]+$"
 
   - provider: script
     skip_cleanup: true
@@ -37,7 +38,7 @@ deploy:
     on:
       tags: true
       all_branches: true
-      condition: $TRAVIS_TAG =~ ^api-v\d+\.\d+\.\d+$
+      condition: "$TRAVIS_TAG =~ ^api-v[0-9]+\\.[0-9]+\\.[0-9]+$"
 
   - provider: script
     skip_cleanup: true
@@ -45,7 +46,7 @@ deploy:
     on:
       tags: true
       all_branches: true
-      condition: $TRAVIS_TAG =~ ^app-v\d+\.\d+\.\d+$
+      condition: "$TRAVIS_TAG =~ ^app-v[0-9]+\\.[0-9]+\\.[0-9]+$"
 
   - provider: script
     skip_cleanup: true

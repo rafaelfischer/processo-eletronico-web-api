@@ -61,7 +61,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
             catch (Exception)
             {
-                throw new RequisicaoInvalidaException("Identificador do município inválido");
+                throw new RequisicaoInvalidaException($"Identificador do município {municipio.GuidMunicipio} inválido");
             }
         }
         #endregion

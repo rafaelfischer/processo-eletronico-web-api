@@ -60,6 +60,25 @@ namespace ProcessoEletronicoService.WebAPI.Controllers
         }
 
         /// <summary>
+        /// Retorna os dados básicos do  processo correspondente ao número informado.
+        /// </summary>
+        /// <param name="numero">Número do processo. Formato: SEQUENCIAL-DD.AAAA.P.E.OOOO</param>
+        /// <returns>Processo correspondente ao número.</returns>
+        /// <response code="200">Retorna o processo correspondente ao número.</response>
+        /// <response code="400">Número do processo inválido.</response>
+        /// <response code="404">Proceso não foi encontrado.</response>
+        /// <response code="500">Retorna a descrição do erro.</response>
+        [HttpGet("dados-basicos/{numero}")]
+        [ProducesResponseType(typeof(ProcessoSimplificadoModelo), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
+        public IActionResult GetSimplificadoPorNumero(string numero)
+        {
+            return Ok(_mapper.Map<ProcessoSimplificadoModelo>(_negocio.PesquisarSimplificado(numero)));
+        }
+
+        /// <summary>
         /// Retorna lista de processos que posuem pelo menos um despacho feito pelo usuario autenticado.
         /// </summary>
         /// <returns>Processo correspondente ao número.</returns>

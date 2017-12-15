@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Negocio.Modelos.Patch;
 using ProcessoEletronicoService.Dominio.Modelos;
 using ProcessoEletronicoService.Negocio.Modelos;
 using System;
@@ -35,7 +36,7 @@ namespace ProcessoEletronicoService.Negocio.Rascunho.Processo.Mapeamentos
                 .ForMember(dest => dest.GuidUnidade, opt => opt.MapFrom(src => src.GuidUnidade.HasValue ? src.GuidUnidade.Value.ToString("D") : null))
                 .MaxDepth(1);
 
-
+            CreateMap<RascunhoProcessoPatchModel, RascunhoProcessoModeloNegocio>().ReverseMap();
 
         }
     }

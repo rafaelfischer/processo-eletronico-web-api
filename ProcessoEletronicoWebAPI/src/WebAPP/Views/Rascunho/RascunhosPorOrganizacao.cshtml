@@ -1,0 +1,13 @@
+﻿@model IEnumerable<RascunhoProcessoViewModel>
+@{
+    ViewBag.Title = "Rascunhos de Processo";
+    ViewBag.SubTitle = "Meus Rascunhos";
+}
+
+<div id="listaRascunhos">
+    @Html.Partial("RascunhosListaPorOrganizacao", Model)
+</div>
+
+@section scripts{
+    <script src="~/js/rascunhoListaPorOganizacao.js"></script>
+}

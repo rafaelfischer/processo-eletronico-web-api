@@ -1,1 +1,71 @@
-﻿<h1>Teste</h1>
+﻿@{
+    ViewBag.Title = "Início";
+    Layout = "~/Views/Shared/_LayoutInicio.cshtml";
+}
+
+<div class="jumbotron sep-bg-jumbotron">
+    <div class="container">
+        <h1>Processo Eletrônico</h1>
+        <p>É um sistema corporativo, que visa o controle de operações referentes às funções de produção, recebimento, registro e tramitação de processos eletrônicos.</p>
+        <p><a class="btn btn-danger" asp-controller="Processos" asp-action="SearchByOrganizacao" role="button">Acessar <i class="fa fa-sign-in" aria-hidden="true"></i></a></p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-sm-4 col-xs-12 sep-card text-center">
+            <i class="fa fa-user-plus sep-card-icon" aria-hidden="true"></i>
+            <h2>Cadastramento de Usuários</h2>
+            <p>
+                Clique no link abaixo para efetuar seu cadastro no Acesso Cidadão. Em seguida, solicite seu acesso ao Prodest, pelo e-mail atendimento@prodest.es.gov.br.
+                <br />
+                <a href="acessocidadao.es.gov.br/Conta/Entrar" target="_blank" title="Acesso Cidadão">
+                    <i class="fa fa-address-card-o" aria-hidden="true"></i> Acesso Cidadão
+                </a>
+            </p>
+        </div>
+        <div class="col-sm-4 col-xs-12 sep-card text-center">
+            <i class="fa fa-desktop sep-card-icon" aria-hidden="true"></i>
+            <h2>O que é o Processo Eletrônico</h2>
+            <p>
+                É um sistema corporativo,
+                que visa o controle de operações
+                referentes às funções de produção,
+                recebimento, registro e tramitação de processos eletrônicos.
+            </p>
+        </div>
+        <div class="col-sm-4 col-xs-12 sep-card text-center">
+            <i class="fa fa-coffee sep-card-icon" aria-hidden="true"></i>
+            <h2>Demonstração</h2>
+            <p>
+                Quer conhecer melhor a solução antes de implantá-la em sua organização? Acesse nosso ambiente de demonstração.<br />
+                <a href="http://demonstracao.processoeletronico.es.gov.br/" target="_blank" title="Demonstração">
+                    <i class="fa fa-desktop" aria-hidden="true"></i> Demonstração Processo Eletrônico
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalResultado" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i aria-hidden="true">&times;</i></button>
+                <h4 class="modal-title">Resultado da Consulta</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ico-load" class="col-lg-12 text-center">
+                    <i class="-circle -o-notch -play -text fa fa-spinner fa-fw fa-lg fa-spin text-primary"></i>
+                </div>
+                <div id="resultado">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <button id="sep-btn-print" type="button" class="btn btn-danger">Imprimir</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

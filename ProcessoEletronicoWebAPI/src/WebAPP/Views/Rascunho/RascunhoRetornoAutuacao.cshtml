@@ -1,0 +1,21 @@
+﻿@model ResultViewModel<GetProcessoViewModel>
+
+@if (Model?.Mensagens?.Count > 0)
+{
+    @foreach (var m in Model.Mensagens)
+    {
+        <div class="alert alert-@m.TipoToastr">@m.Texto</div>
+    }    
+}
+
+@if (Model?.Entidade != null)
+{
+    <div class="btn-group">        
+        <a asp-controller="Processos" asp-action="Search" asp-route-id="@Model.Entidade.Id" class="btn btn-success">Visualizar Processo Autuado</a>
+        <button type="button" onclick="$('.btnExcluirRascunho').trigger('click')" class="btn btn-danger">Descartar Rascunho</button>
+    </div>    
+}
+
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>

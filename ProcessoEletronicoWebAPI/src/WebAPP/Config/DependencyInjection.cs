@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProcessoEletronicoService.Dependencies;
 using ProcessoEletronicoService.Infraestrutura.Mapeamento;
 using ProcessoEletronicoService.Negocio.Comum.Base;
+using Prodest.ProcessoEletronico.Integration.Common.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

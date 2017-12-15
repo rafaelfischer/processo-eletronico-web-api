@@ -1,11 +1,14 @@
 ﻿using Apresentacao.APP.ViewModels;
 using System.Collections.Generic;
 
-namespace Apresentacao.APP.WorkServices.Base
+namespace Apresentacao.APP.Services.Base
 {
     public interface IProcessoService
     {
-        GetProcessoViewModel GetProcessoPorNumero(string numero);
-        IEnumerable<GetProcessoViewModel> GetProcessosOrganizacao();        
+        ResultViewModel<GetProcessoViewModel> Search(int id);
+        ResultViewModel<GetProcessoViewModel> GetProcessoPorNumero(string numero);
+        ICollection<GetProcessoBasicoViewModel> GetProcessosOrganizacao();
+        ICollection<TipoDocumentalViewModel> GetTiposDocumentais(int idAtividade);
+        ResultViewModel<GetProcessoViewModel> AutuarPorIdRascunho(int idRascunho);
     }
 }

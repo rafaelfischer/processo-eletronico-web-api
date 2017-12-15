@@ -1,0 +1,23 @@
+﻿@model ICollection<SinalizacaoViewModel>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>DESCRIÇÃO</th>
+            <th class="text-center">AÇÕES</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sinalizacao in Model)
+        {
+            <tr>@Html.Partial("ItemSinalizacao", sinalizacao)</tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+        $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>
+

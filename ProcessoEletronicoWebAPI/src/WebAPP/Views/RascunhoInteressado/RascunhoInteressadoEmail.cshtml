@@ -1,0 +1,35 @@
+﻿@model IEnumerable<EmailViewModel>
+
+@{
+    var index = ViewBag.index != null ? ViewBag.index : 0;
+}
+<div class="form-group">
+    <label>Emails</label>
+    <button type="button" id="btnAddEmail" class="btn btn-xs btn-info"><i class="fa fa-plus"></i></button>
+</div>
+
+@if (Model != null && Model.Count() > 0)
+{
+    @foreach (var email in Model)
+    {
+        <div class="form-group formEmail">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btnDelEmail btn btn-danger"><i class="fa fa-close" aria-hidden="true"></i></button>
+                </span>
+                <input class="form-control" name="Emails[@index++].Endereco" value="@email.Endereco" />
+            </div><!-- /input-group -->
+        </div>
+    }
+}
+else
+{
+    <div class="form-group formEmail">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button type="button" class="btnDelEmail btn btn-danger"><i class="fa fa-close" aria-hidden="true"></i></button>
+            </span>
+            <input class="form-control" name="Emails[@index].Endereco" />
+        </div><!-- /input-group -->
+    </div>
+}

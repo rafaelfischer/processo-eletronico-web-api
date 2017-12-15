@@ -1,0 +1,56 @@
+﻿@model ListaAnexosRascunhoDespacho
+
+@if (Model.Anexos.Count() > 0 && Model != null)
+{
+
+    <div class="box-header with-border">
+        <div class="pull-right">
+            <form asp-action="Search"
+                  asp-controller="RascunhoAnexoDespacho"
+                  data-ajax-mode="replace"
+                  data-ajax-update="#listaanexos"
+                  data-ajax="true"
+                  data-ajax-method="GET">
+                <input type="hidden" asp-for="IdRascunhoDespacho" />
+                <button class="btnCancelarEdicaoAnexo btn-sm btn btn-default" type="submit">
+                    <i class="fa fa-close" aria-hidden="true"></i> Cancelar
+                </button>
+
+                <button class="btnSalvarAnexos btn-sm btn btn-info" type="button" onclick="$('#btnSalvarAnexosDespacho').trigger('click')">
+                    <i class="fa fa-save" aria-hidden="true"></i> Salvar
+                </button>
+            </form>
+        </div>
+    </div>
+    <form asp-action="UpdateList"
+          asp-controller="RascunhoAnexoDespacho"
+          data-ajax-mode="replace"
+          data-ajax-update="#listaanexos"
+          data-ajax="true"
+          data-ajax-method="POST">
+        <input type="hidden" asp-for="IdRascunhoDespacho" />
+        <div class="box-body">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ARQUIVO</th>
+                        <th>DESCRIÇÃO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Anexos.Select((value, i) => new { i, value }))
+                    {
+                        <tr>
+                            <td><input type="text" readonly class="form-control" name="Anexos[@item.i].Nome" asp-for="@item.value.Nome"/></td>
+                            <td>
+                                <input type="hidden" name="Anexos[@item.i].Id" value="@item.value.Id" />                                
+                                <textarea class="form-control" name="Anexos[@item.i].Descricao" asp-for="@item.value.Descricao" rows="2"></textarea>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <button class="hide" id="btnSalvarAnexosDespacho" type="submit"></button>
+    </form>
+}

@@ -51,7 +51,7 @@ namespace Negocio.RascunhosDespacho
 
         public RascunhoDespachoModel Search(int id)
         {
-            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(rascunho => rascunho.Id == id).Include(rascunho => rascunho.AnexosRascunho).SingleOrDefault();
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(rascunho => rascunho.Id == id).Include(rascunho => rascunho.AnexosRascunho).ThenInclude(a => a.TipoDocumental).SingleOrDefault();
             return _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho);
         }
 
@@ -79,13 +79,22 @@ namespace Negocio.RascunhosDespacho
             FillOrganizacaoDestino(rascunhoDespacho);
             FillUnidadeDestino(rascunhoDespacho);
             FillUserAndDataHora(rascunhoDespacho);
-             FillOrganizacao(rascunhoDespacho);
+            FillOrganizacao(rascunhoDespacho);
             FillOrganizacaoProcesso(rascunhoDespacho);
 
             _repositorioRascunhosDespacho.Add(rascunhoDespacho);
             _unitOfWork.Save();
 
             return Search(rascunhoDespacho.Id);
+        }
+
+        public RascunhoDespachoModel Clone(int id)
+        {
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).Include(r => r.AnexosRascunho).ThenInclude(a => a.TipoDocumental).SingleOrDefault();
+            _validation.Exists(rascunhoDespacho);
+
+            RascunhoDespachoModel rascunhoDespachoModel = _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho);
+            return Add(rascunhoDespachoModel);
         }
 
         public void Delete(int id)
@@ -102,6 +111,31 @@ namespace Negocio.RascunhosDespacho
         {
             RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).SingleOrDefault();
             _validation.Exists(rascunhoDespacho);
+
+            //Autenticação do usuário
+            _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
+            _usuarioValidacao.PossuiOrganizaoPatriarca(_user.UserGuidOrganizacaoPatriarca);
+
+            _validation.IsRascunhoDespachoOfUser(rascunhoDespacho);
+            _validation.IsFilled(rascunhoDespachoModel);
+            _validation.IsValid(rascunhoDespachoModel);
+            MapAlteracaoDespacho(rascunhoDespachoModel, rascunhoDespacho);
+
+            FillOrganizacaoDestino(rascunhoDespacho);
+            FillUnidadeDestino(rascunhoDespacho);
+            FillUserAndDataHora(rascunhoDespacho);
+
+            _unitOfWork.Save();
+
+        }
+
+        public void Update(int id, RascunhoDespachoPatchModel rascunhoDespachoPatchModel)
+        {
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(r => r.Id.Equals(id)).SingleOrDefault();
+            _validation.Exists(rascunhoDespacho);
+
+            RascunhoDespachoModel rascunhoDespachoModel = _mapper.Map<RascunhoDespachoModel>(rascunhoDespacho);
+            _mapper.Map(rascunhoDespachoPatchModel, rascunhoDespachoModel);
 
             //Autenticação do usuário
             _usuarioValidacao.Autenticado(_user.UserCpf, _user.UserNome);
@@ -172,8 +206,8 @@ namespace Negocio.RascunhosDespacho
         private void MapAlteracaoDespacho(RascunhoDespachoModel rascunhoDespachoModel, RascunhoDespacho rascunhoDespacho)
         {
             rascunhoDespacho.Texto = rascunhoDespachoModel.Texto;
-            rascunhoDespacho.GuidOrganizacaoDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino) ? (Guid?)new Guid(rascunhoDespachoModel.GuidOrganizacaoDestino) : null;
-            rascunhoDespacho.GuidUnidadeDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino) ? (Guid?)new Guid(rascunhoDespachoModel.GuidUnidadeDestino) : null;
+            rascunhoDespacho.GuidOrganizacaoDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidOrganizacaoDestino) && rascunhoDespachoModel.GuidOrganizacaoDestino != "0" ? (Guid?)new Guid(rascunhoDespachoModel.GuidOrganizacaoDestino) : null;
+            rascunhoDespacho.GuidUnidadeDestino = !string.IsNullOrWhiteSpace(rascunhoDespachoModel.GuidUnidadeDestino) && rascunhoDespachoModel.GuidUnidadeDestino != "0" ? (Guid?)new Guid(rascunhoDespachoModel.GuidUnidadeDestino) : null;
         }
     }
 }

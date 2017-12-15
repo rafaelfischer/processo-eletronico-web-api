@@ -1,0 +1,11 @@
+﻿@model IEnumerable<UnidadeViewModel>
+<div class="form-group">
+    <div class="input-group">
+        <select class="form-control" id="interessadoOrgaoUnidade" asp-items="@(new SelectList(Model,"Guid","NomeSigla"))">
+            <option value="">Selecione uma Unidade</option>
+        </select>
+        <span class="input-group-btn">
+            <button class="btnCarregarOrganizacao btn btn-info" type="button"><i class="fa fa-check" aria-hidden="true"></i></button>
+        </span>
+    </div><!-- /input-group -->
+</div>

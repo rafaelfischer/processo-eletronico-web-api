@@ -1,0 +1,21 @@
+﻿@model ICollection<RascunhoDespachoViewModel>
+
+
+@foreach (var r in Model)
+{
+    <tr>
+        <td>@r.Id</td>
+        <td>@r.Texto</td>
+        <td>@r.NomeOrganizacaoDestino</td>
+        <td>@r.NomeUnidadeDestino</td>
+        <td class="text-center">
+            <div class="btn-group">
+                <a class="btn btn-sm btn-info" asp-action="Update" asp-controller="RascunhoDespacho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>
+                <a asp-controller="RascunhoDespacho" asp-action="Delete" asp-route-id="@r.Id" class="btn btn-sm btn-danger btnExcluirRascunhoDespacho" data-id="@r.Id"><i class="fa fa-trash"></i></a>
+            </div>
+        </td>
+    </tr>
+}
+<script>
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+</script>

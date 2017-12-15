@@ -1,7 +1,6 @@
 ﻿using Apresentacao.APP.Services;
 using Apresentacao.APP.Services.Base;
 using Apresentacao.APP.WorkServices;
-using Apresentacao.APP.WorkServices.Base;
 using Apresentacao.WebAPI;
 using Apresentacao.WebAPI.Base;
 using Infraestrutura.Integrations;
@@ -19,7 +18,6 @@ using ProcessoEletronicoService.Dominio.Base;
 using ProcessoEletronicoService.Infraestrutura.Repositorios;
 using ProcessoEletronicoService.Negocio;
 using ProcessoEletronicoService.Negocio.Base;
-using ProcessoEletronicoService.Negocio.Comum.Base;
 using ProcessoEletronicoService.Negocio.Comum.Validacao;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo;
 using ProcessoEletronicoService.Negocio.Rascunho.Processo.Base;
@@ -87,9 +85,21 @@ namespace ProcessoEletronicoService.Dependencies
 
             //WebAPP
             dependencies.Add(typeof(IProcessoService), typeof(ProcessoService));
-            dependencies.Add(typeof(IRascunhoService), typeof(RascunhoService));
+            dependencies.Add(typeof(IProcessoAnexoService), typeof(ProcessoAnexoService));
+            dependencies.Add(typeof(IDespachoService), typeof(DespachoService));
+            dependencies.Add(typeof(IRascunhoProcessoService), typeof(RascunhoProcessoService));
             dependencies.Add(typeof(IAutuacaoService), typeof(AutuacaoService));
-
+            dependencies.Add(typeof(IOrganogramaAppService), typeof(OrganogramaAppService));
+            dependencies.Add(typeof(IRascunhoProcessoAbrangenciaService), typeof(RascunhoProcessoAbrangenciaService));
+            dependencies.Add(typeof(IRascunhoProcessoSinalizacaoService), typeof(RascunhoProcessoSinalizacaoService));
+            dependencies.Add(typeof(IRascunhoProcessoAnexoService), typeof(RascunhoProcessoAnexoService));
+            dependencies.Add(typeof(IRascunhoProcessoInteressadoService), typeof(RascunhoProcessoInteressadoService));
+            dependencies.Add(typeof(IRascunhoProcessoContato), typeof(RascunhoProcessoContato));
+            dependencies.Add(typeof(IRascunhoProcessoEmail), typeof(RascunhoProcessoEmail));          
+            dependencies.Add(typeof(ISinalizacaoService), typeof(SinalizacaoService));
+            dependencies.Add(typeof(IRascunhoDespachoAppAnexoService), typeof(RascunhoDespachoAppAnexoService));
+            dependencies.Add(typeof(IRascunhoDespachoAppService), typeof(RascunhoDespachoAppService));
+            
             //WebAPI
             dependencies.Add(typeof(IRascunhoDespachoService), typeof(RascunhoDespachoService));
             dependencies.Add(typeof(IAnexoRascunhoDespachoService), typeof(AnexoRascunhoDespachoService));

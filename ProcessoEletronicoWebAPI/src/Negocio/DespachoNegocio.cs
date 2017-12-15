@@ -16,6 +16,7 @@ using Negocio.Bloqueios;
 using Negocio.Bloqueios.Base;
 using Prodest.ProcessoEletronico.Integration.Organograma.Base;
 using Prodest.ProcessoEletronico.Integration.Organograma.Models;
+using Negocio.RascunhosDespacho.Validations.Base;
 
 namespace ProcessoEletronicoService.Negocio
 {
@@ -28,6 +29,7 @@ namespace ProcessoEletronicoService.Negocio
         private IRepositorioGenerico<Anexo> _repositorioAnexos;
         private IRepositorioGenerico<Despacho> _repositorioDespachos;
         private IRepositorioGenerico<Processo> _repositorioProcessos;
+        private IRepositorioGenerico<RascunhoDespacho> _repositorioRascunhosDespacho;
         private INotificacoesService _notificacoesService;
         private IBloqueioCore _bloqueioCore;
         private IOrganizacaoService _organizacaoService;
@@ -37,11 +39,12 @@ namespace ProcessoEletronicoService.Negocio
         private AnexoValidacao _anexoValidacao;
         private UsuarioValidacao _usuarioValidacao;
         private BloqueioValidation _bloqueioValidation;
+        private IRascunhoDespachoValidation _rascunhoDespachoValidation;
 
         public DespachoNegocio(IProcessoEletronicoRepositorios repositorios, 
             IMapper mapper, IProcessoNegocio processoNegocio, INotificacoesService notificacoesService, 
             ICurrentUserProvider user, IOrganizacaoService organizacaoService, IUnidadeService unidadeService, 
-            BloqueioValidation bloqueioValidation, IBloqueioCore bloqueioCore)
+            BloqueioValidation bloqueioValidation, IBloqueioCore bloqueioCore, IRascunhoDespachoValidation rascunhoDespachoValidation)
         {
             _unitOfWork = repositorios.UnitOfWork;
             _mapper = mapper;
@@ -50,6 +53,7 @@ namespace ProcessoEletronicoService.Negocio
             _repositorioDespachos = repositorios.Despachos;
             _repositorioProcessos = repositorios.Processos;
             _repositorioAnexos = repositorios.Anexos;
+            _repositorioRascunhosDespacho = repositorios.RascunhosDespacho;
             _notificacoesService = notificacoesService;
             _validacao = new DespachoValidacao(repositorios);
             _anexoValidacao = new AnexoValidacao(repositorios);
@@ -58,6 +62,7 @@ namespace ProcessoEletronicoService.Negocio
             _unidadeService = unidadeService;
             _bloqueioCore = bloqueioCore;
             _bloqueioValidation = bloqueioValidation;
+            _rascunhoDespachoValidation = rascunhoDespachoValidation;
         }
         
         public List<DespachoModeloNegocio> PesquisarDespachosUsuario()
@@ -75,7 +80,7 @@ namespace ProcessoEletronicoService.Negocio
             return _mapper.Map<List<DespachoModeloNegocio>>(query.ToList());
         }
 
-        public DespachoModeloNegocio Pesquisar(int idDespacho)
+        public DespachoModeloNegocio PesquisarComProcesso(int idDespacho)
         {
             Despacho despacho = _repositorioDespachos.Where(d => d.Id == idDespacho)
                                                     .Include(p => p.Processo)
@@ -91,6 +96,16 @@ namespace ProcessoEletronicoService.Negocio
             }
 
 
+            return _mapper.Map<DespachoModeloNegocio>(despacho);
+        }
+
+        public DespachoModeloNegocio Pesquisar(int idProcesso, int idDespacho)
+        {
+            Despacho despacho = _repositorioDespachos.Where(d => d.Id == idDespacho && d.IdProcesso == idProcesso)
+                                                    .Include(a => a.Anexos).ThenInclude(td => td.TipoDocumental)
+                                                    .SingleOrDefault();
+
+            _validacao.Existe(despacho);
             return _mapper.Map<DespachoModeloNegocio>(despacho);
         }
 
@@ -131,7 +146,18 @@ namespace ProcessoEletronicoService.Negocio
             _notificacoesService.Insert(despacho);
             _unitOfWork.Save();
 
-            return Pesquisar(despacho.Id);
+            return PesquisarComProcesso(despacho.Id);
+        }
+
+        public DespachoModeloNegocio DespacharPorRascunho(int idProcesso, int idRascunhoDespacho)
+        {
+            RascunhoDespacho rascunhoDespacho = _repositorioRascunhosDespacho.Where(d => d.Id == idRascunhoDespacho).Include(d => d.AnexosRascunho).ThenInclude(a => a.TipoDocumental).SingleOrDefault();
+            _rascunhoDespachoValidation.Exists(rascunhoDespacho);
+            
+
+            DespachoModeloNegocio despachoModeloNegocio = _mapper.Map<DespachoModeloNegocio>(rascunhoDespacho);
+            despachoModeloNegocio.IdProcesso = idProcesso;
+            return Despachar(despachoModeloNegocio);
         }
 
         private void PermissaoDespacho(DespachoModeloNegocio despacho)
@@ -215,5 +241,7 @@ namespace ProcessoEletronicoService.Negocio
                 }
             }
         }
+
+        
     }
 }

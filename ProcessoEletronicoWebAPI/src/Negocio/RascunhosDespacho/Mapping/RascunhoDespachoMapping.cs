@@ -10,6 +10,7 @@ namespace Negocio.RascunhosDespacho.Mapping
         public RascunhoDespachoMapping()
         {
             CreateMap<RascunhoDespachoModel, RascunhoDespacho>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.GuidOrganizacaoDestino, opt => opt.MapFrom(src => new Guid(src.GuidOrganizacaoDestino)))
                 .ForMember(dest => dest.GuidUnidadeDestino, opt => opt.MapFrom(src => new Guid(src.GuidUnidadeDestino)))
                 .ForMember(dest => dest.GuidOrganizacao, opt => opt.Ignore())
@@ -20,6 +21,8 @@ namespace Negocio.RascunhosDespacho.Mapping
                 .ForMember(dest => dest.GuidUnidadeDestino, opt => opt.MapFrom(src => src.GuidUnidadeDestino.HasValue ? src.GuidUnidadeDestino.Value.ToString("D") : null))
                 .ForMember(dest => dest.GuidOrganizacao, opt => opt.MapFrom(src => src.GuidOrganizacao.ToString("D")))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.AnexosRascunho));
+
+            CreateMap<RascunhoDespachoPatchModel, RascunhoDespachoModel>().ReverseMap();
         }
     }
 }

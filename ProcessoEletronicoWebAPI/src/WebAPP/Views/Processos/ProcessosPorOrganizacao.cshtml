@@ -1,0 +1,49 @@
+﻿@model IEnumerable<GetProcessoBasicoViewModel>
+@{
+    ViewBag.Title = "Caixa de Entrada";
+    ViewBag.SubTitle = "Meus Processos";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">@ViewBag.SubTitle</h3>
+        <div class="box-tools pull-right">
+            <a  asp-action="Editar" asp-controller="Rascunho" class="btn btn-primary btn-sm">
+                <i class="fa fa-plus"></i> Novo Processo
+            </a>            
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>                    
+                    <th class="col-md-2">NÚMERO</th>
+                    <th class="col-md-2">RESPONSÁVEL</th>
+                    <th class="col-md-2">ATIVIDADE</th>
+                    <th class="col-md-3">RESUMO</th>
+                    <th class="col-md-1">AUTUAÇÃO</th>
+                    <th class="text-center col-md-2">AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pc in Model)
+                {
+                    <tr>                    
+                        <td>@pc.Numero</td>
+                        <td>@pc.SiglasOrganizacaoUnidade</td>
+                        <td>@pc.Atividade.Descricao</td>
+                        <td>@pc.Resumo</td>
+                        <td>@pc.DataAutuacao</td>                      
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a class="btn btn-sm btn-info" asp-controller="Processos" asp-action="Search" asp-route-id="@pc.Id"><i class="fa fa-eye"></i></a>
+                                <a asp-controller="Despachos" asp-action="Despachar" asp-route-id="@pc.Id" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>

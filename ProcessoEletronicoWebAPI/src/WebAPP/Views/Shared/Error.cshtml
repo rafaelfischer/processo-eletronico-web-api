@@ -1,14 +1,23 @@
 ﻿@{
-    ViewData["Title"] = "Error";
+    ViewBag.Title = "ProcessoEletrônico - Página não encontrada.";
+    Layout = "~/Views/Shared/_LayoutPublico.cshtml";
 }
+<section class="content" style="margin-top: 25%;">
+    <div class="error-page">
+        <h1 class="text-center"><i class="fa fa-warning text-yellow"></i> Página não encontrada!</h1>
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>Development environment should not be enabled in deployed applications</strong>, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>, and restarting the application.
-</p>
+        <div style="text-align: center; margin-top: 50px ">
+            <a class="btn btn-warning" asp-controller="Inicio" asp-action="Index">Voltar para a página incial</a>
+        </div>
+
+        <div style="margin-top: 50px">
+            <h4 class="text-center">Atendimento Prodest</h4>
+            <p class="text-center">
+                atendimento@prodest.es.gov.br
+                <br />
+                (027) 3636-7166
+                </p>
+        </div>
+    </div>
+</section>

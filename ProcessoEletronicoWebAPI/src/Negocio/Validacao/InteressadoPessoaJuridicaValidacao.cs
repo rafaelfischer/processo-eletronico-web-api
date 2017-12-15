@@ -67,7 +67,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(interessado.GuidMunicipio))
             {
-                throw new RequisicaoInvalidaException("Municipio do interessado não preenchido.");
+                throw new RequisicaoInvalidaException($"Municipio do interessado {interessado.RazaoSocial} não preenchido.");
             }
         }
 
@@ -105,7 +105,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
             catch (Exception)
             {
-                throw new RequisicaoInvalidaException("Identificador do município do interessado inválido.");
+                throw new RequisicaoInvalidaException($"Identificador do município {interessado.GuidMunicipio} do interessado {interessado.RazaoSocial} inválido.");
             }
         }
 

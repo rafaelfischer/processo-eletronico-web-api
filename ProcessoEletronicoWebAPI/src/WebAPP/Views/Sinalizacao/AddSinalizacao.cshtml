@@ -1,0 +1,28 @@
+﻿@model SinalizacaoViewModel
+
+@{
+    ViewBag.Title = "Sinalização";
+    ViewBag.SubTitle = "Criar nova sinalização";
+}
+<form asp-controller="Sinalizacao"
+      asp-action="Add"
+      data-ajax-mode="replace"
+      data-ajax-update="#lista-sinalizacoes"
+      data-ajax-complete="ResetFormSinalizacao"
+      data-ajax="true"
+      data-ajax-method="POST"
+      id="form-nova-sinalizacao">
+
+    <div class="col-xs-12">
+        <label asp-for="Descricao">Descrição:</label>
+    </div>
+
+    <div class="col-md-8 form-group">
+        <input class="form-control" type="text" asp-for="Descricao" />
+        <span asp-validation-for="Descricao"></span>
+    </div>
+    <div class="col-md-4 form-group">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>  Salvar</button>
+        <button class="btn btn-default btn-cancelar-sinalizacao" type="button"><i class="fa fa-close"></i>  Cancelar</button>
+    </div>
+</form>

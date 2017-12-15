@@ -1,4 +1,6 @@
-﻿namespace Negocio.RascunhosDespacho.Models
+﻿using ProcessoEletronicoService.Negocio.Modelos;
+
+namespace Negocio.RascunhosDespacho.Models
 {
     public class AnexoRascunhoDespachoModel
     {
@@ -8,5 +10,6 @@
         public byte[] Conteudo { get; set; }
         public string ConteudoString { get; set; }
         public string MimeType { get; set; }
+        public TipoDocumentalModeloNegocio TipoDocumental { get; set; }
     }
 }

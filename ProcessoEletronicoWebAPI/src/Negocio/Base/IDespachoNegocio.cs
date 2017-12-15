@@ -9,8 +9,9 @@ namespace ProcessoEletronicoService.Negocio.Base
 {
     public interface IDespachoNegocio
     {
-        DespachoModeloNegocio Pesquisar(int idDespacho);
+        DespachoModeloNegocio PesquisarComProcesso(int idDespacho);
         DespachoModeloNegocio Despachar(DespachoModeloNegocio despachoNegocio);
+        DespachoModeloNegocio DespacharPorRascunho(int idProcesso, int idRascunhoDespacho);
         List<DespachoModeloNegocio> PesquisarDespachosUsuario();
     }
 }

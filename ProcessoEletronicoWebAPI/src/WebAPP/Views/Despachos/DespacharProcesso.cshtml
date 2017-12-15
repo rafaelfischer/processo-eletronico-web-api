@@ -1,0 +1,73 @@
+﻿@model GetProcessoViewModel
+
+@{
+    ViewBag.Title = "Despacho";
+    ViewBag.SubTitle = "Despacho de Processo";
+}
+
+<div class="form-group text-right">
+    <a asp-controller="Processos" asp-action="SearchByOrganizacao" class="btn btn-primary btn-sm"><span><i class="fa fa-arrow-left"></i> Caixa de Entrada</span></a>    
+</div>
+
+<div class="box box-primary">
+    <!-- /.box-header -->
+    <div class="box-header with-border">
+        <h3 class="box-title">Dados do Processo</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive" style="display: block;">
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th class="col-md-2 text-right">Número</th>
+                    <td>@Model.Numero</td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Classificação</th>
+                    <td>@Model.Atividade.CodigoDescricao</td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Resumo</th>
+                    <td>
+                        <p>@Model.Resumo</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Autuação</th>
+                    <td>@Model.DataAutuacao</td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Último Tramite</th>
+                    <td>@Model.DataUltimoTramite</td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Nome do Autuador</th>
+                    <td>
+                        @Model.NomeUsuarioAutuador
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Órgão</th>
+                    <td>@Model.NomeOrganizacaoAutuadora</td>
+                </tr>
+                <tr>
+                    <th class="col-md-2 text-right">Unidade</th>
+                    <td>@Model.NomeUnidadeAutuadora</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div id="opcoes-carregamento">
+            @Html.Partial("_OpcoesCarregamentoRascunhoDespacho", new CarregamentoRascunhoDespachoViewModel { IdAtividade = Model.Atividade.Id, IdProcesso = Model.Id})
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/RascunhoDespacho.js"></script>
+}

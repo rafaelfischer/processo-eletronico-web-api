@@ -138,7 +138,7 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => Mapper.Map<List<InteressadoPessoaJuridicaModelo>, List<InteressadoPessoaJuridicaModeloNegocio>>(src.InteressadosPessoaJuridica)))
                 .ForMember(dest => dest.Sinalizacoes, opt => opt.MapFrom(src => src.IdSinalizacoes))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos))
-                .ForMember(dest => dest.MunicipiosProcesso, opt => opt.MapFrom(src => src.Municipios));
+                .ForMember(dest => dest.Municipios, opt => opt.MapFrom(src => src.Municipios));
             CreateMap<ProcessoModeloNegocio, ProcessoModelo>()
                 .ForMember(dest => dest.DataAutuacao, opt => opt.MapFrom(src => src.DataAutuacao.ToString("dd/MM/yyyy HH:mm:ss")))
                 .ForMember(dest => dest.DataUltimoTramite, opt => opt.MapFrom(src => src.DataUltimoTramite.ToString("dd/MM/yyyy HH:mm:ss")))
@@ -152,6 +152,10 @@ namespace ProcessoEletronicoService.Apresentacao.Config
                 .ForMember(dest => dest.InteressadosPessoaJuridica, opt => opt.MapFrom(src => src.InteressadosPessoaJuridica != null && src.InteressadosPessoaJuridica.Count > 0 ? src.InteressadosPessoaJuridica : null))
                 .ForMember(dest => dest.IdOrganizacaoProcesso, opt => opt.MapFrom(src => src.OrganizacaoProcesso.Id))
                 .ForMember(dest => dest.Anexos, opt => opt.MapFrom(src => src.Anexos));
+
+            CreateMap<ProcessoModeloNegocio, ProcessoSimplificadoModelo>()
+                .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade));
+
             #endregion
 
             #region Mapeamento de Tipo de Contato
