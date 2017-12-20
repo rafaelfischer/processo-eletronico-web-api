@@ -15,7 +15,7 @@ namespace WebAPP.Controllers
         private IProcessoService _processoService;
 
         public RascunhoDespachoController(
-            IOrganogramaAppService organogramaService, 
+            IOrganogramaAppService organogramaService,
             IRascunhoDespachoAppService rascunhoDespachoAppService,
             IProcessoService processoService)
         {
@@ -27,7 +27,7 @@ namespace WebAPP.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();            
+            ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
             SetMensagens(result.Mensagens);
 
             return View("Index", result.Entidade);
@@ -39,10 +39,17 @@ namespace WebAPP.Controllers
             ResultViewModel<ICollection<RascunhoDespachoViewModel>> result = _rascunhoDespachoAppService.Search();
             SetMensagens(result.Mensagens);
 
-            foreach(var r in result.Entidade)
+            if (result.Entidade.Count > 0)
             {
-                r.IdProcesso = idProcesso.Value;
-                r.IdAtividade = idAtividade.Value;
+                foreach (var r in result.Entidade)
+                {
+                    r.IdProcesso = idProcesso.Value;
+                    r.IdAtividade = idAtividade.Value;
+                }
+            }
+            else
+            {
+                result.Entidade.Add(new RascunhoDespachoViewModel {IdProcesso = idProcesso.Value, IdAtividade = idAtividade.Value});
             }
 
             return PartialView("ListaImportacaoRascunhoDespacho", result.Entidade);
@@ -68,7 +75,7 @@ namespace WebAPP.Controllers
 
         [HttpGet]
         [Authorize(Policy = "RascunhoDespacho.Edit")]
-        public IActionResult Add(RascunhoDespachoViewModel rascunhoDespacho, int? idProcesso, int? idAtividade, bool ajax=false)
+        public IActionResult Add(RascunhoDespachoViewModel rascunhoDespacho, int? idProcesso, int? idAtividade, bool ajax = false)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Add(rascunhoDespacho);
             SetMensagens(result.Mensagens);
@@ -85,12 +92,12 @@ namespace WebAPP.Controllers
                 else
                 {
                     return RedirectToAction("Update", new { id = result.Entidade.Id });
-                }                
+                }
             }
             else
             {
                 return RedirectToAction("Index");
-            }            
+            }
         }
 
         [HttpGet]
@@ -133,9 +140,10 @@ namespace WebAPP.Controllers
         public IActionResult Update(RascunhoDespachoViewModel rascunhoDespacho)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Update(rascunhoDespacho);
-            SetMensagens(result.Mensagens);            
+            SetMensagens(result.Mensagens);
 
-            if(result.Entidade != null) { 
+            if (result.Entidade != null)
+            {
                 result.Entidade.ListaOrganizacoes = _organogramaService.GetOrganizacoesPorPatriarca();
                 string guidOrganizacao = result.Entidade.GuidOrganizacaoDestino;
                 result.Entidade.ListaUnidades = !string.IsNullOrEmpty(guidOrganizacao) ? _organogramaService.GetUniadesPorOrganizacao(guidOrganizacao) : null;
@@ -145,7 +153,7 @@ namespace WebAPP.Controllers
         }
 
         [Authorize(Policy = "RascunhoDespacho.Edit")]
-        public IActionResult Delete(int id, bool ajax=false)
+        public IActionResult Delete(int id, bool ajax = false)
         {
             ResultViewModel<RascunhoDespachoViewModel> result = _rascunhoDespachoAppService.Delete(id);
             SetMensagens(result.Mensagens);
@@ -155,7 +163,7 @@ namespace WebAPP.Controllers
                 return Search();
             }
 
-            return Index();            
+            return Index();
         }
     }
 }
