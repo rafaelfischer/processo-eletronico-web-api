@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Apresentacao.APP.ViewModels
 {
@@ -28,7 +26,8 @@ namespace Apresentacao.APP.ViewModels
         public string SiglaUnidade { get; set; }
 
         [DisplayName("Município")]
-        [Required(ErrorMessage = "Informe o município do interessado.")]
+        [MinLength(10, ErrorMessage = "Informe o município do interessado.")]
+        [Required(ErrorMessage = "Informe o município do interessado.")]        
         public string GuidMunicipio { get; set; }
 
         [DisplayName("Município")]        

@@ -23,7 +23,9 @@ namespace Apresentacao.APP.ViewModels
         [Required(ErrorMessage = "Informe o município do interessado.")]
         public string GuidMunicipio { get; set; }
 
-        [DisplayName("Município")]        
+        [DisplayName("Município")]
+        [MinLength(10, ErrorMessage = "Informe o município do interessado.")]
+        [Required(ErrorMessage = "Informe o município do interessado.")]
         public string NomeMunicipio { get; set; }
 
         [DisplayName("UF")]        
