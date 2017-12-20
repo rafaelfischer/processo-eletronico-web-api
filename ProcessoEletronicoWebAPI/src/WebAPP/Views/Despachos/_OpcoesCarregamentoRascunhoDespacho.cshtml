@@ -4,7 +4,8 @@
     <form asp-controller="RascunhoDespacho" asp-action="Add" asp-route-ajax="true"
           data-ajax-mode="replace"
           data-ajax-update="#opcoes-carregamento"          
-          data-ajax="true"          
+          data-ajax="true"
+          data-ajax-success="InicializacaoComponentes"
           data-ajax-method="GET"
           >
         <input type="checkbox" class="hide" checked="checked" name="ajax" />

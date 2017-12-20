@@ -22,7 +22,7 @@ $(document).ready(function () {
  */
 function LimparFormBasico() {
     $('#Atividade_Id').val($('#Atividade_Id option:first').val()).trigger('change')
-    $('#GuidUnidade').index[0].trigger("change");
+    $('#GuidUnidade').val($('#GuidUnidade option:first').val()).trigger('change')    
     $('form#formbasico')[0].reset();
 }
 
@@ -30,7 +30,7 @@ function LimparFormBasico() {
 $('body').on('select2:select', '#Atividade_Id', function (e) {
     carregaModalDefault(
         "Alterar Atividade",
-        "Os tipos documentais dos anexos serão removidos caso confirme esta alteração. Deseja alterar a atividade do processo?",
+        "Caso tenha anexos cadastrados, a alteração da atividade do processo poderá ocasionar a remoção dos tipos documentais desses registros. Deseja confirmar a alteração da atividade do processo?",
         "Sim",
         "Não",
         "alterarAtividade",

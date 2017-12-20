@@ -3,25 +3,28 @@
       asp-action="IncluirInteressadoPF"
       asp-controller="RascunhoInteressado"
       data-ajax-mode="replace"
-      data-ajax-update="#listainteressados"
-      data-ajax-complete="ResetSinalizacoesLista"      
+      data-ajax-update="#formInteressado"
+      data-ajax-success="SucessoSalvarInteressadoPJ"
       data-ajax="true"
+      data-ajax-failure="ErroSalvarInteressadoPJ"
       data-ajax-method="POST">
     <div class="box-header with-border">
         <h3 class="box-title">Interessado Pessoa Física</h3>
     </div>
     <div class="box-body">
-
+        @Html.ValidationSummary()
         <div class="form-group">
             <input type="hidden" asp-for="IdRascunho" />
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" name="Id" value="@Model.Id" />
             <label asp-for="Cpf"></label>
             <input data-mask="999.999.999-99" placeholder="000.000.000-00" class="form-control" asp-for="Cpf" />
+            <span asp-validation-for="Cpf" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Nome"></label>
             <input class="form-control" asp-for="Nome" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
         </div>
 
         <div class="form-group">
@@ -41,6 +44,7 @@
             {
                 <select class="form-control" asp-for="GuidMunicipio"></select>
             }
+            <span asp-validation-for="GuidMunicipio" class="text-danger"></span>
         </div>
 
         <div id="contatos">
@@ -67,17 +71,24 @@
             }
         </div>
 
-        <div class="box-footer">
-            <div class="form-group">
-                <div class="btn-group pull-right">
-                    <button type="reset" class="btn btn-default" onclick=""><i class="fa fa-close"></i> Limpar</button>
-                    <button class="btn btn-primary"><i class="fa fa-save" aria-hidden="true"></i> Salvar</button>
-                </div>
+    </div>
+    <div class="box-footer">
+        <div class="form-group">
+            <div class="btn-group pull-right">
+                <button type="reset" class="btn btn-default" onclick="ConcelaFormInteressado()"><i class="fa fa-close"></i> Cancelar</button>
+                <button class="btn btn-primary"><i class="fa fa-save" aria-hidden="true"></i> Salvar</button>
             </div>
         </div>
     </div>
 </form>
 
 <script>
-    $.applyDataMask();
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
 </script>
+
+@section scripts{
+    <script>
+        $.applyDataMask();
+    </script>
+}
+

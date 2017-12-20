@@ -36,6 +36,11 @@ function RedefineListaSinalizacoes() {
     });
 }
 
+function LimparSinalizacoes() {
+    $('#formsinalizacoes input[type="checkbox"]').iCheck('uncheck');
+    $('#formsinalizacoes input[type="checkbox"]').removeAttr('checked');    
+}
+
 $('#formsinalizacoes').on('ifUnchecked', 'input[type="checkbox"]', function (event) {
     $(this).removeAttr('name');
     $(this).removeAttr('checked');

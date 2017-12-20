@@ -35,10 +35,10 @@
     <div class="form-group">
         <div class="form-group">
             <form asp-action="Despachar"
-                  asp-controller="Despachos"                  
+                  asp-controller="Despachos"
                   data-ajax="true"
                   data-ajax-success="RetornoDespacho"
-                  data-ajax-method="POST">                
+                  data-ajax-method="POST">
                 <input type="hidden" name="idRascunhoDespacho" value="@Model.Id" />
                 <input type="hidden" name="IdProcesso" value="@Model.IdProcesso" />
                 <button data-id="@Model.Id" class="btn btn-success btn-block"><i class="fa fa-save"></i> Despachar Processo</button>
@@ -59,6 +59,6 @@
     </div>
 </div>
 
-@section scripts{
-    <script src="~/js/RascunhoDespacho.js"></script>
-}
+<script>
+    $('#opcoes-carregamento select').select2({ width: '100%' });    
+</script>

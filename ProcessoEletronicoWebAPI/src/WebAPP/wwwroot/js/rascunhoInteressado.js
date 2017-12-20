@@ -228,7 +228,7 @@ $("#listainteressados").on("click", ".btn-editar-interessado-pj", function () {
             type: "POST",
             success: function (data) {
                 $("#formInteressado").html(data);
-                $('#forminteressados select').select2({ width: '100%' });
+                $('#formInteressado select').select2({ width: '100%' });
                 $('#collapseNovoInteressado').addClass('in');
             }
         }
@@ -256,7 +256,7 @@ $("#listainteressados").on("click", ".btn-editar-interessado-pf", function () {
             type: "POST",
             success: function (data) {
                 $("#formInteressado").html(data);
-                $('#forminteressados select').select2({ width: '100%' })
+                $('#formInteressado select').select2({ width: '100%' });
                 $('#collapseNovoInteressado').slideDown();
             }
         }
@@ -277,11 +277,11 @@ $("#formInteressado").on("select2:select", "#uf", function () {
         });
 });
 
-//INCLUIR CAMPOS DE CONTATO DE INTERESSADO
+//INCLUIR CAMPOS DE CONTATO DE INTERESSADO - ORIGINAL
 $("#formInteressado").on("click", "#btnAddContato", function () {    
     var formContato = $('#contatos div.formContato:first').clone();
     formContato.find('input[type="text"]').val('');
-    console.log(formContato.find('input[checked="checked"]'));
+    console.log(formContato.find('input:checked'));
     formContato.appendTo('#contatos');
     AtualizaNomeCamposContato();
 });
@@ -336,6 +336,32 @@ function ErroSalvarInteressadoPJ() {
     console.log('Ocorreu um erro!');
 }
 
-function SucessoSalvarInteressadoPJ(data) {
-    console.log(data);
+function SucessoSalvarInteressadoPJ() {
+    var idRascunho = $("#formTipoInteressados input#Id").val();
+    var url = "/RascunhoInteressado/SearchAll?idRascunho=" + idRascunho;    
+
+    $('#formInteressado select').select2({ width: '100%' });
+
+    $.ajax(
+        {
+            url: url,
+            data: { },
+            processData: false,
+            contentType: false,
+            type: "GET",
+            success: function (data) {
+                $("#listainteressados").html(data);                
+            }
+        }
+    );
 }
+
+
+function ConcelaFormInteressado() {
+    $("#formTipoInteressados")[0].reset();
+    $('#formInteressado').html("");
+}
+
+$('body').on('submit', '#formPJ', function () {
+    $('.telefone').unmask();
+});

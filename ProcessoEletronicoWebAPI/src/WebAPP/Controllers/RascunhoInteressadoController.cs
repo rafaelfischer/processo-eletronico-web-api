@@ -28,6 +28,18 @@ namespace WebAPP.Controllers
             _contato = contato;
         }
 
+        [Authorize(Policy = "RascunhoProcesso.Edit")]
+        public IActionResult SearchAll(int idRascunho)
+        {
+            ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            {
+                InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
+                InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
+            };
+
+            return PartialView("RascunhoInteressadosLista", interessados);
+        }
+
         public IActionResult FormInteressado(int idRascunho, int tipoInteressado)
         {
             switch (tipoInteressado)
@@ -103,6 +115,8 @@ namespace WebAPP.Controllers
         [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult IncluirInteressadoPJ(InteressadoPessoaJuridicaViewModel interessado)
         {
+            ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
+
             if (ModelState.IsValid)
             {
                 int idRascunho = interessado.IdRascunho;
@@ -115,12 +129,12 @@ namespace WebAPP.Controllers
 
                 ICollection<ContatoViewModel> contatos = new List<ContatoViewModel>(interessado.Contatos);
 
-                foreach(var c in contatos)
+                foreach (var c in contatos)
                 {
                     if (string.IsNullOrEmpty(c.Telefone))
                         interessado.Contatos.Remove(c);
                 }
-                
+
                 ICollection<EmailViewModel> emails = new List<EmailViewModel>(interessado.Emails);
 
                 foreach (var e in emails)
@@ -129,67 +143,72 @@ namespace WebAPP.Controllers
                         interessado.Emails.Remove(e);
                 }
 
-                ResultViewModel<InteressadoPessoaJuridicaViewModel> result = new ResultViewModel<InteressadoPessoaJuridicaViewModel>();
                 result = _interessadoService.PostInteressadoPJ(idRascunho, interessado);
-                SetMensagens(result.Mensagens);
-
-                ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
-                {
-                    InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
-                    InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
-                };
-
-                return PartialView("RascunhoInteressadosLista", interessados);
             }
             else
             {
-                interessado.Ufs = new UfViewModel().GetUFs();
-                interessado.TiposContato = _contato.GetTiposContato();
-
-                return PartialView("RascunhoInteressadoPJ", interessado);
+                result.Entidade = interessado;
+                result.Mensagens.Add(new MensagemViewModel { Tipo = TipoMensagem.Erro, Texto = "Não foi possível salvar o interessado." });
             }
+
+            result.Entidade.Ufs = new UfViewModel().GetUFs();
+            result.Entidade.Municipios = _organogramaService.GetMunicipios(interessado.UfMunicipio);
+            result.Entidade.TiposContato = _contato.GetTiposContato();
+
+            SetMensagens(result.Mensagens);
+
+            return PartialView("RascunhoInteressadoPJ", result.Entidade);
         }
 
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Edit")]
         public IActionResult IncluirInteressadoPF(InteressadoPessoaFisicaViewModel interessado)
         {
-            int idRascunho = interessado.IdRascunho;
-            interessado.Cpf = interessado.Cpf.Replace("/", "").Replace(".", "").Replace("-", "");
-
-            if (interessado.Id > 0)
-            {
-                _interessadoService.ExcluirInteressadoPF(idRascunho, interessado.Id);
-            }
-
-            ICollection<ContatoViewModel> contatos = new List<ContatoViewModel>(interessado.Contatos);
-
-            foreach (var c in contatos)
-            {
-                if (string.IsNullOrEmpty(c.Telefone))
-                    interessado.Contatos.Remove(c);
-            }
-
-            ICollection<EmailViewModel> emails = new List<EmailViewModel>(interessado.Emails);
-
-            foreach (var e in emails)
-            {
-                if (string.IsNullOrEmpty(e.Endereco))
-                    interessado.Emails.Remove(e);
-            }
-
             ResultViewModel<InteressadoPessoaFisicaViewModel> result = new ResultViewModel<InteressadoPessoaFisicaViewModel>();
-            result = _interessadoService.PostInteressadoPF(idRascunho, interessado);
-            SetMensagens(result.Mensagens);           
 
-            ListaInteressadosPJPF interessados = new ListaInteressadosPJPF
+            if (ModelState.IsValid)
             {
-                InteressadosPF = _interessadoService.GetInteressadosPF(idRascunho),
-                InteressadosPJ = _interessadoService.GetInteressadosPJ(idRascunho)
-            };
+                int idRascunho = interessado.IdRascunho;
+                interessado.Cpf = interessado.Cpf.Replace("/", "").Replace(".", "").Replace("-", "");
 
-            return PartialView("RascunhoInteressadosLista", interessados);
+                if (interessado.Id > 0)
+                {
+                    _interessadoService.ExcluirInteressadoPF(idRascunho, interessado.Id);
+                }
+
+                ICollection<ContatoViewModel> contatos = new List<ContatoViewModel>(interessado.Contatos);
+
+                foreach (var c in contatos)
+                {
+                    if (string.IsNullOrEmpty(c.Telefone))
+                        interessado.Contatos.Remove(c);
+                }
+
+                ICollection<EmailViewModel> emails = new List<EmailViewModel>(interessado.Emails);
+
+                foreach (var e in emails)
+                {
+                    if (string.IsNullOrEmpty(e.Endereco))
+                        interessado.Emails.Remove(e);
+                }
+
+                result = _interessadoService.PostInteressadoPF(idRascunho, interessado);
+            }
+            else
+            {
+                result.Entidade = interessado;
+                result.Mensagens.Add(new MensagemViewModel { Tipo = TipoMensagem.Erro, Texto = "Não foi possível salvar o interessado." });
+            }
+            
+            result.Entidade.Ufs = new UfViewModel().GetUFs();
+            result.Entidade.Municipios = _organogramaService.GetMunicipios(interessado.UfMunicipio);
+            result.Entidade.TiposContato = _contato.GetTiposContato();
+
+            SetMensagens(result.Mensagens);
+
+            return PartialView("RascunhoInteressadoPF", result.Entidade);
         }
+
 
         [HttpPost]
         [Authorize(Policy = "RascunhoProcesso.Edit")]
@@ -249,6 +268,7 @@ namespace WebAPP.Controllers
         {
             InteressadoPessoaFisicaViewModel interessado = _interessadoService.GetInteressadoPF(idRascunho, idInteressadoPF);
             interessado.Ufs = new UfViewModel().GetUFs();
+            interessado.Municipios = _organogramaService.GetMunicipios(interessado.UfMunicipio);
             interessado.TiposContato = _contato.GetTiposContato();
             interessado.IdRascunho = idRascunho;
 

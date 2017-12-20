@@ -15,7 +15,7 @@
         <textarea class="form-control" rows="5" asp-for="Texto"></textarea>
     </div>
     <div class="form-group">
-        <label asp-for="GuidOrganizacao"></label>
+        <label asp-for="GuidOrganizacaoDestino"></label>
         <select class="form-control" asp-for="GuidOrganizacaoDestino" asp-items="@(new SelectList(Model.ListaOrganizacoes,"Guid","NomeSigla"))">
             <option value="0">Selecione uma organizacao</option>
         </select>
@@ -42,5 +42,5 @@
 </form>
 
 <script>
-    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];
+    $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];    
 </script>
