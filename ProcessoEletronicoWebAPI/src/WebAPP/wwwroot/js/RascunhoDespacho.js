@@ -7,7 +7,7 @@ $(document).ready(function () {
 });
 
 function InicializacaoComponentes() {
-    $('#form-dados-basicos select').select2({ width: '100%' });
+    $('#form-dados-basicos select').select2({ width: '100%' });    
 }
 
 //CARREGAR UNIDADES POR ORGANIZACAO
@@ -176,7 +176,7 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusaoAnexo"]', function (
 
 
 /*Evento click para o botão editar da lista de anexos*/
-$("#listaanexos").on("click", ".btnEditarAnexos", function () {
+$("body").on("click", ".btnEditarAnexos", function () {
 
     var formData = new FormData();
 
@@ -290,7 +290,11 @@ function RetornoDespacho(data) {
     console.log(data);
     if (data.mensagens!=null) {        
         $.each(data.mensagens, function (i, v) {
-            local.prepend('<div class="alert alert-' + v.tipoToastr + '">' + v.texto +'</div>')
-        });        
+            local.before('<div class="alert alert-' + v.tipoToastr + '">' + v.texto + '</div>')
+        });
+
+        if (data.success) {
+            local.remove();
+        }
     }
 }

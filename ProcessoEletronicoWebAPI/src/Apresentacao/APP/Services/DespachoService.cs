@@ -45,7 +45,7 @@ namespace Apresentacao.APP.Services
             try
             {
                 result.Entidade = _mapper.Map<GetDespachoViewModel>(_negocio.DespacharPorRascunho(idProcesso, idRascunhoDespacho));
-                SetMensagemSucesso(result.Mensagens, "Despacho realizado com sucesso.");
+                SetMensagemSucesso(result.Mensagens, "Despacho realizado com sucesso.");                
                 result.Success = true;
             }
             catch (Exception e)

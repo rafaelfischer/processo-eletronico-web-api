@@ -32,7 +32,7 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="UnidadesLista"></label>
+            <label asp-for="GuidUnidade"></label>
             <select class="form-control" asp-for="GuidUnidade" asp-items="@(new SelectList(Model.UnidadesLista,"Guid","Nome"))">
                 <option value="">Selecione uma Unidade</option>
             </select>

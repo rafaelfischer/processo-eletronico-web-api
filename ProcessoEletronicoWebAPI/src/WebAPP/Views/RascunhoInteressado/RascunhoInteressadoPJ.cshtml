@@ -14,9 +14,9 @@
     </div> 
     <div class="box-body">
         @Html.ValidationSummary()
-        <div class="form-group">
-            <input type="hidden" asp-for="IdRascunho" />
-            <input type="hidden" asp-for="Id" />
+        <div class="form-group">            
+            <input type="hidden" asp-for="IdRascunho" />            
+            <input type="hidden" name="Id" value="@Model.Id" />
             <label asp-for="Cnpj"></label>
             <input data-mask="99.999.999/9999-99" placeholder="00.000.000/0000-00" class="form-control" asp-for="Cnpj" />
             <span asp-validation-for="Cnpj" class="text-danger"></span>

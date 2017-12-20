@@ -2,7 +2,7 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "jquery" : "~2.2.4",
+    "jquery": "~2.2.4",
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "jquery-ajax-unobtrusive": "3.2.4",
@@ -10,6 +10,8 @@
     "icheck": "*",
     "select2": "*",
     "toastr": "2.1.3",
-    "jquery-treegrid" : "^0.3.0"
+    "jquery-treegrid": "^0.3.0",
+    "datatable": "1.10.16",
+    "ckeditor": "4.3.3"
   }
 }

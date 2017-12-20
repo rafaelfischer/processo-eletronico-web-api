@@ -277,11 +277,11 @@ $("#formInteressado").on("select2:select", "#uf", function () {
         });
 });
 
-//INCLUIR CAMPOS DE CONTATO DE INTERESSADO
+//INCLUIR CAMPOS DE CONTATO DE INTERESSADO - ORIGINAL
 $("#formInteressado").on("click", "#btnAddContato", function () {    
     var formContato = $('#contatos div.formContato:first').clone();
     formContato.find('input[type="text"]').val('');
-    console.log(formContato.find('input[checked="checked"]'));
+    console.log(formContato.find('input:checked'));
     formContato.appendTo('#contatos');
     AtualizaNomeCamposContato();
 });
@@ -361,3 +361,7 @@ function ConcelaFormInteressado() {
     $("#formTipoInteressados")[0].reset();
     $('#formInteressado').html("");
 }
+
+$('body').on('submit', '#formPJ', function () {
+    $('.telefone').unmask();
+});

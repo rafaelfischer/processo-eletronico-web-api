@@ -15,7 +15,7 @@
         @Html.ValidationSummary()
         <div class="form-group">
             <input type="hidden" asp-for="IdRascunho" />
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" name="Id" value="@Model.Id" />
             <label asp-for="Cpf"></label>
             <input data-mask="999.999.999-99" placeholder="000.000.000-00" class="form-control" asp-for="Cpf" />
             <span asp-validation-for="Cpf" class="text-danger"></span>
