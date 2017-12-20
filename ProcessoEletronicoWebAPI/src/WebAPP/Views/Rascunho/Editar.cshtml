@@ -7,14 +7,14 @@
 <div class="form-group text-right">
     <a asp-controller="Rascunho" asp-action="Index" class="btn btn-primary btn-sm"><span><i class="fa fa-arrow-left"></i> Rascunhos</span></a>
     <button class="btnVisualizarRascunho btn-sm btn btn-info" data-id="@Model.Id" type="button">
-        <i class="fa fa-file-text-o" aria-hidden="true"></i> Visualizar
+        <i class="fa fa-eye" aria-hidden="true"></i> Visualizar
     </button>
 
     <button class="btn-sm btn btn-success btnAutuarRascunho" data-id="@Model.Id" type="submit">
         <i class="fa fa-save" aria-hidden="true"></i> Autuar
     </button>
 
-    <a asp-controller="Rascunho" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-danger btnExcluirRascunhoForm" data-id="@Model.Id"><i class="fa fa-trash"></i> Descartar</a>    
+    <a asp-controller="Rascunho" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-danger btnExcluirRascunhoForm" data-id="@Model.Id"><i class="fa fa-trash"></i> Descartar</a>
 </div>
 
 <div class="nav-tabs-custom">
@@ -49,7 +49,10 @@
             @Html.Partial("~/Views/RascunhoAnexo/RascunhoAnexo.cshtml", Model)
         </div>
         <!-- /.tab-pane -->
-        <div class="tab-pane" id="tab_6">
+        <div class="tab-pane" id="tab_6">            
+            <div class="form-group">
+                <button type="button" onclick="$('.btnVisualizarRascunho').trigger('click')" class="btn btn-info btn-block"><i class="fa fa-eye" aria-hidden="true"></i> Visualizar</button>
+            </div>            
             <div class="box-body" id="visualizarRascunho">
             </div>
         </div>
@@ -66,8 +69,9 @@
     <script src="~/js/rascunhoAnexo.js"></script>
     <script src="~/js/rascunhoListaPorOganizacao.js"></script>
     <script src="~/js/rascunhoVisualizacao.js"></script>
+    <script src="~/lib/ckeditor/ckeditor.js"></script>  
 }
 
-<script>    
+<script>
     $mensagens = '@ViewBag.Mensagens' != ''? JSON.parse('@Html.Raw(ViewBag.Mensagens)'):[];
 </script>

@@ -14,7 +14,13 @@ $(document).ready(function () {
     ResetSinalizacoesLista();
     ResetMunicipioLista();
     $('#formbasico select').select2({ width: '100%' });
+    InicializacaoComponentes();
 });
+
+/*Incialização de componentes*/
+function InicializacaoComponentes() {
+    CKEDITOR.replace('Resumo');
+}
 
 /************************************************DADOS BASICOS************************************************/
 /**

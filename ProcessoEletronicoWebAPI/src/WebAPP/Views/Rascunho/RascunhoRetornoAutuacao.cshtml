@@ -10,7 +10,7 @@
 
 @if (Model?.Entidade != null)
 {
-    <div class="btn-group">        
+    <div class="form-group">        
         <a asp-controller="Processos" asp-action="Search" asp-route-id="@Model.Entidade.Id" class="btn btn-success">Visualizar Processo Autuado</a>
         <button type="button" onclick="$('.btnExcluirRascunho').trigger('click')" class="btn btn-danger">Descartar Rascunho</button>
     </div>    

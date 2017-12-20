@@ -2,12 +2,13 @@
 var $dataId;
 
 /*Incialização da página*/
-$(document).ready(function () {    
-    InicializacaoComponentes();
+$(document).ready(function () {        
+    $('#form-dados-basicos select').select2({ width: '100%' });    
 });
 
 function InicializacaoComponentes() {
     $('#form-dados-basicos select').select2({ width: '100%' });    
+    CKEDITOR.replace('Texto');
 }
 
 //CARREGAR UNIDADES POR ORGANIZACAO
