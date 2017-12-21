@@ -71,25 +71,21 @@ namespace ProcessoEletronicoService.WebAPI.Common
 
                     string accessToken = clientAccessToken.AccessToken;
 
-                    Claim claimOrganizacao = user.FindFirst("orgao");
+                    List<Claim> claimsOrganizacao = user.FindAll("orgao").ToList();
 
-                    if (claimOrganizacao != null)
+                    foreach (Claim claimOrganizacao in claimsOrganizacao)
                     {
-                        string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
-
-                        //TODO:Após o Acesso Cidadão implemtar o retorno de guids não será mais necessário as linhas que solicitam o guid do organograma
-                        string siglaOrganizacao = claimOrganizacao.Value;
-
-                        Organizacao organizacaoUsuario = DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/sigla/{siglaOrganizacao}", accessToken);
-                        if (!Guid.TryParse(organizacaoUsuario.guid, out _userGuidOrganizacao))
+                        Guid guidOrganizacao = new Guid();
+                        if (Guid.TryParse(claimOrganizacao.Value, out guidOrganizacao))
                         {
-                            throw new ProcessoEletronicoException($"Não foi possível obter informações da organização do usuário (Sigla: {siglaOrganizacao})");
-                        }
-                        
-                        Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/{_userGuidOrganizacao}/patriarca", accessToken);
-                        if (!Guid.TryParse(organizacaoPatriarca.guid, out _userGuidOrganizacaoPatriarca))
-                        {
-                            throw new ProcessoEletronicoException($"Não foi possível obter informações da organização patriarca do usuário (Guid: {_userGuidOrganizacao})");
+                            string urlApiOrganograma = Environment.GetEnvironmentVariable("UrlApiOrganograma");
+                            _userGuidOrganizacao = guidOrganizacao;
+
+                            Organizacao organizacaoPatriarca = DownloadJsonData<Organizacao>($"{urlApiOrganograma}organizacoes/{_userGuidOrganizacao}/patriarca", accessToken);
+                            if (!Guid.TryParse(organizacaoPatriarca.guid, out _userGuidOrganizacaoPatriarca))
+                            {
+                                throw new ProcessoEletronicoException($"Não foi possível obter informações da organização patriarca do usuário (Guid: {_userGuidOrganizacao})");
+                            }
                         }
                     }
                 }
