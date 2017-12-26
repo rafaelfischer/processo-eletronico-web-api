@@ -17,7 +17,17 @@
             {
                 <tr>
                     <td>@r.Id</td>
-                    <td>@r.Texto</td>
+                    <td>
+                        @if (r.Texto?.Length > 100 && !r.Texto.Contains("<table"))
+                        {
+                            @Html.Raw(r.Texto.Substring(0, 99))
+
+                        }
+                        else
+                        {
+                            @Html.Raw(r.Texto)
+                        }
+                    </td>
                     <td>@r.NomeOrganizacaoDestino</td>
                     <td>@r.NomeUnidadeDestino</td>
                     <td class="text-center">

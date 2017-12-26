@@ -26,8 +26,12 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
                 contentType: false,
                 type: "POST",
                 success: function (data) {
-                    $("#listaRascunhos").html(data)
+                    $("#listaRascunhos").html(data)                    
+                },
+                complete: function () {
+                    DatatablePlugin($('#table-rascunhos-processo'));
                 }
+
             }
         );
     }

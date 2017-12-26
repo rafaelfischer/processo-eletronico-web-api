@@ -1,48 +1,32 @@
 ﻿@model IEnumerable<RascunhoProcessoViewModel>
 
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">@ViewBag.SubTitle</h3>
-        <div class="box-tools pull-right">
-            <a asp-action="Editar" asp-controller="Rascunho" class="btn btn-primary btn-sm">
-                <i class="fa fa-plus"></i> Novo Processo
-            </a>
-        </div>
-    </div>
-    <!-- /.box-header -->
-    <div class="box-body">
-        <table class="table table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>RESPONSÁVEL</th>
-                    <th>ATIVIDADE</th>
-                    <th>RESUMO</th>
-                    <th class="text-center col-md-2">AÇÕES</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model)
-                {
-                    <tr>
-                        <td>@r.Id</td>
-                        <td>@r.NomeUnidade</td>
-                        <td>@r.Atividade?.Descricao</td>
-                        <td>@r.Resumo</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <a class="btn btn-sm btn-info" asp-action="Editar" asp-controller="Rascunho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>
-                                @*<a class="btn btn-sm btn-danger btnExcluirRascunho" asp-action="excluir" asp-controller="rascunho" asp-route-id="@r.Id"><i class="fa fa-trash"></i></a>*@
-                                <a class="btn btn-sm btn-danger btnExcluirRascunho" data-id="@r.Id"><i class="fa fa-trash"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <!-- /.box-body -->
-</div>
+
+@foreach (var r in Model)
+{
+    <tr>
+        <td>@r.Id</td>
+        <td>@r.NomeUnidade</td>
+        <td>@r.Atividade?.Descricao</td>
+        <td>
+            @if (r.Resumo?.Length > 100 && !r.Resumo.Contains("<table"))
+            {
+                @Html.Raw(r.Resumo.Substring(0, 99))
+
+            }
+            else
+            {
+                @Html.Raw(r.Resumo)
+            }        
+        </td>
+        <td class="text-center">
+            <div class="btn-group">
+                <a class="btn btn-sm btn-info" asp-action="Editar" asp-controller="Rascunho" asp-route-id="@r.Id"><i class="fa fa-edit"></i></a>
+                @*<a class="btn btn-sm btn-danger btnExcluirRascunho" asp-action="excluir" asp-controller="rascunho" asp-route-id="@r.Id"><i class="fa fa-trash"></i></a>*@
+                <a class="btn btn-sm btn-danger btnExcluirRascunho" data-id="@r.Id"><i class="fa fa-trash"></i></a>
+            </div>
+        </td>
+    </tr>
+}
 
 <script>
     $mensagens = '@ViewBag.Mensagens' != '' ? JSON.parse('@Html.Raw(ViewBag.Mensagens)') : [];

@@ -95,7 +95,7 @@ namespace WebAPP.Controllers
                 ResultViewModel<IEnumerable<RascunhoProcessoViewModel>> rascunhosPorOrganizacao = _rascunho.GetRascunhosProcessoPorOrganizacao();
                 SetMensagens(rascunhosPorOrganizacao.Mensagens);
 
-                return PartialView("RascunhosPorOrganizacao", rascunhosPorOrganizacao.Entidade);
+                return PartialView("RascunhosListaPorOrganizacao", rascunhosPorOrganizacao.Entidade);
             }
 
             return Index();

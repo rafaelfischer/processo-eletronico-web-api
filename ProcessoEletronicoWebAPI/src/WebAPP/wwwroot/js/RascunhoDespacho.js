@@ -278,6 +278,9 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
                 type: "POST",
                 success: function (data) {
                     $("#listaRascunhosDespacho").html(data)
+                },
+                complete: function () {
+                    DatatablePlugin($('#table-rascunhos-despacho'));
                 }
             }
         );

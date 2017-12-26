@@ -14,7 +14,7 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-        <table class="table table-bordered table-striped table-hover">
+        <table id="table-caixa-entrada" class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>                    
                     <th class="col-md-2">NÚMERO</th>
@@ -47,3 +47,16 @@
     </div>
     <!-- /.box-body -->
 </div>
+@section css{     
+    <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <script>
+        $(document).ready(function () {
+            DatatablePlugin($('#table-caixa-entrada'));
+        });
+    </script>
+}
