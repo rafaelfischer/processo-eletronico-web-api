@@ -10,9 +10,10 @@
 
 @if (Model?.Entidade != null)
 {
-    <div class="form-group">        
-        <a asp-controller="Processos" asp-action="Search" asp-route-id="@Model.Entidade.Id" class="btn btn-success">Visualizar Processo Autuado</a>
-        <button type="button" onclick="$('.btnExcluirRascunho').trigger('click')" class="btn btn-danger">Descartar Rascunho</button>
+    <div class="form-group text-center">        
+        <a asp-controller="Processos" asp-action="Search" asp-route-id="@Model.Entidade.Id" class="btn btn-info"><i class="fa fa-eye" aria-hidden="true"></i> Visualizar Processo</a>
+        <a asp-controller="Despachos" asp-action="Despachar" asp-route-id="@Model.Entidade.Id" class="btn btn-success"><i class="fa fa-edit" aria-hidden="true"></i> Despachar Processo</a>
+        <button type="button" onclick="$('.btnExcluirRascunho').trigger('click')" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Descartar Rascunho</button>
     </div>    
 }
 

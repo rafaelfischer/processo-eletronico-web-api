@@ -14,7 +14,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
         //private string regexNomeArquivo = @"^[\w,\s-]+\.[A-Za-z0-9]{2,4}$";
         // 5 MB =  5242880 bytes
-        private long tamanhoMaximo = 5242880;
+        private long tamanhoMaximo = 52428800;
 
         IRepositorioGenerico<TipoDocumental> repositorioTiposDocumentais;
 
@@ -120,7 +120,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (anexo.Conteudo.Length > tamanhoMaximo)
             {
-                throw new RequisicaoInvalidaException("Tamanho do anexo "+ anexo.Nome  +" é maior que o limite máximo de" + (tamanhoMaximo / 1048576) + "MB.");
+                throw new RequisicaoInvalidaException("Anexos: Tamanho do anexo "+ anexo.Nome  +" é maior que o limite máximo de " + (tamanhoMaximo / 1048576) + " MB.");
             }
         }
 
@@ -132,7 +132,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             }
             catch (FormatException)
             {
-                throw new RequisicaoInvalidaException("Conteúdo do anexo " + anexo.Nome + " inválido.");
+                throw new RequisicaoInvalidaException("Anexos: Conteúdo do anexo " + anexo.Nome + " inválido.");
             }
         }
 
@@ -142,7 +142,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             {
                 if (anexo.TipoDocumental.Id <= 0)
                 {
-                    throw new RequisicaoInvalidaException("Tipo Documental do anexo inválido.");
+                    throw new RequisicaoInvalidaException($"Anexos: Tipo Documental do anexo {anexo.Nome} inválido.");
                 }
             }
         }
@@ -166,7 +166,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             {
                 if (repositorioTiposDocumentais.Where(td => td.Id == anexo.TipoDocumental.Id && td.IdAtividade == idAtividadeProcesso).ToList().Count == 0) 
                 {
-                    throw new RequisicaoInvalidaException($"Tipo Documental do anexo {anexo.Nome} inexistente.");
+                    throw new RequisicaoInvalidaException($"Anexos: Tipo Documental do anexo {anexo.Nome} inexistente.");
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
                     if (anexos.Where(a => a.Nome == anexo.Nome).ToList().Count > 1)
                     {
-                        throw new RequisicaoInvalidaException($"Nomes de arquivos \"{anexo.Nome}\" duplicados");
+                        throw new RequisicaoInvalidaException($"Anexos: Nomes de arquivos {anexo.Nome} duplicados.");
                     }
                 }
 

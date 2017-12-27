@@ -18,10 +18,10 @@
             <thead>
                 <tr>                    
                     <th class="col-md-2">NÚMERO</th>
+                    <th class="col-md-1">DATA</th>
                     <th class="col-md-2">RESPONSÁVEL</th>
                     <th class="col-md-2">ATIVIDADE</th>
                     <th class="col-md-3">RESUMO</th>
-                    <th class="col-md-1">AUTUAÇÃO</th>
                     <th class="text-center col-md-2">AÇÕES</th>
                 </tr>
             </thead>
@@ -30,10 +30,20 @@
                 {
                     <tr>                    
                         <td>@pc.Numero</td>
+                        <td>@pc.DataAutuacao</td>                      
                         <td>@pc.SiglasOrganizacaoUnidade</td>
                         <td>@pc.Atividade.Descricao</td>
-                        <td>@pc.Resumo</td>
-                        <td>@pc.DataAutuacao</td>                      
+                        <td>
+                        @if (pc.Resumo?.Length > 100 && !pc.Resumo.Contains("<table"))
+                        {
+                            @Html.Raw(pc.Resumo.Substring(0, 99))
+
+                        }
+                        else
+                        {
+                            @Html.Raw(pc.Resumo)
+                        }
+                        </td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <a class="btn btn-sm btn-info" asp-controller="Processos" asp-action="Search" asp-route-id="@pc.Id"><i class="fa fa-eye"></i></a>
@@ -53,9 +63,9 @@
 
 @section scripts{
     <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>    
     <script>
-        $(document).ready(function () {
+        $(document).ready(function () {            
             DatatablePlugin($('#table-caixa-entrada'));
         });
     </script>
