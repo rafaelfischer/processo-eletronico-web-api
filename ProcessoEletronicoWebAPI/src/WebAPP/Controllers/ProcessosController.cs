@@ -3,6 +3,7 @@ using Apresentacao.APP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace WebAPP.Controllers
@@ -49,7 +50,10 @@ namespace WebAPP.Controllers
         public IActionResult SearchByOrganizacao()
         {
             IEnumerable<GetProcessoBasicoViewModel> processosPorOrganizacao = _service.GetProcessosOrganizacao();
-            return View("ProcessosPorOrganizacao", processosPorOrganizacao);
+
+            var processos = processosPorOrganizacao.OrderByDescending(a => a.DataAutuacao).ToList();
+
+            return View("ProcessosPorOrganizacao", processos);
         }
 
         [HttpGet]

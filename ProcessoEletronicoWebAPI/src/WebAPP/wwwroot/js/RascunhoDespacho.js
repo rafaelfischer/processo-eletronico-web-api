@@ -291,7 +291,9 @@ $('body').on('click', 'button[data-btn="btnConfirmarExclusao"]', function () {
 
 function RetornoDespacho(data) {
     var local = $('#opcoes-carregamento');
-    console.log(data);
+
+    local.siblings('.alert').remove();
+
     if (data.mensagens!=null) {        
         $.each(data.mensagens, function (i, v) {
             local.before('<div class="alert alert-' + v.tipoToastr + '">' + v.texto + '</div>')
@@ -302,3 +304,11 @@ function RetornoDespacho(data) {
         }
     }
 }
+
+$('body').on('blur', '#form-dados-basicos input, #form-dados-basicos select, #form-dados-basicos textarea ', function () {
+
+});
+
+$("body").on("select2:select", "#form-dados-basicos select", function () {
+    $('#form-dados-basicos').submit();
+});

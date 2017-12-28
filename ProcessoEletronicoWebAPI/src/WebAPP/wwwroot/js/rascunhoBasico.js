@@ -12,15 +12,23 @@ var $atividadeDefault = $('#Atividade_Id').val();
 /*Incialização da página*/
 $(document).ready(function () {
     ResetSinalizacoesLista();
-    ResetMunicipioLista();
-    $('#formbasico select').select2({ width: '100%' });
+    ResetMunicipioLista();    
     InicializacaoComponentes();
 });
 
 /*Incialização de componentes*/
 function InicializacaoComponentes() {
     CKEDITOR.replace('Resumo');
+    CKEDITOR.instances.Resumo.on('blur', function () {
+        $('#formbasico').submit();
+    });
+    $('#formbasico select').select2({ width: '100%' });
 }
+
+/*Salvamento automatico ao sair do select*/
+$("body").on("select2:select", "#formbasico select#GuidUnidade", function () {
+    $('#formbasico').submit();
+});
 
 /************************************************DADOS BASICOS************************************************/
 /**
@@ -47,6 +55,7 @@ $('body').on('select2:select', '#Atividade_Id', function (e) {
 /*Confirma alteração de atividade do processo*/
 $('body').on('click', 'button[data-btn="alterarAtividade"]', function (e) {
     $idAtividade = 0;
+    $('#formbasico').submit();
 });
 
 /*Cancela alteração de atividade do processo*/

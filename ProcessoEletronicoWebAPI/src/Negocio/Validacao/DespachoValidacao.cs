@@ -40,7 +40,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (despacho.IdProcesso <= 0)
             {
-                throw new RequisicaoInvalidaException("Identificador do processo não preenchido.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Identificador do processo não preenchido.");
             }
         }
 
@@ -48,7 +48,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(despacho.Texto))
             {
-                throw new RequisicaoInvalidaException("Texto do despacho não preenchido.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Texto do despacho não preenchido.");
             }
         }
 
@@ -56,7 +56,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(despacho.GuidOrganizacaoDestino))
             {
-                throw new RequisicaoInvalidaException("Identificador da organização de destino não preenchido.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Identificador da organização de destino não preenchido.");
             }
         }
         
@@ -64,7 +64,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(despacho.GuidUnidadeDestino))
             {
-                throw new RequisicaoInvalidaException("Identificador da unidade de destino não preenchido.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Identificador da unidade de destino não preenchido.");
             }
         }
         

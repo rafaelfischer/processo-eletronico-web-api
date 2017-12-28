@@ -36,6 +36,9 @@
     <script>
         $(document).ready(function () {
             CKEDITOR.replace('Texto');
+            CKEDITOR.instances.Texto.on('blur', function () {
+                $('#form-dados-basicos').submit();
+            });
         });
     </script>
 }

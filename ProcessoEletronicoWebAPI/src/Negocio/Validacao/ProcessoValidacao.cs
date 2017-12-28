@@ -45,10 +45,10 @@ namespace ProcessoEletronicoService.Negocio.Validacao
             /*Preenchimentos dos campos do processo*/
             AtividadePreenchida(processo);
             ResumoPreechido(processo);
-            InteressadoPreenchido(processo);
-            MunicipioPreenchido(processo);
             GuidOrganizacaoAutuadoraPreenchido(processo);
             GuidUnidadeAutuadoraPreenchida(processo);
+            InteressadoPreenchido(processo);
+            MunicipioPreenchido(processo);
 
             /*Preenchimento de objetos associados ao processo*/
             interessadoPessoaFisicaValidacao.Preenchido(processo.InteressadosPessoaFisica);
@@ -65,7 +65,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
             if (processo.Atividade == null)
             {
-                throw new RequisicaoInvalidaException("Atividade não preenchida.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Atividade não preenchida.");
             }
 
             if (processo.Atividade.Id <= 0)
@@ -80,7 +80,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(processo.Resumo))
             {
-                throw new RequisicaoInvalidaException("Resumo não preenchido.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Resumo não preenchido.");
             }
         }
 
@@ -103,7 +103,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
 
             if (countInteressadoPessoaFisica + countInteressadoPessoaJuridica == 0)
             {
-                throw new RequisicaoInvalidaException("O processo deve possuir ao menos um interessado.");
+                throw new RequisicaoInvalidaException("Interessados: O processo deve possuir ao menos um interessado.");
             }
         }
 
@@ -112,7 +112,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (processo.Municipios.Count == 0)
             {
-                throw new RequisicaoInvalidaException("Pelo menos um município deve ser informado.");
+                throw new RequisicaoInvalidaException("Abrangência: Pelo menos um município deve ser informado.");
             }
         }
 
@@ -121,7 +121,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(processo.GuidOrganizacaoAutuadora))
             {
-                throw new RequisicaoInvalidaException("Identificador do Organização autuadora não preenchido.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Identificador do Organização autuadora não preenchido.");
             }
         }
 
@@ -130,7 +130,7 @@ namespace ProcessoEletronicoService.Negocio.Validacao
         {
             if (string.IsNullOrWhiteSpace(processo.GuidUnidadeAutuadora))
             {
-                throw new RequisicaoInvalidaException("Identificador da Unidade Autuadora não preenchido.");
+                throw new RequisicaoInvalidaException("Dados Básicos: Identificador da Unidade Autuadora não preenchido.");
             }
         }
 

@@ -28,7 +28,7 @@ $('#helpConsultaPorNumero').click(function () {
     conteudo += '<li class="list-group-item"><strong>AAAA</strong> - Refere- se ao ano de autuação do processo, com tamanho fixo de 4 dígitos. </li>';
     conteudo += '<li class="list-group-item"><strong>P</strong> - Representa o Poder ao qual o processo está vinculado e está limitado a 1 dígito. </li>';
     conteudo += '<li class="list-group-item"><strong>E</strong> - Representa a Esfera ao qual o processo está vinculado e está limitado a 1 dígito. </li>';
-    conteudo += '<li class="list-group-item"><strong>OOOO</strong> - Refere-se a ????? e está limitado a 4 dígitos. </li>';
+    conteudo += '<li class="list-group-item"><strong>OOOO</strong> - Refere-se a identificação do órgão e está limitado a 4 dígitos. </li>';
     conteudo += '</ul>';
 
     CarregaModelDetalhe("Formato do Número de Processo", conteudo);
@@ -72,7 +72,8 @@ function DatatablePlugin(table) {
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "retrieve": true            
+            "retrieve": true,
+            "ordering": false
         }
     );
 }
